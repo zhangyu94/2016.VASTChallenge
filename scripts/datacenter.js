@@ -19,53 +19,12 @@ var DATA_CENTER = {
 		selected_person_set:[],
 	},
 
-//set...函数全都是设置全局变量并调用SUBJECT的notify
-	set_selected_attr_set : function(attr_set){
-		selected_attr_set = attr_set;
-		SUBJECT.notifyObserver("set_selected_attr_set", attr_set);
-	},
-	set_selected_linechart_set : function(linechart_set){
-		selected_linechart_set = linechart_set;
-		SUBJECT.notifyObserver("set_selected_linechart_set", linechart_set);
-	},
-	set_selected_HVACzone_set : function(HVACzone_set){
-		selected_HVACzone_set = HVACzone_set;
-		SUBJECT.notifyObserver("set_selected_HVACzone_set", HVACzone_set);
+	//set_global_variable设置全局变量并调用SUBJECT的notify
+	set_global_variable : function(variable_name,value){
+		this.global_variable[variable_name] = value;
+		SUBJECT.notifyObserver("set_"+variable_name, value);
 	},
 
-	set_selected_proxzone_set : function(proxzone_set){
-		selected_proxzone_set = proxzone_set;
-		SUBJECT.notifyObserver("set_selected_proxzone_set", proxzone_set);
-	},
-
-	
-	set_selected_room_set : function(room_set){
-		selected_room_set = room_set;
-		SUBJECT.notifyObserver("set_selected_room_set", room_set);
-	},
-	set_selected_floor_set : function(floor_set){
-		selected_floor_set = floor_set;
-		SUBJECT.notifyObserver("set_selected_floor_set", floor_set);
-	},
-	set_selected_building_set : function(building_set){
-		selected_building_set = building_set;
-		SUBJECT.notifyObserver("set_selected_building_set", building_set);
-	},
-
-	set_selected_timepoint_set : function(timepoint_set){
-		selected_timepoint_set = timepoint_set;
-		SUBJECT.notifyObserver("set_selected_timepoint_set", timepoint_set);
-	},
-
-	set_selected_card_set : function(card_set){
-		selected_card_set = card_set;
-		SUBJECT.notifyObserver("set_selected_card_set", card_set);
-	},
-	set_selected_person_set : function(person_set){
-		selected_person_set = person_set;
-		SUBJECT.notifyObserver("set_selected_person_set", person_set);
-	},
-//
 
 
 	//计算派生数据填入DATA_CENTER.derived_data

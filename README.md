@@ -6,7 +6,7 @@
 
 3. 要从原始数据派生新数据时，在DATA_CENTER中cal_derive_data函数里面计算以后，存在DATA_CENTER.derived_data[...]里面（...是derive出来的数据的名字）
 
-4. 在视图间传递的全局变量在DATA_CENTER.global_variables里面，每次修改global_variable时通过DATA_CENTER.set...进行设置以触发message
+4. 在视图间传递的全局变量在DATA_CENTER.global_variables里面，每次修改global_variable时通过DATA_CENTER.set_global_variable(variable_name,value)进行设置以触发message
 
 5. 要定义message时，在main.js的MESSAGE_COLLECTION里面进行修改以设置有效message的集合
 
