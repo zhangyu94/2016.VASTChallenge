@@ -42,17 +42,7 @@ body {
 }
 #linechartview-collection > .HVACgraphContainer > #HVACgraph-maps{
 	position:absolute;
-	height:90%;
-	width:100%;
-	float: left;
-	border: solid #ccc 1px;
-	border-radius: 5px;
-	background-color: #f8f8f8;
-}
-#linechartview-collection > .HVACgraphContainer > #HVACgraph-attr-btn{
-	position:absolute;
-	top:90%;
-	height:10%;
+	height:100%;
 	width:100%;
 	float: left;
 	border: solid #ccc 1px;
@@ -69,8 +59,18 @@ body {
 	border-radius: 5px;
 	background-color: #f8f8f8;
 }
+#linechartview-collection > .linechartContainer > #HVACgraph-attr-btn{
+	position:absolute;
+	height:10%;
+	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
 #linechartview-collection > .linechartContainer > #linechart-line-btn{
 	position:absolute;
+	top:10%;
 	height:10%;
 	width:100%;
 	float: left;
@@ -80,8 +80,8 @@ body {
 }
 #linechartview-collection > .linechartContainer > #linechart-renderplace{
 	position:absolute;
-	top:10%;
-	height:90%;
+	top:20%;
+	height:80%;
 	width:100%;
 	float: left;
 	border: solid #ccc 1px;

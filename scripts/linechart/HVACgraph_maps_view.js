@@ -268,9 +268,19 @@ var HVACgraph_maps_view = {
 				      		tip.hide(d,i)
 				      	})
 				      	.on("click",function(d,i){
-				      		console.log(d)
-
-
+				      		var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
+							var index = selected_HVACzone_set.indexOf(d.name);
+							if (index >=0 )
+							{
+								d3.select("#mapgraph_F2_div_svg > rect").classed("selected_HVACmap_rect",false);
+								selected_floor_set.splice(index,1);
+								DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
+							}
+							else
+							{
+								d3.select("#mapgraph_F2_div_svg > rect").classed("selected_HVACmap_rect",true);
+								DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
+							}
 			      		});
 
     	}

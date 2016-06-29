@@ -20,12 +20,11 @@ var DATA_CENTER = {
 	},
 
 	//set_global_variable设置全局变量并调用SUBJECT的notify
+	//使用时形如DATA_CENTER.set_global_variable("selected_attr_set",[1,2,3])
 	set_global_variable : function(variable_name,value){
 		this.global_variable[variable_name] = value;
-		SUBJECT.notifyObserver("set_"+variable_name, value);
+		SUBJECT.notifyObserver("set:"+variable_name, value);
 	},
-
-
 
 	//计算派生数据填入DATA_CENTER.derived_data
 	cal_derive_data : function(){
