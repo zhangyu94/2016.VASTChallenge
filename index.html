@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>VAST Challenge</title>
+	<link rel="stylesheet" href="libs/bootstrap.min.css">
+
+	<link rel="stylesheet" href="css/index.css"><!--所有的view的视图整体框架的layout-->
+
+	<!--1. linechart相关的view的css-->
+	<link rel="stylesheet" href="css/linechart/HVACgraph_maps_view.css">
+	<link rel="stylesheet" href="css/linechart/HVACgraph_attrbtn_view.css">
+	<link rel="stylesheet" href="css/linechart/linechart_linebtn_view.css">
+	<link rel="stylesheet" href="css/linechart/linechart_render_view.css">
+	<!--2. trajectory相关的view的css-->
+	<link rel="stylesheet" href="css/trajectory/proxgraph_maps_view.css">
+	<link rel="stylesheet" href="css/trajectory/bigmap_view.css">
+	<link rel="stylesheet" href="css/trajectory/ganttchart_view.css">
+	<link rel="stylesheet" href="css/trajectory/histogram_view.css">
+	<style>
+
+
+	</style>
+</head>
+
+<!--libs-->
+<script src="libs/d3.v3.min.js"></script>
+<script src="libs/jquery.js"></script>
+<script src="libs/d3.tip.js"></script>
+
+<!--存成js变量的dataset-->
+<script src="dataset/derived/HVAC_graph.js"></script>
+
+<!--views-->
+<!--1. linechart相关的view-->
+<script src="scripts/linechart/HVACgraph_maps_view.js"></script>
+<script src="scripts/linechart/HVACgraph_attrbtn_view.js"></script>
+<script src="scripts/linechart/linechart_linebtn_view.js"></script>
+<script src="scripts/linechart/linechart_render_view.js"></script>
+<!--2. trajectory相关的view-->
+<script src="scripts/trajectory/proxgraph_maps_view.js"></script>
+<script src="scripts/trajectory/bigmap_view.js"></script>
+<script src="scripts/trajectory/ganttchart_view.js"></script>
+<script src="scripts/trajectory/histogram_view.js"></script>
+
+<!--datacenter-->
+<script src="scripts/datacenter.js"></script>
+
+<!--subject-->
+<script src="scripts/subject.js"></script>
+
+<!--main-->
+<script src="scripts/main.js"></script>
+
+<body>
+	<div class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<strong class="navbar-brand">VAST Challenge</strong>
+		</div>
+	</div> 
+
+	<div class="panelContainer">
+		<ul class="pagination mPosition typeBar">
+			<li class="" id="linechartviewli"><a id="linechartview">linechart</a></li>
+			<li class="" id="trajectoryviewli"><a id="trajectoryview">trajectory</a></li>
+		</ul>
+	</div>
+
+
+	<!--第一个linechart视图相关的-->
+	<div class="view-collection" id="linechartview-collection">
+		<div class="HVACgraphContainer">
+			<div id="HVACgraph-maps">
+			</div>
+			<div id="HVACgraph-attr-btn">
+			</div>
+		</div>
+
+		<div class="linechartContainer">
+			<div id="linechart-line-btn">
+			</div>
+			<div id="linechart-renderplace">
+			</div>
+		</div>
+	</div>
+
+	<!--第二个linechart视图相关的-->
+	<div class="view-collection" id="trajectoryview-collection">
+		<div class="proxgraphContainer">
+			<div id="proxgraph-maps">
+			</div>
+		</div>
+
+		<div class="trajectoryContainer">
+			<div id="trajectory-bigmap">
+			</div>
+			<div id="trajectory-ganttchart">
+			</div>
+			<div id="trajectory-histogram">
+			</div>
+		</div>
+	</div>
+
+
+	<!--第二个trajectory视图相关的-->
+
+
+	<script>
+
+		DATA_CENTER.initialize_loaddata(main);
+
+	</script>
+</body>

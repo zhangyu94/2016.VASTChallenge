@@ -1,0 +1,159 @@
+body {
+	margin: 8px;
+}
+
+.navbar{
+	height:8%;
+}
+
+
+/*选视图按钮*/
+.panelContainer{
+	margin:0.5%;
+	position:absolute;
+	top:8.5%;
+	height:6%;
+	width:99%;
+
+}
+.panelContainer > .pagination{
+	margin:0px;
+}
+
+
+
+
+/*linechart视图*/
+#linechartview-collection {
+	position:absolute;
+	top:15.5%;
+	height:84.5%;
+	width:100%;
+	float: left;
+}
+#linechartview-collection > .HVACgraphContainer {
+	position:absolute;
+	height:100%;
+	width:20%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+#linechartview-collection > .HVACgraphContainer > #HVACgraph-maps{
+	position:absolute;
+	height:90%;
+	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+#linechartview-collection > .HVACgraphContainer > #HVACgraph-attr-btn{
+	position:absolute;
+	top:90%;
+	height:10%;
+	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+#linechartview-collection > .linechartContainer {
+	position:absolute;
+	left:21%;
+	height:100%;
+	width:78.5%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+#linechartview-collection > .linechartContainer > #linechart-line-btn{
+	position:absolute;
+	height:10%;
+	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+#linechartview-collection > .linechartContainer > #linechart-renderplace{
+	position:absolute;
+	top:10%;
+	height:90%;
+	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+
+
+/*trajectory视图的右边一大块*/
+#trajectoryview-collection {
+	position:absolute;
+	top:15.5%;
+	height:84.5%;
+	width:100%;
+	float: left;
+}
+#trajectoryview-collection > .proxgraphContainer {
+	position:absolute;
+	height:100%;
+	width:20%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+#trajectoryview-collection > .proxgraphContainer > #proxgraph-maps{
+	position:absolute;
+	height:100%;
+	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+#trajectoryview-collection > .trajectoryContainer {
+	position:absolute;
+	left:21%;
+	height:100%;
+	width:78.5%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+#trajectoryview-collection > .trajectoryContainer > #trajectory-bigmap{
+	position:absolute;
+	height:70%;
+	width:80%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+#trajectoryview-collection > .trajectoryContainer > #trajectory-ganttchart{
+	position:absolute;
+	top:70%;
+	height:30%;
+	width:80%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+#trajectoryview-collection > .trajectoryContainer > #trajectory-histogram{
+	position:absolute;
+	left:80%;
+	height:100%;
+	width:20%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+
+
