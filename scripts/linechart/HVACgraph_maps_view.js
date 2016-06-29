@@ -48,13 +48,13 @@ var HVACgraph_maps_view = {
 				var index = selected_building_set.indexOf(d.name);
 				if (index >=0 )
 				{
-					d3.select("#mapgraph_building_div_svg > rect").classed("selected_HVACmap_rect",false);
+					d3.select(this).classed("selected_HVACmap_rect",false);
 					selected_building_set.splice(index,1);
 					DATA_CENTER.set_global_variable("selected_building_set",selected_building_set);
 				}
 				else
 				{
-					d3.select("#mapgraph_building_div_svg > rect").classed("selected_HVACmap_rect",true);		
+					d3.select(this).classed("selected_HVACmap_rect",true);			
 					DATA_CENTER.set_global_variable("selected_building_set",selected_building_set.concat(d.name));
 				}
 			})
@@ -83,13 +83,13 @@ var HVACgraph_maps_view = {
 				var index = selected_floor_set.indexOf(d.name);
 				if (index >=0 )
 				{
-					d3.select("#mapgraph_F3_div_svg > rect").classed("selected_HVACmap_rect",false);
+					d3.select(this).classed("selected_HVACmap_rect",false);
 					selected_floor_set.splice(index,1);
 					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
 				}
 				else
 				{
-					d3.select("#mapgraph_F3_div_svg > rect").classed("selected_HVACmap_rect",true);
+					d3.select(this).classed("selected_HVACmap_rect",true);
 					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
 				}
 			})
@@ -113,13 +113,13 @@ var HVACgraph_maps_view = {
 				var index = selected_floor_set.indexOf(d.name);
 				if (index >=0 )
 				{
-					d3.select("#mapgraph_F2_div_svg > rect").classed("selected_HVACmap_rect",false);
+					d3.select(this).classed("selected_HVACmap_rect",false);
 					selected_floor_set.splice(index,1);
 					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
 				}
 				else
 				{
-					d3.select("#mapgraph_F2_div_svg > rect").classed("selected_HVACmap_rect",true);
+					d3.select(this).classed("selected_HVACmap_rect",true);
 					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
 				}
 			})
@@ -143,13 +143,13 @@ var HVACgraph_maps_view = {
 				var index = selected_floor_set.indexOf(d.name);
 				if (index >=0 )
 				{
-					d3.select("#mapgraph_F1_div_svg > rect").classed("selected_HVACmap_rect",false);
+					d3.select(this).classed("selected_HVACmap_rect",false);
 					selected_floor_set.splice(index,1);
 					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
 				}
 				else
 				{
-					d3.select("#mapgraph_F1_div_svg > rect").classed("selected_HVACmap_rect",true);
+					d3.select(this).classed("selected_HVACmap_rect",true);
 					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
 				}
 			})									
@@ -259,7 +259,7 @@ var HVACgraph_maps_view = {
 				      		return x_scale(d.x); 
 				      	})
 				      	.attr("cy", function(d) { return y_scale(d.y); })
-				      	.style("fill", function(d) { return "blue"; })
+				      	.attr("fill", function(d) { return "blue"; })
 				      	.attr("opacity",0.5)
 				      	.on("mouseover",function(d,i){
 				      		tip.show(d,i)
@@ -270,17 +270,21 @@ var HVACgraph_maps_view = {
 				      	.on("click",function(d,i){
 				      		var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
 							var index = selected_HVACzone_set.indexOf(d.name);
+							
 							if (index >=0 )
 							{
-								d3.select("#mapgraph_F2_div_svg > rect").classed("selected_HVACmap_rect",false);
-								selected_floor_set.splice(index,1);
-								DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
+								console.log("in")
+								d3.select(this).classed("selected_HVACmap_circle",false);
+								selected_HVACzone_set.splice(index,1);
+								DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set);
 							}
 							else
 							{
-								d3.select("#mapgraph_F2_div_svg > rect").classed("selected_HVACmap_rect",true);
-								DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
+								console.log("not in")
+								d3.select(this).classed("selected_HVACmap_circle",true);
+								DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set.concat(d.name));
 							}
+							
 			      		});
 
     	}

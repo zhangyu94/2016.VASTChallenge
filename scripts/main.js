@@ -5,16 +5,16 @@ function main(){
 	{
 		//有效的message的取值范围
 		var MESSAGE_COLLECTION = [
-			"set_selected_attr_set",
-			"set_selected_linechart_set",
-			"set_selected_HVACzone_set",
-			"set_selected_proxzone_set",
-			"set_selected_room_set",
-			"set_selected_floor_set",
-			"set_selected_building_set",
-			"set_selected_timepoint_set",
-			"set_selected_card_set",
-			"set_selected_person_set",
+			"set:selected_attr_set",
+			"set:selected_linechart_set",
+			"set:selected_HVACzone_set",
+			"set:selected_proxzone_set",
+			"set:selected_room_set",
+			"set:selected_floor_set",
+			"set:selected_building_set",
+			"set:selected_timepoint_set",
+			"set:selected_card_set",
+			"set:selected_person_set",
 		];
 		SUBJECT.setMessageFilter(MESSAGE_COLLECTION)
 	}
