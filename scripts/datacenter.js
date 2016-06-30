@@ -66,6 +66,12 @@ var DATA_CENTER = {
 			"Thermostat Cooling Setpoint",
 			"Thermostat Heating Setpoint",
 			"Hazium Concentration",//特殊属性，只有4个有Haziumsensor的zone有
+		],
+		HVACzone_with_Haziumsenor_set :[
+			"F_1_Z_8A",
+			"F_2_Z_2",
+			"F_2_Z_4",
+			"F_3_Z_1"
 		]
 	},
 

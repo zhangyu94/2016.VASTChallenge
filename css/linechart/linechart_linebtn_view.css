@@ -1,5 +1,5 @@
 .HVAClinechartbtn-span{
-    background: blue;
+    background: white;
     padding: 1px;
     margin: 3px !important;
     border: solid 1px #111;
@@ -9,7 +9,7 @@
 }
 
 .selected-HVAClinechartbtn-span{
-    background: red;
+    background: #FF7060;
     padding: 1px;
     margin: 3px !important;
     border: solid 1px #111;

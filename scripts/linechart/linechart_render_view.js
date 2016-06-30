@@ -15,14 +15,16 @@ var linechart_render_view = {
 		//使用的全局
 	    var data = DATA_CENTER.original_data["bldg-MC2.csv"];
 	    var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-	    //end 全局变量
+	    
+
+        //end 全局变量
 
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
 
 
-	    var yAxis_attr_name = "DELI-FAN Power";
+	    var yAxis_attr_name = selected_linechart_set[0]//"DELI-FAN Power";
         var xAxis_attr_name = "Date/Time";
 
         var xyAxis_data = [];
