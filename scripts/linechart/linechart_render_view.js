@@ -22,7 +22,7 @@ var linechart_render_view = {
         var xyAxis_data = [];
         for (var i=0;i<data.length;++i)
         {
-            var y_value = +data[i][yAxis_attr_name];
+            var y_value = data[i][yAxis_attr_name];
 
             var x_value = new Date(data[i][xAxis_attr_name]);
             var x_value = x_value.getTime();
