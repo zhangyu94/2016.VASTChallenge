@@ -16,6 +16,7 @@ var DATA_CENTER = {
 
 		selected_timepoint_set:[],
 		
+
 		selected_card_set:[],
 		selected_person_set:[],
 	},
@@ -23,17 +24,17 @@ var DATA_CENTER = {
 	//全局静态变量
 	GLOBAL_STATIC : {
 		building_HVACattr_set :[
-			"Drybulb Temperature", 
-			"Water Heater Tank Temperature", 
-			"Water Heater Gas Rate", 
-			"Supply Side Inlet Mass Flow Rate", 
+			"Drybulb Temperature",
+			"Water Heater Tank Temperature",
+			"Water Heater Gas Rate",
+			"Supply Side Inlet Mass Flow Rate",
 			"Supply Side Inlet Temperature",
 			"Supply Side Outlet Temperature",
-			"HVAC Electric Demand Power", 
-			"Total Electric Demand Power", 
-			"Loop Temp Schedule", 
-			"Water Heater Setpoint", 
-			"DELI-FAN Power", 
+			"HVAC Electric Demand Power",
+			"Total Electric Demand Power",
+			"Loop Temp Schedule",
+			"Water Heater Setpoint",
+			"DELI-FAN Power",
 			"Pump Power",
 			"COOL Schedule Value",//原始数据中从来没出现过这个属性
 			"Wind Direction",//原始数据中从来没出现过这个属性
@@ -98,6 +99,11 @@ var DATA_CENTER = {
 			"proxOut-MC2.csv"
 		];
 
+		var derived_path = "dataset/derived/";
+		var d_file_name = [
+			"person.json"
+		];
+
 		d3.csv(path+file_name[0],function(HVAC_data){
 
 			//把传感器读数全部存成数字
@@ -119,16 +125,18 @@ var DATA_CENTER = {
 						d3.csv(path+file_name[4],function(data4){
 							d3.csv(path+file_name[5],function(data5){
 								d3.csv(path+file_name[6],function(data6){
+									d3.json(derived_path+d_file_name[0], function(data7) {
+										DATA_CENTER.original_data[file_name[0]] = HVAC_data;
+										DATA_CENTER.original_data[file_name[1]] = data1;
+										DATA_CENTER.original_data[file_name[2]] = data2;
+										DATA_CENTER.original_data[file_name[3]] = data3;
+										DATA_CENTER.original_data[file_name[4]] = data4;
+										DATA_CENTER.original_data[file_name[5]] = data5;
+										DATA_CENTER.original_data[file_name[6]] = data6;
 
-									DATA_CENTER.original_data[file_name[0]] = HVAC_data;
-									DATA_CENTER.original_data[file_name[1]] = data1;
-									DATA_CENTER.original_data[file_name[2]] = data2;
-									DATA_CENTER.original_data[file_name[3]] = data3;
-									DATA_CENTER.original_data[file_name[4]] = data4;
-									DATA_CENTER.original_data[file_name[5]] = data5;
-									DATA_CENTER.original_data[file_name[6]] = data6;
-
-									DATA_CENTER.cal_derive_data();
+										DATA_CENTER.derived_data[d_file_name] = data7;
+										DATA_CENTER.cal_derive_data();
+									})
 
 
 

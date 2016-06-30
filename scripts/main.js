@@ -72,10 +72,10 @@ function main(){
 			console.log("invalid view_name");
 		}
 	})
-	
+
 	$("#linechartview").click();//先触发一下视图切换
 
-	
+
 	//linechart视图调用的地方
 	function display_linechart_view()
 	{
@@ -85,7 +85,7 @@ function main(){
 	//trajectory视图调用的地方
 	function display_trajectory_view()
 	{
-		
+		ganttchart_view.render("trajectory-ganttchart");
 	}
-		
+
 }

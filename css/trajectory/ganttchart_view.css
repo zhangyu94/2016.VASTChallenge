@@ -1,0 +1,91 @@
+#trajectory-ganntchart-idlist{
+    position: absolute;
+    height: 100%;
+    width: 120px;
+    // overflow-y:scroll;
+}
+#trajectory-ganntchart-hist{
+    position: absolute;
+    height: 100%;
+    left:120px;
+    width: 20%;
+}
+#trajectory-ganntchart-main{
+    position: absolute;
+    height: 100%;
+    left:calc(120px + 20%);
+    width: calc(100% - 120px - 20%);
+}
+
+
+//idlist
+
+#trajectory-ganntchart-idlist-head{
+    position: absolute;
+    height: 20px;
+    width: 100%;
+
+}
+.view-title {
+    font-size: 20px;
+    text-align: center;
+}
+#trajectory-ganntchart-idlist-body{
+    position: absolute;
+    top: 30px;
+    height:calc(100% - 30px);
+    width: 100%;
+    overflow-y:scroll;
+    overflow-x: hidden;
+
+}
+.pID{
+    padding-left: 10px;
+    cursor: pointer;
+}
+.pID.selected{
+    color: #fff;
+    background-color: #337ab7;
+}
+.pID.hover{
+    color: #fff;
+    background-color: #337ab7;
+}
+
+//histgram
+#trajectory-ganntchart-hist-head{
+    position: absolute;
+    height: 20px;
+    width: 100%;
+
+}
+
+#trajectory-ganntchart-hist-body{
+    position: absolute;
+    top: 30px;
+    height:calc(100% - 30px);
+    width: 100%;
+
+}
+
+.axis path, .axis line {
+fill: none;
+stroke: black;
+shape-rendering: crispEdges;  /* Round any decimal pixels so it'll render nicely */
+}
+
+// gantt char
+#trajectory-ganntchart-main-head{
+    // position: absolute;
+    // height: 20px;
+    // width: 100%;
+
+}
+
+#trajectory-ganntchart-main-body{
+    position: absolute;
+    top: 0px;
+    height:calc(100%);
+    width: 100%;
+
+}
