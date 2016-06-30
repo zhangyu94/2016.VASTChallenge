@@ -2,6 +2,12 @@
 var linechart_render_view = {
 	obsUpdate:function(message, data)
 	{
+        if (  (message == "set:selected_linechart_set")  )
+        {
+
+            this.render("linechart-renderplace")
+        }
+
 
 	},
 	render:function(divID)
@@ -16,7 +22,7 @@ var linechart_render_view = {
 	    var height  = $("#"+divID).height();
 
 
-	    var yAxis_attr_name = " DELI-FAN Power";
+	    var yAxis_attr_name = "DELI-FAN Power";
         var xAxis_attr_name = "Date/Time";
 
         var xyAxis_data = [];

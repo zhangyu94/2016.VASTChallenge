@@ -1,13 +1,21 @@
 var HVACgraph_attrbtn_view = {
+	first_called : true,
+	rendered_attrbtn_set : [],
 	obsUpdate:function(message, data)
 	{
-		console.log(message)
-
-		if ( (message == "set:selected_building_set") || (message == "set:selected_floor_set") || (message == "set:selected_HVACzone_set") )
+		if ( 	(message == "set:selected_building_set") || 
+				(message == "set:selected_floor_set") || 
+				(message == "set:selected_HVACzone_set") )
 		{
+			if (true)//this.first_called)
+			{
+				this.render("HVACgraph-attr-btn")
 
-			this.render("HVACgraph-attr-btn")
+			}
+			else
+			{
 
+			}
 
 		}
 	},
@@ -25,7 +33,6 @@ var HVACgraph_attrbtn_view = {
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
-
 
 	    var div = document.getElementById(divID)
 
@@ -73,18 +80,17 @@ var HVACgraph_attrbtn_view = {
 				}
 				
 			})
-			/*
+			
 			.on("mouseover",function(d,i){
-				tip.show(d,i)
+				
 			})
 			.on("mouseout",function(d,i){
-				tip.hide(d,i)
+				
 			})
-*/
-
-
 
 	},
+
+
 /*
 	draw_attr_panel:function(divID,attr_list,color_mapping)
 	{
