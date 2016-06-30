@@ -61,7 +61,7 @@ body {
 }
 #linechartview-collection > .linechartContainer > #HVACgraph-attr-btn{
 	position:absolute;
-	height:10%;
+	height:7%;
 	width:100%;
 	float: left;
 	border: solid #ccc 1px;
@@ -70,8 +70,8 @@ body {
 }
 #linechartview-collection > .linechartContainer > #linechart-line-btn{
 	position:absolute;
-	top:10%;
-	height:10%;
+	top:7%;
+	height:7%;
 	width:100%;
 	float: left;
 	border: solid #ccc 1px;
@@ -80,8 +80,8 @@ body {
 }
 #linechartview-collection > .linechartContainer > #linechart-renderplace{
 	position:absolute;
-	top:20%;
-	height:80%;
+	top:14%;
+	height:86%;
 	width:100%;
 	float: left;
 	border: solid #ccc 1px;
