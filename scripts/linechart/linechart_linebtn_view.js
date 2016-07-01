@@ -107,6 +107,12 @@ var linechart_linebtn_view = {
 			//2.更新渲染
 			this.update_render("linechart-line-btn",this.rendered_linechartbtn_set);
 		}
+
+		if ( message == "set:highlight_linechart_set" )
+        {
+
+        }
+		
 	},
 
 	update_render:function(divID,new_linechartbtn_list){

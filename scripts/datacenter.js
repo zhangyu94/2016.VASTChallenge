@@ -15,11 +15,36 @@ var DATA_CENTER = {
 		selected_building_set:[],
 
 		selected_timepoint_set:[],
-		
 
 		selected_card_set:[],
-		selected_person_set:[],
+		selected_person_set:[],		
 	},
+
+	//set_global_variable设置全局变量并调用SUBJECT的notify
+	//使用时形如DATA_CENTER.set_global_variable("selected_attr_set",[1,2,3])
+	set_global_variable : function(variable_name,value){
+		this.global_variable[variable_name] = value;
+		SUBJECT.notifyObserver("set:"+variable_name, value);
+	},
+
+
+	//linechart的几个子视图需要利用的全局变量
+	linechart_variable : {
+		highlight_attr_set:[],
+		highlight_HCAVzone_set:[],
+		highlight_floor_set:[],
+		highlight_building_set:[],
+		highlight_linechart_set:[],
+	},
+
+	//set_linechart_variable设置全局变量并调用SUBJECT的notify
+	//尽管是linechart内部的信息，仍然会通知所有注册了的view
+	//使用时形如DATA_CENTER.set_linechart_variable("highlight_attr_set",[1,2,3])
+	set_linechart_variable : function(variable_name,value){
+		this.linechart_variable[variable_name] = value;
+		SUBJECT.notifyObserver("set:"+variable_name, value);
+	},
+
 
 	//全局静态变量
 	GLOBAL_STATIC : {
@@ -76,13 +101,7 @@ var DATA_CENTER = {
 		]
 	},
 
-	//set_global_variable设置全局变量并调用SUBJECT的notify
-	//使用时形如DATA_CENTER.set_global_variable("selected_attr_set",[1,2,3])
-	set_global_variable : function(variable_name,value){
-		this.global_variable[variable_name] = value;
-		SUBJECT.notifyObserver("set:"+variable_name, value);
-	},
-
+	
 	//计算派生数据填入DATA_CENTER.derived_data
 	cal_derive_data : function(){
 

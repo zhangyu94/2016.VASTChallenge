@@ -140,6 +140,12 @@ var HVACgraph_attrbtn_view = {
 			//2.更新渲染
 			this.update_render(this.DIV_ID,this.rendered_attrbtn_set);			
 		}
+
+		if ( message == "set:highlight_attr_set" )
+        {
+
+        }
+		
 	},
 
 	update_render:function(divID,new_attrbtn_list)

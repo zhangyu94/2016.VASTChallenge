@@ -1,10 +1,15 @@
 var linechart_render_view = {
 	obsUpdate:function(message, data)
 	{
-        if (  (message == "set:selected_linechart_set")  )
+        if (  message == "set:selected_linechart_set"  )
         {
             var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
             this.update_render("linechart-renderplace",selected_linechart_set)
+        }
+
+        if ( message == "set:highlight_linechart_set" )
+        {
+
         }
 	},
     update_render:function(divID,new_linechart_list)
@@ -42,8 +47,9 @@ var linechart_render_view = {
                     var xyAxis_data = linechart_render_view._get_xyAxis_data(yAxis_attr_name);
 
 
+                    //找到绑定好的highchart
                     var chart = $("#"+divID).highcharts();
-                    chart.reflow();
+                    chart.reflow();//适应新的div尺寸
                 });
 
 
@@ -66,7 +72,8 @@ var linechart_render_view = {
         var enter_spans_btnspan = enter_spans.append("span")
                 .attr("class","HVAClinechart-btntitle-span")
                 .attr("id",function(d,i){
-                    return "HVAClinechart-btntitle-span-"+i;
+                    //id中不能带空格，否则后面选不中
+                    return "HVAClinechart-btntitle-span-"+linechart_render_view._compress_string(d);
                 })
                 .attr("value",function(d,i){
                     var buttonValue = new_linechart_list[i];
@@ -81,7 +88,7 @@ var linechart_render_view = {
         var enter_spans_linechartspan = enter_spans.append("span")
                 .attr("class","HVAClinechart-linechart-span")
                 .attr("id",function(d,i){
-                    return "HVAClinechart-linechart-span-"+i;
+                    return "HVAClinechart-linechart-span-"+linechart_render_view._compress_string(d);
                 })
                 .attr("value",function(d,i){
                     var buttonValue = new_linechart_list[i];
@@ -95,13 +102,15 @@ var linechart_render_view = {
                 .style("width",linechart_width+"px")
                 .style("height",linechart_height+"px")
                 .attr("id",function(d,i){
-                    return "HVAClinechart-linechart-span-div-"+i;
+                    return "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d);
                 })
                 .each(function(d,i){
                     var divID = this.id
                     var yAxis_attr_name = d;
                     var xyAxis_data = linechart_render_view._get_xyAxis_data(yAxis_attr_name);
 
+
+                    //调用完以后，highchart就绑定到这个div上了
                     var chart = linechart_render_view._plot_linechart(divID,xyAxis_data);
                 });
 
@@ -192,5 +201,14 @@ var linechart_render_view = {
 
         var chart = div.highcharts()
         return chart;
-	}
+	},
+
+    //只保留字符串中的数字和字母，其他全都删光
+    //设id的时候调用一下这个可以确保安全
+    _compress_string:function(string)
+    {
+        string = string.replace(/[^0-9 | ^a-z ]+/ig,"");
+        string = string.replace(/\s/g, "");
+        return string;
+    }
 }

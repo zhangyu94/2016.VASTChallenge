@@ -1,6 +1,16 @@
 var HVACgraph_maps_view = {
 	obsUpdate:function(message, data)
 	{
+		if (	(message == "set:highlight_HCAVzone_set")  || 
+				(message == "set:highlight_floor_set")  ||
+				(message == "set:highlight_building_set")  )
+        {
+            
+
+
+            
+        }
+
 
 	},
 	render:function(divID)

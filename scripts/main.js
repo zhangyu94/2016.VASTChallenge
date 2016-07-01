@@ -15,6 +15,13 @@ function main(){
 			"set:selected_timepoint_set",
 			"set:selected_card_set",
 			"set:selected_person_set",
+
+			"set:highlight_attr_set",
+			"set:highlight_HCAVzone_set",
+			"set:highlight_floor_set",
+			"set:highlight_building_set",
+			"set:highlight_linechart_set",
+
 		];
 		SUBJECT.setMessageFilter(MESSAGE_COLLECTION)
 	}
