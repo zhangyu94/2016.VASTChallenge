@@ -91,9 +91,9 @@ var linechart_linebtn_view = {
 	    var svg = d3.select("#"+divID).append("svg")
 	                .attr("class","mainsvg")        
 
-	    this.draw_linechart_panel(divID,this.rendered_linechartbtn_set)
+	    this._draw_linechart_panel(divID,this.rendered_linechartbtn_set)
 	},
-	draw_linechart_panel:function(divID,linechart_list)
+	_draw_linechart_panel:function(divID,linechart_list)
 	{
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = $("#"+divID).width();

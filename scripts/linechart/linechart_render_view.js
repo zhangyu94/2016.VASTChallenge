@@ -1,4 +1,3 @@
-//linechart_render_view.render("linechart-renderplace")
 var linechart_render_view = {
 	obsUpdate:function(message, data)
 	{
@@ -39,10 +38,10 @@ var linechart_render_view = {
             xyAxis_data.push(temp)
         }             
 
-        this.plot_linechart(divID,xyAxis_data)
+        this._plot_linechart(divID,xyAxis_data)
 	},
 
-	plot_linechart:function(divID,xyAxis_data)
+	_plot_linechart:function(divID,xyAxis_data)
 	{
 		var width  = $("#"+divID).width();
         var height  = $("#"+divID).height();

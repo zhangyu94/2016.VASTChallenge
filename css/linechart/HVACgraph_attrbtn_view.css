@@ -1,24 +1,4 @@
-/*
-.HVACattrbtn-rect{
-	opacity: 0.2;
-
-}
-
-.HVACattrbtn-text{
-  	font: 15px sans-serif;
-  	font-weight:600;
-  	opacity:0.6;
-}
-
-.selected-HVACattrbtn > .HVACattrbtn-rect{
-	fill:red;
-}
-*/
-
-
-
 .HVACattrbtn-span{
-    /*background: #74c476;*/
     padding: 1px;
     margin: 3px !important;
     border: solid 1px #111;
@@ -27,6 +7,7 @@
     cursor: pointer;
 }
 
+/*
 .selected-HVACattrbtn-span{
     background: red;
     padding: 1px;
@@ -36,3 +17,4 @@
     border-radius: 3px;
     cursor: pointer;
 }
+*/
