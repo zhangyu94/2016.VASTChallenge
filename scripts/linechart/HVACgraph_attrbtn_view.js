@@ -123,17 +123,16 @@ var HVACgraph_attrbtn_view = {
 
 			if (this.FIRST_CALLED)
 			{
-				this.draw_attr_panel(this.DIV_ID,this.rendered_attrbtn_set)
-
+				this.update_render(this.DIV_ID,this.rendered_attrbtn_set)
+				//this.init_render(this.DIV_ID,this.rendered_attrbtn_set)
 				this.FIRST_CALLED = false;
 			}
 			else
 			{
 				//1和2步骤可交换
 
-				//1.
-				//更新DATA_CENTER.global_variable.selected_attr_set
-				//如果update_render导致了某个之前selected_attr不再画出来，则这个attr也就取消select了
+				//1.更新DATA_CENTER.global_variable.selected_attr_set
+				//如果update_render导致了某个之前selected_attr不再画出来，则这个attr也就必定取消select了
 				var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
 				for (var i=0;i<selected_attr_set.length;++i)
 				{
@@ -146,12 +145,13 @@ var HVACgraph_attrbtn_view = {
 				}
 				DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set);
 
-				//2.
+				//2.更新渲染
 				this.update_render(this.DIV_ID,this.rendered_attrbtn_set)
 			}
 
 		}
 	},
+
 	update_render:function(divID,new_attr_list)
 	{
 		var width  = $("#"+divID).width();
@@ -163,7 +163,7 @@ var HVACgraph_attrbtn_view = {
 			.selectAll(".HVACattrbtn-span")
 			.data(new_attr_list,function(d){return d;})
 			.html(function(d,i){
-				var buttonLabel = new_attr_list[i].substring(0,rect_width/9);
+				var buttonLabel = new_attr_list[i].substring(0,rect_width/13);
 				var buttonValue = new_attr_list[i];
 				//var height = rect_height;
 
@@ -185,7 +185,7 @@ var HVACgraph_attrbtn_view = {
 				return background_color;
 			})
 			.html(function(d,i){
-				var buttonLabel = new_attr_list[i].substring(0,rect_width/9);
+				var buttonLabel = new_attr_list[i].substring(0,rect_width/13);
 				var buttonValue = new_attr_list[i];
 				//var height = rect_height;
 
@@ -216,7 +216,9 @@ var HVACgraph_attrbtn_view = {
 
 		var exit = update.exit().remove();
 	},
-	draw_attr_panel:function(divID,attr_list)
+
+/*
+	init_render:function(divID,attr_list)
 	{
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = $("#"+divID).width();
@@ -241,7 +243,7 @@ var HVACgraph_attrbtn_view = {
 				return background_color;
 			})
 			.html(function(d,i){
-				var buttonLabel = attr_list[i].substring(0,rect_width/9);
+				var buttonLabel = attr_list[i].substring(0,rect_width/13);
 				var buttonValue = attr_list[i];
 				//var height = rect_height;
 
@@ -271,16 +273,6 @@ var HVACgraph_attrbtn_view = {
 			})
 
 	},
+*/	
 
-/*
-	render:function(divID)
-	{
-		d3.select("#"+divID).selectAll("*").remove()
-	    var width  = $("#"+divID).width();
-	    var height  = $("#"+divID).height();
-
-
-	    this.draw_attr_panel(divID,DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set)
-	},
-*/
 }
