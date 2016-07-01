@@ -1,6 +1,6 @@
 var DATA_CENTER = {
 	original_data : [],//访问时形如DATA_CENTER.original_data["bldg-MC2.csv"]
-	derived_data : [],
+	derived_data : [],//访问时形如DATA_CENTER.derived_data["..."]
 
 	//view之间通信需要利用的全局变量
 	global_variable : {
@@ -124,7 +124,6 @@ var DATA_CENTER = {
 		];
 
 		d3.csv(path+file_name[0],function(HVAC_data){
-
 			//把传感器读数全部存成数字
 			for (var i=0;i<HVAC_data.length;++i)
 			{
@@ -138,26 +137,76 @@ var DATA_CENTER = {
 				}
 			}
 
-			d3.csv(path+file_name[1],function(data1){
-				d3.csv(path+file_name[2],function(data2){
-					d3.csv(path+file_name[3],function(data3){
-						d3.csv(path+file_name[4],function(data4){
+			d3.csv(path+file_name[1],function(hazium_data1){
+				//把传感器读数全部存成数字
+				for (var i=0;i<hazium_data1.length;++i)
+				{
+					var cur_element = hazium_data1[i];
+					for (var attr in cur_element)
+					{
+						if (attr != "Date/Time")
+						{
+							cur_element[attr] =+ cur_element[attr];
+						}
+					}
+				}
+
+				d3.csv(path+file_name[2],function(hazium_data2){
+					//把传感器读数全部存成数字
+					for (var i=0;i<hazium_data2.length;++i)
+					{
+						var cur_element = hazium_data2[i];
+						for (var attr in cur_element)
+						{
+							if (attr != "Date/Time")
+							{
+								cur_element[attr] =+ cur_element[attr];
+							}
+						}
+					}
+
+					d3.csv(path+file_name[3],function(hazium_data3){
+						//把传感器读数全部存成数字
+						for (var i=0;i<hazium_data3.length;++i)
+						{
+							var cur_element = hazium_data3[i];
+							for (var attr in cur_element)
+							{
+								if (attr != "Date/Time")
+								{
+									cur_element[attr] =+ cur_element[attr];
+								}
+							}
+						}
+
+						d3.csv(path+file_name[4],function(hazium_data4){
+							//把传感器读数全部存成数字
+							for (var i=0;i<hazium_data4.length;++i)
+							{
+								var cur_element = hazium_data4[i];
+								for (var attr in cur_element)
+								{
+									if (attr != "Date/Time")
+									{
+										cur_element[attr] =+ cur_element[attr];
+									}
+								}
+							}							
+
 							d3.csv(path+file_name[5],function(data5){
 								d3.csv(path+file_name[6],function(data6){
 									d3.json(derived_path+d_file_name[0], function(data7) {
 										DATA_CENTER.original_data[file_name[0]] = HVAC_data;
-										DATA_CENTER.original_data[file_name[1]] = data1;
-										DATA_CENTER.original_data[file_name[2]] = data2;
-										DATA_CENTER.original_data[file_name[3]] = data3;
-										DATA_CENTER.original_data[file_name[4]] = data4;
+										DATA_CENTER.original_data[file_name[1]] = hazium_data1;
+										DATA_CENTER.original_data[file_name[2]] = hazium_data2;
+										DATA_CENTER.original_data[file_name[3]] = hazium_data3;
+										DATA_CENTER.original_data[file_name[4]] = hazium_data4;
 										DATA_CENTER.original_data[file_name[5]] = data5;
 										DATA_CENTER.original_data[file_name[6]] = data6;
 
 										DATA_CENTER.derived_data[d_file_name] = data7;
 										DATA_CENTER.cal_derive_data();
 									})
-
-
 
 									callback_function();
 								})

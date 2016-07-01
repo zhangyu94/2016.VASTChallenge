@@ -1,4 +1,11 @@
 var linechart_render_view = {
+    HAZIUM_DATA_FILENAME_MAPPING:{
+        "F_1_Z_8A Hazium Concentration":"f1z8a-MC2.csv",
+        "F_2_Z_2 Hazium Concentration":"f2z2-MC2.csv",
+        "F_2_Z_4 Hazium Concentration":"f2z4-MC2.csv",
+        "F_3_Z_1 Hazium Concentration":"f3z1-MC2.csv",
+    },
+
 	obsUpdate:function(message, data)
 	{
         if (  message == "set:selected_linechart_set"  )
@@ -105,10 +112,10 @@ var linechart_render_view = {
                     return "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d);
                 })
                 .each(function(d,i){
-                    var divID = this.id
+                    var divID = this.id;
                     var yAxis_attr_name = d;
-                    var xyAxis_data = linechart_render_view._get_xyAxis_data(yAxis_attr_name);
 
+                    var xyAxis_data = linechart_render_view._get_xyAxis_data(yAxis_attr_name);
 
                     //调用完以后，highchart就绑定到这个div上了
                     var chart = linechart_render_view._plot_linechart(divID,xyAxis_data);
@@ -123,7 +130,15 @@ var linechart_render_view = {
     _get_xyAxis_data:function(yAxis_attr_name)
     {
         //使用的全局变量
-        var data = DATA_CENTER.original_data["bldg-MC2.csv"];
+        var data;
+        if (yAxis_attr_name in this.HAZIUM_DATA_FILENAME_MAPPING)
+        {
+            data = DATA_CENTER.original_data[this.HAZIUM_DATA_FILENAME_MAPPING[yAxis_attr_name]];
+        }
+        else
+        {
+            data = DATA_CENTER.original_data["bldg-MC2.csv"];
+        }
         //end 全局变量
 
         var xAxis_attr_name = "Date/Time";

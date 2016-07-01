@@ -21,7 +21,7 @@ var linechart_linebtn_view = {
 				{
 					if (cur_attr != this.HAZIUM_ATTR_NAME)
 					{
-						var cur_linechart = cur_selected_HVACzone + "_" + cur_attr;//形如F_2_VAV_SYS SUPPLY
+						var cur_linechart = cur_selected_HVACzone + " " + cur_attr;//形如F_2_Z_3 VAV REHEAT Damper Position
 						new_rendered_linechartbtn_set.push(cur_linechart)
 					}
 					else
@@ -29,7 +29,7 @@ var linechart_linebtn_view = {
 						var HVACzone_with_Haziumsenor_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set;
 						if (HVACzone_with_Haziumsenor_set.indexOf(cur_selected_HVACzone) >=0 )
 						{
-							var cur_linechart = cur_selected_HVACzone + "_" + cur_attr;//形如F_2_VAV_SYS SUPPLY
+							var cur_linechart = cur_selected_HVACzone + " " + cur_attr;
 							new_rendered_linechartbtn_set.push(cur_linechart)
 						}
 					}
@@ -112,7 +112,7 @@ var linechart_linebtn_view = {
         {
 
         }
-		
+
 	},
 
 	update_render:function(divID,new_linechartbtn_list){
