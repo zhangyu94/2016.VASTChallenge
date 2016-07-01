@@ -12,9 +12,13 @@ var linechart_render_view = {
         var width  = $("#"+divID).width();
         var height  = $("#"+divID).height();
         var rect_width = width;
-        var rect_height = height/new_linechart_list.length-5;
+        var rect_height = height/new_linechart_list.length;//-5;
 
+        var btn_width = rect_width*0.04;
+        //var btn_height = rect_height-12;
 
+        var linechart_width = rect_width-btn_width-12;
+        var linechart_height = rect_height-2;
 
         var update = d3.select("#"+divID)
             .selectAll(".HVAClinechart-span")
@@ -24,11 +28,21 @@ var linechart_render_view = {
                 return "height:"+rect_height+"px;" + "width:"+rect_width+"px;"
             })
 
-        //update.select("div")
-        //    .select("span")
 
+        var update_btnspan = update.select(".HVAClinechart-btntitle-span");
 
+        var update_linechartspan = update.select(".HVAClinechart-linechart-span")
+                .style("height",linechart_height+"px");
 
+        var update_linechartspan_div = update_linechartspan.select("div")
+                .style("height",linechart_height+"px")
+                .each(function(d,i){
+                    console.log("reach22")
+                    var divID = this.id
+                    var yAxis_attr_name = d;
+                    var xyAxis_data = linechart_render_view._get_xyAxis_data(yAxis_attr_name);
+                    linechart_render_view._plot_linechart(divID,xyAxis_data);
+                });
 
 
 
@@ -47,42 +61,47 @@ var linechart_render_view = {
                     console.log(d,i)
                 });
 
-        var enter_spans_div = enter_spans.append("div")
-                //.attr("class","btn-div")
-                //.attr("id",function(d,i){
-                //    return "btn-div-"+d;
-                //})
-                .attr("style","position:relative");
-
-        var enter_spans_div_btnspan = enter_spans_div.append("span")
+        var enter_spans_btnspan = enter_spans.append("span")
                 .attr("class","HVAClinechart-btntitle-span")
                 .attr("id",function(d,i){
-                    return "HVAClinechart-btntitle-span-"+d;
+                    return "HVAClinechart-btntitle-span-"+i;
                 })
                 .attr("value",function(d,i){
                     var buttonValue = new_linechart_list[i];
                     return buttonValue;
                 })
+                .style("width",btn_width+"px")
+                //.style("height",btn_height+"px")
                 .text(function(d,i){
-                    return "hhh"
+                    var buttonLabel = d.substring(0,btn_width/13);
+                    return buttonLabel;
                 });
-        var enter_spans_div_linechartspan = enter_spans_div.append("span")
+
+        var enter_spans_linechartspan = enter_spans.append("span")
                 .attr("class","HVAClinechart-linechart-span")
                 .attr("id",function(d,i){
-                    return "HVAClinechart-linechart-span-"+d;
+                    return "HVAClinechart-linechart-span-"+i;
                 })
                 .attr("value",function(d,i){
                     var buttonValue = new_linechart_list[i];
                     return buttonValue;
                 })
-                .text(function(d,i){
-                    return "ppp"
+                .style("width",linechart_width+"px")
+                .style("height",linechart_height+"px")
+                .text(function(d,i){ return ""});
+
+        var enter_spans_linechartspan_div = enter_spans_linechartspan.append("div")
+                .style("width",linechart_width+"px")
+                .style("height",linechart_height+"px")
+                .attr("id",function(d,i){
+                    return "HVAClinechart-linechart-span-div-"+i;
+                })
+                .each(function(d,i){
+                    var divID = this.id
+                    var yAxis_attr_name = d;
+                    var xyAxis_data = linechart_render_view._get_xyAxis_data(yAxis_attr_name);
+                    linechart_render_view._plot_linechart(divID,xyAxis_data);
                 });
-
-
-
-
-
 
 
 
@@ -111,12 +130,14 @@ var linechart_render_view = {
         return xyAxis_data;
     },
 
-    //var xyAxis_data = this._get_xyAxis_data:function(yAxis_attr_name)
-    //this._plot_linechart(divID,xyAxis_data)
 	_plot_linechart:function(divID,xyAxis_data)
 	{
+        var div = d3.select("#"+divID);
+        div.selectAll("*").remove()
+
 		var width  = $("#"+divID).width();
         var height  = $("#"+divID).height();
+
        	$("#"+divID).highcharts({
             chart: {
                 width:width,

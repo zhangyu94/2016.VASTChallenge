@@ -8,6 +8,23 @@
     /*cursor: pointer;*/
 }
 
-.HVAClinechart-span > .HVAClinechart-btntitle-span{
-    
+/*.HVAClinechart-span >*/ .HVAClinechart-btntitle-span{
+    text-align:center;
+
+    vertical-align: top;
+
+    background: white;
+    padding: 0px;
+    margin: 5px;/* !important;*/
+    border: solid 1px #111;
+    display:inline-block;
+    border-radius: 0px;
+}
+
+/*.HVAClinechart-span >*/ .HVAClinechart-linechart-span{    
+    padding: 0px;
+    margin: 0px;/* !important;*/
+    border: solid 0px #111;
+    display:inline-block;
+    border-radius: 0px;
 }
