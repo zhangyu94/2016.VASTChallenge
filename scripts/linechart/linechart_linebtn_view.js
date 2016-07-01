@@ -153,6 +153,9 @@ var linechart_linebtn_view = {
 						DATA_CENTER.set_global_variable("selected_linechart_set",selected_linechart_set.concat(d));
 					}
 				})
+				.on("mouseover",function(d,i){
+					console.log(d)
+				})
 			.append("div")
                 .attr("style","position:relative")
             .append("span")
@@ -169,4 +172,54 @@ var linechart_linebtn_view = {
 		var exit = update.exit();
 		exit.remove();
 	},
+
+	_parse_position_attr:function(linechart_name)
+	{
+		//引用的全局变量
+		var attr_set1 = DATA_CENTER.GLOBAL_STATIC.building_HVACattr_set;
+		var attr_set2 = DATA_CENTER.GLOBAL_STATIC.floor_HVACattr_set
+		var attr_set3 = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set
+		//end of 全局变量
+
+		var attr = "";
+
+		for (var i=0;i<attr_set1.length;++i)
+		{
+			if (linechart_name.indexOf(attr_set1[i]) >=0 )
+			{
+				attr = attr_set1[i];
+				break;
+			}
+		}
+		for (var i=0;i<attr_set2.length;++i)
+		{
+			if (linechart_name.indexOf(attr_set2[i]) >=0 )
+			{
+				attr = attr_set2[i];
+				break;
+			}
+		}
+		for (var i=0;i<attr_set3.length;++i)
+		{
+			if (linechart_name.indexOf(attr_set3[i]) >=0 )
+			{
+				attr = attr_set3[i];
+				break;
+			}
+		}
+
+		if (attr == "")
+		{
+			console.warn("invalid linechart_name:",linechart_name);
+		}
+
+		var index = linechart_name.indexOf(attr);
+		var remaining = linechart_name.substring(0,index);
+
+		
+
+
+
+
+	}
 }
