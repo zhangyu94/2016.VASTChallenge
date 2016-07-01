@@ -1,0 +1,9 @@
+.HVAClinechart-span{
+    background: white;
+    padding: 0px;
+    margin: 0px !important;
+    border: solid 1px #111;
+    display:inline-block;
+    border-radius: 1px;
+    cursor: pointer;
+}

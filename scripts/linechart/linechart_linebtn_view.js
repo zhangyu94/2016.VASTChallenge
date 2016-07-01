@@ -1,8 +1,6 @@
 var linechart_linebtn_view = {
-	FIRST_CALLED : true,
 	rendered_linechartbtn_set : [],
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
-
 
 	//输入被选中的三类实体集合，返回需要画的按钮和每个按钮的颜色映射
 	//return一个attrbtn_set
@@ -81,7 +79,6 @@ var linechart_linebtn_view = {
 				(message == "set:selected_HVACzone_set") ||
 				(message == "set:selected_attr_set") )
 		{
-
 			var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
 			var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
 			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
@@ -90,55 +87,42 @@ var linechart_linebtn_view = {
 			var new_rendered_linechartbtn_set = this._cal_attrbtnset(selected_attr_set,selected_HVACzone_set,selected_floor_set,selected_building_set);
 			this.rendered_linechartbtn_set = new_rendered_linechartbtn_set;
 
-			if (this.FIRST_CALLED)
+			
+			//1和2步骤可交换
+
+			//1.更新DATA_CENTER.global_variable.selected_linechart_set
+			//如果update_render导致了某个之前selected_linechart不再画出来，则这个linechart也就必定取消select了
+			var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
+			for (var i=0;i<selected_linechart_set.length;++i)
 			{
-				this.FIRST_CALLED = false;
-
-				this.update_render("linechart-line-btn",this.rendered_linechartbtn_set);
-				//this.init_render("linechart-line-btn",this.rendered_linechartbtn_set);
-			}
-			else
-			{
-				//1和2步骤可交换
-
-
-				//1.更新DATA_CENTER.global_variable.selected_linechart_set
-				//如果update_render导致了某个之前selected_linechart不再画出来，则这个linechart也就必定取消select了
-				var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-				for (var i=0;i<selected_linechart_set.length;++i)
+				var cur_selected_linechart = selected_linechart_set[i];
+				if (this.rendered_linechartbtn_set.indexOf(cur_selected_linechart) < 0)//没找到
 				{
-					var cur_selected_linechart = selected_linechart_set[i];
-					if (this.rendered_linechartbtn_set.indexOf(cur_selected_linechart) < 0)//没找到
-					{
-						selected_linechart_set.splice(i,1);
-						--i;//任何情况下循环做splice的时候都不要忘了--i啊啊啊!!!!!!!!!
-					}
+					selected_linechart_set.splice(i,1);
+					--i;//任何情况下循环做splice的时候都不要忘了--i啊啊啊!!!!!!!!!
 				}
-				DATA_CENTER.set_global_variable("selected_linechart_set",selected_linechart_set);
-
-
-
-				//2.更新渲染
-				this.update_render("linechart-line-btn",this.rendered_linechartbtn_set);
 			}
+			DATA_CENTER.set_global_variable("selected_linechart_set",selected_linechart_set);
+
+			//2.更新渲染
+			this.update_render("linechart-line-btn",this.rendered_linechartbtn_set);
 		}
 	},
 
-	update_render:function(divID,new_linechart_list){
+	update_render:function(divID,new_linechartbtn_list){
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
-	    var rect_width = width/new_linechart_list.length;
+	    var rect_width = width/new_linechartbtn_list.length;
 	    var rect_height = height;
 
 	    var update = d3.select("#"+divID)
 			.selectAll(".HVAClinechartbtn-span")
-			.data(new_linechart_list,function(d){return d;})
+			.data(new_linechartbtn_list,function(d){return d;})
 			.html(function(d,i){
-				var buttonLabel = new_linechart_list[i].substring(0,rect_width/13);
-				var buttonValue = new_linechart_list[i];
-				//var height = rect_height;
+				var buttonLabel = new_linechartbtn_list[i].substring(0,rect_width/13);
+				var buttonValue = new_linechartbtn_list[i];
 
-				var buttonhtml = 	'<div style="position:relative">'+//'<i class="fa fa-times delete_icon hidden" groupid=<%=buttonValue%>></i>'+
+				var buttonhtml = 	'<div style="position:relative">'+
 				    					'<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
 				    				'</div>'; 
 				return buttonhtml;
@@ -148,15 +132,14 @@ var linechart_linebtn_view = {
 		 	.insert("span")
 			.attr("class","HVAClinechartbtn-span")
 			.attr("value",function(d,i){
-				var buttonValue = new_linechart_list[i];
+				var buttonValue = new_linechartbtn_list[i];
 				return buttonValue;
 			})
 			.html(function(d,i){
-				var buttonLabel = new_linechart_list[i].substring(0,rect_width/13);
-				var buttonValue = new_linechart_list[i];
-				//var height = rect_height;
+				var buttonLabel = new_linechartbtn_list[i].substring(0,rect_width/13);
+				var buttonValue = new_linechartbtn_list[i];
 
-				var buttonhtml = 	'<div style="position:relative">'+//'<i class="fa fa-times delete_icon hidden" groupid=<%=buttonValue%>></i>'+
+				var buttonhtml = 	'<div style="position:relative">'+
 				    					'<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
 				    				'</div>'; 
 				return buttonhtml;
@@ -179,55 +162,4 @@ var linechart_linebtn_view = {
 
 		var exit = update.exit().remove();
 	},
-
-/*
-	init_render:function(divID,linechart_list)
-	{
-		d3.select("#"+divID).selectAll("*").remove()
-	    var width  = $("#"+divID).width();
-	    var height  = $("#"+divID).height();
-	    var rect_width = width/linechart_list.length;
-	    var rect_height = height;
-
-	    //var div = document.getElementById(divID)
-
-		d3.select("#"+divID)
-			.selectAll(".HVAClinechartbtn-span")
-			.data(linechart_list,function(d){return d;})
-			.enter()
-			.append("span")
-			.attr("class","HVAClinechartbtn-span")
-			.attr("value",function(d,i){
-				var buttonValue = linechart_list[i];
-				return buttonValue;
-			})
-			.html(function(d,i){
-				var buttonLabel = linechart_list[i].substring(0,rect_width/13);
-				var buttonValue = linechart_list[i];
-				//var height = rect_height;
-
-				var buttonhtml = 	'<div style="position:relative">'+//'<i class="fa fa-times delete_icon hidden" groupid=<%=buttonValue%>></i>'+
-				    					'<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
-				    				'</div>'; 
-				return buttonhtml;
-			})
-			.on("click",function(d,i){
-				var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-				var index = selected_linechart_set.indexOf(d);
-				if (index >=0 )
-				{
-					d3.select(this).classed("selected-HVAClinechartbtn-span",false);
-					selected_linechart_set.splice(index,1);
-					DATA_CENTER.set_global_variable("selected_linechart_set",selected_linechart_set);
-				}
-				else
-				{
-					d3.select(this).classed("selected-HVAClinechartbtn-span",true);			
-					DATA_CENTER.set_global_variable("selected_linechart_set",selected_linechart_set.concat(d));
-				}
-			})
-			
-	},
-*/
-
 }

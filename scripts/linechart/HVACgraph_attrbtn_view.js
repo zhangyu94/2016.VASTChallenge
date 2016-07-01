@@ -7,7 +7,6 @@ var HVACgraph_attrbtn_view = {
 
 		highlight_color:"#FF7060"
 	},
-	FIRST_CALLED : true,
 	DIV_ID : "HVACgraph-attr-btn",
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 
@@ -121,53 +120,43 @@ var HVACgraph_attrbtn_view = {
 			var new_rendered_attrbtn_set = this._cal_attrbtnset(selected_HVACzone_set,selected_floor_set,selected_building_set);//记录有哪些属性需要画方块
 			this.rendered_attrbtn_set = new_rendered_attrbtn_set;
 
-			if (this.FIRST_CALLED)
-			{
-				this.update_render(this.DIV_ID,this.rendered_attrbtn_set)
-				//this.init_render(this.DIV_ID,this.rendered_attrbtn_set)
-				this.FIRST_CALLED = false;
-			}
-			else
-			{
-				//1和2步骤可交换
+			
+			//1和2步骤可交换
 
-				//1.更新DATA_CENTER.global_variable.selected_attr_set
-				//如果update_render导致了某个之前selected_attr不再画出来，则这个attr也就必定取消select了
-				var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
-				for (var i=0;i<selected_attr_set.length;++i)
+			//1.更新DATA_CENTER.global_variable.selected_attr_set
+			//如果update_render导致了某个之前selected_attr不再画出来，则这个attr也就必定取消select了
+			var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
+			for (var i=0;i<selected_attr_set.length;++i)
+			{
+				var cur_selected_attr = selected_attr_set[i];
+				if (this.rendered_attrbtn_set.indexOf(cur_selected_attr) < 0)//没找到
 				{
-					var cur_selected_attr = selected_attr_set[i];
-					if (this.rendered_attrbtn_set.indexOf(cur_selected_attr) < 0)//没找到
-					{
-						selected_attr_set.splice(i,1);
-						--i;//任何情况下循环做splice的时候都不要忘了--i啊啊啊!!!!!!!!!
-					}
+					selected_attr_set.splice(i,1);
+					--i;//任何情况下循环做splice的时候都不要忘了--i啊啊啊!!!!!!!!!
 				}
-				DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set);
-
-				//2.更新渲染
-				this.update_render(this.DIV_ID,this.rendered_attrbtn_set)
 			}
+			DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set);
 
+			//2.更新渲染
+			this.update_render(this.DIV_ID,this.rendered_attrbtn_set);			
 		}
 	},
 
-	update_render:function(divID,new_attr_list)
+	update_render:function(divID,new_attrbtn_list)
 	{
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
-	    var rect_width = width/new_attr_list.length;
+	    var rect_width = width/new_attrbtn_list.length;
 	    var rect_height = height;
 
 		var update = d3.select("#"+divID)
 			.selectAll(".HVACattrbtn-span")
-			.data(new_attr_list,function(d){return d;})
+			.data(new_attrbtn_list,function(d){return d;})
 			.html(function(d,i){
-				var buttonLabel = new_attr_list[i].substring(0,rect_width/13);
-				var buttonValue = new_attr_list[i];
-				//var height = rect_height;
+				var buttonLabel = new_attrbtn_list[i].substring(0,rect_width/13);
+				var buttonValue = new_attrbtn_list[i];
 
-				var buttonhtml = 	'<div style="position:relative">'+//'<i class="fa fa-times delete_icon hidden" groupid=<%=buttonValue%>></i>'+
+				var buttonhtml = 	'<div style="position:relative">'+
 				    					'<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
 				    				'</div>'; 
 				return buttonhtml;
@@ -177,7 +166,7 @@ var HVACgraph_attrbtn_view = {
 		 	.insert("span")
 			.attr("class","HVACattrbtn-span")
 			.attr("value",function(d,i){
-				var buttonValue = new_attr_list[i];
+				var buttonValue = new_attrbtn_list[i];
 				return buttonValue;
 			})
 			.style("background",function(d,i){
@@ -185,11 +174,10 @@ var HVACgraph_attrbtn_view = {
 				return background_color;
 			})
 			.html(function(d,i){
-				var buttonLabel = new_attr_list[i].substring(0,rect_width/13);
-				var buttonValue = new_attr_list[i];
-				//var height = rect_height;
+				var buttonLabel = new_attrbtn_list[i].substring(0,rect_width/13);
+				var buttonValue = new_attrbtn_list[i];
 
-				var buttonhtml = 	'<div style="position:relative">'+//'<i class="fa fa-times delete_icon hidden" groupid=<%=buttonValue%>></i>'+
+				var buttonhtml = 	'<div style="position:relative">'+
 				    					'<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
 				    				'</div>'; 
 				return buttonhtml;
@@ -200,15 +188,13 @@ var HVACgraph_attrbtn_view = {
 				if (index >=0 )
 				{
 					d3.select(this).style("background",HVACgraph_attrbtn_view._cal_color(d));
-					//d3.select(this).classed("selected-HVACattrbtn-span",false);
 
 					selected_attr_set.splice(index,1);
 					DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set);
 				}
 				else
 				{
-					d3.select(this).style("background",HVACgraph_attrbtn_view.COLOR_OF["highlight_color"]);
-					//d3.select(this).classed("selected-HVACattrbtn-span",true);		
+					d3.select(this).style("background",HVACgraph_attrbtn_view.COLOR_OF["highlight_color"]);	
 
 					DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set.concat(d));
 				}
@@ -216,63 +202,4 @@ var HVACgraph_attrbtn_view = {
 
 		var exit = update.exit().remove();
 	},
-
-/*
-	init_render:function(divID,attr_list)
-	{
-		d3.select("#"+divID).selectAll("*").remove()
-	    var width  = $("#"+divID).width();
-	    var height  = $("#"+divID).height();
-	    var rect_width = width/attr_list.length;
-	    var rect_height = height;
-
-	    //var div = document.getElementById(divID)
-
-		d3.select("#"+divID)
-			.selectAll(".HVACattrbtn-span")
-			.data(attr_list,function(d){return d;})//绑定一个字符串数组，key就是字符串本身
-			.enter()
-			.append("span")
-			.attr("class","HVACattrbtn-span")
-			.attr("value",function(d,i){
-				var buttonValue = attr_list[i];
-				return buttonValue;
-			})
-			.style("background",function(d,i){
-				var background_color = HVACgraph_attrbtn_view._cal_color(d);
-				return background_color;
-			})
-			.html(function(d,i){
-				var buttonLabel = attr_list[i].substring(0,rect_width/13);
-				var buttonValue = attr_list[i];
-				//var height = rect_height;
-
-				var buttonhtml = 	'<div style="position:relative">'+//'<i class="fa fa-times delete_icon hidden" groupid=<%=buttonValue%>></i>'+
-				    					'<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
-				    				'</div>'; 
-				return buttonhtml;
-			})
-			.on("click",function(d,i){
-				var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
-				var index = selected_attr_set.indexOf(d);
-				if (index >=0 )//如果之前已经被选中，处在DATA_CENTER.global_variable.selected_attr_set中，再click就取消选中
-				{
-					d3.select(this).style("background",HVACgraph_attrbtn_view._cal_color(d));//退回原来的颜色
-					//d3.select(this).classed("selected-HVACattrbtn-span",false);
-
-					selected_attr_set.splice(index,1);
-					DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set);
-				}
-				else//如果之前没有被选中
-				{
-					d3.select(this).style("background",HVACgraph_attrbtn_view.COLOR_OF["highlight_color"]);//变成高亮的颜色
-					//d3.select(this).classed("selected-HVACattrbtn-span",true);		
-
-					DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set.concat(d));
-				}
-			})
-
-	},
-*/	
-
 }

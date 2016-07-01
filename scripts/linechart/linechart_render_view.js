@@ -3,19 +3,64 @@ var linechart_render_view = {
 	{
         if (  (message == "set:selected_linechart_set")  )
         {
-
-            this.render("linechart-renderplace")
+            var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
+            this.update_render("linechart-renderplace",selected_linechart_set)
         }
-
-
 	},
-	render:function(divID)
-	{
-		//使用的全局
-	    var data = DATA_CENTER.original_data["bldg-MC2.csv"];
-	    var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-	    
+    update_render:function(divID,new_linechart_list)
+    {
+        var width  = $("#"+divID).width();
+        var height  = $("#"+divID).height();
+        var rect_width = width;
+        var rect_height = height/new_linechart_list.length-5;
 
+        var update = d3.select("#"+divID)
+            .selectAll(".HVAClinechart-span")
+            .data(new_linechart_list,function(d){return d;})
+            .attr("style",function(d,i){
+                return "height:"+rect_height+"px;" + "width:"+rect_width+"px;"
+            })
+            .html(function(d,i){
+                var buttonLabel = "";
+                var buttonValue = new_linechart_list[i];
+
+                var buttonhtml =    '<div style="position:relative">'+//'<i class="fa fa-times delete_icon hidden" groupid=<%=buttonValue%>></i>'+
+                                        '<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
+                                    '</div>'; 
+                return buttonhtml;
+            })
+
+        var enter = update.enter()
+            .insert("span")
+            .attr("class","HVAClinechart-span")
+            .attr("value",function(d,i){
+                var buttonValue = new_linechart_list[i];
+                return buttonValue;
+            })
+            .attr("style",function(d,i){
+                return "height:"+rect_height+"px;" + "width:"+rect_width+"px;"
+            })
+            .html(function(d,i){
+                var buttonLabel = "";
+                var buttonValue = new_linechart_list[i];
+
+                var buttonhtml =    '<div style="position:relative">'+//'<i class="fa fa-times delete_icon hidden" groupid=<%=buttonValue%>></i>'+
+                                        '<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
+                                    '</div>'; 
+                return buttonhtml;
+            })
+            .on("click",function(d,i){
+                console.log(d,i)
+            })
+
+        var exit = update.exit().remove();
+    },
+/*    
+	update_render:function(divID,new_linechart_set)
+	{
+		//使用的全局变量
+	    var data = DATA_CENTER.original_data["bldg-MC2.csv"];
+	    var selected_linechart_set = new_linechart_set;
         //end 全局变量
 
 		d3.select("#"+divID).selectAll("*").remove()
@@ -40,7 +85,7 @@ var linechart_render_view = {
 
         this._plot_linechart(divID,xyAxis_data)
 	},
-
+*/
 	_plot_linechart:function(divID,xyAxis_data)
 	{
 		var width  = $("#"+divID).width();
@@ -53,7 +98,13 @@ var linechart_render_view = {
                 type: 'line',
                 zoomType: 'x',
                 panning: true,
-                panKey: 'shift'
+                panKey: 'shift',
+
+                events:{
+                    selection:function(e){
+                        console.log(e)
+                    }
+                }
             },
             legend:{
                 enabled:false,
