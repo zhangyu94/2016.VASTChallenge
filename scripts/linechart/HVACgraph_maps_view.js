@@ -273,14 +273,12 @@ var HVACgraph_maps_view = {
 							
 							if (index >=0 )
 							{
-								console.log("in")
 								d3.select(this).classed("selected_HVACmap_circle",false);
 								selected_HVACzone_set.splice(index,1);
 								DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set);
 							}
 							else
 							{
-								console.log("not in")
 								d3.select(this).classed("selected_HVACmap_circle",true);
 								DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set.concat(d.name));
 							}

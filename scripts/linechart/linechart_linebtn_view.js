@@ -118,48 +118,49 @@ var linechart_linebtn_view = {
 	    var update = d3.select("#"+divID)
 			.selectAll(".HVAClinechartbtn-span")
 			.data(new_linechartbtn_list,function(d){return d;})
-			.html(function(d,i){
-				var buttonLabel = new_linechartbtn_list[i].substring(0,rect_width/13);
-				var buttonValue = new_linechartbtn_list[i];
+		update.select("div")
+            .select("span")
+                .text(function(d,i){
+                	var buttonLabel = new_linechartbtn_list[i].substring(0,rect_width/13);
+                    return buttonLabel;
+                })
 
-				var buttonhtml = 	'<div style="position:relative">'+
-				    					'<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
-				    				'</div>'; 
-				return buttonhtml;
-			})
+		var enter = update.enter();
+		enter.insert("span")
+				.attr("class","HVAClinechartbtn-span")
+				.attr("value",function(d,i){
+					var buttonValue = new_linechartbtn_list[i];
+					return buttonValue;
+				})
+				.on("click",function(d,i){
+					var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
+					var index = selected_linechart_set.indexOf(d);
+					if (index >=0 )
+					{
+						d3.select(this).classed("selected-HVAClinechartbtn-span",false);
+						selected_linechart_set.splice(index,1);
+						DATA_CENTER.set_global_variable("selected_linechart_set",selected_linechart_set);
+					}
+					else
+					{
+						d3.select(this).classed("selected-HVAClinechartbtn-span",true);			
+						DATA_CENTER.set_global_variable("selected_linechart_set",selected_linechart_set.concat(d));
+					}
+				})
+			.append("div")
+                .attr("style","position:relative")
+            .append("span")
+                .attr("class","object_title_span")
+                .attr("value",function(d,i){
+                    var buttonValue = new_linechartbtn_list[i];
+                    return buttonValue;
+                })
+                .text(function(d,i){
+                	var buttonLabel = new_linechartbtn_list[i].substring(0,rect_width/13);
+                    return buttonLabel;
+                })
 
-		var enter = update.enter()
-		 	.insert("span")
-			.attr("class","HVAClinechartbtn-span")
-			.attr("value",function(d,i){
-				var buttonValue = new_linechartbtn_list[i];
-				return buttonValue;
-			})
-			.html(function(d,i){
-				var buttonLabel = new_linechartbtn_list[i].substring(0,rect_width/13);
-				var buttonValue = new_linechartbtn_list[i];
-
-				var buttonhtml = 	'<div style="position:relative">'+
-				    					'<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
-				    				'</div>'; 
-				return buttonhtml;
-			})
-			.on("click",function(d,i){
-				var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-				var index = selected_linechart_set.indexOf(d);
-				if (index >=0 )
-				{
-					d3.select(this).classed("selected-HVAClinechartbtn-span",false);
-					selected_linechart_set.splice(index,1);
-					DATA_CENTER.set_global_variable("selected_linechart_set",selected_linechart_set);
-				}
-				else
-				{
-					d3.select(this).classed("selected-HVAClinechartbtn-span",true);			
-					DATA_CENTER.set_global_variable("selected_linechart_set",selected_linechart_set.concat(d));
-				}
-			})
-
-		var exit = update.exit().remove();
+		var exit = update.exit();
+		exit.remove();
 	},
 }

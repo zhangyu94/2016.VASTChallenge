@@ -151,55 +151,56 @@ var HVACgraph_attrbtn_view = {
 
 		var update = d3.select("#"+divID)
 			.selectAll(".HVACattrbtn-span")
-			.data(new_attrbtn_list,function(d){return d;})
-			.html(function(d,i){
-				var buttonLabel = new_attrbtn_list[i].substring(0,rect_width/13);
-				var buttonValue = new_attrbtn_list[i];
-
-				var buttonhtml = 	'<div style="position:relative">'+
-				    					'<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
-				    				'</div>'; 
-				return buttonhtml;
-			})
+			.data(new_attrbtn_list,function(d){return d;});
+		update.select("div")
+            .select("span")
+                .text(function(d,i){
+                	var buttonLabel = new_attrbtn_list[i].substring(0,rect_width/13);
+                    return buttonLabel;
+                })
 			
-		var enter = update.enter()
-		 	.insert("span")
-			.attr("class","HVACattrbtn-span")
-			.attr("value",function(d,i){
-				var buttonValue = new_attrbtn_list[i];
-				return buttonValue;
-			})
-			.style("background",function(d,i){
-				var background_color = HVACgraph_attrbtn_view._cal_color(d);
-				return background_color;
-			})
-			.html(function(d,i){
-				var buttonLabel = new_attrbtn_list[i].substring(0,rect_width/13);
-				var buttonValue = new_attrbtn_list[i];
+		var enter = update.enter();
+		enter.insert("span")
+				.attr("class","HVACattrbtn-span")
+				.attr("value",function(d,i){
+					var buttonValue = new_attrbtn_list[i];
+					return buttonValue;
+				})
+				.style("background",function(d,i){
+					var background_color = HVACgraph_attrbtn_view._cal_color(d);
+					return background_color;
+				})
+				.on("click",function(d,i){
+					var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
+					var index = selected_attr_set.indexOf(d);
+					if (index >=0 )
+					{
+						d3.select(this).style("background",HVACgraph_attrbtn_view._cal_color(d));
 
-				var buttonhtml = 	'<div style="position:relative">'+
-				    					'<span class="object_title_span" value=' + buttonValue + ' > ' + buttonLabel + '</span>'+
-				    				'</div>'; 
-				return buttonhtml;
-			})
-			.on("click",function(d,i){
-				var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
-				var index = selected_attr_set.indexOf(d);
-				if (index >=0 )
-				{
-					d3.select(this).style("background",HVACgraph_attrbtn_view._cal_color(d));
+						selected_attr_set.splice(index,1);
+						DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set);
+					}
+					else
+					{
+						d3.select(this).style("background",HVACgraph_attrbtn_view.COLOR_OF["highlight_color"]);	
 
-					selected_attr_set.splice(index,1);
-					DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set);
-				}
-				else
-				{
-					d3.select(this).style("background",HVACgraph_attrbtn_view.COLOR_OF["highlight_color"]);	
+						DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set.concat(d));
+					}
+				})
+			.append("div")
+                .attr("style","position:relative")
+            .append("span")
+                .attr("class","object_title_span")
+                .attr("value",function(d,i){
+                    var buttonValue = new_attrbtn_list[i];
+                    return buttonValue;
+                })
+                .text(function(d,i){
+                	var buttonLabel = new_attrbtn_list[i].substring(0,rect_width/13);
+                    return buttonLabel;
+                })
 
-					DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set.concat(d));
-				}
-			})
-
-		var exit = update.exit().remove();
+		var exit = update.exit();
+		exit.remove();
 	},
 }

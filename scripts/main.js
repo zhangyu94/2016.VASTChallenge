@@ -80,6 +80,9 @@ function main(){
 	function display_linechart_view()
 	{
 		HVACgraph_maps_view.render("HVACgraph-maps");
+
+		//让linechart可以sort
+		$( "#linechart-renderplace" ).sortable();
 	}
 
 	//trajectory视图调用的地方
