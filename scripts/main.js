@@ -99,6 +99,7 @@ function main(){
 	{
 		ganttchart_view.render("trajectory-ganttchart");
 		proxgraph_maps_view.render("proxgraph-maps");
+		bigmap_view.render("trajectory-bigmap");
 	}
 
 }
