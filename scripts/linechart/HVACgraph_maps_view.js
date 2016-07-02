@@ -1,4 +1,6 @@
 var HVACgraph_maps_view = {
+	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
+	
 	obsUpdate:function(message, data)
 	{
 		if (	(message == "set:highlight_HVACzone_set")  || 
@@ -18,11 +20,7 @@ var HVACgraph_maps_view = {
         			flag = flag | (DATA_CENTER.linechart_variable.highlight_building_set.indexOf(d.name) >= 0);
         			return flag;
         		})
-
-
-            
         }
-
 
 	},
 	render:function(divID)
@@ -153,16 +151,14 @@ var HVACgraph_maps_view = {
 				.attr("class","HVACmap-rect floor-HVACmap-rect")
 				.attr("height",floor_div_height)
 				.attr("width",floor_div_width)	
-				/* 
-				.attr("fill",function(d,i){
-					if (i == 0)
-						return "brown";
-					else if (i == 1)
-						return "orange";
-					else if (i == 2)
-						return "yellow";
-				}).attr("opacity",0.2)
-				*/
+				//.attr("fill",function(d,i){
+				//	if (i == 0)
+				//		return "brown";
+				//	else if (i == 1)
+				//		return "orange";
+				//	else if (i == 2)
+				//		return "yellow";
+				//}).attr("opacity",0.2)
 				.on("click",function(d,i){
 					var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
 					var index = selected_floor_set.indexOf(d.name);
@@ -324,11 +320,33 @@ var HVACgraph_maps_view = {
 				      		_highlight_communication(d,i);
 				      		function _highlight_communication(d,i)
 				      		{
-				      			var HVACzone_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set;
-								var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset(HVACzone_HVACattr_set,[d.name],[],[])
-				      			DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[d.name]);
-								DATA_CENTER.set_linechart_variable("highlight_attr_set",HVACzone_HVACattr_set);
-								DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
+				      			//1. 高亮地点
+				      			var highlight_place_set = [d.name];
+								DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",highlight_place_set);
+
+
+								//2. 高亮属性
+				    			var highlight_attr_set = [];
+				    			var HVACzone_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set;
+				    			for (var j=0;j<HVACzone_HVACattr_set.length;++j)
+				    			{
+				    				var cur_HVACattr = HVACzone_HVACattr_set[j];
+				    				if (cur_HVACattr != HVACgraph_maps_view.HAZIUM_ATTR_NAME)
+				    				{
+				    					highlight_attr_set.push(cur_HVACattr)
+				    				}
+				    				else if (DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set.indexOf(d.name)>=0)
+				    				{
+				    					console.log("reach")
+				    					highlight_attr_set.push(cur_HVACattr);
+				    				}
+				    			}
+								DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
+
+
+								//3. 高亮linechart
+								var highlight_linechart_set = linechart_linebtn_view._cal_attrbtnset(HVACzone_HVACattr_set,[d.name],[],[])
+								DATA_CENTER.set_linechart_variable("highlight_linechart_set",highlight_linechart_set);
 				      		}
 
 				      		tip.show(d,i)
@@ -338,8 +356,13 @@ var HVACgraph_maps_view = {
 				      		_highlight_communication(d,i);
 				      		function _highlight_communication(d,i)
 				      		{
+				      			//1. 取消高亮地点
 					      		DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[]);
+
+					      		//2. 取消高亮属性
 					      		DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
+
+					      		//3. 取消高亮linechart
 					      		DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
 					      	}
 						

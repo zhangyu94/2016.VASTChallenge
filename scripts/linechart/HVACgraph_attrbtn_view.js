@@ -4,6 +4,54 @@ var HVACgraph_attrbtn_view = {
 
 	rendered_attrbtn_set : [],
 
+	obsUpdate:function(message, data)
+	{
+		if ( 	(message == "set:selected_building_set") || 
+				(message == "set:selected_floor_set") || 
+				(message == "set:selected_HVACzone_set") )
+		{
+			var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
+			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
+			var selected_building_set = DATA_CENTER.global_variable.selected_building_set;
+
+			var new_rendered_attrbtn_set = this._cal_attrbtnset(selected_HVACzone_set,selected_floor_set,selected_building_set);//记录有哪些属性需要画方块
+			this.rendered_attrbtn_set = new_rendered_attrbtn_set;
+
+			
+			//1和2步骤可交换
+
+			//1.更新DATA_CENTER.global_variable.selected_attr_set
+			//如果update_render导致了某个之前selected_attr不再画出来，则这个attr也就必定取消select了
+			var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
+			for (var i=0;i<selected_attr_set.length;++i)
+			{
+				var cur_selected_attr = selected_attr_set[i];
+				if (this.rendered_attrbtn_set.indexOf(cur_selected_attr) < 0)//没找到
+				{
+					selected_attr_set.splice(i,1);
+					--i;//任何情况下循环做splice的时候都不要忘了--i啊啊啊!!!!!!!!!
+				}
+			}
+			DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set);
+
+			//2.更新渲染
+			this.update_render(this.DIV_ID,this.rendered_attrbtn_set);			
+		}
+
+		if ( message == "set:highlight_attr_set" )
+        {
+        	d3.selectAll(".HVACattrbtn-span")
+        		.classed("mouseover_selected-HVACattrbtn-span",function(d,i){
+        			if (DATA_CENTER.linechart_variable.highlight_attr_set.indexOf(d) >= 0)
+        			{
+        				return true;
+        			}
+        			return false;
+        		})
+        }
+		
+	},
+
 	//输入一个属性的名字，返回这个属性的类别
 	//可能的返回值是HVACzone_oridinary_attr，HVACzone_hazium，floor_attr，building_attr
 	_cal_attr_type:function(attr_name)
@@ -99,57 +147,6 @@ var HVACgraph_attrbtn_view = {
 		return new_rendered_attrbtn_set;
 	},
 
-	obsUpdate:function(message, data)
-	{
-		if ( 	(message == "set:selected_building_set") || 
-				(message == "set:selected_floor_set") || 
-				(message == "set:selected_HVACzone_set") )
-		{
-			var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
-			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
-			var selected_building_set = DATA_CENTER.global_variable.selected_building_set;
-
-			var new_rendered_attrbtn_set = this._cal_attrbtnset(selected_HVACzone_set,selected_floor_set,selected_building_set);//记录有哪些属性需要画方块
-			this.rendered_attrbtn_set = new_rendered_attrbtn_set;
-
-			
-			//1和2步骤可交换
-
-			//1.更新DATA_CENTER.global_variable.selected_attr_set
-			//如果update_render导致了某个之前selected_attr不再画出来，则这个attr也就必定取消select了
-			var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
-			for (var i=0;i<selected_attr_set.length;++i)
-			{
-				var cur_selected_attr = selected_attr_set[i];
-				if (this.rendered_attrbtn_set.indexOf(cur_selected_attr) < 0)//没找到
-				{
-					selected_attr_set.splice(i,1);
-					--i;//任何情况下循环做splice的时候都不要忘了--i啊啊啊!!!!!!!!!
-				}
-			}
-			DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set);
-
-			//2.更新渲染
-			this.update_render(this.DIV_ID,this.rendered_attrbtn_set);			
-		}
-
-		if ( message == "set:highlight_attr_set" )
-        {
-
-        	d3.selectAll(".HVACattrbtn-span")
-        		.classed("mouseover_selected-HVACattrbtn-span",function(d,i){
-        			if (DATA_CENTER.linechart_variable.highlight_attr_set.indexOf(d) >= 0)
-        			{
-        				return true;
-        			}
-        			return false;
-        		})
-
-        	
-        }
-		
-	},
-
 	update_render:function(divID,new_attrbtn_list)
 	{
 		var width  = $("#"+divID).width();
@@ -195,12 +192,63 @@ var HVACgraph_attrbtn_view = {
 					}
 				})
 				.on("mouseover",function(d,i){
-					console.log(d)
 
 					_highlight_communication(d,i);
 					function _highlight_communication(d,i)
 					{
+						//1.高亮attr
+						var highlight_attr_set = [d];
+						DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
 
+
+						//2.高亮place
+						//可能取值是HVACzone_oridinary_attr，HVACzone_hazium，floor_attr，building_attr
+						var attr_type = HVACgraph_attrbtn_view._cal_attr_type(d);
+						if (attr_type == "HVACzone_oridinary_attr")
+						{
+							//高亮所有之间点选中的HVACzone结点
+							var highlight_place_set = DATA_CENTER.global_variable.selected_HVACzone_set;
+							DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",highlight_place_set);
+						}
+						else if (attr_type == "HVACzone_hazium")
+						{
+							var highlight_place_set = [];
+							var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
+							for (var j=0;j < selected_HVACzone_set.length;++j)
+							{
+								if (DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set.indexOf(selected_HVACzone_set[j])>=0)
+								{
+									highlight_place_set.push(selected_HVACzone_set[j]);
+								}
+							}
+							DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",highlight_place_set);
+						}
+						else if (attr_type == "floor_attr")
+						{
+							//高亮所有之间点选中的floor结点
+							var highlight_place_set = DATA_CENTER.global_variable.selected_floor_set;
+							DATA_CENTER.set_linechart_variable("highlight_floor_set",highlight_place_set);
+						}
+						else if (attr_type == "building_attr")
+						{
+							//高亮所有之间点选中的floor结点
+							var highlight_place_set = DATA_CENTER.global_variable.selected_building_set;
+							DATA_CENTER.set_linechart_variable("highlight_building_set",highlight_place_set);
+						}
+
+
+						//3.高亮linechart
+						var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
+						var highlight_linechart_set = [];
+						for (var j=0;j < selected_linechart_set.length;++j)
+						{
+							var cur_linechart = selected_linechart_set[j];
+							if (cur_linechart.indexOf(d) >=0 )
+							{
+								highlight_linechart_set.push(cur_linechart);
+							}
+						}
+						DATA_CENTER.set_linechart_variable("highlight_linechart_set",highlight_linechart_set);
 					}
 
 				})
@@ -209,7 +257,16 @@ var HVACgraph_attrbtn_view = {
 					_highlight_communication(d,i);
 					function _highlight_communication(d,i)
 					{
+						//1.取消高亮attr
+						DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
 
+						//2.取消高亮place
+						DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[]);
+						DATA_CENTER.set_linechart_variable("highlight_floor_set",[]);
+						DATA_CENTER.set_linechart_variable("highlight_building_set",[]);
+
+						//3.取消高亮linechart
+						DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
 					}
 
 				})

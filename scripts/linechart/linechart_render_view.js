@@ -92,7 +92,60 @@ var linechart_render_view = {
                 })
                 .on("click",function(d,i){
                     console.log(d,i)
-                });
+                })
+                .on("mouseover",function(d,i){
+
+                    _highlight_communication(d,i);
+                    function _highlight_communication(d,i)
+                    {
+                        //1. 高亮linechart
+                        var highlight_linechart_set = [d];
+                        DATA_CENTER.set_linechart_variable("highlight_linechart_set",highlight_linechart_set);
+
+                        var place_attr = linechart_linebtn_view._parse_position_attr(d);
+
+                        //2. 高亮attr
+                        var attr = place_attr.attr;
+                        var highlight_attr_set = [attr];
+                        DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
+
+                        //3. 高亮place
+                        var place = place_attr.place;
+                        var place_type = place_attr.place_type;
+                        if (place_type == "building")
+                        {
+                            DATA_CENTER.set_linechart_variable("highlight_building_set",[place]);
+                        }
+                        else if (place_type == "floor")
+                        {
+                            DATA_CENTER.set_linechart_variable("highlight_floor_set",[place]);
+                        }
+                        else if (place_type == "HVACzone")
+                        {
+                            DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[place]);
+                        }
+                        
+                    }
+
+                })
+                .on("mouseout",function(d,i){
+
+                    _highlight_communication(d,i);
+                    function _highlight_communication(d,i)
+                    {
+                        //1. 取消高亮linechart
+                        DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
+
+                        //2. 取消高亮attr
+                        DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
+
+                        //3. 取消高亮place
+                        DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[]);
+                        DATA_CENTER.set_linechart_variable("highlight_floor_set",[]);
+                        DATA_CENTER.set_linechart_variable("highlight_building_set",[]);
+                    }
+
+                })
 
         var enter_spans_btnspan = enter_spans.append("span")
                 .attr("class","HVAClinechart-btntitle-span")
