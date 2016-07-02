@@ -1,7 +1,12 @@
 var bigmap_view = {
 	obsUpdate:function(message, data)
 	{
-
+		if (message == "set:selected_floor_set")
+		{
+			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
+			console.log(selected_floor_set);
+			// this.render(this.DIV_ID,this.rendered_attrbtn_set);			
+		}
 	},
 	render:function(divID)
 	{
