@@ -1,20 +1,38 @@
+.HVACmap-rect{
+	stroke: #111;
+	stroke-width: 2;
+}
+.floor-HVACmap-rect{
+    fill: #6070FF;
+}
+.building-HVACmap-rect{
+    fill: #AA50FF;
+}
+
 .click_selected-HVACmap-rect{
-	stroke: 2px #111;
-	fill:red;
+	fill: #FF7060;
+}
+.mouseover_selected-HVACmap-rect{
+	stroke: #DDDD00;
+	stroke-width: 2;
+}
+
+
+.HVACmap-circle{
+	stroke: #111;
+	stroke-width: 2;
+}
+.ordinary-HVACmap-circle{
+    fill: #74c476;
+}
+.hazium-HVACmap-circle{
+    fill: green;
 }
 
 .click_selected-HVACmap-circle{
-	stroke: 2px #111;
-	fill:red;
+	fill: #FF7060;
 }
-
-/*
-.HVACattrbtn-span{
-    padding: 1px;
-    margin: 3px !important;
-    border: solid 2px #111;
-    display:inline-block;
-    border-radius: 3px;
-    cursor: pointer;
+.mouseover_selected-HVACmap-circle{
+	stroke: #DDDD00;
+	stroke-width: 2;
 }
-*/

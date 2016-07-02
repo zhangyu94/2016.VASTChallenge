@@ -1,11 +1,23 @@
 var HVACgraph_maps_view = {
 	obsUpdate:function(message, data)
 	{
-		if (	(message == "set:highlight_HCAVzone_set")  || 
+		if (	(message == "set:highlight_HVACzone_set")  || 
 				(message == "set:highlight_floor_set")  ||
 				(message == "set:highlight_building_set")  )
         {
-            
+            d3.selectAll(".HVACmap-circle")
+        		.classed("mouseover_selected-HVACmap-circle",function(d,i){      			
+        			var flag = (DATA_CENTER.linechart_variable.highlight_HVACzone_set.indexOf(d.name) >= 0);
+        			return flag;
+        		})
+
+        	d3.selectAll(".HVACmap-rect")
+        		.classed("mouseover_selected-HVACmap-rect",function(d,i){      			
+        			var flag = false;
+        			flag = flag | (DATA_CENTER.linechart_variable.highlight_floor_set.indexOf(d.name) >= 0);
+        			flag = flag | (DATA_CENTER.linechart_variable.highlight_building_set.indexOf(d.name) >= 0);
+        			return flag;
+        		})
 
 
             
@@ -50,9 +62,10 @@ var HVACgraph_maps_view = {
 			                .attr("width",building_div_width)
 		var building_rect = building_div_svg.append("rect")
 			.datum({name:"building"})
+			.attr("class","HVACmap-rect building-HVACmap-rect")
 			.attr("height",building_div_height)
 			.attr("width",building_div_width)	             
-			.attr("fill","blue").attr("opacity",0.2)
+			//.attr("fill","blue").attr("opacity",0.2)
 			.on("click",function(d,i){
 				var selected_building_set = DATA_CENTER.global_variable.selected_building_set;
 				var index = selected_building_set.indexOf(d.name);
@@ -137,8 +150,10 @@ var HVACgraph_maps_view = {
 		    	.attr("height",floor_div_height)
 				.attr("width",floor_div_width)
 			.append("rect")
+				.attr("class","HVACmap-rect floor-HVACmap-rect")
 				.attr("height",floor_div_height)
-				.attr("width",floor_div_width)	 
+				.attr("width",floor_div_width)	
+				/* 
 				.attr("fill",function(d,i){
 					if (i == 0)
 						return "brown";
@@ -147,6 +162,7 @@ var HVACgraph_maps_view = {
 					else if (i == 2)
 						return "yellow";
 				}).attr("opacity",0.2)
+				*/
 				.on("click",function(d,i){
 					var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
 					var index = selected_floor_set.indexOf(d.name);
@@ -283,17 +299,26 @@ var HVACgraph_maps_view = {
 		      .style("stroke-width", function(d) { return 1; })
 		      .style("stroke", function(d) { return "#AAAAAA"; });
 
-		  	var node = floor_svg.selectAll(".node")
+		  	var node = floor_svg.selectAll(".HVACmap-circle")
 					    .data(graph.nodes)
 					    .enter().append("circle")
-					    .attr("class", "node")
+					    .attr("class", function(d,i)
+					    {
+					    	if ( DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set.indexOf(d.name) >=0 )
+					    	{
+					    		return "HVACmap-circle hazium-HVACmap-circle";
+					    	}
+					    	else
+					    	{
+					    		return "HVACmap-circle ordinary-HVACmap-circle";
+					    	}
+					    		
+					    })
 				      	.attr("r", 6)
 				      	.attr("cx", function(d) { 
 				      		return x_scale(d.x); 
 				      	})
 				      	.attr("cy", function(d) { return y_scale(d.y); })
-				      	.attr("fill", function(d) { return "blue"; })
-				      	.attr("opacity",0.5)
 				      	.on("mouseover",function(d,i){
 
 				      		_highlight_communication(d,i);
@@ -301,7 +326,7 @@ var HVACgraph_maps_view = {
 				      		{
 				      			var HVACzone_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set;
 								var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset(HVACzone_HVACattr_set,[d.name],[],[])
-				      			DATA_CENTER.set_linechart_variable("highlight_HCAVzone_set",[d.name]);
+				      			DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[d.name]);
 								DATA_CENTER.set_linechart_variable("highlight_attr_set",HVACzone_HVACattr_set);
 								DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
 				      		}
@@ -313,7 +338,7 @@ var HVACgraph_maps_view = {
 				      		_highlight_communication(d,i);
 				      		function _highlight_communication(d,i)
 				      		{
-					      		DATA_CENTER.set_linechart_variable("highlight_HCAVzone_set",[]);
+					      		DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[]);
 					      		DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
 					      		DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
 					      	}

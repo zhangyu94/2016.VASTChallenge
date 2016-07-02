@@ -31,7 +31,7 @@ var DATA_CENTER = {
 	//linechart的几个子视图需要利用的全局变量
 	linechart_variable : {
 		highlight_attr_set:[],
-		highlight_HCAVzone_set:[],
+		highlight_HVACzone_set:[],
 		highlight_floor_set:[],
 		highlight_building_set:[],
 		highlight_linechart_set:[],

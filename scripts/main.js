@@ -17,7 +17,7 @@ function main(){
 			"set:selected_person_set",
 
 			"set:highlight_attr_set",
-			"set:highlight_HCAVzone_set",
+			"set:highlight_HVACzone_set",
 			"set:highlight_floor_set",
 			"set:highlight_building_set",
 			"set:highlight_linechart_set",
