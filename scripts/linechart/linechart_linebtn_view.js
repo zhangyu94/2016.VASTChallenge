@@ -2,7 +2,7 @@ var linechart_linebtn_view = {
 	rendered_linechartbtn_set : [],
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 
-	//输入被选中的三类实体集合，返回需要画的按钮和每个按钮的颜色映射
+	//输入被选中的三类实体集合，返回需要画的按钮
 	//return一个attrbtn_set
 	_cal_attrbtnset:function(selected_attr_set,selected_HVACzone_set,selected_floor_set,selected_building_set)
 	{

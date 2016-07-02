@@ -158,15 +158,15 @@ var HVACgraph_attrbtn_view = {
 		var update = d3.select("#"+divID)
 			.selectAll(".HVACattrbtn-span")
 			.data(new_attrbtn_list,function(d){return d;});
-		update.select("div")
-            .select("span")
+		var update_div = update.select("div");
+		var update_div_span = update_div.select("span")
                 .text(function(d,i){
                 	var buttonLabel = new_attrbtn_list[i].substring(0,rect_width/13);
                     return buttonLabel;
                 })
 			
 		var enter = update.enter();
-		enter.insert("span")
+		var enter_span = enter.insert("span")
 				.attr("class","HVACattrbtn-span")
 				.attr("value",function(d,i){
 					var buttonValue = new_attrbtn_list[i];
@@ -193,9 +193,30 @@ var HVACgraph_attrbtn_view = {
 						DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set.concat(d));
 					}
 				})
-			.append("div")
-                .attr("style","position:relative")
-            .append("span")
+				.on("mouseover",function(d,i){
+					console.log(d)
+
+					_highlight_communication(d,i);
+					function _highlight_communication(d,i)
+					{
+
+					}
+
+				})
+				.on("mouseout",function(d,i){
+
+					_highlight_communication(d,i);
+					function _highlight_communication(d,i)
+					{
+
+					}
+
+				})
+
+
+		var enter_span_div = enter_span.append("div")
+                .attr("style","position:relative");
+        var enter_span_div_span = enter_span_div.append("span")
                 .attr("class","object_title_span")
                 .attr("value",function(d,i){
                     var buttonValue = new_attrbtn_list[i];

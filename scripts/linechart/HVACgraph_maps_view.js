@@ -68,6 +68,31 @@ var HVACgraph_maps_view = {
 					DATA_CENTER.set_global_variable("selected_building_set",selected_building_set.concat(d.name));
 				}
 			})
+			.on("mouseover",function(d,i){
+
+				_highlight_communication(d,i);
+				function _highlight_communication(d,i)
+				{
+				    var building_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.building_HVACattr_set;
+					var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset(building_HVACattr_set,[],[],[d.name])
+				    DATA_CENTER.set_linechart_variable("highlight_building_set",[d.name]);
+					DATA_CENTER.set_linechart_variable("highlight_attr_set",building_HVACattr_set);
+					DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
+				}
+
+			})
+			.on("mouseout",function(d,i){
+
+				_highlight_communication(d,i);
+				function _highlight_communication(d,i)
+				{
+				    DATA_CENTER.set_linechart_variable("highlight_building_set",[]);
+					DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
+					DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
+				}
+
+			})
+
 
 
 		//2. 渲染floor的div
@@ -75,94 +100,92 @@ var HVACgraph_maps_view = {
 		var floor_div_height = div_height/3;
 		var floor_div_left_padding = div_width - building_div_width - floor_div_width;
 
-		var F3_div = div.append("div").attr("id","F3_div").style("position","absolute")
-	    				.style("top",0 + 'px')
-    					.style("height",floor_div_height + 'px')
-    					.style("left",floor_div_left_padding + 'px')
-    					.style("width",floor_div_width + 'px')
-    	var F3_div_svg = F3_div.append("svg").attr("id","mapgraph_F3_div_svg")
-			                .attr("height",floor_div_height)
-			                .attr("width",floor_div_width)
-		var floor3_rect = F3_div_svg.append("rect")
-			.datum({name:"F_3"})
-			.attr("height",floor_div_height)
-			.attr("width",floor_div_width)	             
-			.attr("fill","brown").attr("opacity",0.2)
-			.on("click",function(d,i){
-				var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
-				var index = selected_floor_set.indexOf(d.name);
-				if (index >=0 )
-				{
-					d3.select(this).classed("selected_HVACmap_rect",false);
-					selected_floor_set.splice(index,1);
-					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
-				}
-				else
-				{
-					d3.select(this).classed("selected_HVACmap_rect",true);
-					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
-				}
-			})
+		div.selectAll("span")
+			.data([
+				{name:"F_3"},
+				{name:"F_2"},
+				{name:"F_1"},
+			])
+			.enter()
+			.append("span")
+				.attr("id",function(d,i){
+					return d.name+"_div";
+				})
+				.style("position","absolute")
+				.style("top",function(d,i){
+					if (d.name =="F_3")
+					{
+						return 0 + 'px'
+					}			
+					else if (d.name =="F_2")
+					{
+						return floor_div_height + 'px'
+					}
+					else if (d.name =="F_1")
+					{
+						return (floor_div_height+floor_div_height) + 'px'
+					}
 
+				})
+				.style("height",floor_div_height + 'px')
+		    	.style("left",floor_div_left_padding + 'px')
+		    	.style("width",floor_div_width + 'px')
+		    .append("svg")
+		    	.attr("id",function(d,i){
+		    		return "mapgraph_"+d.name+"_div_svg";
+		    	})
+		    	.attr("height",floor_div_height)
+				.attr("width",floor_div_width)
+			.append("rect")
+				.attr("height",floor_div_height)
+				.attr("width",floor_div_width)	 
+				.attr("fill",function(d,i){
+					if (i == 0)
+						return "brown";
+					else if (i == 1)
+						return "orange";
+					else if (i == 2)
+						return "yellow";
+				}).attr("opacity",0.2)
+				.on("click",function(d,i){
+					var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
+					var index = selected_floor_set.indexOf(d.name);
+					if (index >=0 )
+					{
+						d3.select(this).classed("selected_HVACmap_rect",false);
+						selected_floor_set.splice(index,1);
+						DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
+					}
+					else
+					{
+						d3.select(this).classed("selected_HVACmap_rect",true);
+						DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
+					}
+				})     
+				.on("mouseover",function(d,i){
 
-	    var F2_div = div.append("div").attr("id","F2_div").style("position","absolute")
-	    					.style("top",floor_div_height + 'px')
-	    					.style("height",floor_div_height + 'px')
-	    					.style("left",floor_div_left_padding + 'px')
-	    					.style("width",floor_div_width + 'px')
-	    var F2_div_svg = F2_div.append("svg").attr("id","mapgraph_F2_div_svg")
-			                .attr("height",floor_div_height)
-			                .attr("width",floor_div_width)
-		var floor2_rect = F2_div_svg.append("rect")
-			.datum({name:"F_2"})
-			.attr("height",floor_div_height)
-			.attr("width",floor_div_width)	             
-			.attr("fill","orange").attr("opacity",0.2)
-			.on("click",function(d,i){
-				var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
-				var index = selected_floor_set.indexOf(d.name);
-				if (index >=0 )
-				{
-					d3.select(this).classed("selected_HVACmap_rect",false);
-					selected_floor_set.splice(index,1);
-					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
-				}
-				else
-				{
-					d3.select(this).classed("selected_HVACmap_rect",true);
-					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
-				}
-			})
-					
+					_highlight_communication(d,i);
+				    function _highlight_communication(d,i)
+				    {
+				      	var floor_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.floor_HVACattr_set;
+						var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset(floor_HVACattr_set,[],[d.name],[])
+				      	DATA_CENTER.set_linechart_variable("highlight_floor_set",[d.name]);
+						DATA_CENTER.set_linechart_variable("highlight_attr_set",floor_HVACattr_set);
+						DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
+				    }
 
-	    var F1_div = div.append("div").attr("id","F1_div").style("position","absolute")	
-	    					.style("top",(floor_div_height+floor_div_height) + 'px')
-	    					.style("height",floor_div_height + 'px')
-	    					.style("left",floor_div_left_padding + 'px')
-	    					.style("width",floor_div_width + 'px')
-	    var F1_div_svg = F1_div.append("svg").attr("id","mapgraph_F1_div_svg")
-			                .attr("height",floor_div_height)
-			                .attr("width",floor_div_width)
-		var floor1_rect = F1_div_svg.append("rect")
-			.datum({name:"F_1"})
-			.attr("height",floor_div_height)
-			.attr("width",floor_div_width)	             
-			.attr("fill","yellow").attr("opacity",0.2)
-			.on("click",function(d,i){
-				var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
-				var index = selected_floor_set.indexOf(d.name);
-				if (index >=0 )
-				{
-					d3.select(this).classed("selected_HVACmap_rect",false);
-					selected_floor_set.splice(index,1);
-					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
-				}
-				else
-				{
-					d3.select(this).classed("selected_HVACmap_rect",true);
-					DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
-				}
-			})									
+				})
+				.on("mouseout",function(d,i){
+
+					_highlight_communication(d,i);
+				    function _highlight_communication(d,i)
+				    {
+				      	DATA_CENTER.set_linechart_variable("highlight_floor_set",[]);
+						DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
+						DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
+				    }
+
+				})
 
 
 	    //3.渲染floor的map
@@ -272,9 +295,29 @@ var HVACgraph_maps_view = {
 				      	.attr("fill", function(d) { return "blue"; })
 				      	.attr("opacity",0.5)
 				      	.on("mouseover",function(d,i){
+
+				      		_highlight_communication(d,i);
+				      		function _highlight_communication(d,i)
+				      		{
+				      			var HVACzone_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set;
+								var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset(HVACzone_HVACattr_set,[d.name],[],[])
+				      			DATA_CENTER.set_linechart_variable("highlight_HCAVzone_set",[d.name]);
+								DATA_CENTER.set_linechart_variable("highlight_attr_set",HVACzone_HVACattr_set);
+								DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
+				      		}
+
 				      		tip.show(d,i)
 				      	})
 				      	.on("mouseout",function(d,i){
+
+				      		_highlight_communication(d,i);
+				      		function _highlight_communication(d,i)
+				      		{
+					      		DATA_CENTER.set_linechart_variable("highlight_HCAVzone_set",[]);
+					      		DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
+					      		DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
+					      	}
+						
 				      		tip.hide(d,i)
 				      	})
 				      	.on("click",function(d,i){
@@ -293,7 +336,8 @@ var HVACgraph_maps_view = {
 								DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set.concat(d.name));
 							}
 							
-			      		});
+			      		})
+
 
     	}
 

@@ -6,6 +6,9 @@ var linechart_render_view = {
         "F_3_Z_1 Hazium Concentration":"f3z1-MC2.csv",
     },
 
+    //为折线图的大框设置最小尺寸，避免过小看不清楚
+    MINIMUM_LINECHART_RECT_HEIGHT : 80,
+
 	obsUpdate:function(message, data)
 	{
         if (  message == "set:selected_linechart_set"  )
@@ -23,8 +26,13 @@ var linechart_render_view = {
     {
         var width  = $("#"+divID).width();
         var height  = $("#"+divID).height();
-        var rect_width = width;
+        var rect_width = width-20;
         var rect_height = height/new_linechart_list.length-4;
+
+        if (rect_height < this.MINIMUM_LINECHART_RECT_HEIGHT)//避免尺寸过小看不清楚
+        {
+            rect_height = this.MINIMUM_LINECHART_RECT_HEIGHT;
+        }
 
         var btn_width = rect_width*0.04;
 
@@ -65,6 +73,9 @@ var linechart_render_view = {
 
         var enter_spans = enter.insert("span")
                 .attr("class","HVAClinechart-span")
+                .attr("id",function(d,i){
+                    return "HVAClinechart-span-"+linechart_render_view._compress_string(d);
+                })
                 .attr("value",function(d,i){
                     var buttonValue = new_linechart_list[i];
                     return buttonValue;
@@ -225,5 +236,28 @@ var linechart_render_view = {
         string = string.replace(/[^0-9 | ^a-z ]+/ig,"");
         string = string.replace(/\s/g, "");
         return string;
-    }
+    },
+
+    //将一个child的html移动到其father的下边的某个位置
+    //形如linechart_render_view._move_to("HVAClinechart-span-F3BATHEXHAUSTFanPower","linechart-renderplace","bottom")
+    _move_to:function(child_id,father_id,place)
+    {
+        var child=$("#"+child_id);
+        child.remove();
+        if (place == "top")
+        {
+            $("#"+father_id).prepend(child)
+        }
+        else if (place == "bottom")
+        {
+            $("#"+father_id).append(child)
+        }
+        else
+        {
+            console.warn("invalid place",place)
+        }
+    },
+
+
+
 }
