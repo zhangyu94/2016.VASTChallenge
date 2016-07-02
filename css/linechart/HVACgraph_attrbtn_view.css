@@ -1,20 +1,32 @@
 .HVACattrbtn-span{
     padding: 1px;
     margin: 3px !important;
-    border: solid 1px #111;
+    border: solid 2px #111;
     display:inline-block;
     border-radius: 3px;
     cursor: pointer;
 }
 
-/*
-.selected-HVACattrbtn-span{
-    background: red;
-    padding: 1px;
-    margin: 3px !important;
-    border: solid 1px #111;
-    display:inline-block;
-    border-radius: 3px;
-    cursor: pointer;
+.HVACzone_oridinary_attr-HVACattrbtn-span{
+    background: #74c476;
 }
-*/
+
+.HVACzone_hazium-HVACattrbtn-span{
+    background: green;
+}
+
+.building_attr-HVACattrbtn-span{
+    background: #AA50FF;
+}
+
+.floor_attr-HVACattrbtn-span{
+    background: #6070FF;
+}
+
+.click_selected-HVACattrbtn-span{
+    background: #FF7060;
+}
+
+.mouseover_selected-HVACattrbtn-span{
+     border: solid 2px #DDDD00;
+}

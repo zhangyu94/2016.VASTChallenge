@@ -19,7 +19,14 @@ var linechart_render_view = {
 
         if ( message == "set:highlight_linechart_set" )
         {
-
+            d3.selectAll(".HVAClinechart-btntitle-span")
+                .classed("mouseover_selected-HVAClinechart-btntitle-span",function(d,i){
+                    if (DATA_CENTER.linechart_variable.highlight_linechart_set.indexOf(d) >= 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                })
         }
 	},
     update_render:function(divID,new_linechart_list)

@@ -58,13 +58,13 @@ var HVACgraph_maps_view = {
 				var index = selected_building_set.indexOf(d.name);
 				if (index >=0 )
 				{
-					d3.select(this).classed("selected_HVACmap_rect",false);
+					d3.select(this).classed("click_selected-HVACmap-rect",false);
 					selected_building_set.splice(index,1);
 					DATA_CENTER.set_global_variable("selected_building_set",selected_building_set);
 				}
 				else
 				{
-					d3.select(this).classed("selected_HVACmap_rect",true);			
+					d3.select(this).classed("click_selected-HVACmap-rect",true);			
 					DATA_CENTER.set_global_variable("selected_building_set",selected_building_set.concat(d.name));
 				}
 			})
@@ -152,13 +152,13 @@ var HVACgraph_maps_view = {
 					var index = selected_floor_set.indexOf(d.name);
 					if (index >=0 )
 					{
-						d3.select(this).classed("selected_HVACmap_rect",false);
+						d3.select(this).classed("click_selected-HVACmap-rect",false);
 						selected_floor_set.splice(index,1);
 						DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
 					}
 					else
 					{
-						d3.select(this).classed("selected_HVACmap_rect",true);
+						d3.select(this).classed("click_selected-HVACmap-rect",true);
 						DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
 					}
 				})     
@@ -326,13 +326,13 @@ var HVACgraph_maps_view = {
 							
 							if (index >=0 )
 							{
-								d3.select(this).classed("selected_HVACmap_circle",false);
+								d3.select(this).classed("click_selected-HVACmap-circle",false);
 								selected_HVACzone_set.splice(index,1);
 								DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set);
 							}
 							else
 							{
-								d3.select(this).classed("selected_HVACmap_circle",true);
+								d3.select(this).classed("click_selected-HVACmap-circle",true);
 								DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set.concat(d.name));
 							}
 							

@@ -1,20 +1,12 @@
 var HVACgraph_attrbtn_view = {
-	COLOR_OF : {
-		HVACzone_oridinary_attr:"#74c476",
-		HVACzone_hazium:"green",
-		floor_attr:"#6070FF",
-		building_attr:"#AA50FF",
-
-		highlight_color:"#FF7060"
-	},
 	DIV_ID : "HVACgraph-attr-btn",
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 
 	rendered_attrbtn_set : [],
 
-	//输入一个属性的名字，根据这个属性的类别，以及HVACgraph_attrbtn_view.COLOR_OF，返回这个属性的颜色
-	//return "#...""
-	_cal_color:function(attr_name)
+	//输入一个属性的名字，返回这个属性的类别
+	//可能的返回值是HVACzone_oridinary_attr，HVACzone_hazium，floor_attr，building_attr
+	_cal_attr_type:function(attr_name)
 	{
 		//引用的全局变量
 		var HVACzone_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set;
@@ -25,29 +17,29 @@ var HVACgraph_attrbtn_view = {
 		{
 			if (attr_name != this.HAZIUM_ATTR_NAME)
 			{
-				return this.COLOR_OF["HVACzone_oridinary_attr"];
+				return "HVACzone_oridinary_attr";
 			}
 			else
 			{
-				return this.COLOR_OF["HVACzone_hazium"];
+				return "HVACzone_hazium";
 			}
 		}
 		else if (floor_HVACattr_set.indexOf(attr_name) >=0)
 		{
-			return this.COLOR_OF["floor_attr"];
+			return "floor_attr";
 		}
 		else if (building_HVACattr_set.indexOf(attr_name) >=0)
 		{
-			return this.COLOR_OF["building_attr"];
+			return "building_attr";
 		}
 		else
 		{
-			console.log("_cal_color invalid attr name")
+			console.log("_cal_attr_type invalid attr name")
 		}
 
 	},
 
-	//输入被选中的三类实体集合，返回需要画的按钮和每个按钮的颜色映射
+	//输入被选中的三类实体集合，返回需要画的按钮
 	//return一个attrbtn_set
 	_cal_attrbtnset:function(selected_HVACzone_set,selected_floor_set,selected_building_set)
 	{
@@ -144,6 +136,16 @@ var HVACgraph_attrbtn_view = {
 		if ( message == "set:highlight_attr_set" )
         {
 
+        	d3.selectAll(".HVACattrbtn-span")
+        		.classed("mouseover_selected-HVACattrbtn-span",function(d,i){
+        			if (DATA_CENTER.linechart_variable.highlight_attr_set.indexOf(d) >= 0)
+        			{
+        				return true;
+        			}
+        			return false;
+        		})
+
+        	
         }
 		
 	},
@@ -167,28 +169,27 @@ var HVACgraph_attrbtn_view = {
 			
 		var enter = update.enter();
 		var enter_span = enter.insert("span")
-				.attr("class","HVACattrbtn-span")
+				.attr("class",function(d,i){
+					var attr_type_class =  HVACgraph_attrbtn_view._cal_attr_type(d) + "-HVACattrbtn-span";
+					return "HVACattrbtn-span" + " " +attr_type_class;
+				})
 				.attr("value",function(d,i){
 					var buttonValue = new_attrbtn_list[i];
 					return buttonValue;
-				})
-				.style("background",function(d,i){
-					var background_color = HVACgraph_attrbtn_view._cal_color(d);
-					return background_color;
 				})
 				.on("click",function(d,i){
 					var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
 					var index = selected_attr_set.indexOf(d);
 					if (index >=0 )
 					{
-						d3.select(this).style("background",HVACgraph_attrbtn_view._cal_color(d));
+						d3.select(this).classed("click_selected-HVACattrbtn-span",false);
 
 						selected_attr_set.splice(index,1);
 						DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set);
 					}
 					else
 					{
-						d3.select(this).style("background",HVACgraph_attrbtn_view.COLOR_OF["highlight_color"]);	
+						d3.select(this).classed("click_selected-HVACattrbtn-span",true);
 
 						DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set.concat(d));
 					}

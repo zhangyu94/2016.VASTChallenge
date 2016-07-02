@@ -1,7 +1,20 @@
-.selected_HVACmap_rect{
+.click_selected-HVACmap-rect{
+	stroke: 2px #111;
 	fill:red;
 }
 
-.selected_HVACmap_circle{
+.click_selected-HVACmap-circle{
+	stroke: 2px #111;
 	fill:red;
 }
+
+/*
+.HVACattrbtn-span{
+    padding: 1px;
+    margin: 3px !important;
+    border: solid 2px #111;
+    display:inline-block;
+    border-radius: 3px;
+    cursor: pointer;
+}
+*/
