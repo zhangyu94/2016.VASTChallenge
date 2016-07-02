@@ -10,6 +10,6 @@ var bigmap_view = {
 	    var height  = $("#"+divID).height();
 
 	    var svg = d3.select("#"+divID).append("svg")
-	                .attr("class","mainsvg")        
+	                .attr("class","mainsvg")  
 	}
 }

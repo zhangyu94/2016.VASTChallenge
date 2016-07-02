@@ -98,6 +98,7 @@ function main(){
 	function display_trajectory_view()
 	{
 		ganttchart_view.render("trajectory-ganttchart");
+		proxgraph_maps_view.render("proxgraph-maps");
 	}
 
 }
