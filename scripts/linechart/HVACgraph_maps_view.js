@@ -1,4 +1,5 @@
 var HVACgraph_maps_view = {
+	FIRST_CALLED : true,
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 	
 	obsUpdate:function(message, data)
@@ -36,6 +37,8 @@ var HVACgraph_maps_view = {
 		var F2_HVAC_IMG_SRC = "img/VAST_EnergyZones_F2.jpg";
 		var F3_HVAC_IMG_SRC = "img/VAST_EnergyZones_F3.jpg";
 		//静态变量定义结束
+
+		this.FIRST_CALLED = false;
 
 
 		var div = d3.select("#"+divID);

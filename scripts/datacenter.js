@@ -15,6 +15,8 @@ var DATA_CENTER = {
 		selected_building_set:[],
 
 		selected_timepoint_set:[],
+		filter_start_timepoint:undefined,
+		filter_end_timepoint:undefined,
 
 		selected_card_set:[],
 		selected_person_set:[],		
@@ -208,8 +210,10 @@ var DATA_CENTER = {
 											DATA_CENTER.derived_data[d_file_name[0]] = data7;
 											DATA_CENTER.derived_data[d_file_name[1]] = data8;
 											DATA_CENTER.cal_derive_data();
+
+											callback_function();
 										})
-										callback_function();
+										
 									})
 
 									

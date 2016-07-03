@@ -11,7 +11,7 @@ var linechart_render_view = {
 
 	obsUpdate:function(message, data)
 	{
-        if (  message == "set:selected_linechart_set"  )
+        if ( message == "set:selected_linechart_set" )
         {
             var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
             this.update_render("linechart-renderplace",selected_linechart_set)
@@ -27,6 +27,12 @@ var linechart_render_view = {
                     }
                     return false;
                 })
+        }
+
+        if ( message == "set:filter_start_timepoint" || 
+             message == "set:filter_end_timepoint")
+        {
+            console.log(message)
         }
 	},
     update_render:function(divID,new_linechart_list)

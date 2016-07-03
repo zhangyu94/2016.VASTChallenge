@@ -12,7 +12,13 @@ var SUBJECT = {
             console.warn("WARN: the message posted is invalid!");
             return;
         }
-        console.log("Subject: " + message + ' post!' );
+
+
+        if (message.indexOf("highlight") < 0 )
+        {
+            console.log("Subject: " + message + ' post!' );
+        }
+        //console.log("Subject: " + message + ' post!' );
 
         for (var i = 0; i < this.observers.length; i++) {
             if (this.observers[i].obsUpdate)

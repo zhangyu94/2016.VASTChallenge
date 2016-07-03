@@ -9,12 +9,10 @@ body {
 
 /*选视图按钮*/
 .panelContainer{
-	margin:0.5%;
 	position:absolute;
-	top:8.5%;
-	height:6%;
-	width:99%;
-
+	left:20%;
+	top:15%;
+	height:100%;
 }
 .panelContainer > .pagination{
 	margin:0px;
@@ -26,9 +24,9 @@ body {
 /*linechart视图*/
 #linechartview-collection {
 	position:absolute;
-	top:15.5%;
-	height:84.5%;
-	width:100%;
+	top:9%;
+	height:80%;
+	width:99%;
 	float: left;
 }
 #linechartview-collection > .HVACgraphContainer {
@@ -51,9 +49,9 @@ body {
 }
 #linechartview-collection > .linechartContainer {
 	position:absolute;
-	left:21%;
+	left:20.5%;
 	height:100%;
-	width:78.5%;
+	width:79.5%;
 	float: left;
 	border: solid #ccc 1px;
 	border-radius: 5px;
@@ -67,6 +65,7 @@ body {
 	border: solid #ccc 1px;
 	border-radius: 5px;
 	background-color: #f8f8f8;
+	overflow-y:scroll;/*内容多时提供滚轮*/
 }
 #linechartview-collection > .linechartContainer > #linechart-line-btn{
 	position:absolute;
@@ -77,6 +76,7 @@ body {
 	border: solid #ccc 1px;
 	border-radius: 5px;
 	background-color: #f8f8f8;
+	overflow-y:scroll;/*内容多时提供滚轮*/
 }
 #linechartview-collection > .linechartContainer > #linechart-renderplace{
 	position:absolute;
@@ -91,12 +91,12 @@ body {
 }
 
 
-/*trajectory视图的右边一大块*/
+/*trajectory视图*/
 #trajectoryview-collection {
 	position:absolute;
-	top:15.5%;
-	height:84.5%;
-	width:100%;
+	top:9%;
+	height:80%;
+	width:99%;
 	float: left;
 }
 #trajectoryview-collection > .proxgraphContainer {
@@ -119,9 +119,9 @@ body {
 }
 #trajectoryview-collection > .trajectoryContainer {
 	position:absolute;
-	left:21%;
+	left:20.5%;
 	height:100%;
-	width:78.5%;
+	width:79.5%;
 	float: left;
 	border: solid #ccc 1px;
 	border-radius: 5px;
@@ -158,3 +158,29 @@ body {
 }
 
 
+/*timeline视图*/
+#timelineview-collection {
+	position:absolute;
+	top:90%;
+	height:10%;
+	width:99%;
+	float: left;
+}
+#timelineview-collection > .timelineContainer {
+	position:absolute;
+	height:100%;
+	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}
+#timelineview-collection > .timelineContainer > #timeline-renderplace{
+	position:absolute;
+	height:100%;
+	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+}

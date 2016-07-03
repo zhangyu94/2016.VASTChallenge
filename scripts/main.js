@@ -12,9 +12,12 @@ function main(){
 			"set:selected_room_set",
 			"set:selected_floor_set",
 			"set:selected_building_set",
-			"set:selected_timepoint_set",
 			"set:selected_card_set",
 			"set:selected_person_set",
+			"set:selected_timepoint_set",
+			
+			"set:filter_start_timepoint",
+			"set:filter_end_timepoint",
 
 			"set:highlight_attr_set",
 			"set:highlight_HVACzone_set",
@@ -82,16 +85,21 @@ function main(){
 
 	$("#linechartview").click();//先触发一下视图切换
 
+	timeline_view.render("timeline-renderplace")
+
 
 	//linechart视图调用的地方
 	function display_linechart_view()
 	{
-		HVACgraph_maps_view.render("HVACgraph-maps");
+		if (HVACgraph_maps_view.FIRST_CALLED)
+		{
+			HVACgraph_maps_view.render("HVACgraph-maps");
 
-		//让linechart可以sort
-		$( "#linechart-renderplace" ).sortable({
-			handle: ".HVAClinechart-btntitle-span",//btn作为sort的时候的把手
-		});
+			//让linechart可以sort
+			$( "#linechart-renderplace" ).sortable({
+				handle: ".HVAClinechart-btntitle-span",//btn作为sort的时候的把手
+			});
+		}
 	}
 
 	//trajectory视图调用的地方

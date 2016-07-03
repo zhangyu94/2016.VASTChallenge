@@ -2,6 +2,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>VAST Challenge</title>
+	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
 	<link rel="stylesheet" href="libs/bootstrap.min.css">
 
 	<link rel="stylesheet" href="css/index.css"><!--所有的view的视图整体框架的layout-->
@@ -50,6 +53,8 @@
 <script src="scripts/trajectory/bigmap_view.js"></script>
 <script src="scripts/trajectory/ganttchart_view.js"></script>
 <script src="scripts/trajectory/histogram_view.js"></script>
+<!--3. timeline相关的view-->
+<script src="scripts/timeline.js"></script>
 
 <!--datacenter-->
 <script src="scripts/datacenter.js"></script>
@@ -64,16 +69,14 @@
 	<div class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<strong class="navbar-brand">VAST Challenge</strong>
+			<div class="panelContainer">
+				<ul class="pagination mPosition typeBar">
+					<li class="" id="linechartviewli"><a id="linechartview">linechart</a></li>
+					<li class="" id="trajectoryviewli"><a id="trajectoryview">trajectory</a></li>
+				</ul>
+			</div>
 		</div>
 	</div>
-
-	<div class="panelContainer">
-		<ul class="pagination mPosition typeBar">
-			<li class="" id="linechartviewli"><a id="linechartview">linechart</a></li>
-			<li class="" id="trajectoryviewli"><a id="trajectoryview">trajectory</a></li>
-		</ul>
-	</div>
-
 
 	<!--第一个linechart视图相关的-->
 	<div class="view-collection" id="linechartview-collection">
@@ -105,6 +108,13 @@
 			<div id="trajectory-ganttchart">
 			</div>
 			<div id="trajectory-histogram">
+			</div>
+		</div>
+	</div>
+
+	<div class="special-view" id="timelineview-collection">
+		<div class="timelineContainer">
+			<div id="timeline-renderplace">
 			</div>
 		</div>
 	</div>
