@@ -133,7 +133,7 @@ var ganttchart_view = {
 		if(id != null) {
 			var chartData = this.personData[id]['fixRecords'];
 			console.log(chartData);
-			var  margin = { top: 10, right: 20, bottom: 20, left: 40 };
+			var  margin = { top: 10, right: 40, bottom: 20, left: 40 };
 			d3.select("#trajectory-ganntchart-main-body").selectAll("*").remove();
 
 			var w  = $("#trajectory-ganntchart-main-body").width() - margin.left - margin.right;
@@ -146,13 +146,13 @@ var ganttchart_view = {
 			          "translate(" + margin.left + "," + margin.top + ")");
 
 
-			var y = d3.scale.ordinal().rangeRoundBands([0, h], .05)
-				.domain(DATES);
+			var y2 = d3.scale.linear().range([0, h])
+				.domain([0,DATES.length]);
 			var x = d3.scale.linear().range([0,w]).domain([0, 24*3600*1000]);
 
 			var xTicks = [];
 			var xLabels = [];
-			for(var i=0;i<24;i++) {
+			for(var i=0;i<=24;i++) {
 				xTicks.push(i* 3600*1000);
 				xLabels.push(i);
 			}
@@ -163,10 +163,15 @@ var ganttchart_view = {
 			    .tickFormat(function(d,i){ return xLabels[i]; });
 
 			var displayDatas = DATES.map(function(d) {return d.substr(6);});
+			var yTicks =[];
+			for(var i=0;i<14;i++) {
+				yTicks.push(i + 0.5);
+			}
 			var yAxis = d3.svg.axis()
-			    .scale(y)
+			    .scale(y2)
 			    .orient("left")
-			    .tickValues(displayDatas);
+			    .tickValues(yTicks)
+			    .tickFormat(function(d,i) {return displayDatas[i]});
 
 
 			 svg.append("g")
@@ -179,7 +184,7 @@ var ganttchart_view = {
 			      .attr("transform", "translate(0," + h + ")")
 			      .call(xAxis);
 
-			console.log(chartData);
+			// console.log(chartData);
 			var allRecords = [];
 			for(var i =0;i<chartData.length;i++) {
 				var oneDayRecords = chartData[i]['records'];
@@ -196,8 +201,8 @@ var ganttchart_view = {
 			      .data(allRecords)
 			    .enter().append("rect")
 			      .attr("x", function(d) { return x(Timeutil.getTimeInOneDay(d.timestamp)); })
-			      .attr("height", y.rangeBand())
-			      .attr("y", function(d,i) { return y(d.day); })
+			      .attr("height", y2(1) * 0.6)
+			      .attr("y", function(d,i) { return y2( Timeutil.getDayIndex(d.day)) + y2(1) * 0.2; })
 			      .attr("width", function(d) { return x(d.duration*1000); })
 			      .attr("fill", function(d){
 			      	// console.log(self);
@@ -206,9 +211,66 @@ var ganttchart_view = {
 			      	return self.zoneColorScale(fz);
 			      })
 			      .attr("class","ganttBar");
-			// console.log(allRecords);
-			console.log(Timeutil.getStartTime());
-			// console.log(chartData);
+//short records
+			var shortRecords = allRecords.filter(function(d) {return d.duration < 5 *60;});
+			shortRecords.sort(function(a, b){
+				var keyA = a.timestamp;
+				var keyB = b.timestamp;
+				if(keyA < keyB) return -1;
+				if(keyA > keyB) return 1;
+				return 0;
+			});
+
+//calc offset
+			shortRecords[0].cntShort = 0;
+			for(var i=1;i<shortRecords.length;i++) {
+				if(shortRecords[i].timestamp - shortRecords[i - 1].timestamp  < 5* 60 * 1000){
+					shortRecords[i].cntShort =  shortRecords[i-1].cntShort + 1;
+				}
+				else
+					shortRecords[i].cntShort = 0;
+			}
+
+			shortRecords[shortRecords.length-1].shortLength =  shortRecords[shortRecords.length-1].cntShort + 1;
+			for(var i=shortRecords.length-1;i>0;i--) {
+				if(shortRecords[i].timestamp - shortRecords[i - 1].timestamp  < 5* 60 * 1000){
+					shortRecords[i - 1].shortLength =  shortRecords[i].shortLength;
+				}
+				else
+					shortRecords[i - 1].shortLength = shortRecords[i - 1].cntShort + 1;
+			}
+			console.log(shortRecords);
+
+			// shortRecords[shortRecords.length-1].cntOffset = ;
+
+			console.log(shortRecords);
+
+			svg.selectAll("ganttNode")
+			      .data(shortRecords)
+			    .enter().append("circle")
+			      .attr("cx", function(d) {
+			      	return x(Timeutil.getTimeInOneDay(d.timestamp)) + 6 * d.cntShort - 6 * d.shortLength / 2 + 3;
+			      })
+			      .attr("cy", function(d,i) { return y2( Timeutil.getDayIndex(d.day)) ; })
+			      .attr("fill", function(d){
+			      	// console.log(self);
+			      	var fz = "f" + d.floor + "z" + d.zone;
+			      	// console.log(d);
+			      	return self.zoneColorScale(fz);
+			      })
+			      .attr("r",3)
+			      .attr("class","ganttNode");
+
+//border
+			svg.append("rect").attr("class","border-rect")
+			.attr("x",0).attr("y", 0)
+			.attr("width", w).attr("height",h);
+
+			for(var i=1;i<DATES.length;i++) {
+				svg.append("line").attr("class","border-line")
+				.attr("x1", 0).attr("x2",w).attr("y1",y2(i)).attr("y2",y2(i));
+			}
+
 		}
 	},
 	updateSelectPeople:function(id){
