@@ -29,11 +29,6 @@ var linechart_render_view = {
                 })
         }
 
-        if ( message == "set:filter_start_timepoint" || 
-             message == "set:filter_end_timepoint")
-        {
-            console.log(message)
-        }
 	},
     update_render:function(divID,new_linechart_list)
     {
@@ -47,10 +42,10 @@ var linechart_render_view = {
             rect_height = this.MINIMUM_LINECHART_RECT_HEIGHT;
         }
 
-        var btn_width = rect_width*0.05;
+        var btn_width = rect_width*0.07;
 
         var linechart_width = rect_width-btn_width-12;
-        var linechart_height = rect_height-2;
+        var linechart_height = rect_height-4;
 
 
 
@@ -97,7 +92,7 @@ var linechart_render_view = {
                     return "height:"+rect_height+"px;" + "width:"+rect_width+"px;"
                 })
                 .on("click",function(d,i){
-                    console.log(d,i)
+                    //console.log(d,i)
                 })
                 .on("mouseover",function(d,i){
 
@@ -167,10 +162,32 @@ var linechart_render_view = {
                 })
                 .style("width",btn_width+"px")
                 .text(function(d,i){
-                    var buttonLabel = d.substring(0,btn_width/11);
+                    var buttonLabel = d.substring(0,btn_width/12);
                     return buttonLabel;
                 });
-        //2). 点击以后走到最上边
+        //2). 点击以后mark到timeline上
+        var enter_spans_btnspan_markspan = enter_spans_btnspan.append("span") 
+                .attr("class","HVAClinechart-btn-mark-span")
+                .attr("id",function(d,i){
+                    //id中不能带空格，否则后面选不中
+                    return "HVAClinechart-btn-mark-span-"+linechart_render_view._compress_string(d);
+                })
+                .attr("value",function(d,i){
+                    var buttonValue = new_linechart_list[i];
+                    return buttonValue;
+                })
+                .text("m")    
+                .on("click",function(d,i){
+                    var related_linechart_div_id = "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d)
+                    var chart = $("#"+related_linechart_div_id).highcharts();
+
+                    var added_timerange = {
+                        min:chart.xAxis[0].min,
+                        max:chart.xAxis[0].max,
+                    };
+                    DATA_CENTER.set_global_variable("added_timerange",added_timerange);
+                })
+        //3). 点击以后走到最上边
         var enter_spans_btnspan_topspan = enter_spans_btnspan.append("span") 
                 .attr("class","HVAClinechart-btn-top-span")
                 .attr("id",function(d,i){
@@ -187,7 +204,7 @@ var linechart_render_view = {
                     var father_id = "linechart-renderplace";
                     linechart_render_view._move_to(child_id,father_id,"top");//点击以后走到最上面
                 })
-        //3). 点击以后走到最下边
+        //4). 点击以后走到最下边
         var enter_spans_btnspan_bottomspan = enter_spans_btnspan.append("span") 
                 .attr("class","HVAClinechart-btn-bottom-span")
                 .attr("id",function(d,i){
@@ -204,6 +221,59 @@ var linechart_render_view = {
                     var father_id = "linechart-renderplace";
                     linechart_render_view._move_to(child_id,father_id,"bottom");//点击以后走到最下面
                 })
+        //5). 点击以后减去均值
+        var enter_spans_btnspan_minusaveragespan = enter_spans_btnspan.append("span") 
+                .attr("class","HVAClinechart-btn-minusaverage-span")
+                .attr("id",function(d,i){
+                    //id中不能带空格，否则后面选不中
+                    return "HVAClinechart-btn-minusaverage-span-"+linechart_render_view._compress_string(d);
+                })
+                .attr("value",function(d,i){
+                    var buttonValue = new_linechart_list[i];
+                    return buttonValue;
+                })
+                .text("n")    
+                .on("click",function(d,i){
+                    var related_linechart_div_id = "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d)
+                    var chart = $("#"+related_linechart_div_id).highcharts();
+
+                    var minus_average_data=[];
+                    
+                    var data = chart.series[0].data;
+                    
+                    var average = 0;
+                    for (var j=0;j<data.length;++j)
+                    {
+                        average+=data[j].y;
+                    }
+                    var average = average/data.length;
+
+                    var sigma = 0;
+                    for (var j=0;j<data.length;++j)
+                    {
+                        sigma+=(average - data[j].y)*(average - data[j].y);
+                    }
+                    sigma = sigma/data.length;
+                    sigma = Math.sqrt(sigma)
+
+                    for (var j=0;j<data.length;++j)
+                    {
+                        var y_value = (data[j].y-average);
+                        if (sigma != 0)
+                        {
+                            y_value = y_value/sigma;
+                        }
+                        var x_value = data[j].x;
+                        var temp = [x_value,y_value];
+                        minus_average_data.push(temp)
+                    }
+
+                    chart.series[0].remove(false);
+                    chart.addSeries({data:minus_average_data},false)
+                    chart.redraw();
+                    
+                })
+        
 
         var enter_spans_linechartspan = enter_spans.append("span")
                 .attr("class","HVAClinechart-linechart-span")

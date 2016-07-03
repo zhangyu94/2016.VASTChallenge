@@ -15,8 +15,18 @@ var DATA_CENTER = {
 		selected_building_set:[],
 
 		selected_timepoint_set:[],
-		filter_start_timepoint:undefined,
-		filter_end_timepoint:undefined,
+
+		//linechart中被选中的一段时间通过设置这个全局变量传达到其他view
+		selected_filter_timerange:{
+			min:undefined,
+			max:undefined,
+		},
+
+		//各种view中被选中的一段时间通过设置这个全局变量在linechart中添加感兴趣的时间
+		added_timerange:{
+			min:undefined,
+			max:undefined
+		},
 
 		selected_card_set:[],
 		selected_person_set:[],		

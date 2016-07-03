@@ -1,8 +1,46 @@
 var timeline_view = {
+	timeline_div_id : "timeline_div",
 	obsUpdate:function(message, data)
+	{
+		if (message == "set:added_timerange")
+		{
+			var added_timerange = DATA_CENTER.global_variable.added_timerange;
+			this._add_Plotband(added_timerange.min,added_timerange.max);
+		}
+	},
+
+	_add_Plotband:function(min,max)
+	{
+		var id = "PlotBand"+min+max;
+		console.log(id);
+		var chart = $("#"+this.timeline_div_id).highcharts();
+		var axis = chart.xAxis[0];
+		axis.addPlotBand({
+		   id: id,     // id 用于后续删除用
+		   color: '#FF7060',
+		   from: min,
+		   to: max,
+		   events: {             // 事件，支持 click、mouseover、mouseout、mousemove等事件
+	            click: function(e) {
+					axis.removePlotBand(this.id) 
+	            },
+	            mouseover: function(e) {
+	            },
+	            mouseout: function(e) {
+	            },
+	            mousemove: function(e) {
+	            }
+	        }
+		}); 
+
+
+	},
+
+	_remove_Plotband:function()
 	{
 
 	},
+
 	render:function(divID)
 	{
 		var div = d3.select("#"+divID);
@@ -26,7 +64,7 @@ var timeline_view = {
 		var timeline_div_height = div_height;
 		var timeline_div_leftpadding = display_div_width;
 
-		var timeline_div = div.append("div").attr("id","timeline_div").style("position","absolute")
+		var timeline_div = div.append("div").attr("id",this.timeline_div_id).style("position","absolute")
 							.style("left",timeline_div_leftpadding + 'px')
 	    					.style("width",timeline_div_width + 'px')
 	    					.style("height",timeline_div_height + 'px')
@@ -35,9 +73,10 @@ var timeline_view = {
 	    					.style("background-color","#f8f8f8")
 
 	    var xyAxis_data = this._initialize_xyAxis_data();
-	    var chart = this._plot_linechart("timeline_div",xyAxis_data)
+	    var chart = this._plot_linechart(this.timeline_div_id,xyAxis_data);
      
 	},
+
 	_render_btn:function(divID)
 	{
 		$( "#"+divID ).button({
@@ -55,7 +94,6 @@ var timeline_view = {
     {
         //使用的全局变量
         var data = DATA_CENTER.original_data["bldg-MC2.csv"];
-        console.log(data)
         //end 全局变量
 
         var xAxis_attr_name = "Date/Time";
@@ -63,6 +101,7 @@ var timeline_view = {
         for (var i=0;i<data.length;++i)
         {
             var y_value = 0;
+
             var x_value = new Date(data[i][xAxis_attr_name]);
             var x_value = x_value.getTime();
 

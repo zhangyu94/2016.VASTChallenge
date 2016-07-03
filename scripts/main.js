@@ -15,9 +15,10 @@ function main(){
 			"set:selected_card_set",
 			"set:selected_person_set",
 			"set:selected_timepoint_set",
-			
-			"set:filter_start_timepoint",
-			"set:filter_end_timepoint",
+			"set:selected_filter_timerange",
+
+			"set:added_timerange",
+
 
 			"set:highlight_attr_set",
 			"set:highlight_HVACzone_set",
@@ -44,6 +45,8 @@ function main(){
 			ganttchart_view,
 			histogram_view,
 			proxgraph_maps_view,
+
+			timeline_view,
 		];
 
 		for (var i=0;i<VIEW_COLLECTION.length;++i)
