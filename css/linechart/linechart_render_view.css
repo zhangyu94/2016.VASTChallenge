@@ -21,6 +21,34 @@
 
     cursor: pointer;
 }
+.HVAClinechart-span >.HVAClinechart-btntitle-span >.HVAClinechart-btn-top-span{
+    text-align:center;
+
+    vertical-align: top;
+
+    background: white;
+    padding: 0px;
+    margin: 1px;/* !important;*/
+    border: solid 2px #111;
+    display:inline-block;
+    border-radius: 0px;
+
+    cursor: pointer;
+}
+.HVAClinechart-span >.HVAClinechart-btntitle-span >.HVAClinechart-btn-bottom-span{
+    text-align:center;
+
+    vertical-align: top;
+
+    background: white;
+    padding: 0px;
+    margin: 1px;/* !important;*/
+    border: solid 2px #111;
+    display:inline-block;
+    border-radius: 0px;
+
+    cursor: pointer;
+}
 .HVAClinechart-span >.mouseover_selected-HVAClinechart-btntitle-span{
     border: solid 2px #DDDD00;
 }

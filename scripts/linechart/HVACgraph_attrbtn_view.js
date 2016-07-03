@@ -284,5 +284,22 @@ var HVACgraph_attrbtn_view = {
 
 		var exit = update.exit();
 		exit.remove();
+
+		$(function() {
+			console.log("reach")
+			var tooltips = $( ".HVACattrbtn-span" )
+				.tooltip({
+				    position: {
+				       	my:"center top-100%",
+				        at:"center top"
+				    },
+				    content:function(){
+				        var element = $(this);
+				        console.log(element);
+				        return "hhh"
+				    }
+				});
+		});
+
 	},
 }

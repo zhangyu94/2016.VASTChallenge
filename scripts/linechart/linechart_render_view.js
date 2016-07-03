@@ -41,7 +41,7 @@ var linechart_render_view = {
             rect_height = this.MINIMUM_LINECHART_RECT_HEIGHT;
         }
 
-        var btn_width = rect_width*0.04;
+        var btn_width = rect_width*0.05;
 
         var linechart_width = rect_width-btn_width-12;
         var linechart_height = rect_height-2;
@@ -147,6 +147,8 @@ var linechart_render_view = {
 
                 })
 
+        //小按钮们
+        //1). 带着名字的大框
         var enter_spans_btnspan = enter_spans.append("span")
                 .attr("class","HVAClinechart-btntitle-span")
                 .attr("id",function(d,i){
@@ -159,9 +161,43 @@ var linechart_render_view = {
                 })
                 .style("width",btn_width+"px")
                 .text(function(d,i){
-                    var buttonLabel = d.substring(0,btn_width/13);
+                    var buttonLabel = d.substring(0,btn_width/11);
                     return buttonLabel;
                 });
+        //2). 点击以后走到最上边
+        var enter_spans_btnspan_topspan = enter_spans_btnspan.append("span") 
+                .attr("class","HVAClinechart-btn-top-span")
+                .attr("id",function(d,i){
+                    //id中不能带空格，否则后面选不中
+                    return "HVAClinechart-btn-top-span-"+linechart_render_view._compress_string(d);
+                })
+                .attr("value",function(d,i){
+                    var buttonValue = new_linechart_list[i];
+                    return buttonValue;
+                })
+                .text("up")
+                .on("click",function(d,i){
+                    var child_id = "HVAClinechart-span-"+linechart_render_view._compress_string(d);
+                    var father_id = "linechart-renderplace";
+                    linechart_render_view._move_to(child_id,father_id,"top");//点击以后走到最上面
+                })
+        //3). 点击以后走到最下边
+        var enter_spans_btnspan_bottomspan = enter_spans_btnspan.append("span") 
+                .attr("class","HVAClinechart-btn-bottom-span")
+                .attr("id",function(d,i){
+                    //id中不能带空格，否则后面选不中
+                    return "HVAClinechart-btn-bottom-span-"+linechart_render_view._compress_string(d);
+                })
+                .attr("value",function(d,i){
+                    var buttonValue = new_linechart_list[i];
+                    return buttonValue;
+                })
+                .text("dn")    
+                .on("click",function(d,i){
+                    var child_id = "HVAClinechart-span-"+linechart_render_view._compress_string(d);
+                    var father_id = "linechart-renderplace";
+                    linechart_render_view._move_to(child_id,father_id,"bottom");//点击以后走到最下面
+                })
 
         var enter_spans_linechartspan = enter_spans.append("span")
                 .attr("class","HVAClinechart-linechart-span")
@@ -237,6 +273,8 @@ var linechart_render_view = {
        	var div = $("#"+divID);
         div.highcharts({
             chart: {
+                spacingBottom:0,//压缩掉下侧的空白
+
                 //width:width,
                 //height:height,
                 renderTo: divID,// 图表加载的位置
