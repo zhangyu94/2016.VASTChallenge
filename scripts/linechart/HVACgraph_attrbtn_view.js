@@ -238,17 +238,14 @@ var HVACgraph_attrbtn_view = {
 
 
 						//3.高亮linechart
-						var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-						var highlight_linechart_set = [];
-						for (var j=0;j < selected_linechart_set.length;++j)
-						{
-							var cur_linechart = selected_linechart_set[j];
-							if (cur_linechart.indexOf(d) >=0 )
-							{
-								highlight_linechart_set.push(cur_linechart);
-							}
-						}
+						var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
+						var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
+						var selected_building_set = DATA_CENTER.global_variable.selected_building_set;
+						//计算得到所有被渲染出来的linechartbtn
+						var highlight_linechart_set = linechart_linebtn_view._cal_attrbtnset([d],selected_HVACzone_set,selected_floor_set,selected_building_set)
+						//高亮所有被渲染出来的linechartbtn
 						DATA_CENTER.set_linechart_variable("highlight_linechart_set",highlight_linechart_set);
+
 					}
 
 				})

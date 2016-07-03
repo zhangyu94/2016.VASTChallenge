@@ -46,23 +46,28 @@ var HVACgraph_maps_view = {
 
 	    
 
+	    var all_dir_padding = div_width*0.02;
 	    //1.渲染building的div
-		var building_div_width = div_width*0.1;
-		var building_div_height = div_height;
-		var building_div_left_padding = div_width - building_div_width;
+
+		var building_div_all_width = div_width*0.1;
+		var building_div_content_width = building_div_all_width - 2*all_dir_padding;
+		var building_div_content_height = div_height - 2*all_dir_padding;
+		var building_div_left_padding = div_width - building_div_all_width + all_dir_padding ;
+
 		var building_div = div.append("div").attr("id","building_map_div").style("position","absolute")
-	    					.style("top",0 + 'px')
-	    					.style("height",building_div_height + 'px')
+	    					.style("top",all_dir_padding + 'px')
+	    					.style("height",building_div_content_height + 'px')
 	    					.style("left",building_div_left_padding + 'px')
-	    					.style("width",building_div_width + 'px')
+	    					.style("width",building_div_content_width + 'px')	    					
 	    var building_div_svg = building_div.append("svg").attr("id","mapgraph_building_div_svg")
-			                .attr("height",building_div_height)
-			                .attr("width",building_div_width)
-		var building_rect = building_div_svg.append("rect")
+				                .attr("height",building_div_content_height)
+				                .attr("width",building_div_content_width)
+		var building_div_g = building_div_svg.append("g")
+		var building_rect = building_div_g.append("rect")
 			.datum({name:"building"})
 			.attr("class","HVACmap-rect building-HVACmap-rect")
-			.attr("height",building_div_height)
-			.attr("width",building_div_width)	             
+			.attr("height",building_div_content_height)
+			.attr("width",building_div_content_width)	             
 			//.attr("fill","blue").attr("opacity",0.2)
 			.on("click",function(d,i){
 				var selected_building_set = DATA_CENTER.global_variable.selected_building_set;
@@ -103,15 +108,18 @@ var HVACgraph_maps_view = {
 				}
 
 			})
-
+		var building_text = building_div_g.append("text")
+							.attr("dx", "0.2em").attr("dy", "1.2em")//.style("text-anchor", "middle")
+						    .text("B");
 
 
 		//2. 渲染floor的div
-		var floor_div_width = div_width*0.1;
-		var floor_div_height = div_height/3;
-		var floor_div_left_padding = div_width - building_div_width - floor_div_width;
+		var floor_div_all_width = div_width*0.1;
+		var floor_div_content_width = floor_div_all_width - 2*all_dir_padding;
+		var floor_div_content_height = (div_height - 4*all_dir_padding)/3;
+		var floor_div_left_padding = div_width - building_div_all_width - floor_div_all_width + 2*all_dir_padding;
 
-		div.selectAll("span")
+		var floor_span = div.selectAll("span")
 			.data([
 				{name:"F_3"},
 				{name:"F_2"},
@@ -126,31 +134,32 @@ var HVACgraph_maps_view = {
 				.style("top",function(d,i){
 					if (d.name =="F_3")
 					{
-						return 0 + 'px'
+						return all_dir_padding + 'px'
 					}			
 					else if (d.name =="F_2")
 					{
-						return floor_div_height + 'px'
+						return (all_dir_padding+floor_div_content_height+all_dir_padding) + 'px'
 					}
 					else if (d.name =="F_1")
 					{
-						return (floor_div_height+floor_div_height) + 'px'
+						return (all_dir_padding+floor_div_content_height+all_dir_padding+floor_div_content_height+all_dir_padding) + 'px'
 					}
 
 				})
-				.style("height",floor_div_height + 'px')
+				.style("height",floor_div_content_height + 'px')
 		    	.style("left",floor_div_left_padding + 'px')
-		    	.style("width",floor_div_width + 'px')
-		    .append("svg")
+		    	.style("width",floor_div_content_width + 'px')
+		var floor_span_svg = floor_span.append("svg")
 		    	.attr("id",function(d,i){
 		    		return "mapgraph_"+d.name+"_div_svg";
 		    	})
-		    	.attr("height",floor_div_height)
-				.attr("width",floor_div_width)
-			.append("rect")
+		    	.attr("height",floor_div_content_height)
+				.attr("width",floor_div_content_width)
+		var floor_span_g = floor_span_svg.append("g")
+		var floor_rect = floor_span_g.append("rect")
 				.attr("class","HVACmap-rect floor-HVACmap-rect")
-				.attr("height",floor_div_height)
-				.attr("width",floor_div_width)	
+				.attr("height",floor_div_content_height)
+				.attr("width",floor_div_content_width)	
 				//.attr("fill",function(d,i){
 				//	if (i == 0)
 				//		return "brown";
@@ -198,35 +207,41 @@ var HVACgraph_maps_view = {
 				    }
 
 				})
+		var floor_text = floor_span_g.append("text")
+							.attr("dx", "0em").attr("dy", "1.2em")//.style("text-anchor", "middle")
+						    .text(function(d,i){
+						    	return linechart_render_view._compress_string(d.name);
+						    });
 
 
 	    //3.渲染floor的map
-	    var left_padding = (div_width-building_div_width-floor_div_width)*0.05;
-	    var width = (div_width-building_div_width-floor_div_width) - 2*left_padding;
-	    var top_padding = div_width*0.05;
-	    var height = (div_height - 4*top_padding)/3;
+	    //var left_padding = (div_width-building_div_all_width-floor_div_all_width)*0.05;
+	    var width = div_width-building_div_all_width-floor_div_all_width;
+	    var content_width = width - 2*all_dir_padding;
+	    var top_padding = all_dir_padding;
+	    var height = (div_height - 4*all_dir_padding)/3;
 
 	    var F3_map_graph_div = div.append("div")
 	    					.attr("id","F3_map_graph_div")
-	    					.style("top",top_padding + 'px')
+	    					.style("top",all_dir_padding + 'px')
 	    					.style("height",height + 'px')
-	    					.style("left",left_padding + 'px')
+	    					.style("left",all_dir_padding + 'px')
 	    					.style("width",width + 'px')
 	    					.style("position","absolute")
 
 	    var F2_map_graph_div = div.append("div")
 	    					.attr("id","F2_map_graph_div")
-	    					.style("top",(top_padding+height+top_padding) + 'px')
+	    					.style("top",(all_dir_padding+height+all_dir_padding) + 'px')
 	    					.style("height",height + 'px')
-	    					.style("left",left_padding + 'px')
+	    					.style("left",all_dir_padding + 'px')
 	    					.style("width",width + 'px')
 	    					.style("position","absolute")
 
 	    var F1_map_graph_div = div.append("div")
 	    					.attr("id","F1_map_graph_div")
-	    					.style("top",(top_padding+height+top_padding+height+top_padding) + 'px')
+	    					.style("top",(all_dir_padding+height+all_dir_padding+height+all_dir_padding) + 'px')
 	    					.style("height",height + 'px')
-	    					.style("left",left_padding + 'px')
+	    					.style("left",all_dir_padding + 'px')
 	    					.style("width",width + 'px')
 	    					.style("position","absolute")
 
@@ -297,98 +312,114 @@ var HVACgraph_maps_view = {
 
 		  	var node = floor_svg.selectAll(".HVACmap-circle")
 					    .data(graph.nodes)
-					    .enter().append("circle")
-					    .attr("class", function(d,i)
-					    {
-					    	if ( DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set.indexOf(d.name) >=0 )
-					    	{
-					    		return "HVACmap-circle hazium-HVACmap-circle";
-					    	}
-					    	else
-					    	{
-					    		return "HVACmap-circle ordinary-HVACmap-circle";
-					    	}
-					    		
+					    .enter()
+					    .append("g")
+					    .attr("transform",function(d){
+					    	return "translate(" + x_scale(d.x) + "," + y_scale(d.y) + ")";
 					    })
-				      	.attr("r", 6)
-				      	.attr("cx", function(d) { 
-				      		return x_scale(d.x); 
-				      	})
-				      	.attr("cy", function(d) { return y_scale(d.y); })
-				      	.on("mouseover",function(d,i){
 
-				      		_highlight_communication(d,i);
-				      		function _highlight_communication(d,i)
-				      		{
-				      			//1. 高亮地点
-				      			var highlight_place_set = [d.name];
-								DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",highlight_place_set);
+			var circle = node.append("circle")
+						    .attr("class", function(d,i)
+						    {
+						    	if ( DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set.indexOf(d.name) >=0 )
+						    	{
+						    		return "HVACmap-circle hazium-HVACmap-circle";
+						    	}
+						    	else
+						    	{
+						    		return "HVACmap-circle ordinary-HVACmap-circle";
+						    	}
+						    		
+						    })
+					      	.attr("r", 5.5)
+					      	.on("mouseover",function(d,i){
 
-
-								//2. 高亮属性
-				    			var highlight_attr_set = [];
-				    			var HVACzone_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set;
-				    			for (var j=0;j<HVACzone_HVACattr_set.length;++j)
-				    			{
-				    				var cur_HVACattr = HVACzone_HVACattr_set[j];
-				    				if (cur_HVACattr != HVACgraph_maps_view.HAZIUM_ATTR_NAME)
-				    				{
-				    					highlight_attr_set.push(cur_HVACattr)
-				    				}
-				    				else if (DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set.indexOf(d.name)>=0)
-				    				{
-				    					console.log("reach")
-				    					highlight_attr_set.push(cur_HVACattr);
-				    				}
-				    			}
-								DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
+					      		_highlight_communication(d,i);
+					      		function _highlight_communication(d,i)
+					      		{
+					      			//1. 高亮地点
+					      			var highlight_place_set = [d.name];
+									DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",highlight_place_set);
 
 
-								//3. 高亮linechart
-								var highlight_linechart_set = linechart_linebtn_view._cal_attrbtnset(HVACzone_HVACattr_set,[d.name],[],[])
-								DATA_CENTER.set_linechart_variable("highlight_linechart_set",highlight_linechart_set);
-				      		}
+									//2. 高亮属性
+					    			var highlight_attr_set = [];
+					    			var HVACzone_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set;
+					    			for (var j=0;j<HVACzone_HVACattr_set.length;++j)
+					    			{
+					    				var cur_HVACattr = HVACzone_HVACattr_set[j];
+					    				if (cur_HVACattr != HVACgraph_maps_view.HAZIUM_ATTR_NAME)
+					    				{
+					    					highlight_attr_set.push(cur_HVACattr)
+					    				}
+					    				else if (DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set.indexOf(d.name)>=0)
+					    				{
+					    					highlight_attr_set.push(cur_HVACattr);
+					    				}
+					    			}
+									DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
 
-				      		tip.show(d,i)
-				      	})
-				      	.on("mouseout",function(d,i){
 
-				      		_highlight_communication(d,i);
-				      		function _highlight_communication(d,i)
-				      		{
-				      			//1. 取消高亮地点
-					      		DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[]);
+									//3. 高亮linechart
+									var highlight_linechart_set = linechart_linebtn_view._cal_attrbtnset(HVACzone_HVACattr_set,[d.name],[],[])
+									DATA_CENTER.set_linechart_variable("highlight_linechart_set",highlight_linechart_set);
+					      		}
 
-					      		//2. 取消高亮属性
-					      		DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
+					      		tip.show(d,i)
+					      	})
+					      	.on("mouseout",function(d,i){
 
-					      		//3. 取消高亮linechart
-					      		DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
-					      	}
-						
-				      		tip.hide(d,i)
-				      	})
-				      	.on("click",function(d,i){
-				      		var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
-							var index = selected_HVACzone_set.indexOf(d.name);
+					      		_highlight_communication(d,i);
+					      		function _highlight_communication(d,i)
+					      		{
+					      			//1. 取消高亮地点
+						      		DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[]);
+
+						      		//2. 取消高亮属性
+						      		DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
+
+						      		//3. 取消高亮linechart
+						      		DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
+						      	}
 							
-							if (index >=0 )
-							{
-								d3.select(this).classed("click_selected-HVACmap-circle",false);
-								selected_HVACzone_set.splice(index,1);
-								DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set);
-							}
-							else
-							{
-								d3.select(this).classed("click_selected-HVACmap-circle",true);
-								DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set.concat(d.name));
-							}
-							
-			      		})
+					      		tip.hide(d,i)
+					      	})
+					      	.on("click",function(d,i){
+					      		var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
+								var index = selected_HVACzone_set.indexOf(d.name);
+								
+								if (index >=0 )
+								{
+									d3.select(this).classed("click_selected-HVACmap-circle",false);
+									selected_HVACzone_set.splice(index,1);
+									DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set);
+								}
+								else
+								{
+									d3.select(this).classed("click_selected-HVACmap-circle",true);
+									DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set.concat(d.name));
+								}
+								
+				      		})
 
+			var text = node.append("text")
+				      	.attr("dy", "1.2em")
+					    .style("text-anchor", "middle")
+					    .text(function(d) {
+					    	var name = HVACgraph_maps_view._HVACzone_name_to_abbreviation(d.name);
+					    	return name; 
+					    });
 
     	}
 
+	},
+
+	_HVACzone_name_to_abbreviation:function(HVACzone_name)
+	{
+		var compressed_name = linechart_render_view._compress_string(HVACzone_name);
+		var index = compressed_name.indexOf("Z");
+		var number = compressed_name.substring(index+1,compressed_name.length);
+		return number;
 	}
 
 }

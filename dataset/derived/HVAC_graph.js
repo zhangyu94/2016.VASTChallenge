@@ -45,7 +45,7 @@ var F3_HVAC_GRAPH = {
 			type:"HVAC_zone",
 			floor:3,
 			x:40,
-			y:93,
+			y:90,
 		},
 		{
 			name:"F_3_Z_7",
@@ -215,14 +215,14 @@ var F2_HVAC_GRAPH = {
 			type:"HVAC_zone",
 			floor:2,
 			x:95,
-			y:93,
+			y:90,
 		},
 		{
 			name:"F_2_Z_6",
 			type:"HVAC_zone",
 			floor:2,
 			x:45,
-			y:93,
+			y:90,
 		},
 		{
 			name:"F_2_Z_7",
@@ -433,7 +433,7 @@ var F1_HVAC_GRAPH = {
 			type:"HVAC_zone",
 			floor:1,
 			x:90,
-			y:93,
+			y:90,
 		},
 		{
 			name:"F_1_Z_5",
@@ -468,7 +468,7 @@ var F1_HVAC_GRAPH = {
 			type:"HVAC_zone",
 			floor:1,
 			x:32,
-			y:90,
+			y:89,
 		},
 	],
 	links:[
