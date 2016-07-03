@@ -132,7 +132,7 @@ var ganttchart_view = {
 		var id = this.selectPID;
 		if(id != null) {
 			var chartData = this.personData[id]['fixRecords'];
-			console.log(chartData);
+			// console.log(chartData);
 			var  margin = { top: 10, right: 40, bottom: 20, left: 40 };
 			d3.select("#trajectory-ganntchart-main-body").selectAll("*").remove();
 
@@ -195,7 +195,7 @@ var ganttchart_view = {
 					allRecords.push(record);
 				}
 			}
-			console.log(allRecords);
+			// console.log(allRecords);
 
 			svg.selectAll("ganttBar")
 			      .data(allRecords)
@@ -211,6 +211,20 @@ var ganttchart_view = {
 			      	return self.zoneColorScale(fz);
 			      })
 			      .attr("class","ganttBar");
+
+			$('.ganttBar').each(function() {
+		                $(this).tipsy({
+		                    gravity: "s",
+		                    html:true,
+		                    title:function(){
+		                    	var d = this.__data__;
+		                        var content = "f" + d.floor + "z" + d.zone + ": "
+		                        + new Date(d.timestamp).toString().substr(16,8) + "~"
+		                        + new Date(d.endtime).toString().substr(16,8);
+		                        return content;
+		                    },
+		                });
+		            });
 //short records
 			var shortRecords = allRecords.filter(function(d) {return d.duration < 5 *60;});
 			shortRecords.sort(function(a, b){
@@ -239,11 +253,29 @@ var ganttchart_view = {
 				else
 					shortRecords[i - 1].shortLength = shortRecords[i - 1].cntShort + 1;
 			}
-			console.log(shortRecords);
+			// console.log(shortRecords);
 
 			// shortRecords[shortRecords.length-1].cntOffset = ;
 
-			console.log(shortRecords);
+			var arc = d3.svg.symbol().type('triangle-down')
+			.size(15);
+
+
+			// svg.selectAll("ganttNode")
+			//       .data(shortRecords)
+			//     .enter().append("path")
+			//     .attr('d',arc)
+			//       .attr("fill", function(d){
+			//       	// console.log(self);
+			//       	var fz = "f" + d.floor + "z" + d.zone;
+			//       	// console.log(d);
+			//       	return self.zoneColorScale(fz);
+			//       })
+			//       .attr('transform',function(d,i){ return "translate("+
+			//       	(x(Timeutil.getTimeInOneDay(d.timestamp)) + 6 * d.cntShort - 6 * d.shortLength / 2 + 3)
+			//       	+ ","+( y2( Timeutil.getDayIndex(d.day)))+")"; })
+			//       .attr("class","ganttNode");
+
 
 			svg.selectAll("ganttNode")
 			      .data(shortRecords)
@@ -260,6 +292,21 @@ var ganttchart_view = {
 			      })
 			      .attr("r",3)
 			      .attr("class","ganttNode");
+			$('.ganttNode').each(function() {
+		                $(this).tipsy({
+		                    gravity: "s",
+		                    html:true,
+		                    title:function(){
+		                    	var d = this.__data__;
+		                      	var content = "f" + d.floor + "z" + d.zone + ": "
+		                        + new Date(d.timestamp).toString().substr(16,8) + "~"
+		                        + new Date(d.endtime).toString().substr(16,8);
+		                        return content;
+		                    },
+		                });
+		            });
+
+
 
 //border
 			svg.append("rect").attr("class","border-rect")
