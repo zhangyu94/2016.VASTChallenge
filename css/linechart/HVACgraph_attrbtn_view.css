@@ -10,15 +10,12 @@
 .HVACzone_oridinary_attr-HVACattrbtn-span{
     background: #74c476;
 }
-
 .HVACzone_hazium-HVACattrbtn-span{
     background: green;
 }
-
 .building_attr-HVACattrbtn-span{
     background: #AA50FF;
 }
-
 .floor_attr-HVACattrbtn-span{
     background: #6070FF;
 }
@@ -26,7 +23,20 @@
 .click_selected-HVACattrbtn-span{
     background: #FF7060;
 }
-
 .mouseover_selected-HVACattrbtn-span{
      border: solid 2px #DDDD00;
+}
+
+
+.HVACzone_oridinary_attr-HVACattrbtn-span-smallspans{
+    background: #74c476;
+}
+.HVACzone_hazium-HVACattrbtn-span-smallspans{
+    background: green;
+}
+.building_attr-HVACattrbtn-span-smallspans{
+    background: #AA50FF;
+}
+.floor_attr-HVACattrbtn-span-smallspans{
+    background: #6070FF;
 }

@@ -1,5 +1,5 @@
 var timeline_view = {
-	DISPLAY_RATE:3600,//播放的速度是现实速度的多少倍，单位ms
+	DISPLAY_RATE:60,//播放的速度是现实速度的多少倍
 	UPDATE_RATE:1000,//播放时每隔多久更新一次时间,单位ms
 
 	intervalid_handle:undefined,//用于保存setInterval
