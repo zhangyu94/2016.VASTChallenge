@@ -134,7 +134,7 @@ var linechart_linebtn_view = {
 		update.select("div")
             .select("span")
                 .text(function(d,i){
-                	var buttonLabel = new_linechartbtn_list[i].substring(0,rect_width/13);
+                	var buttonLabel = new_linechartbtn_list[i].substring(0,Math.max(rect_width/13,1));
                     return buttonLabel;
                 })
 
@@ -222,7 +222,7 @@ var linechart_linebtn_view = {
                     return buttonValue;
                 })
                 .text(function(d,i){
-                	var buttonLabel = new_linechartbtn_list[i].substring(0,rect_width/13);
+                	var buttonLabel = new_linechartbtn_list[i].substring(0,Math.max(rect_width/13,1));
                     return buttonLabel;
                 })
 

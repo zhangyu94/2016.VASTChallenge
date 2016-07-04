@@ -127,7 +127,6 @@ var timeline_view = {
 	    					.style("border","solid #ccc 1px")
 	    					.style("border-radius","5px")
 	    					.style("background-color","#f8f8f8")
-	    console.log(playbtn_div)
 
 	    //注意: $("#playbtn_div")和$(playbtn_div)在这里效果是不一样的!!!
 		$("#playbtn_div").button({
