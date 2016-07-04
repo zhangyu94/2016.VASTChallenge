@@ -43,6 +43,18 @@ var DATA_CENTER = {
 	},
 
 
+	timeline_variable : {
+		display_interval:1000,//播放更新间隔
+		display_rate:3600,//播放倍率
+		isplaying:false,//标记是否正在播放
+	},
+
+	set_timeline_variable : function(variable_name,value){
+		this.timeline_variable[variable_name] = value;
+		SUBJECT.notifyObserver("set:"+variable_name, value);
+	},
+
+
 	//linechart的几个子视图需要利用的全局变量
 	linechart_variable : {
 		highlight_attr_set:[],

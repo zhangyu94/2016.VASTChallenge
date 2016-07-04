@@ -8,6 +8,31 @@ body {
 }
 
 
+/*选全局变量按钮*/
+.globalvariableContainer{
+	position:absolute;
+	left:30%;
+	top:40%;
+	height:50%;
+	width:20%;
+}
+.globalvariableContainer > .displayinterval-btn{
+	position:absolute;
+	bottom:0%;
+	margin:0px;
+	width:40%;
+}
+.globalvariableContainer > .displayrate-btn{
+	position:absolute;
+	left:50%;
+	bottom:0%;
+	margin:0px;
+	width:40%;
+}
+
+
+
+
 /*选视图按钮*/
 .panelContainer{
 	position:absolute;

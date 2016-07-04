@@ -3,10 +3,9 @@
 	<meta charset="utf-8">
 	<title>VAST Challenge</title>
 	
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-
 	<link rel="stylesheet" href="libs/bootstrap.min.css">
 	<link rel="stylesheet" href="css/tipsy.css">
+	<link rel="stylesheet" href="css/jquery-ui.css">
 
 	<link rel="stylesheet" href="css/index.css"><!--所有的view的视图整体框架的layout-->
 
@@ -71,12 +70,39 @@
 	<div class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<strong class="navbar-brand">VAST Challenge</strong>
+
+
+			<div class="globalvariableContainer">
+				<ul class="pagination displayinterval-btn">
+	    				<label for="displayinterval-btn"></label>
+					    <select name="displayinterval-btn" id="displayinterval-btn">
+					      	<option>20ms</option>
+					      	<option>100ms</option>
+					      	<option>500ms</option>
+					      	<option selected="selected">1000ms</option>
+	    				</select>
+				</ul>
+				<ul class="pagination displayrate-btn">
+						<label for="displayrate-btn"></label>
+					    <select name="displayrate-btn" id="displayrate-btn">
+					      	<option>X 1</option>
+					      	<option>X 15</option>
+					      	<option>X 60</option>
+					      	<option selected="selected">X 3600</option>
+					      	<option>X 18000</option>
+					      	<option>X 86400</option>
+	    				</select>
+				</ul>
+			</div>
+
 			<div class="panelContainer">
-				<ul class="pagination mPosition typeBar">
+				<ul class="pagination">
 					<li class="" id="linechartviewli"><a id="linechartview">linechart</a></li>
 					<li class="" id="trajectoryviewli"><a id="trajectoryview">trajectory</a></li>
 				</ul>
 			</div>
+
+
 		</div>
 	</div>
 

@@ -1,6 +1,6 @@
 var timeline_view = {
-	DISPLAY_RATE:60,//播放的速度是现实速度的多少倍
-	UPDATE_RATE:1000,//播放时每隔多久更新一次时间,单位ms
+	DISPLAY_RATE:undefined,//3600,//播放的速度是现实速度的多少倍
+	DISPLAY_INTERVAL:undefined,//播放时每隔多久更新一次时间,单位ms
 
 	intervalid_handle:undefined,//用于保存setInterval
 	timeline_div_id : "timeline_div",
@@ -32,6 +32,26 @@ var timeline_view = {
 					});		
 			}
 		}
+
+		if (message == "set:display_rate")
+		{
+			this.DISPLAY_RATE = DATA_CENTER.timeline_variable.display_rate;
+		}
+
+		if (message == "set:display_interval")
+		{
+			if ( ! DATA_CENTER.timeline_variable.isplaying )
+	      	{
+	      		this.DISPLAY_INTERVAL = DATA_CENTER.timeline_variable.display_interval;
+	      	}
+	      	else
+	      	{
+	      		$("#playbtn_div").click();
+	      		this.DISPLAY_INTERVAL = DATA_CENTER.timeline_variable.display_interval;
+	      		$("#playbtn_div").click();
+	      	}
+		}
+
 	},
 
 	_add_Plotband:function(min,max)
@@ -92,9 +112,7 @@ var timeline_view = {
 	    					.style("background-color","#f8f8f8")
 
 	    var xyAxis_data = this._initialize_xyAxis_data();
-	    console.log(xyAxis_data)
 	    var chart = this._plot_linechart(this.timeline_div_id,xyAxis_data);
-     
 	},
 
 	_render_btngroup:function(divID)
@@ -107,7 +125,6 @@ var timeline_view = {
 
 	    var playbtn_div_width = div_width;
 		var playbtn_div_height = div_height*0.5;
-
 		var playbtn_div = div.append("div").attr("id","playbtn_div").style("position","absolute")
 	    					.style("width",playbtn_div_width + 'px')
 	    					.style("height",playbtn_div_height + 'px')
@@ -115,11 +132,9 @@ var timeline_view = {
 	    					.style("border-radius","5px")
 	    					.style("background-color","#f8f8f8")
 
-
 	    var stopbtn_div_width = div_width;
 	    var stopbtn_div_toppadding = div_height*0.5;
 		var stopbtn_div_height = div_height*0.5;
-
 		var stopbtn_div = div.append("div").attr("id","stopbtn_div").style("position","absolute")
 	    					.style("top",stopbtn_div_toppadding + 'px')
 	    					.style("width",stopbtn_div_width + 'px')
@@ -138,7 +153,10 @@ var timeline_view = {
 	    })
 	    .click(function() {
 	    	var options;
-	      	if ( $( this ).text() === "play" ) {
+
+	      	if ( ! DATA_CENTER.timeline_variable.isplaying )//之前是非播放状态。下面要转到播放状态
+	      	{
+	      		DATA_CENTER.set_timeline_variable("isplaying",true);
 	        	options = {
 		          	label: "pause",
 		          	icons: {
@@ -146,27 +164,31 @@ var timeline_view = {
 		          	}
 	        	};
 	        	var chart = $("#"+timeline_view.timeline_div_id).highcharts();
-	        	DATA_CENTER.set_global_variable("current_display_time",chart.xAxis[0].min);
+	        	
+	        	if (typeof(DATA_CENTER.global_variable.current_display_time) == "undefined" )
+	        		DATA_CENTER.set_global_variable("current_display_time",chart.xAxis[0].min);
 
+	        	if (typeof(timeline_view.DISPLAY_INTERVAL) == "undefined")
+	        		timeline_view.DISPLAY_INTERVAL = DATA_CENTER.timeline_variable.display_interval;
+	        	
 	        	timeline_view.intervalid_handle = setInterval(function() {
 	        		var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
 	        		if (typeof(DATA_CENTER.global_variable.current_display_time) == "undefined" )
-	        		{
-	        			console.warn("undefined display time");
-	        		}
-	        		var current_display_time = timeline_view.DISPLAY_RATE*timeline_view.UPDATE_RATE + DATA_CENTER.global_variable.current_display_time;
+						console.warn("undefined display time");
+
+	        		if (typeof(timeline_view.DISPLAY_RATE)=="undefined")
+	        			timeline_view.DISPLAY_RATE = DATA_CENTER.timeline_variable.display_rate;
+
+	        		var current_display_time = timeline_view.DISPLAY_RATE*timeline_view.DISPLAY_INTERVAL + DATA_CENTER.global_variable.current_display_time;
 
 	        		if (current_display_time <= chart.xAxis[0].max)
-	        		{
 	        			DATA_CENTER.set_global_variable("current_display_time",current_display_time);
-	        		}
 	        		else
-	        		{
 	        			$("#stopbtn_div").click();
-	        		}
-				}, timeline_view.UPDATE_RATE);
+				}, timeline_view.DISPLAY_INTERVAL);
 	      	} 
 	      	else {
+	      		DATA_CENTER.set_timeline_variable("isplaying",false);
 	        	options = {
 	          		label: "play",
 	          		icons: {
@@ -186,15 +208,22 @@ var timeline_view = {
 	      	}
 	    })
 	    .click(function() {
-	    	if ($( "#playbtn_div" ).text() === "pause")//如果处在播放状态中，先转到暂停，之后再stop
+	    	if (DATA_CENTER.timeline_variable.isplaying)//如果处在播放状态中，先转到暂停，之后再stop
 	    	{
-	    		$( "#playbtn_div" ).click();
+	    		options = {
+	          		label: "play",
+	          		icons: {
+	            		primary: "ui-icon-play"
+	          		}
+	        	};
+	        	$( "#playbtn_div" ).button( "option", options );
 	    	}
 	    	var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
-	    	//DATA_CENTER.set_global_variable("current_display_time",chart.xAxis[0].min);
-	    	DATA_CENTER.set_global_variable("current_display_time",undefined);
 	    	window.clearInterval(timeline_view.intervalid_handle);
+	    	DATA_CENTER.set_global_variable("current_display_time",undefined);
+	    	DATA_CENTER.set_timeline_variable("isplaying",false);
 	    })
+
 
 	},
 

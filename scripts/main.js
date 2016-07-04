@@ -16,11 +16,12 @@ function main(){
 			"set:selected_person_set",
 			"set:selected_timepoint_set",
 			"set:selected_filter_timerange",
-
 			"set:added_timerange",
-
 			"set:current_display_time",
 
+			"set:display_interval",
+			"set:display_rate",
+			"set:isplaying",
 
 			"set:highlight_attr_set",
 			"set:highlight_HVACzone_set",
@@ -58,10 +59,26 @@ function main(){
 	}
 
 
-
+	//绑定调时间有关常量的menu
+    $( "#displayinterval-btn" ).selectmenu({
+    	width:"100%",
+      	change: function( event, data ) {
+      		var data = data.item.value;
+      		var displayinterval = +data.slice(0,data.length-2);
+      		DATA_CENTER.set_timeline_variable("display_interval",displayinterval);
+      	},
+    });
+    $( "#displayrate-btn" ).selectmenu({
+		width:"100%",
+      	change: function( event, data ) {
+      		var data = data.item.value
+      		var displayrate = +data.slice(2,data.length);
+      		DATA_CENTER.set_timeline_variable("display_rate",displayrate);
+      	}
+    });
 
 	//绑定视图切换的btn的click
-	$(".panelContainer>.typeBar>li>a").click(function(){
+	$(".panelContainer>.pagination>li>a").click(function(){
 		var view_name = $(this).attr("id");
 		$(".panelContainer>.pagination>.active").removeClass("active");
 		$(".panelContainer>.pagination>"+"#" + view_name + "li").attr("class", "active");

@@ -197,7 +197,7 @@ var linechart_render_view = {
             $(this).tipsy({
                 gravity: "s",
                 html:true,
-                delayIn: 500,
+                //delayIn: 500,
                 title:function(){
                     var d = this.__data__;
 
@@ -479,6 +479,31 @@ var linechart_render_view = {
         {
             console.warn("invalid place",place)
         }
+
+        reset_tipsy();
+        function reset_tipsy(){
+            d3.selectAll(".tipsy").remove();
+            $('.HVAClinechart-btntitle-span').each(function() {
+                $(this).tipsy({
+                    gravity: "s",
+                    html:true,
+                    delayIn: 500,
+                    title:function(){
+                        var d = this.__data__;
+
+                        var place_attr = linechart_linebtn_view._parse_position_attr(d);
+                        var attr = place_attr.attr;
+                        var place = place_attr.place;
+                        var place_type = place_attr.place_type;
+
+                        var content =   "attr: " + "<span style='color:red'>" + attr + "</span>" + "</br>"+
+                                        "place: " + "<span style='color:red'>" + place + "</span>" + "</br>";
+                        return content;
+                    },
+                });
+            });
+        }
+
     },
 
 
