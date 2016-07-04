@@ -284,22 +284,53 @@ var HVACgraph_attrbtn_view = {
 
 		var exit = update.exit();
 		exit.remove();
-		
+
+
+		$('.HVACattrbtn-span').each(function() {
+		    $(this).tipsy({
+		    	gravity: "s",
+		    	html:true,
+		    	title:function(){
+		    		var d = this.__data__;
+
+		    		var content = 	"attr: " + "<span style='color:red'>" + d + "</span>";
+		    		return content;
+		    	},
+		    });
+		});
 /*
-		$(function() {
-			console.log("reach")
-			var tooltips = $( ".HVACattrbtn-span" )
-				.tooltip({
-				    position: {
-				       	my:"center top-100%",
-				        at:"center top"
-				    },
-				    content:function(){
-				        var element = $(this);
-				        console.log(element);
-				        return "hhh"
-				    }
-				});
+		$('.HVACattrbtn-span').each(function() {
+		    $(this).tipsy({
+		    	gravity: "s",
+		    	html:true,
+		    	title:function(){
+		    		var d = this.__data__;
+
+					var buttonLabel = attrs['name'] + ':' + liEles.length;
+					var buttonhtml = '<span class="object_span object_button_span <%=buttonType%>" id=<%=ID%> value=<%=buttonValue%> ><div style="position:relative"><i class="fa fa-times delete_icon hidden" groupid=<%=buttonValue%>></i><span class="object_title_span" value=<%=buttonValue%> > <%=buttonLabel%></span></div></span>'; //
+					var compiled = _.template(buttonhtml);
+
+					object_div.innerHTML = object_div.innerHTML + compiled({
+						buttonLabel: buttonLabel,
+						ID: 'object_span_' + iGroupId,
+						buttonValue: iGroupId,
+						buttonType: buttonType,
+					});
+					
+					//.object_button_span{
+					//    background: #74c476;
+					//    padding: 1px;
+					//    margin: 3px !important;
+					//    border: solid 1px #111;
+					//    display:inline-block;
+					//    border-radius: 3px;
+					//    cursor: pointer;
+					//}
+
+		    		var content = 	"attr: " + "<span style='color:red'>" + d + "</span>" + "</br>"+	
+		    		return content;
+		    	},
+		    });
 		});
 */
 

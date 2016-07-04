@@ -226,6 +226,28 @@ var linechart_linebtn_view = {
                     return buttonLabel;
                 })
 
+        $('.HVAClinechartbtn-span').each(function() {
+            $(this).tipsy({
+                gravity: "s",
+                html:true,
+                opacity:0.75,
+                delayIn: 500,
+                title:function(){
+                    var d = this.__data__;
+
+                    var place_attr = linechart_linebtn_view._parse_position_attr(d);
+                    var attr = place_attr.attr;
+                    var place = place_attr.place;
+                    var place_type = place_attr.place_type;
+
+                    var content =   "attr: " + "<span style='color:red'>" + attr + "</span>" + "</br>"+
+                                    "place: " + "<span style='color:red'>" + place + "</span>" + "</br>";
+                    return content;
+                },
+            });
+        });
+
+
 		var exit = update.exit();
 		exit.remove();
 	},

@@ -18,15 +18,19 @@ var timeline_view = {
 	        var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
 			
 	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
-			chart.xAxis[0].addPlotLine({           //在x轴上增加
-				    value:current_display_time,    //在值为current_display_time的地方
-				    width:1,                       //标示线的宽度为2px
-				    color: '#FF0000',              //标示线的颜色
-				    id: 'time-tick',               //标示线的id，在删除该标示线的时候需要该id标示
-					dashStyle:"shortdot",
 
-					zIndex:99,//值越大，显示的优先级越高
-				});		
+	        if (typeof(current_display_time)!=undefined)
+	        {
+				chart.xAxis[0].addPlotLine({           //在x轴上增加
+					    value:current_display_time,    //在值为current_display_time的地方
+					    width:1,                       //标示线的宽度为2px
+					    color: '#FF0000',              //标示线的颜色
+					    id: 'time-tick',               //标示线的id，在删除该标示线的时候需要该id标示
+						dashStyle:"shortdot",
+
+						zIndex:99,//值越大，显示的优先级越高
+					});		
+			}
 		}
 	},
 
@@ -188,7 +192,8 @@ var timeline_view = {
 	    		$( "#playbtn_div" ).click();
 	    	}
 	    	var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
-	    	DATA_CENTER.set_global_variable("current_display_time",chart.xAxis[0].min);
+	    	//DATA_CENTER.set_global_variable("current_display_time",chart.xAxis[0].min);
+	    	DATA_CENTER.set_global_variable("current_display_time",undefined);
 	    	window.clearInterval(timeline_view.intervalid_handle);
 	    })
 
@@ -265,6 +270,14 @@ var timeline_view = {
                     text:""
                 }
             },
+
+            tooltip: {
+	            pointFormatter: function() {
+	            	//直接去掉值的显示
+				    return ''//'<span style="color:{'+this.series.color+'}">u25CF</span> {'+
+				           //this.series.name+'}: <b>{'+this.y+'}</b><br/>.'
+				},
+			},
             
             series: [{
                 data: xyAxis_data

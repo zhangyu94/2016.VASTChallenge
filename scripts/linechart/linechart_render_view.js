@@ -29,6 +29,33 @@ var linechart_render_view = {
                 })
         }
 
+        if (message == "set:current_display_time")
+        {
+            var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
+            for (var i=0;i<selected_linechart_set.length;++i)
+            {
+                var cur_linechart_name = selected_linechart_set[i];
+                var cur_linechart_id = "HVAClinechart-linechart-span-div-"+this._compress_string(cur_linechart_name);
+
+                var current_display_time = DATA_CENTER.global_variable.current_display_time;
+                var chart = $("#"+cur_linechart_id).highcharts();    // Highcharts构造函数
+
+                chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
+                if (typeof(current_display_time)!=undefined)
+                {
+                    chart.xAxis[0].addPlotLine({           //在x轴上增加
+                        value:current_display_time,    //在值为current_display_time的地方
+                        width:1,                       //标示线的宽度为2px
+                        color: '#FF0000',              //标示线的颜色
+                        id: 'time-tick',               //标示线的id，在删除该标示线的时候需要该id标示
+                        dashStyle:"shortdot",
+
+                        zIndex:99,//值越大，显示的优先级越高
+                    });   
+                }  
+            }
+        }
+
 	},
     update_render:function(divID,new_linechart_list)
     {
@@ -165,6 +192,27 @@ var linechart_render_view = {
                     var buttonLabel = d.substring(0,btn_width/12);
                     return buttonLabel;
                 });
+
+        $('.HVAClinechart-btntitle-span').each(function() {
+            $(this).tipsy({
+                gravity: "s",
+                html:true,
+                delayIn: 500,
+                title:function(){
+                    var d = this.__data__;
+
+                    var place_attr = linechart_linebtn_view._parse_position_attr(d);
+                    var attr = place_attr.attr;
+                    var place = place_attr.place;
+                    var place_type = place_attr.place_type;
+
+                    var content =   "attr: " + "<span style='color:red'>" + attr + "</span>" + "</br>"+
+                                    "place: " + "<span style='color:red'>" + place + "</span>" + "</br>";
+                    return content;
+                },
+            });
+        });
+
         //2). 点击以后mark到timeline上
         var enter_spans_btnspan_markspan = enter_spans_btnspan.append("span") 
                 .attr("class","HVAClinechart-btn-mark-span")
@@ -301,7 +349,7 @@ var linechart_render_view = {
                     var xyAxis_data = linechart_render_view._get_xyAxis_data(yAxis_attr_name);
 
                     //调用完以后，highchart就绑定到这个div上了
-                    var chart = linechart_render_view._plot_linechart(divID,xyAxis_data);
+                    var chart = linechart_render_view._plot_linechart(divID,xyAxis_data,yAxis_attr_name);
                 });
 
 
@@ -339,7 +387,7 @@ var linechart_render_view = {
         return xyAxis_data;
     },
 
-	_plot_linechart:function(divID,xyAxis_data)
+	_plot_linechart:function(divID,xyAxis_data,yAxis_attr_name)
 	{
         d3.select("#"+divID).selectAll("*").remove()
 
@@ -395,7 +443,8 @@ var linechart_render_view = {
             },
             
             series: [{
-                data: xyAxis_data
+                name: yAxis_attr_name.substring(0,7),
+                data: xyAxis_data,
             }]
         });
 
