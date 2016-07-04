@@ -2,6 +2,7 @@ var timeline_view = {
 	DISPLAY_RATE:3600,//播放的速度是现实速度的多少倍，单位ms
 	UPDATE_RATE:1000,//播放时每隔多久更新一次时间,单位ms
 
+	intervalid_handle:undefined,//用于保存setInterval
 	timeline_div_id : "timeline_div",
 	obsUpdate:function(message, data)
 	{
@@ -72,7 +73,7 @@ var timeline_view = {
 	    					.style("border","solid #ccc 1px")
 	    					.style("border-radius","5px")
 	    					.style("background-color","#f8f8f8")
-	    this._render_btn("display_div");
+	    this._render_btngroup("display_div");
 
 	    var timeline_div_width = div_width - display_div_width;
 		var timeline_div_height = div_height;
@@ -92,9 +93,41 @@ var timeline_view = {
      
 	},
 
-	_render_btn:function(divID)
+	_render_btngroup:function(divID)
 	{
-		$( "#"+divID ).button({
+		var div = d3.select("#"+divID);
+		div.selectAll("*").remove()
+		
+	    var div_width  = $("#"+divID).width();
+	    var div_height  = $("#"+divID).height();
+
+	    var playbtn_div_width = div_width;
+		var playbtn_div_height = div_height*0.5;
+
+		var playbtn_div = div.append("div").attr("id","playbtn_div").style("position","absolute")
+	    					.style("width",playbtn_div_width + 'px')
+	    					.style("height",playbtn_div_height + 'px')
+	    					.style("border","solid #ccc 1px")
+	    					.style("border-radius","5px")
+	    					.style("background-color","#f8f8f8")
+
+
+	    var stopbtn_div_width = div_width;
+	    var stopbtn_div_toppadding = div_height*0.5;
+		var stopbtn_div_height = div_height*0.5;
+
+		var stopbtn_div = div.append("div").attr("id","stopbtn_div").style("position","absolute")
+	    					.style("top",stopbtn_div_toppadding + 'px')
+	    					.style("width",stopbtn_div_width + 'px')
+	    					.style("height",stopbtn_div_height + 'px')
+	    					.style("border","solid #ccc 1px")
+	    					.style("border-radius","5px")
+	    					.style("background-color","#f8f8f8")
+	    console.log(playbtn_div)
+
+	    //注意: $("#playbtn_div")和$(playbtn_div)在这里效果是不一样的!!!
+		$("#playbtn_div").button({
+	      	label: "play",
 	      	text: false,
 	      	icons: {
 	        	primary: "ui-icon-play"
@@ -109,6 +142,26 @@ var timeline_view = {
 		            	primary: "ui-icon-pause"
 		          	}
 	        	};
+	        	var chart = $("#"+timeline_view.timeline_div_id).highcharts();
+	        	DATA_CENTER.set_global_variable("current_display_time",chart.xAxis[0].min);
+
+	        	timeline_view.intervalid_handle = setInterval(function() {
+	        		var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
+	        		if (typeof(DATA_CENTER.global_variable.current_display_time) == "undefined" )
+	        		{
+	        			console.warn("undefined display time");
+	        		}
+	        		var current_display_time = timeline_view.DISPLAY_RATE*timeline_view.UPDATE_RATE + DATA_CENTER.global_variable.current_display_time;
+
+	        		if (current_display_time <= chart.xAxis[0].max)
+	        		{
+	        			DATA_CENTER.set_global_variable("current_display_time",current_display_time);
+	        		}
+	        		else
+	        		{
+	        			$("#stopbtn_div").click();
+	        		}
+				}, timeline_view.UPDATE_RATE);
 	      	} 
 	      	else {
 	        	options = {
@@ -117,33 +170,28 @@ var timeline_view = {
 	            		primary: "ui-icon-play"
 	          		}
 	        	};
-
-
-	        	
-
-	        	setInterval(function() {
-	        		if (typeof(DATA_CENTER.global_variable.current_display_time) == "undefined" )
-	        		{
-	        			var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
-						DATA_CENTER.set_global_variable("current_display_time",chart.xAxis[0].dataMin);
-	        		}
-	        		else
-	        		{
-	        			var current_display_time = timeline_view.DISPLAY_RATE*timeline_view.UPDATE_RATE + DATA_CENTER.global_variable.current_display_time;
-	        			DATA_CENTER.set_global_variable("current_display_time",current_display_time);
-	        		}
-				}, timeline_view.UPDATE_RATE);
-
-	        	
-	        	
-
-	        	
-
-
-
+	        	window.clearInterval(timeline_view.intervalid_handle);
 	      	}
 	      	$( this ).button( "option", options );
 	    });
+
+
+		$("#stopbtn_div").button({
+	      	text: false,
+	      	icons: {
+	        	primary: "ui-icon-stop"
+	      	}
+	    })
+	    .click(function() {
+	    	if ($( "#playbtn_div" ).text() === "pause")//如果处在播放状态中，先转到暂停，之后再stop
+	    	{
+	    		$( "#playbtn_div" ).click();
+	    	}
+	    	var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
+	    	DATA_CENTER.set_global_variable("current_display_time",chart.xAxis[0].min);
+	    	window.clearInterval(timeline_view.intervalid_handle);
+	    })
+
 	},
 
 	_initialize_xyAxis_data:function()
