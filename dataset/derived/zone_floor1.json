@@ -26,9 +26,9 @@
 	{
 		"name": "zone4",
 		"floor": 1,
-		"x": 45,
+		"x": 80,
 		"y": 56,
-		"xLength": 8,
+		"xLength": 13,
 		"yLength": 10
 	},
 	{

@@ -1,0 +1,50 @@
+[
+	{
+		"name":"zone1",
+		"floor": 1,
+		"x":49,
+		"y":26,
+		"xLength":8,
+		"yLength":5
+	},
+	{
+		"name":"zone2",
+		"floor": 1,
+		"x": 106,
+		"y": 21,
+		"xLength":20,
+		"yLength":20
+	},
+	{
+		"name": "zone3",
+		"floor": 1,
+		"x": 16,
+		"y": 50,
+		"xLength":16,
+		"yLength":16
+	},
+	{
+		"name": "zone4",
+		"floor": 1,
+		"x": 80,
+		"y": 56,
+		"xLength": 13,
+		"yLength": 10
+	},
+	{
+		"name": "zone5",
+		"floor": 1,
+		"x": 162,
+		"y": 55,
+		"xLength": 28,
+		"yLength": 55
+	},
+	{
+		"name": "zone6",
+		"floor": 1,
+		"x": 20,
+		"y": 8,
+		"xLength": 20, 
+		"yLength": 8
+	}
+]

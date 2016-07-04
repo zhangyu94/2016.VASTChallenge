@@ -118,7 +118,7 @@ var bigmap_view = {
 		    return [value];
 		});
 		var personInZone = [];
-		var floorNum = 1;
+		var floorNum = DATA_CENTER.global_variable.selected_floor;
 		for(var i = 0;i < personArray.length;i++){
 			personInZone[i] = new Object();
 			personInZone[i].personName = personArray[i].fixRecords[0].records[0]["prox-id"];

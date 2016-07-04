@@ -1,0 +1,58 @@
+[
+	{
+		"name":"zone1",
+		"floor": 1,
+		"x":49,
+		"y":26,
+		"xLength":8,
+		"yLength":5
+	},
+	{
+		"name":"zone2",
+		"floor": 1,
+		"x": 21,
+		"y": 21,
+		"xLength":16,
+		"yLength":11
+	},
+	{
+		"name": "zone3",
+		"floor": 1,
+		"x": 152,
+		"y": 8,
+		"xLength":10,
+		"yLength":8
+	},
+	{
+		"name": "zone4",
+		"floor": 1,
+		"x": 80,
+		"y": 56,
+		"xLength": 13,
+		"yLength": 10
+	},
+	{
+		"name": "zone5",
+		"floor": 1,
+		"x": 29,
+		"y": 77,
+		"xLength": 8,
+		"yLength": 13
+	},
+	{
+		"name": "zone6",
+		"floor": 1,
+		"x": 119,
+		"y": 90,
+		"xLength": 44, 
+		"yLength": 24
+	},
+	{
+		"name": "zone7",
+		"floor": 1,
+		"x": 114,
+		"y": 26,
+		"xLength": 4,
+		"yLength": 5
+	}
+]
