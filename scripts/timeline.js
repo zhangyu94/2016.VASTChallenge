@@ -265,9 +265,12 @@ var timeline_view = {
             },
             
             yAxis: {
+            	labels:{
+            		enabled:false
+            	},
                 title:{
                     text:""
-                }
+                },
             },
 
             tooltip: {

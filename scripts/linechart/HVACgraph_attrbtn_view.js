@@ -345,7 +345,14 @@ var HVACgraph_attrbtn_view = {
 		});
 
 	},
-
+	hide_all_smallspans:function()
+	{
+		$("."+ this.DIV_CLASS_OF_SMALLSPANS).css("display","none");
+	},
+	show_all_smallspans:function()
+	{
+		$("."+ this.DIV_CLASS_OF_SMALLSPANS).css("display","block");
+	},
 	_update_render_smallspans:function(attr_name,left,top,piece_width,height)
 	{
 		var place_set = _cal_place_set(attr_name);

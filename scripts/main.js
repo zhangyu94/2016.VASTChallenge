@@ -75,12 +75,14 @@ function main(){
 		if (view_name == "trajectoryview")
 		{
 			$("#trajectoryview-collection").css("display","block");
+			HVACgraph_attrbtn_view.hide_all_smallspans();
 			display_trajectory_view();
 		}
 		else if (view_name == "linechartview")
 		{
 			$("#linechartview-collection").css("display","block");
 			display_linechart_view();
+			HVACgraph_attrbtn_view.show_all_smallspans();
 		}
 		else
 		{
