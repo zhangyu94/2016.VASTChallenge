@@ -112,13 +112,17 @@ var bigmap_view = {
 	updateView: function(divID, globalTime){
 		//存储当前的人在哪一个zone里面
 		var globalTime = +globalTime;
-		var zoneData = DATA_CENTER.derived_data['zone.json']; 
+		var zoneDataArray = [];
+		zoneDataArray[0] = DATA_CENTER.derived_data['zone_floor1.json']; 
+		zoneDataArray[1] = DATA_CENTER.derived_data['zone_floor2.json'];
+		zoneDataArray[2] = DATA_CENTER.derived_data['zone_floor3.json'];
 		var personData = DATA_CENTER.derived_data['person.json']; 
 		var personArray = $.map(personData, function(value, index) {
 		    return [value];
 		});
 		var personInZone = [];
 		var floorNum = DATA_CENTER.global_variable.selected_floor;
+		var zoneData = zoneDataArray[floorNum - 1];
 		for(var i = 0;i < personArray.length;i++){
 			personInZone[i] = new Object();
 			personInZone[i].personName = personArray[i].fixRecords[0].records[0]["prox-id"];
