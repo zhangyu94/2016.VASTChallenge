@@ -1,1 +1,1478 @@
-[{"name":"Main Entr","floor":1,"doornum":1000,"xlength":40,"ylength":95,"proxZone":"1","energyZone":"3","x":"150","y":"0"},{"name":"Office","floor":1,"doornum":1010,"xlength":20,"ylength":16,"proxZone":"7","energyZone":"4","x":"150","y":"95"},{"name":"Office","floor":1,"doornum":1020,"xlength":20,"ylength":16,"proxZone":"8","energyZone":"4","x":"170","y":"95"},{"name":"Conf","floor":1,"doornum":1030,"xlength":44,"ylength":24,"proxZone":"6","energyZone":"5","x":"75","y":"66"},{"name":"Toilet","floor":1,"doornum":1040,"xlength":26,"ylength":20,"proxZone":"1","energyZone":"6","x":"93","y":"46"},{"name":"Mech/Elev","floor":1,"xlength":26,"ylength":20,"proxZone":"4","energyZone":"6","x":"67","y":"46"},{"name":"Lg Meeting","floor":1,"doornum":1050,"xlength":75,"ylength":36,"proxZone":"5","energyZone":"2","x":"59","y":"0"},{"name":"Deli","floor":1,"doornum":1060,"xlength":48,"ylength":40,"proxZone":"2","energyZone":"1","x":"0","y":"0"},{"name":"Office","floor":1,"doornum":1070,"xlength":16,"ylength":10,"proxZone":"1","energyZone":"7","x":"0","y":"40"},{"name":"Loading","floor":1,"doornum":1080,"xlength":16,"ylength":41,"proxZone":"3","energyZone":"7","x":"0","y":"50"},{"name":"Office","floor":1,"doornum":1090,"xlength":16,"ylength":20,"proxZone":"1","energyZone":"7","x":"0","y":"91"},{"name":"Office","floor":1,"doornum":1100,"xlength":12,"ylength":16,"proxZone":"1","energyZone":"7","x":"16","y":"95"},{"name":"Server","floor":1,"doornum":1110,"xlength":20,"ylength":16,"proxZone":"1","energyZone":"7","x":"28","y":"95"},{"name":"Stairs","floor":1,"xlength":9,"ylength":20,"proxZone":"4","x":"141","y":"46"},{"name":"Elevators and stairs","floor":1,"xlength":16,"ylength":20,"proxZone":"4","x":"37","y":"46"},{"name":"Corridor1","floor":1,"proxZone":"1","energyZone":"8A"},{"name":"Corridor2","floor":1,"proxZone":"1","energyZone":"8B"},{"name":"Office","floor":2,"doornum":2100,"xlength":20,"ylength":16,"proxZone":"2","energyZone":"1","x":"0","y":"0"},{"name":"Office","floor":2,"doornum":2110,"xlength":12,"ylength":16,"proxZone":"2","energyZone":"2","x":"20","y":"0"},{"name":"Office","floor":2,"doornum":2120,"xlength":20,"ylength":16,"proxZone":"1","energyZone":"2","x":"32","y":"0"},{"name":"Office","floor":2,"doornum":2125,"xlength":10,"ylength":16,"proxZone":"1","energyZone":"2","x":"52","y":"0"},{"name":"Office","floor":2,"doornum":2130,"xlength":10,"ylength":16,"proxZone":"1","energyZone":"2","x":"62","y":"0"},{"name":"Office","floor":2,"doornum":2135,"xlength":10,"ylength":16,"proxZone":"1","energyZone":"2","x":"72","y":"0"},{"name":"Office","floor":2,"doornum":2140,"xlength":10,"ylength":16,"proxZone":"1","energyZone":"2","x":"82","y":"0"},{"name":"Office","floor":2,"doornum":2145,"xlength":10,"ylength":16,"proxZone":"7","energyZone":"2","x":"92","y":"0"},{"name":"Office","floor":2,"doornum":2150,"xlength":10,"ylength":16,"proxZone":"7","energyZone":"2","x":"102","y":"0"},{"name":"Office","floor":2,"doornum":2155,"xlength":10,"ylength":16,"proxZone":"7","energyZone":"2","x":"112","y":"0"},{"name":"Office","floor":2,"doornum":2160,"xlength":10,"ylength":16,"proxZone":"7","energyZone":"2","x":"122","y":"0"},{"name":"Office","floor":2,"doornum":2165,"xlength":10,"ylength":16,"proxZone":"7","energyZone":"2","x":"132","y":"0"},{"name":"Office","floor":2,"doornum":2170,"xlength":20,"ylength":16,"proxZone":"3","energyZone":"2","x":"142","y":"0"},{"name":"Office","floor":2,"doornum":2175,"xlength":12,"ylength":16,"proxZone":"7","energyZone":"2","x":"162","y":"0"},{"name":"Office","floor":2,"doornum":2200,"xlength":16,"ylength":20,"proxZone":"7","energyZone":"3","x":"174","y":"0"},{"name":"Office","floor":2,"doornum":2210,"xlength":16,"ylength":10,"proxZone":"7","energyZone":"4","x":"174","y":"20"},{"name":"Office","floor":2,"doornum":2220,"xlength":16,"ylength":10,"proxZone":"7","energyZone":"4","x":"174","y":"30"},{"name":"Office","floor":2,"doornum":2230,"xlength":16,"ylength":10,"proxZone":"7","energyZone":"4","x":"174","y":"40"},{"name":"Office","floor":2,"doornum":2240,"xlength":16,"ylength":10,"proxZone":"7","energyZone":"4","x":"174","y":"50"},{"name":"Office","floor":2,"doornum":2250,"xlength":16,"ylength":10,"proxZone":"6","energyZone":"4","x":"174","y":"60"},{"name":"Office","floor":2,"doornum":2260,"xlength":16,"ylength":10,"proxZone":"6","energyZone":"4","x":"174","y":"70"},{"name":"Office","floor":2,"doornum":2270,"xlength":16,"ylength":15,"proxZone":"6","energyZone":"4","x":"174","y":"80"},{"name":"Office","floor":2,"doornum":2300,"xlength":20,"ylength":16,"proxZone":"6","energyZone":"5","x":"170","y":"95"},{"name":"Office","floor":2,"doornum":2310,"xlength":12,"ylength":16,"proxZone":"6","energyZone":"6","x":"158","y":"95"},{"name":"Office","floor":2,"doornum":2320,"xlength":20,"ylength":16,"proxZone":"6","energyZone":"6","x":"138","y":"95"},{"name":"Office","floor":2,"doornum":2340,"xlength":10,"ylength":16,"proxZone":"6","energyZone":"6","x":"128","y":"95"},{"name":"Office","floor":2,"doornum":2345,"xlength":10,"ylength":16,"proxZone":"6","energyZone":"6","x":"118","y":"95"},{"name":"Office","floor":2,"doornum":2350,"xlength":10,"ylength":16,"proxZone":"6","energyZone":"6","x":"108","y":"95"},{"name":"Office","floor":2,"doornum":2355,"xlength":20,"ylength":16,"proxZone":"6","energyZone":"6","x":"88","y":"95"},{"name":"Office","floor":2,"doornum":2360,"xlength":10,"ylength":16,"proxZone":"6","energyZone":"6","x":"78","y":"95"},{"name":"Conf","floor":2,"doornum":2365,"xlength":30,"ylength":16,"proxZone":"1","energyZone":"6","x":"48","y":"95"},{"name":"Office","floor":2,"doornum":2370,"xlength":10,"ylength":16,"proxZone":"2","energyZone":"6","x":"38","y":"95"},{"name":"Office","floor":2,"doornum":2375,"xlength":10,"ylength":16,"proxZone":"2","energyZone":"6","x":"28","y":"95"},{"name":"Office","floor":2,"doornum":2380,"xlength":12,"ylength":16,"proxZone":"2","energyZone":"6","x":"16","y":"95"},{"name":"Office","floor":2,"doornum":2400,"xlength":16,"ylength":20,"proxZone":"2","energyZone":"7","x":"0","y":"91"},{"name":"Office","floor":2,"doornum":2410,"xlength":16,"ylength":12,"proxZone":"2","energyZone":"8","x":"0","y":"79"},{"name":"Office","floor":2,"doornum":2420,"xlength":16,"ylength":10,"proxZone":"2","energyZone":"8","x":"0","y":"69"},{"name":"Office","floor":2,"doornum":2430,"xlength":16,"ylength":10,"proxZone":"2","energyZone":"8","x":"0","y":"59"},{"name":"Office","floor":2,"doornum":2440,"xlength":16,"ylength":10,"proxZone":"2","energyZone":"8","x":"0","y":"49"},{"name":"Office","floor":2,"doornum":2450,"xlength":16,"ylength":10,"proxZone":"2","energyZone":"8","x":"0","y":"39"},{"name":"Office","floor":2,"doornum":2460,"xlength":16,"ylength":9,"proxZone":"2","energyZone":"8","x":"0","y":"30"},{"name":"Office","floor":2,"doornum":2470,"xlength":16,"ylength":14,"proxZone":"2","energyZone":"8","x":"0","y":"16"},{"name":"Office","floor":2,"doornum":2500,"xlength":16,"ylength":26,"proxZone":"5","energyZone":"9","x":"21","y":"64"},{"name":"Office","floor":2,"doornum":2505,"xlength":16,"ylength":10,"proxZone":"2","energyZone":"9","x":"21","y":"54"},{"name":"Office","floor":2,"doornum":2510,"xlength":16,"ylength":10,"proxZone":"2","energyZone":"9","x":"21","y":"44"},{"name":"Office","floor":2,"doornum":2515,"xlength":16,"ylength":12,"proxZone":"2","energyZone":"9","x":"21","y":"32"},{"name":"Office","floor":2,"doornum":2520,"xlength":16,"ylength":11,"proxZone":"2","energyZone":"9","x":"21","y":"21"},{"name":"Office","floor":2,"doornum":2525,"xlength":16,"ylength":11,"proxZone":"1","energyZone":"9","x":"41","y":"21"},{"name":"Office","floor":2,"doornum":2530,"xlength":10,"ylength":10,"proxZone":"1","energyZone":"9","x":"41","y":"32"},{"name":"Office","floor":2,"doornum":2535,"xlength":10,"ylength":10,"proxZone":"1","energyZone":"9","x":"51","y":"32"},{"name":"Office","floor":2,"doornum":2540,"xlength":7,"ylength":10,"proxZone":"1","energyZone":"10","x":"73","y":"21"},{"name":"Office","floor":2,"doornum":2545,"xlength":7,"ylength":10,"proxZone":"1","energyZone":"10","x":"80","y":"21"},{"name":"Office","floor":2,"doornum":2550,"xlength":7,"ylength":10,"proxZone":"1","energyZone":"10","x":"80","y":"31"},{"name":"Office","floor":2,"doornum":2555,"xlength":7,"ylength":10,"proxZone":"1","energyZone":"10","x":"73","y":"31"},{"name":"Office","floor":2,"doornum":2560,"xlength":7,"ylength":10,"proxZone":"1","energyZone":"10","x":"92","y":"21"},{"name":"Office","floor":2,"doornum":2565,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"10","x":"99","y":"21"},{"name":"Office","floor":2,"doornum":2570,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"10","x":"99","y":"31"},{"name":"Office","floor":2,"doornum":2575,"xlength":7,"ylength":10,"proxZone":"1","energyZone":"10","x":"92","y":"31"},{"name":"Office","floor":2,"doornum":2580,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"10","x":"111","y":"21"},{"name":"Office","floor":2,"doornum":2585,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"10","x":"118","y":"21"},{"name":"Office","floor":2,"doornum":2590,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"10","x":"118","y":"31"},{"name":"Office","floor":2,"doornum":2595,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"10","x":"111","y":"31"},{"name":"Office","floor":2,"doornum":2600,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"10","x":"130","y":"21"},{"name":"Office","floor":2,"doornum":2605,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"10","x":"137","y":"21"},{"name":"Office","floor":2,"doornum":2610,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"10","x":"137","y":"31"},{"name":"Office","floor":2,"doornum":2615,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"10","x":"130","y":"31"},{"name":"Office","floor":2,"doornum":2620,"xlength":16,"ylength":10,"proxZone":"7","energyZone":"11","x":"153","y":"21"},{"name":"Office","floor":2,"doornum":2625,"xlength":10,"ylength":10,"proxZone":"7","energyZone":"11","x":"159","y":"31"},{"name":"Office","floor":2,"doornum":2630,"xlength":10,"ylength":10,"proxZone":"7","energyZone":"11","x":"149","y":"31"},{"name":"Office","floor":2,"doornum":2635,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"15","x":"155","y":"46"},{"name":"Office","floor":2,"doornum":2640,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"15","x":"162","y":"46"},{"name":"Office","floor":2,"doornum":2645,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"15","x":"162","y":"56"},{"name":"Office","floor":2,"doornum":2650,"xlength":7,"ylength":10,"proxZone":"7","energyZone":"15","x":"155","y":"56"},{"name":"Office","floor":2,"doornum":2655,"xlength":10,"ylength":15,"proxZone":"6","energyZone":"16","x":"159","y":"75"},{"name":"Office","floor":2,"doornum":2660,"xlength":10,"ylength":15,"proxZone":"6","energyZone":"16","x":"149","y":"75"},{"name":"Office","floor":2,"doornum":2665,"xlength":10,"ylength":10,"proxZone":"6","energyZone":"16","x":"134","y":"70"},{"name":"Office","floor":2,"doornum":2670,"xlength":10,"ylength":10,"proxZone":"6","energyZone":"16","x":"124","y":"70"},{"name":"Office","floor":2,"doornum":2675,"xlength":10,"ylength":10,"proxZone":"6","energyZone":"16","x":"124","y":"80"},{"name":"Office","floor":2,"doornum":2680,"xlength":10,"ylength":10,"proxZone":"6","energyZone":"16","x":"134","y":"80"},{"name":"Wkrm/Stairs","floor":2,"doornum":2690,"xlength":26,"ylength":20,"proxZone":"7","x":"124","y":"46"},{"name":"Toilet","floor":2,"doornum":2692,"xlength":26,"ylength":20,"proxZone":"7","x":"93","y":"46"},{"name":"Mech/Elev","floor":2,"xlength":26,"ylength":20,"proxZone":"4","energyZone":"13","x":"67","y":"46"},{"name":"Mtg/Training","floor":2,"doornum":2700,"xlength":44,"ylength":24,"proxZone":"6","energyZone":"14","x":"75","y":"66"},{"name":"Office","floor":2,"doornum":2705,"xlength":8,"ylength":8,"proxZone":"2","energyZone":"9","x":"37","y":"82"},{"name":"Break Room","floor":2,"doornum":2710,"xlength":8,"ylength":16,"proxZone":"1","energyZone":"9","x":"37","y":"66"},{"name":"Elevators and stairs","floor":2,"xlength":16,"ylength":20,"proxZone":"4","x":"37","y":"46"},{"name":"Corridor1","floor":2,"energyZone":"12A"},{"name":"Corridor2","floor":2,"energyZone":"12B"},{"name":"Corridor3","floor":2,"energyZone":"12C"},{"name":"Office","floor":3,"doornum":3000,"xlength":30,"ylength":16,"proxZone":"6","energyZone":"1","x":"0","y":"0"},{"name":"Office","floor":3,"doornum":3100,"xlength":10,"ylength":16,"proxZone":"6","energyZone":"2","x":"30","y":"0"},{"name":"Office","floor":3,"doornum":3110,"xlength":10,"ylength":16,"proxZone":"1","energyZone":"2","x":"40","y":"0"},{"name":"Office","floor":3,"doornum":3120,"xlength":24,"ylength":16,"proxZone":"1","energyZone":"2","x":"50","y":"0"},{"name":"Office","floor":3,"doornum":3130,"xlength":20,"ylength":16,"proxZone":"2","energyZone":"2","x":"74","y":"0"},{"name":"Office","floor":3,"doornum":3140,"xlength":10,"ylength":16,"proxZone":"2","energyZone":"2","x":"94","y":"0"},{"name":"Office","floor":3,"doornum":3150,"xlength":10,"ylength":16,"proxZone":"2","energyZone":"2","x":"104","y":"0"},{"name":"Office","floor":3,"doornum":3160,"xlength":20,"ylength":16,"proxZone":"2","energyZone":"2","x":"114","y":"0"},{"name":"Office","floor":3,"doornum":3200,"xlength":16,"ylength":24,"proxZone":"3","energyZone":"8","x":"0","y":"16"},{"name":"Office","floor":3,"doornum":3210,"xlength":16,"ylength":10,"proxZone":"3","energyZone":"8","x":"0","y":"40"},{"name":"Office","floor":3,"doornum":3220,"xlength":16,"ylength":25,"proxZone":"3","energyZone":"8","x":"0","y":"50"},{"name":"Office","floor":3,"doornum":3230,"xlength":16,"ylength":12,"proxZone":"3","energyZone":"8","x":"0","y":"75"},{"name":"Office","floor":3,"doornum":3300,"xlength":16,"ylength":24,"proxZone":"3","energyZone":"7","x":"0","y":"87"},{"name":"Office","floor":3,"doornum":3310,"xlength":12,"ylength":16,"proxZone":"3","energyZone":"6","x":"16","y":"95"},{"name":"Office","floor":3,"doornum":3320,"xlength":20,"ylength":16,"proxZone":"1","energyZone":"6","x":"28","y":"95"},{"name":"Conf","floor":3,"doornum":3330,"xlength":30,"ylength":16,"proxZone":"1","energyZone":"6","x":"48","y":"95"},{"name":"Office","floor":3,"doornum":3340,"xlength":10,"ylength":16,"proxZone":"2","energyZone":"6","x":"78","y":"95"},{"name":"Office","floor":3,"doornum":3350,"xlength":20,"ylength":16,"proxZone":"2","energyZone":"6","x":"88","y":"95"},{"name":"Office","floor":3,"doornum":3360,"xlength":10,"ylength":16,"proxZone":"2","energyZone":"6","x":"108","y":"95"},{"name":"Office","floor":3,"doornum":3370,"xlength":20,"ylength":16,"proxZone":"2","energyZone":"6","x":"118","y":"95"},{"name":"Office","floor":3,"doornum":3400,"xlength":16,"ylength":11,"proxZone":"3","energyZone":"10","x":"21","y":"21"},{"name":"Office","floor":3,"doornum":3410,"xlength":16,"ylength":12,"proxZone":"3","energyZone":"10","x":"21","y":"32"},{"name":"Office","floor":3,"doornum":3420,"xlength":16,"ylength":10,"proxZone":"3","energyZone":"10","x":"21","y":"44"},{"name":"Office","floor":3,"doornum":3430,"xlength":16,"ylength":10,"proxZone":"3","energyZone":"10","x":"21","y":"54"},{"name":"Server","floor":3,"doornum":3440,"xlength":16,"ylength":26,"proxZone":"SERVER ROOM","energyZone":"9","x":"21","y":"64"},{"name":"Office","floor":3,"doornum":3450,"xlength":8,"ylength":16,"proxZone":"1","energyZone":"9","x":"37","y":"66"},{"name":"Office","floor":3,"doornum":3460,"xlength":8,"ylength":8,"proxZone":"3","energyZone":"9","x":"37","y":"82"},{"name":"Office","floor":3,"doornum":3500,"xlength":7,"ylength":10,"proxZone":"1","energyZone":"3","x":"73","y":"21"},{"name":"Office","floor":3,"doornum":3505,"xlength":7,"ylength":10,"proxZone":"2","energyZone":"3","x":"80","y":"21"},{"name":"Office","floor":3,"doornum":3510,"xlength":7,"ylength":10,"proxZone":"2","energyZone":"3","x":"80","y":"31"},{"name":"Office","floor":3,"doornum":3515,"xlength":7,"ylength":10,"proxZone":"1","energyZone":"3","x":"73","y":"31"},{"name":"Office","floor":3,"doornum":3520,"xlength":7,"ylength":10,"proxZone":"2","energyZone":"3","x":"92","y":"21"},{"name":"Office","floor":3,"doornum":3525,"xlength":7,"ylength":10,"proxZone":"2","energyZone":"3","x":"99","y":"21"},{"name":"Office","floor":3,"doornum":3530,"xlength":7,"ylength":10,"proxZone":"2","energyZone":"3","x":"99","y":"31"},{"name":"Office","floor":3,"doornum":3535,"xlength":7,"ylength":10,"proxZone":"2","energyZone":"3","x":"92","y":"31"},{"name":"Office","floor":3,"doornum":3540,"xlength":7,"ylength":10,"proxZone":"2","energyZone":"3","x":"111","y":"21"},{"name":"Office","floor":3,"doornum":3545,"xlength":7,"ylength":10,"proxZone":"2","energyZone":"3","x":"118","y":"21"},{"name":"Office","floor":3,"doornum":3550,"xlength":7,"ylength":10,"proxZone":"2","energyZone":"3","x":"118","y":"31"},{"name":"Office","floor":3,"doornum":3555,"xlength":7,"ylength":10,"proxZone":"2","energyZone":"3","x":"111","y":"31"},{"name":"Toilet","floor":3,"doornum":3600,"xlength":26,"ylength":20,"proxZone":"2","x":"93","y":"46"},{"name":"Mech/Elev","floor":3,"xlength":26,"ylength":20,"proxZone":"4","energyZone":"4","x":"67","y":"46"},{"name":"Trg/Conf","floor":3,"doornum":3700,"xlength":44,"ylength":24,"proxZone":"2","energyZone":"5","x":"75","y":"66"},{"name":"Stairs","floor":3,"xlength":9,"ylength":20,"proxZone":"5","energyZone":"12","x":"141","y":"46"},{"name":"Future Expansion","floor":3,"xlength":56,"ylength":111,"proxZone":"5","energyZone":"12","x":"134","y":"0"},{"name":"Elevators and stairs","floor":3,"xlength":16,"ylength":20,"x":"37","y":"46"},{"name":"Corridor1","floor":3,"energyZone":"11A"},{"name":"Corridor2","floor":3,"energyZone":"11B"},{"name":"Corridor3","floor":3,"energyZone":"11C"}]
+[{
+	"name": "Main Entr",
+	"floor": 1,
+	"doornum": 1000,
+	"xlength": 40,
+	"ylength": 95,
+	"proxZone": "1",
+	"energyZone": "3",
+	"x": "150",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 1,
+	"doornum": 1010,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "7",
+	"energyZone": "4",
+	"x": "150",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 1,
+	"doornum": 1020,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "8",
+	"energyZone": "4",
+	"x": "170",
+	"y": "95"
+}, {
+	"name": "Conf",
+	"floor": 1,
+	"doornum": 1030,
+	"xlength": 44,
+	"ylength": 24,
+	"proxZone": "6",
+	"energyZone": "5",
+	"x": "75",
+	"y": "66"
+}, {
+	"name": "Toilet",
+	"floor": 1,
+	"doornum": 1040,
+	"xlength": 26,
+	"ylength": 20,
+	"proxZone": "1",
+	"energyZone": "6",
+	"x": "93",
+	"y": "46"
+}, {
+	"name": "Mech/Elev",
+	"floor": 1,
+	"xlength": 26,
+	"ylength": 20,
+	"proxZone": "4",
+	"energyZone": "6",
+	"x": "67",
+	"y": "46"
+}, {
+	"name": "Lg Meeting",
+	"floor": 1,
+	"doornum": 1050,
+	"xlength": 75,
+	"ylength": 36,
+	"proxZone": "5",
+	"energyZone": "2",
+	"x": "59",
+	"y": "0"
+}, {
+	"name": "Deli",
+	"floor": 1,
+	"doornum": 1060,
+	"xlength": 48,
+	"ylength": 40,
+	"proxZone": "2",
+	"energyZone": "1",
+	"x": "0",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 1,
+	"doornum": 1070,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "1",
+	"energyZone": "7",
+	"x": "0",
+	"y": "40"
+}, {
+	"name": "Loading",
+	"floor": 1,
+	"doornum": 1080,
+	"xlength": 16,
+	"ylength": 41,
+	"proxZone": "3",
+	"energyZone": "7",
+	"x": "0",
+	"y": "50"
+}, {
+	"name": "Office",
+	"floor": 1,
+	"doornum": 1090,
+	"xlength": 16,
+	"ylength": 20,
+	"proxZone": "1",
+	"energyZone": "7",
+	"x": "0",
+	"y": "91"
+}, {
+	"name": "Office",
+	"floor": 1,
+	"doornum": 1100,
+	"xlength": 12,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "7",
+	"x": "16",
+	"y": "95"
+}, {
+	"name": "Server",
+	"floor": 1,
+	"doornum": 1110,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "7",
+	"x": "28",
+	"y": "95"
+}, {
+	"name": "Stairs",
+	"floor": 1,
+	"xlength": 9,
+	"ylength": 20,
+	"proxZone": "4",
+	"x": "141",
+	"y": "46"
+}, {
+	"name": "Elevators and stairs",
+	"floor": 1,
+	"xlength": 16,
+	"ylength": 20,
+	"proxZone": "4",
+	"x": "37",
+	"y": "46"
+}, {
+	"name": "Corridor1",
+	"floor": 1,
+	"proxZone": "1",
+	"energyZone": "8A"
+}, {
+	"name": "Corridor2",
+	"floor": 1,
+	"proxZone": "1",
+	"energyZone": "8B"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2100,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "1",
+	"x": "0",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2110,
+	"xlength": 12,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "2",
+	"x": "20",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2120,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "2",
+	"x": "32",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2125,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "2",
+	"x": "52",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2130,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "2",
+	"x": "62",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2135,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "2",
+	"x": "72",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2140,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "2",
+	"x": "82",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2145,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "7",
+	"energyZone": "2",
+	"x": "92",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2150,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "7",
+	"energyZone": "2",
+	"x": "102",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2155,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "7",
+	"energyZone": "2",
+	"x": "112",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2160,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "7",
+	"energyZone": "2",
+	"x": "122",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2165,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "7",
+	"energyZone": "2",
+	"x": "132",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2170,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "3",
+	"energyZone": "2",
+	"x": "142",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2175,
+	"xlength": 12,
+	"ylength": 16,
+	"proxZone": "7",
+	"energyZone": "2",
+	"x": "162",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2200,
+	"xlength": 16,
+	"ylength": 20,
+	"proxZone": "7",
+	"energyZone": "3",
+	"x": "174",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2210,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "4",
+	"x": "174",
+	"y": "20"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2220,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "4",
+	"x": "174",
+	"y": "30"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2230,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "4",
+	"x": "174",
+	"y": "40"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2240,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "4",
+	"x": "174",
+	"y": "50"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2250,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "6",
+	"energyZone": "4",
+	"x": "174",
+	"y": "60"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2260,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "6",
+	"energyZone": "4",
+	"x": "174",
+	"y": "70"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2270,
+	"xlength": 16,
+	"ylength": 15,
+	"proxZone": "6",
+	"energyZone": "4",
+	"x": "174",
+	"y": "80"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2300,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "6",
+	"energyZone": "5",
+	"x": "170",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2310,
+	"xlength": 12,
+	"ylength": 16,
+	"proxZone": "6",
+	"energyZone": "6",
+	"x": "158",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2320,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "6",
+	"energyZone": "6",
+	"x": "138",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2340,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "6",
+	"energyZone": "6",
+	"x": "128",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2345,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "6",
+	"energyZone": "6",
+	"x": "118",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2350,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "6",
+	"energyZone": "6",
+	"x": "108",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2355,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "6",
+	"energyZone": "6",
+	"x": "88",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2360,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "6",
+	"energyZone": "6",
+	"x": "78",
+	"y": "95"
+}, {
+	"name": "Conf",
+	"floor": 2,
+	"doornum": 2365,
+	"xlength": 30,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "6",
+	"x": "48",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2370,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "6",
+	"x": "38",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2375,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "6",
+	"x": "28",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2380,
+	"xlength": 12,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "6",
+	"x": "16",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2400,
+	"xlength": 16,
+	"ylength": 20,
+	"proxZone": "2",
+	"energyZone": "7",
+	"x": "0",
+	"y": "91"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2410,
+	"xlength": 16,
+	"ylength": 12,
+	"proxZone": "2",
+	"energyZone": "8",
+	"x": "0",
+	"y": "79"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2420,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "8",
+	"x": "0",
+	"y": "69"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2430,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "8",
+	"x": "0",
+	"y": "59"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2440,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "8",
+	"x": "0",
+	"y": "49"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2450,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "8",
+	"x": "0",
+	"y": "39"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2460,
+	"xlength": 16,
+	"ylength": 9,
+	"proxZone": "2",
+	"energyZone": "8",
+	"x": "0",
+	"y": "30"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2470,
+	"xlength": 16,
+	"ylength": 14,
+	"proxZone": "2",
+	"energyZone": "8",
+	"x": "0",
+	"y": "16"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2500,
+	"xlength": 16,
+	"ylength": 26,
+	"proxZone": "5",
+	"energyZone": "9",
+	"x": "21",
+	"y": "64"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2505,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "9",
+	"x": "21",
+	"y": "54"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2510,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "9",
+	"x": "21",
+	"y": "44"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2515,
+	"xlength": 16,
+	"ylength": 12,
+	"proxZone": "2",
+	"energyZone": "9",
+	"x": "21",
+	"y": "32"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2520,
+	"xlength": 16,
+	"ylength": 11,
+	"proxZone": "2",
+	"energyZone": "9",
+	"x": "21",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2525,
+	"xlength": 16,
+	"ylength": 11,
+	"proxZone": "1",
+	"energyZone": "9",
+	"x": "41",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2530,
+	"xlength": 10,
+	"ylength": 10,
+	"proxZone": "1",
+	"energyZone": "9",
+	"x": "41",
+	"y": "32"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2535,
+	"xlength": 10,
+	"ylength": 10,
+	"proxZone": "1",
+	"energyZone": "9",
+	"x": "51",
+	"y": "32"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2540,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "1",
+	"energyZone": "10",
+	"x": "73",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2545,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "1",
+	"energyZone": "10",
+	"x": "80",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2550,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "1",
+	"energyZone": "10",
+	"x": "80",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2555,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "1",
+	"energyZone": "10",
+	"x": "73",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2560,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "1",
+	"energyZone": "10",
+	"x": "92",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2565,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "10",
+	"x": "99",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2570,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "10",
+	"x": "99",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2575,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "1",
+	"energyZone": "10",
+	"x": "92",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2580,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "10",
+	"x": "111",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2585,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "10",
+	"x": "118",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2590,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "10",
+	"x": "118",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2595,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "10",
+	"x": "111",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2600,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "10",
+	"x": "130",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2605,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "10",
+	"x": "137",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2610,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "10",
+	"x": "137",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2615,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "10",
+	"x": "130",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2620,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "11",
+	"x": "153",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2625,
+	"xlength": 10,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "11",
+	"x": "159",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2630,
+	"xlength": 10,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "11",
+	"x": "149",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2635,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "15",
+	"x": "155",
+	"y": "46"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2640,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "15",
+	"x": "162",
+	"y": "46"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2645,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "15",
+	"x": "162",
+	"y": "56"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2650,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "7",
+	"energyZone": "15",
+	"x": "155",
+	"y": "56"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2655,
+	"xlength": 10,
+	"ylength": 15,
+	"proxZone": "6",
+	"energyZone": "16",
+	"x": "159",
+	"y": "75"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2660,
+	"xlength": 10,
+	"ylength": 15,
+	"proxZone": "6",
+	"energyZone": "16",
+	"x": "149",
+	"y": "75"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2665,
+	"xlength": 10,
+	"ylength": 10,
+	"proxZone": "6",
+	"energyZone": "16",
+	"x": "134",
+	"y": "70"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2670,
+	"xlength": 10,
+	"ylength": 10,
+	"proxZone": "6",
+	"energyZone": "16",
+	"x": "124",
+	"y": "70"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2675,
+	"xlength": 10,
+	"ylength": 10,
+	"proxZone": "6",
+	"energyZone": "16",
+	"x": "124",
+	"y": "80"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2680,
+	"xlength": 10,
+	"ylength": 10,
+	"proxZone": "6",
+	"energyZone": "16",
+	"x": "134",
+	"y": "80"
+}, {
+	"name": "Wkrm/Stairs",
+	"floor": 2,
+	"doornum": 2690,
+	"xlength": 26,
+	"ylength": 20,
+	"proxZone": "7",
+	"x": "124",
+	"y": "46"
+}, {
+	"name": "Toilet",
+	"floor": 2,
+	"doornum": 2692,
+	"xlength": 26,
+	"ylength": 20,
+	"proxZone": "7",
+	"x": "93",
+	"y": "46"
+}, {
+	"name": "Mech/Elev",
+	"floor": 2,
+	"xlength": 26,
+	"ylength": 20,
+	"proxZone": "4",
+	"energyZone": "13",
+	"x": "67",
+	"y": "46"
+}, {
+	"name": "Mtg/Training",
+	"floor": 2,
+	"doornum": 2700,
+	"xlength": 44,
+	"ylength": 24,
+	"proxZone": "6",
+	"energyZone": "14",
+	"x": "75",
+	"y": "66"
+}, {
+	"name": "Office",
+	"floor": 2,
+	"doornum": 2705,
+	"xlength": 8,
+	"ylength": 8,
+	"proxZone": "2",
+	"energyZone": "9",
+	"x": "37",
+	"y": "82"
+}, {
+	"name": "Break Room",
+	"floor": 2,
+	"doornum": 2710,
+	"xlength": 8,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "9",
+	"x": "37",
+	"y": "66"
+}, {
+	"name": "Elevators and stairs",
+	"floor": 2,
+	"xlength": 16,
+	"ylength": 20,
+	"proxZone": "4",
+	"x": "37",
+	"y": "46"
+}, {
+	"name": "Corridor1",
+	"floor": 2,
+	"energyZone": "12A"
+}, {
+	"name": "Corridor2",
+	"floor": 2,
+	"energyZone": "12B"
+}, {
+	"name": "Corridor3",
+	"floor": 2,
+	"energyZone": "12C"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3000,
+	"xlength": 30,
+	"ylength": 16,
+	"proxZone": "6",
+	"energyZone": "1",
+	"x": "0",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3100,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "6",
+	"energyZone": "2",
+	"x": "30",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3110,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "2",
+	"x": "40",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3120,
+	"xlength": 24,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "2",
+	"x": "50",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3130,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "2",
+	"x": "74",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3140,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "2",
+	"x": "94",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3150,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "2",
+	"x": "104",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3160,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "2",
+	"x": "114",
+	"y": "0"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3200,
+	"xlength": 16,
+	"ylength": 24,
+	"proxZone": "3",
+	"energyZone": "8",
+	"x": "0",
+	"y": "16"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3210,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "3",
+	"energyZone": "8",
+	"x": "0",
+	"y": "40"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3220,
+	"xlength": 16,
+	"ylength": 25,
+	"proxZone": "3",
+	"energyZone": "8",
+	"x": "0",
+	"y": "50"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3230,
+	"xlength": 16,
+	"ylength": 12,
+	"proxZone": "3",
+	"energyZone": "8",
+	"x": "0",
+	"y": "75"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3300,
+	"xlength": 16,
+	"ylength": 24,
+	"proxZone": "3",
+	"energyZone": "7",
+	"x": "0",
+	"y": "87"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3310,
+	"xlength": 12,
+	"ylength": 16,
+	"proxZone": "3",
+	"energyZone": "6",
+	"x": "16",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3320,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "6",
+	"x": "28",
+	"y": "95"
+}, {
+	"name": "Conf",
+	"floor": 3,
+	"doornum": 3330,
+	"xlength": 30,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "6",
+	"x": "48",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3340,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "6",
+	"x": "78",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3350,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "6",
+	"x": "88",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3360,
+	"xlength": 10,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "6",
+	"x": "108",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3370,
+	"xlength": 20,
+	"ylength": 16,
+	"proxZone": "2",
+	"energyZone": "6",
+	"x": "118",
+	"y": "95"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3400,
+	"xlength": 16,
+	"ylength": 11,
+	"proxZone": "3",
+	"energyZone": "10",
+	"x": "21",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3410,
+	"xlength": 16,
+	"ylength": 12,
+	"proxZone": "3",
+	"energyZone": "10",
+	"x": "21",
+	"y": "32"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3420,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "3",
+	"energyZone": "10",
+	"x": "21",
+	"y": "44"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3430,
+	"xlength": 16,
+	"ylength": 10,
+	"proxZone": "3",
+	"energyZone": "10",
+	"x": "21",
+	"y": "54"
+}, {
+	"name": "Server",
+	"floor": 3,
+	"doornum": 3440,
+	"xlength": 16,
+	"ylength": 26,
+	"proxZone": "SERVER ROOM",
+	"energyZone": "9",
+	"x": "21",
+	"y": "64"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3450,
+	"xlength": 8,
+	"ylength": 16,
+	"proxZone": "1",
+	"energyZone": "9",
+	"x": "37",
+	"y": "66"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3460,
+	"xlength": 8,
+	"ylength": 8,
+	"proxZone": "3",
+	"energyZone": "9",
+	"x": "37",
+	"y": "82"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3500,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "1",
+	"energyZone": "3",
+	"x": "73",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3505,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "3",
+	"x": "80",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3510,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "3",
+	"x": "80",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3515,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "1",
+	"energyZone": "3",
+	"x": "73",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3520,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "3",
+	"x": "92",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3525,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "3",
+	"x": "99",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3530,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "3",
+	"x": "99",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3535,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "3",
+	"x": "92",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3540,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "3",
+	"x": "111",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3545,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "3",
+	"x": "118",
+	"y": "21"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3550,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "3",
+	"x": "118",
+	"y": "31"
+}, {
+	"name": "Office",
+	"floor": 3,
+	"doornum": 3555,
+	"xlength": 7,
+	"ylength": 10,
+	"proxZone": "2",
+	"energyZone": "3",
+	"x": "111",
+	"y": "31"
+}, {
+	"name": "Toilet",
+	"floor": 3,
+	"doornum": 3600,
+	"xlength": 26,
+	"ylength": 20,
+	"proxZone": "2",
+	"x": "93",
+	"y": "46"
+}, {
+	"name": "Mech/Elev",
+	"floor": 3,
+	"xlength": 26,
+	"ylength": 20,
+	"proxZone": "4",
+	"energyZone": "4",
+	"x": "67",
+	"y": "46"
+}, {
+	"name": "Trg/Conf",
+	"floor": 3,
+	"doornum": 3700,
+	"xlength": 44,
+	"ylength": 24,
+	"proxZone": "2",
+	"energyZone": "5",
+	"x": "75",
+	"y": "66"
+}, {
+	"name": "Stairs",
+	"floor": 3,
+	"xlength": 9,
+	"ylength": 20,
+	"proxZone": "5",
+	"energyZone": "12",
+	"x": "141",
+	"y": "46"
+}, {
+	"name": "Future Expansion",
+	"floor": 3,
+	"xlength": 56,
+	"ylength": 111,
+	"proxZone": "5",
+	"energyZone": "12",
+	"x": "134",
+	"y": "0"
+}, {
+	"name": "Elevators and stairs",
+	"floor": 3,
+	"xlength": 16,
+	"ylength": 20,
+	"x": "37",
+	"y": "46"
+}, {
+	"name": "Corridor1",
+	"floor": 3,
+	"energyZone": "11A"
+}, {
+	"name": "Corridor2",
+	"floor": 3,
+	"energyZone": "11B"
+}, {
+	"name": "Corridor3",
+	"floor": 3,
+	"energyZone": "11C"
+}]

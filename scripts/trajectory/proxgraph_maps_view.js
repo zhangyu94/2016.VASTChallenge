@@ -34,8 +34,10 @@ var proxgraph_maps_view = {
 			.attr("width",floor_div_width)	             
 			.attr("fill","brown").attr("opacity",0.2)
 			.on("click",function(d,i){
+				var current_floor = 3;
 				var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
 				var index = selected_floor_set.indexOf(d.name);
+				DATA_CENTER.set_global_variable("selected_floor",current_floor);
 				if (index >=0 )
 				{
 					d3.select(this).classed("selected_PROXmap_rect",false);
@@ -66,8 +68,10 @@ var proxgraph_maps_view = {
 			.attr("width",floor_div_width)	             
 			.attr("fill","orange").attr("opacity",0.2)
 			.on("click",function(d,i){
+				var current_floor = 2;
 				var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
 				var index = selected_floor_set.indexOf(d.name);
+				DATA_CENTER.set_global_variable("selected_floor",current_floor);
 				if (index >=0 )
 				{
 					d3.select(this).classed("selected_PROXmap_rect",false);
@@ -96,8 +100,10 @@ var proxgraph_maps_view = {
 			.attr("width",floor_div_width)	             
 			.attr("fill","yellow").attr("opacity",0.2)
 			.on("click",function(d,i){
+				var current_floor = 1;
 				var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
 				var index = selected_floor_set.indexOf(d.name);
+				DATA_CENTER.set_global_variable("selected_floor",current_floor);
 				if (index >=0 )
 				{
 					d3.select(this).classed("selected_PROXmap_rect",false);

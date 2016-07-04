@@ -4,6 +4,7 @@ var DATA_CENTER = {
 
 	//view之间通信需要利用的全局变量
 	global_variable : {
+		selected_floor: 0, 
 		selected_attr_set:[],
 		selected_linechart_set:[],
 		selected_HVACzone_set:[],
@@ -135,7 +136,8 @@ var DATA_CENTER = {
 		var derived_path = "dataset/derived/";
 		var d_file_name = [
 			"person.json",
-			"room.json"
+			"room.json",
+			"zone.json"
 		];
 
 		d3.csv(path+file_name[0],function(HVAC_data){
@@ -212,23 +214,22 @@ var DATA_CENTER = {
 								d3.csv(path+file_name[6],function(data6){
 									d3.json(derived_path+d_file_name[0], function(data7) {
 										d3.json(derived_path+d_file_name[1], function(data8) {
-											DATA_CENTER.original_data[file_name[0]] = HVAC_data;
-											DATA_CENTER.original_data[file_name[1]] = hazium_data1;
-											DATA_CENTER.original_data[file_name[2]] = hazium_data2;
-											DATA_CENTER.original_data[file_name[3]] = hazium_data3;
-											DATA_CENTER.original_data[file_name[4]] = hazium_data4;
-											DATA_CENTER.original_data[file_name[5]] = data5;
-											DATA_CENTER.original_data[file_name[6]] = data6;
-											DATA_CENTER.derived_data[d_file_name[0]] = data7;
-											DATA_CENTER.derived_data[d_file_name[1]] = data8;
-											DATA_CENTER.cal_derive_data();
-
-											callback_function();
-										})
-										
+											d3.json(derived_path + d_file_name[2], function(data9){
+												DATA_CENTER.original_data[file_name[0]] = HVAC_data;
+												DATA_CENTER.original_data[file_name[1]] = hazium_data1;
+												DATA_CENTER.original_data[file_name[2]] = hazium_data2;
+												DATA_CENTER.original_data[file_name[3]] = hazium_data3;
+												DATA_CENTER.original_data[file_name[4]] = hazium_data4;
+												DATA_CENTER.original_data[file_name[5]] = data5;
+												DATA_CENTER.original_data[file_name[6]] = data6;
+												DATA_CENTER.derived_data[d_file_name[0]] = data7;
+												DATA_CENTER.derived_data[d_file_name[1]] = data8;
+												DATA_CENTER.derived_data[d_file_name[2]] = data9;
+												DATA_CENTER.cal_derive_data();
+												callback_function();
+											})
+										})	
 									})
-
-									
 								})
 							})
 						})
