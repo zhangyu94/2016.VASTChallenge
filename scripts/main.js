@@ -19,6 +19,8 @@ function main(){
 
 			"set:added_timerange",
 
+			"set:current_display_time",
+
 
 			"set:highlight_attr_set",
 			"set:highlight_HVACzone_set",

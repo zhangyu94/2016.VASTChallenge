@@ -1,4 +1,7 @@
 var timeline_view = {
+	DISPLAY_RATE:3600,//播放的速度是现实速度的多少倍，单位ms
+	UPDATE_RATE:1000,//播放时每隔多久更新一次时间,单位ms
+
 	timeline_div_id : "timeline_div",
 	obsUpdate:function(message, data)
 	{
@@ -7,12 +10,28 @@ var timeline_view = {
 			var added_timerange = DATA_CENTER.global_variable.added_timerange;
 			this._add_Plotband(added_timerange.min,added_timerange.max);
 		}
+
+		if (message == "set:current_display_time")
+		{
+	        var current_display_time = DATA_CENTER.global_variable.current_display_time;
+	        var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
+			
+	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
+			chart.xAxis[0].addPlotLine({           //在x轴上增加
+				    value:current_display_time,    //在值为current_display_time的地方
+				    width:1,                       //标示线的宽度为2px
+				    color: '#FF0000',              //标示线的颜色
+				    id: 'time-tick',               //标示线的id，在删除该标示线的时候需要该id标示
+					dashStyle:"shortdot",
+
+					zIndex:99,//值越大，显示的优先级越高
+				});		
+		}
 	},
 
 	_add_Plotband:function(min,max)
 	{
-		var id = "PlotBand"+min+max;
-		console.log(id);
+		var id = "PlotBand"+min+max;//有相同的id的人是一起删除的
 		var chart = $("#"+this.timeline_div_id).highcharts();
 		var axis = chart.xAxis[0];
 		axis.addPlotBand({
@@ -33,11 +52,6 @@ var timeline_view = {
 	        }
 		}); 
 
-
-	},
-
-	_remove_Plotband:function()
-	{
 
 	},
 
@@ -73,6 +87,7 @@ var timeline_view = {
 	    					.style("background-color","#f8f8f8")
 
 	    var xyAxis_data = this._initialize_xyAxis_data();
+	    console.log(xyAxis_data)
 	    var chart = this._plot_linechart(this.timeline_div_id,xyAxis_data);
      
 	},
@@ -86,7 +101,48 @@ var timeline_view = {
 	      	}
 	    })
 	    .click(function() {
+	    	var options;
+	      	if ( $( this ).text() === "play" ) {
+	        	options = {
+		          	label: "pause",
+		          	icons: {
+		            	primary: "ui-icon-pause"
+		          	}
+	        	};
+	      	} 
+	      	else {
+	        	options = {
+	          		label: "play",
+	          		icons: {
+	            		primary: "ui-icon-play"
+	          		}
+	        	};
 
+
+	        	
+
+	        	setInterval(function() {
+	        		if (typeof(DATA_CENTER.global_variable.current_display_time) == "undefined" )
+	        		{
+	        			var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
+						DATA_CENTER.set_global_variable("current_display_time",chart.xAxis[0].dataMin);
+	        		}
+	        		else
+	        		{
+	        			var current_display_time = timeline_view.DISPLAY_RATE*timeline_view.UPDATE_RATE + DATA_CENTER.global_variable.current_display_time;
+	        			DATA_CENTER.set_global_variable("current_display_time",current_display_time);
+	        		}
+				}, timeline_view.UPDATE_RATE);
+
+	        	
+	        	
+
+	        	
+
+
+
+	      	}
+	      	$( this ).button( "option", options );
 	    });
 	},
 
