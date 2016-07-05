@@ -345,6 +345,7 @@ var HVACgraph_attrbtn_view = {
 		});
 
 	},
+	
 	hide_all_smallspans:function()
 	{
 		$("."+ this.DIV_CLASS_OF_SMALLSPANS).css("display","none");

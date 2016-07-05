@@ -398,7 +398,7 @@ var linechart_render_view = {
 
 	_plot_linechart:function(divID,xyAxis_data,yAxis_attr_name)
 	{
-        d3.select("#"+divID).selectAll("*").remove()
+        d3.select("#"+divID).selectAll("*").remove();
 
 		//var width  = $("#"+divID).width();
         //var height  = $("#"+divID).height();

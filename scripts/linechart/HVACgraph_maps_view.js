@@ -23,6 +23,24 @@ var HVACgraph_maps_view = {
         		})
         }
 
+        if (message == "set:current_display_time")
+        {
+        	/*
+        	var timestamp = DATA_CENTER.global_variable.current_display_time;
+        	if (typeof(timestamp)!="undefined")
+        	{
+        		var node = d3.selectAll(".HVACmap-circle")
+        			.each(function(d,i){
+        				var height = $(this).height();
+						var left = $(this).offset().left;
+						var top = $(this).offset().top-height;
+        				HVACgraph_maps_view._render_radarchart_glyph(d.name,d.type,left,top,timestamp)
+        			})
+        	}
+			*/
+
+        }
+
 	},
 	render:function(divID)
 	{
@@ -388,6 +406,7 @@ var HVACgraph_maps_view = {
 					      		tip.hide(d,i)
 					      	})
 					      	.on("click",function(d,i){
+					      		//d.name是一个地点
 					      		var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
 								var index = selected_HVACzone_set.indexOf(d.name);
 								
@@ -423,6 +442,139 @@ var HVACgraph_maps_view = {
 		var index = compressed_name.indexOf("Z");
 		var number = compressed_name.substring(index+1,compressed_name.length);
 		return number;
+	},
+
+
+	_render_radarchart_glyph:function(place_name,place_type,center_x,center_y,raw_timestamp)
+	{
+		function _cal_dataset(place_name,place_type)
+		{
+			var detail_attr_set = [];
+			var general_attr_set;
+			if (place_type == "HVAC_zone")
+			{
+				general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([place_name],[],[]);
+				detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[place_name],[],[]);
+			}
+			else if (place_type == "floor")
+			{
+				general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([],[place_name],[]);
+				detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[],[place_name],[]);
+			}
+			else if (place_type == "building")
+			{
+				general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([],[],[place_name]);
+				detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[],[],[place_name]);
+			}
+
+			var frame_full_data = HVACgraph_maps_view._binary_search("bldg-MC2.csv","Date/Time",raw_timestamp);
+			
+			var frame_needed_data = [];
+			for (var i=0;i<detail_attr_set.length;++i)
+			{
+				var cur_attr = detail_attr_set[i];
+				var value = frame_full_data[cur_attr];
+				frame_needed_data.push({
+					name:cur_attr,
+					value:value,
+				})
+			}
+
+			return frame_needed_data;
+		}
+		var dataset = _cal_dataset(place_name,place_type);
+
+		console.log(dataset);
+
+		function _render_radarchart(data,center_x,center_y)
+		{
+			var width = 50;
+			var height = 50;
+			var radius = Math.min(width, height) / 2;
+			var innerRadius = 0;
+
+			var pie = d3.layout.pie()
+			    .sort(null)
+			    .value(function(d) { return d.width; });
+
+			var arc = d3.svg.arc()
+			  	.innerRadius(innerRadius)
+			  	.outerRadius(function (d) { 
+			    	return (radius - innerRadius) * (d.data.value / 100000.0) + innerRadius; 
+			  	});
+
+			var outlineArc = d3.svg.arc()
+			        .innerRadius(innerRadius)
+			        .outerRadius(radius);
+
+			var svg = d3.select("body").append("svg")
+			    .attr("width", width)
+			    .attr("height", height)
+			    .append("g")
+			    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+			var path = svg.selectAll(".solidArc")
+			      	.data(pie(data))
+			    .enter().append("path")
+			      	.attr("fill", function(d) { return /*d.data.color;*/"blue"; })
+			      	.attr("class", "solidArc")
+			      	.attr("stroke", "gray")
+			      	.attr("d", arc)
+
+		  	var outerPath = svg.selectAll(".outlineArc")
+		      		.data(pie(data))
+		    	.enter().append("path")
+			      	.attr("fill", "none")
+			      	.attr("stroke", "gray")
+			      	.attr("class", "outlineArc")
+			      	.attr("d", outlineArc);  
+
+
+		}
+		_render_radarchart(dataset,center_x,center_y);
+
+
+
+	},
+
+
+	//二分查找，返回小于等于键值target_value的最大的键值对应的数据
+	//HVACgraph_maps_view._binary_search("bldg-MC2.csv","Date/Time",1465845339000)
+	_binary_search:function(filename,sorted_attr,target_value)
+	{
+		if (sorted_attr != "Date/Time")
+			console.warn("invalid sorted_attr",sorted_attr);
+		var data = DATA_CENTER.original_data[filename];
+
+		var start_index = 0;
+		var end_index = data.length - 1;
+		while (start_index != end_index)
+		{
+			var middle_index = Math.floor((start_index + end_index)/2);
+			var middle_value = data[middle_index][sorted_attr];
+
+			var middle_value = new Date(middle_value);
+            var middle_value = middle_value.getTime();
+
+			if (middle_value < target_value)
+			{
+				start_index = middle_index+1;
+			}
+			if (middle_value >= target_value)
+			{
+				end_index = middle_index;
+			}
+
+			if (start_index == end_index)
+			{
+				break;
+			}
+		}
+		
+		//var result_value = data[start_index][sorted_attr];
+		//var result_value = new Date(result_value);
+		//var result_value = result_value.getTime();
+		return data[start_index];
 	}
 
 }
