@@ -25,19 +25,23 @@ var HVACgraph_maps_view = {
 
         if (message == "set:current_display_time")
         {
-        	/*
+        	
         	var timestamp = DATA_CENTER.global_variable.current_display_time;
         	if (typeof(timestamp)!="undefined")
         	{
+        		/*
         		var node = d3.selectAll(".HVACmap-circle")
         			.each(function(d,i){
+
+        				console.log($(this))
         				var height = $(this).height();
 						var left = $(this).offset().left;
 						var top = $(this).offset().top-height;
         				HVACgraph_maps_view._render_radarchart_glyph(d.name,d.type,left,top,timestamp)
         			})
+*/
         	}
-			*/
+			
 
         }
 
@@ -500,6 +504,9 @@ var HVACgraph_maps_view = {
 			var arc = d3.svg.arc()
 			  	.innerRadius(innerRadius)
 			  	.outerRadius(function (d) { 
+			  		var value = 0;
+			  		if (typeof(d.data.value)!= "undefined")
+			  			value = d.data.value;
 			    	return (radius - innerRadius) * (d.data.value / 100000.0) + innerRadius; 
 			  	});
 
@@ -507,16 +514,26 @@ var HVACgraph_maps_view = {
 			        .innerRadius(innerRadius)
 			        .outerRadius(radius);
 
-			var svg = d3.select("body").append("svg")
+			var div_of_radarchart_glyph = d3.select("body")//放在body上append使得他能显示出来
+					.append("div")
+						.attr("class","radarchart_glyph-div")
+						.style("position","absolute")
+						.style("top",center_y-height/2 + 'px')
+				    	.style("left",center_x-width/2 + 'px');
+
+			var svg = div_of_radarchart_glyph.append("svg")
 			    .attr("width", width)
 			    .attr("height", height)
 			    .append("g")
-			    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+			    //.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+
+			console.log(svg);
+			/*	
 			var path = svg.selectAll(".solidArc")
 			      	.data(pie(data))
 			    .enter().append("path")
-			      	.attr("fill", function(d) { return /*d.data.color;*/"blue"; })
+			      	.attr("fill", function(d) { return "blue"; })
 			      	.attr("class", "solidArc")
 			      	.attr("stroke", "gray")
 			      	.attr("d", arc)
@@ -528,7 +545,8 @@ var HVACgraph_maps_view = {
 			      	.attr("stroke", "gray")
 			      	.attr("class", "outlineArc")
 			      	.attr("d", outlineArc);  
-
+			      	*/
+			
 
 		}
 		_render_radarchart(dataset,center_x,center_y);
