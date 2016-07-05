@@ -4,7 +4,8 @@ var DATA_CENTER = {
 
 	//view之间通信需要利用的全局变量
 	global_variable : {
-		selected_floor: 0, 
+		selected_floor: 0,
+		personInZone: [], 
 		selected_attr_set:[],
 		selected_linechart_set:[],
 		selected_HVACzone_set:[],
@@ -226,7 +227,20 @@ var DATA_CENTER = {
 
 							d3.csv(path+file_name[5],function(data5){
 								d3.csv(path+file_name[6],function(data6){
-									d3.json(derived_path+d_file_name[0], function(data7) {
+									d3.json(derived_path+d_file_name[0], function(data7) {//persondata
+										//增加personData的相关数据
+										var personData = data7; 
+										var personInZone = new Array();
+										var personArray = $.map(personData, function(value, index) {
+											return [value];
+										});
+										for(var i = 0;i < personArray.length;i++){
+											personInZone[i] = new Object();
+											personInZone[i].personName = personArray[i].fixRecords[0].records[0]["prox-id"];
+											personInZone[i].formerZoneNum = -1;
+											personInZone[i].zoneNum = -1;
+										}
+										DATA_CENTER.derived_data["personInZone"] = personInZone;
 										d3.json(derived_path+d_file_name[1], function(data8) {
 											d3.json(derived_path + d_file_name[2], function(data9){//zone_floor1
 												d3.json(derived_path + d_file_name[3], function(data10){//zone_floor2

@@ -5,7 +5,7 @@ var bigmap_view = {
 		if (message == "set:current_display_time"){
 			var global_display_time = DATA_CENTER.global_variable.current_display_time;
 			this.updateView(divID, global_display_time);
-			this.updateRobotView(divID, global_display_time);
+			//this.updateRobotView(divID, global_display_time);
 			console.log(global_display_time);	
 		}
 		if (message == "set:selected_floor_set")
@@ -122,13 +122,10 @@ var bigmap_view = {
 		var personArray = $.map(personData, function(value, index) {
 		    return [value];
 		});
-		var personInZone = [];
+		var personInZone = DATA_CENTER.derived_data["personInZone"];
 		var floorNum = DATA_CENTER.global_variable.selected_floor;
 		var zoneData = zoneDataArray[floorNum - 1];
 		for(var i = 0;i < personArray.length;i++){
-			personInZone[i] = new Object();
-			personInZone[i].personName = personArray[i].fixRecords[0].records[0]["prox-id"];
-			personInZone[i].zoneNum = -1;
 			var routeRocrds10Days = personArray[i].fixRecords;
 			for(var j = 0;j < routeRocrds10Days.length;j++){
 				var routeRcords1Days = routeRocrds10Days[j].records;
@@ -137,13 +134,18 @@ var bigmap_view = {
 						&& routeRcords1Days[k].floor == floorNum){
 						var zoneNum = +personArray[i].fixRecords[j].records[k]["zone"];
 						if(!isNaN(zoneNum)){
+							personInZone[i].formerZoneNum = +personInZone[i].zoneNum;
 							personInZone[i].zoneNum = +personArray[i].fixRecords[j].records[k]["zone"];
 						}
 						break;
 					}
+					if(k == routeRcords1Days.length){
+						personInZone.zoneNum = -1;
+					}
 				}
 			}
 		}
+		console.log(personInZone);
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
 	    var DURATION = 2000;
@@ -159,7 +161,7 @@ var bigmap_view = {
 		//增加node节点
 		var nodeSelection = svg.selectAll('.person-label')
 		.data(personInZone.filter(function(d){
-			return d.zoneNum != -1 && d.zoneNum != null ;
+			return d.zoneNum != -1 && d.zoneNum != null && d.zoneNum != d.formerZoneNum;
 		}), function(d,i){
 			return d.personName;
 		});
@@ -167,9 +169,7 @@ var bigmap_view = {
 		nodeSelection.enter()
 		.append('circle')
 		.attr('class','person-label')
-		.attr('r', function(d,i){
-			return 3;
-		})
+		.attr('r', 5)
 		.attr('cx', function(d,i){
 			var zoneId = +d.zoneNum - 1;
 			var xLength = +zoneData[zoneId].xLength;
@@ -181,13 +181,14 @@ var bigmap_view = {
 			var yLength = +zoneData[zoneId].yLength;
 			var centerY = +zoneData[zoneId].y;//
 			return yScale(+centerY - (Math.random() * 2 - 1) * yLength);
+		})
+		.on('click',function(d,i){
+			console.log('click node event'); 
 		});
 		//改变node节点
 		nodeSelection.transition()
 		.duration(DURATION)
-		.attr('r', function(d,i){
-			return 3;
-		})
+		.attr('r', 5)
 		.attr('cx', function(d,i){
 			var zoneId = +d.zoneNum - 1;
 			var xLength = +zoneData[zoneId].xLength;
@@ -200,8 +201,25 @@ var bigmap_view = {
 			var centerY = +zoneData[zoneId].y;//
 			return yScale(+centerY - (Math.random() * 2 - 1) * yLength);
 		});
-		//删除node节点
-		nodeSelection.exit().remove();
+		$('.person-label').each(function() {
+		    $(this).tipsy({
+		        gravity: "s",
+		        html:true,
+		        title:function(){
+		        	var d = this.__data__;
+		            var content = d.personName;
+		            return content;
+		        },
+		    });
+		});
+		//删除节点
+		var nodeSelection = svg.selectAll('.person-label')
+		.data(personInZone.filter(function(d){
+			return d.zoneNum != -1 && d.zoneNum != null;
+		}), function(d,i){
+			return d.personName;
+		})
+		.exit().remove();;		
 	},
 	//传递控制全局的时间变量，绘制机器人进行移动的视图
 	updateRobotView: function(divID, globalTime){
