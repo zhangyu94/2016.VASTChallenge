@@ -4,7 +4,9 @@ var bigmap_view = {
 		var divID = "trajectory-bigmap";
 		if (message == "set:current_display_time"){
 			var global_display_time = DATA_CENTER.global_variable.current_display_time;
-			this.updateView(divID, global_display_time);	
+			this.updateView(divID, global_display_time);
+			this.updateRobotView(divID, global_display_time);
+			console.log(global_display_time);	
 		}
 		if (message == "set:selected_floor_set")
 		{
@@ -200,5 +202,76 @@ var bigmap_view = {
 		});
 		//删除node节点
 		nodeSelection.exit().remove();
+	},
+	//传递控制全局的时间变量，绘制机器人进行移动的视图
+	updateRobotView: function(divID, globalTime){
+		var robotData = DATA_CENTER.original_data['proxMobileOut-MC2.csv']; 
+		var width  = $("#"+divID).width();
+	    var height  = $("#"+divID).height();
+	    var DURATION = 2000;
+	    var threshold_show = 400000;
+	   	var xScale = d3.scale.linear()
+			.range([0, width])
+			.domain([0, 190]);
+		var yScale = d3.scale.linear()
+			.range([0, height])
+			.domain([0, 111]);
+		var floorNum = DATA_CENTER.global_variable.selected_floor;
+		//console.log(robotData);
+		var svg = d3.select("#floor-svg");
+		for(var i = 0; i < robotData.length;i++){
+			robotData[i]['robotTime'] = new Date(robotData[i]['timestamp']).getTime();
+		}
+		var renderNodeArray = [];
+		var j = 0;
+		for(var i = 0;i < robotData.length;i++){
+			if(globalTime > robotData[i].robotTime && globalTime < (robotData[i].robotTime + threshold_show) ){//
+				renderNodeArray[j] = new Object();
+				renderNodeArray[j].x = +robotData[i][" x"].replace(/\s+/g,"");
+				renderNodeArray[j].floor = robotData[i][" floor"].replace(/\s+/g,"");
+				renderNodeArray[j].y = +robotData[i][" y"].replace(/\s+/g,"");
+				renderNodeArray[j].proxId = robotData[i][" prox-id"].replace(/\s+/g,"");
+				renderNodeArray[j].time = globalTime - robotData[i].robotTime;
+				j++;
+			}
+		}
+		var transparencyScale = d3.scale.linear()
+			.range([0, threshold_show])
+			.domain([1, 0]);
+		var robotNodeSelection = svg.selectAll('.person-label')
+			.data(renderNodeArray.filter(function(d,i){
+				return d.floor == floorNum;
+			}), function(d,i){
+				return d.proxId;
+			});
+		robotNodeSelection.enter()
+			.append('circle')
+			.attr('class','person-label')
+			.attr('r',5)
+			.attr('cx', function(d,i){
+				return xScale(d.x);
+			})
+			.attr('cy', function(d,i){
+				return xScale(d.y);
+			})
+			.style("opacity", function(d,i){
+				//return transparencyScale(d.time)
+				return 0.5;
+			});
+		robotNodeSelection.transition()
+			.duration(DURATION)
+			.attr('r',5)
+			.attr('cx', function(d,i){
+				return xScale(d.x);
+			})
+			.attr('cy', function(d,i){
+				return xScale(d.y);
+			})
+			.style("opacity", function(d,i){
+				//return transparencyScale(d.time)
+				return 0.5;
+			});
+		//删除node节点
+		robotNodeSelection.exit().remove();
 	}
 }

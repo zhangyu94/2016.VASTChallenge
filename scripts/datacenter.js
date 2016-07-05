@@ -29,7 +29,7 @@ var DATA_CENTER = {
 			max:undefined
 		},
 
-		current_display_time:undefined,//timeline当前播放到的时间
+		current_display_time:1464656400000,//timeline当前播放到的时间
 
 		selected_card_set:[],
 		selected_person_set:[],		
