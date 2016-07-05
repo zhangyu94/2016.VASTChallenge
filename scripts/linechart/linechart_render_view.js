@@ -6,8 +6,13 @@ var linechart_render_view = {
         "F_3_Z_1 Hazium Concentration":"f3z1-MC2.csv",
     },
 
+    //归一化以后的异常阈值
+    ABNORMAL_VALUE_THRESHOLD:4,
+
     //为折线图的大框设置最小尺寸，避免过小看不清楚
-    MINIMUM_LINECHART_RECT_HEIGHT : 80,
+    MINIMUM_LINECHART_RECT_HEIGHT : 27,
+    EXPECTED_LINECHART_NUM: 10,
+
 
 	obsUpdate:function(message, data)
 	{
@@ -71,19 +76,18 @@ var linechart_render_view = {
         var width  = $("#"+divID).width();
         var height  = $("#"+divID).height();
         var rect_width = width-20;
-        var rect_height = height/new_linechart_list.length-4;
 
-        if (rect_height < this.MINIMUM_LINECHART_RECT_HEIGHT)//避免尺寸过小看不清楚
-        {
-            rect_height = this.MINIMUM_LINECHART_RECT_HEIGHT;
-        }
+        var rect_height = height/this.EXPECTED_LINECHART_NUM-2;
+        //var rect_height = height/new_linechart_list.length-4;
+        //if (rect_height < this.MINIMUM_LINECHART_RECT_HEIGHT)//避免尺寸过小看不清楚
+        //{
+        //    rect_height = this.MINIMUM_LINECHART_RECT_HEIGHT;
+        //}
 
-        var btn_width = rect_width*0.07;
+        var btn_width = rect_width*0.14;
 
         var linechart_width = rect_width-btn_width-12;
         var linechart_height = rect_height-4;
-
-
 
         var update = d3.select("#"+divID)
             .selectAll(".HVAClinechart-span")
@@ -198,7 +202,7 @@ var linechart_render_view = {
                 })
                 .style("width",btn_width+"px")
                 .text(function(d,i){
-                    var buttonLabel = d.substring(0,btn_width/12);
+                    var buttonLabel = d.substring(0,btn_width/18);
                     return buttonLabel;
                 });
 
@@ -326,7 +330,23 @@ var linechart_render_view = {
                     }
 
                     chart.series[0].remove(false);
-                    chart.addSeries({data:minus_average_data},false)
+                    chart.addSeries({
+                        name: d.substring(0,7),
+                        data:minus_average_data,
+                        zones:[
+                        {
+                            value: -linechart_render_view.ABNORMAL_VALUE_THRESHOLD,
+                            color: "red",
+                        },
+                        {
+                            value: linechart_render_view.ABNORMAL_VALUE_THRESHOLD,
+                            color: '#7cb5ec',
+                        },
+                        {
+                            color: "red",
+                        }
+                        ]
+                    },false)
                     chart.redraw();
                     
                 })
@@ -404,8 +424,12 @@ var linechart_render_view = {
         //var height  = $("#"+divID).height();
 
        	var div = $("#"+divID);
+        Highcharts.setOptions({ global: { useUTC: false } });//使用本地时间
         div.highcharts({
             chart: {
+                spacingRight:0,
+                spacingLeft:0,
+                spacingTop:0,
                 spacingBottom:0,//压缩掉下侧的空白
 
                 //width:width,
@@ -432,7 +456,12 @@ var linechart_render_view = {
                 enabled: false,
             },
             xAxis: {
+                tickPosition:"inside",
+                labels:{
+                    enabled:false
+                },
                 type: 'datetime',
+                
                 dateTimeLabelFormats:{
                     millisecond:"%b %e, %H:00",
                     second:"%b %e, %H:00",
@@ -443,12 +472,33 @@ var linechart_render_view = {
                     month:"%b",
                     year:"%Y"
                 }
+                
             },
             
             yAxis: {
+                
+                labels:{
+                    enabled:false
+                },
+                
                 title:{
                     text:""
                 }
+            },
+
+            tooltip:{
+                useHTML: true,
+                headerFormat: '',//'<small>{point.key}</small><table>',
+                pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +
+                    '<td style="text-align: right"><b>{point.y}</b></td></tr>',
+                footerFormat:'',// '</table>',
+                
+                borderWidth:1,
+                style:{
+                    fontSize:"8px",
+
+                },
+
             },
             
             series: [{
@@ -519,7 +569,7 @@ var linechart_render_view = {
                 $(this).tipsy({
                     gravity: "s",
                     html:true,
-                    delayIn: 500,
+                    //delayIn: 500,
                     title:function(){
                         var d = this.__data__;
 

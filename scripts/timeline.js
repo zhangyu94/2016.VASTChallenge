@@ -2,6 +2,11 @@ var timeline_view = {
 	DISPLAY_RATE:undefined,//3600,//播放的速度是现实速度的多少倍
 	DISPLAY_INTERVAL:undefined,//播放时每隔多久更新一次时间,单位ms
 
+	ROBOT_MORNING_WORKTIME_START:"9:00",
+	ROBOT_MORNING_WORKTIME_END:"10:02",
+	ROBOT_AFTERNOON_WORKTIME_START:"14:00",
+	ROBOT_AFTERNOON_WORKTIME_END:"15:00",
+
 	intervalid_handle:undefined,//用于保存setInterval
 	timeline_div_id : "timeline_div",
 	obsUpdate:function(message, data)
@@ -9,7 +14,7 @@ var timeline_view = {
 		if (message == "set:added_timerange")
 		{
 			var added_timerange = DATA_CENTER.global_variable.added_timerange;
-			this._add_Plotband(added_timerange.min,added_timerange.max);
+			this._add_marking_plotband(added_timerange.min,added_timerange.max);
 		}
 
 		if (message == "set:current_display_time")
@@ -31,6 +36,9 @@ var timeline_view = {
 			if (typeof (mouseover_time)!="undefined")
 			{
 				this._plot_tickline(chart,0,"mouseover-tick",mouseover_time,"#55BB55","solid");
+			
+				var index = this._binary_search(chart.series[0].data,"x",mouseover_time);
+				chart.tooltip.refresh(chart.series[0].data[index]);
 			}
 		}
 
@@ -55,7 +63,7 @@ var timeline_view = {
 
 	},
 
-	_add_Plotband:function(min,max)
+	_add_marking_plotband:function(min,max)
 	{
 		var id = "PlotBand"+min+max;//有相同的id的人是一起删除的
 		var chart = $("#"+this.timeline_div_id).highcharts();
@@ -68,6 +76,30 @@ var timeline_view = {
 		   events: {             // 事件，支持 click、mouseover、mouseout、mousemove等事件
 	            click: function(e) {
 					axis.removePlotBand(this.id) 
+	            },
+	            mouseover: function(e) {
+	            },
+	            mouseout: function(e) {
+	            },
+	            mousemove: function(e) {
+	            }
+	        }
+		}); 
+	},
+
+	_add_robotworktime_plotband:function(min,max)
+	{
+		var id = "PlotBand"+min+max;//有相同的id的人是一起删除的
+		var chart = $("#"+this.timeline_div_id).highcharts();
+		var axis = chart.xAxis[0];
+		axis.addPlotBand({
+		   id: id,     // id 用于后续删除用
+		   color: '#80a0F0',
+		   from: min,
+		   to: max,
+		   events: {             // 事件，支持 click、mouseover、mouseout、mousemove等事件
+	            click: function(e) {
+					/*axis.removePlotBand(this.id) */
 	            },
 	            mouseover: function(e) {
 	            },
@@ -251,10 +283,10 @@ var timeline_view = {
 
 	_plot_linechart:function(divID,xyAxis_data)
 	{
-        d3.select("#"+divID).selectAll("*").remove()
+        d3.select("#"+divID).selectAll("*").remove();
 
        	var div = $("#"+divID);
-
+       	Highcharts.setOptions({ global: { useUTC: false } });//使用本地时间
         div.highcharts({
         	plotOptions: {
         		line:{
@@ -291,6 +323,7 @@ var timeline_view = {
                 enabled: false,
             },
             xAxis: {
+            	tickPosition:"inside",
             	labels:{
             		//enabled:false
             	},
@@ -341,6 +374,30 @@ var timeline_view = {
        		}
 	    });
 
+
+        _draw_robot_worktime();
+	    function _draw_robot_worktime()
+	    {
+	    	//引用全局变量DATES
+	    	for (var i=0;i<DATES.length;++i)
+	    	{
+	    		var cur_date = DATES[i];
+
+				var morning_start_string = cur_date+" "+timeline_view.ROBOT_MORNING_WORKTIME_START;
+				var morning_start = new Date(morning_start_string).getTime();
+				var morning_end_string = cur_date+" "+timeline_view.ROBOT_MORNING_WORKTIME_END;
+				var morning_end = new Date(morning_end_string).getTime();
+				timeline_view._add_robotworktime_plotband(morning_start,morning_end);
+
+				var afternoon_start_string = cur_date+" "+timeline_view.ROBOT_AFTERNOON_WORKTIME_START;
+				var afternoon_start = new Date(afternoon_start_string).getTime();
+				var afternoon_end_string = cur_date+" "+timeline_view.ROBOT_AFTERNOON_WORKTIME_END;
+				var afternoon_end = new Date(afternoon_end_string).getTime();
+				timeline_view._add_robotworktime_plotband(afternoon_start,afternoon_end);
+	    	}
+
+	    }
+
         return chart;
 	},
 
@@ -351,8 +408,40 @@ var timeline_view = {
 			width:1,                       //标示线的宽度为2px
 			color: color,              //标示线的颜色
 			id: tick_id,               //标示线的id，在删除该标示线的时候需要该id标示
-			dashStyle:dashStyle/*"shortdot"*/,
+			dashStyle:dashStyle,
 			zIndex:99,//值越大，显示的优先级越高
 		});		
 	},
+
+
+	//二分查找，返回小于等于键值target_value的最大的键值对应的数据
+	_binary_search:function(data_array,sorted_attr,target_value)
+	{
+		var start_index = 0;
+		var end_index = data_array.length - 1;
+		while (start_index != end_index)
+		{
+			var middle_index = Math.floor((start_index + end_index)/2);
+			var middle_value = data_array[middle_index][sorted_attr];
+
+			var middle_value = new Date(middle_value);
+            var middle_value = middle_value.getTime();
+
+			if (middle_value < target_value)
+			{
+				start_index = middle_index+1;
+			}
+			if (middle_value >= target_value)
+			{
+				end_index = middle_index;
+			}
+
+			if (start_index == end_index)
+			{
+				break;
+			}
+		}
+		
+		return start_index;
+	}
 }
