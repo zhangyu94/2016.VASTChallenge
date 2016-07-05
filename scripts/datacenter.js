@@ -42,11 +42,11 @@ var DATA_CENTER = {
 		SUBJECT.notifyObserver("set:"+variable_name, value);
 	},
 
-
 	timeline_variable : {
 		display_interval:1000,//播放更新间隔
 		display_rate:3600,//播放倍率
 		isplaying:false,//标记是否正在播放
+		mouseover_time:undefined,//当前mouseover的地方
 	},
 
 	set_timeline_variable : function(variable_name,value){

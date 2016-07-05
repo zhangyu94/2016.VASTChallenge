@@ -39,19 +39,28 @@ var linechart_render_view = {
 
                 var current_display_time = DATA_CENTER.global_variable.current_display_time;
                 var chart = $("#"+cur_linechart_id).highcharts();    // Highcharts构造函数
-
                 chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
                 if (typeof(current_display_time)!=undefined)
                 {
-                    chart.xAxis[0].addPlotLine({           //在x轴上增加
-                        value:current_display_time,    //在值为current_display_time的地方
-                        width:1,                       //标示线的宽度为2px
-                        color: '#FF0000',              //标示线的颜色
-                        id: 'time-tick',               //标示线的id，在删除该标示线的时候需要该id标示
-                        dashStyle:"shortdot",
+                    this._plot_tickline(chart,0,"time-tick",current_display_time,"#FF0000","shortdot");
+                }  
+            }
+        }
 
-                        zIndex:99,//值越大，显示的优先级越高
-                    });   
+        if (message == "set:mouseover_time")
+        {
+            var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
+            for (var i=0;i<selected_linechart_set.length;++i)
+            {
+                var cur_linechart_name = selected_linechart_set[i];
+                var cur_linechart_id = "HVAClinechart-linechart-span-div-"+this._compress_string(cur_linechart_name);
+
+                var mouseover_time = DATA_CENTER.timeline_variable.mouseover_time;
+                var chart = $("#"+cur_linechart_id).highcharts();    // Highcharts构造函数
+                chart.xAxis[0].removePlotLine('mouseover-tick'); //把id为time-tick的标示线删除
+                if (typeof(mouseover_time)!=undefined)
+                {
+                    this._plot_tickline(chart,0,"mouseover-tick",mouseover_time,"#55BB55","solid");
                 }  
             }
         }
@@ -449,8 +458,31 @@ var linechart_render_view = {
         });
 
         var chart = div.highcharts()
+
+        div.bind('mousemove touchmove touchstart', function (e) {
+            var event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart   
+            var point = chart.series[0].searchPoint(event, true); // Get the hovered point
+            if (typeof(point)!="undefined")
+            {
+                var mouseover_time = point.x;
+                DATA_CENTER.set_timeline_variable("mouseover_time",mouseover_time)
+            }
+        });
+        
         return chart;
 	},
+
+    _plot_tickline:function(chart,series_index,tick_id,x_position,color,dashStyle)
+    {
+        chart.xAxis[series_index].addPlotLine({           //在x轴上增加
+            value:x_position,    //在值为current_display_time的地方
+            width:1,                       //标示线的宽度为2px
+            color: color,              //标示线的颜色
+            id: tick_id,               //标示线的id，在删除该标示线的时候需要该id标示
+            dashStyle:dashStyle/*"shortdot"*/,
+            zIndex:99,//值越大，显示的优先级越高
+        });     
+    },
 
     //只保留字符串中的数字和字母，其他全都删光
     //设id的时候调用一下这个可以确保安全

@@ -22,6 +22,7 @@ function main(){
 			"set:display_interval",
 			"set:display_rate",
 			"set:isplaying",
+			"set:mouseover_time",
 
 			"set:highlight_attr_set",
 			"set:highlight_HVACzone_set",

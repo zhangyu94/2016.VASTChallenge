@@ -16,20 +16,21 @@ var timeline_view = {
 		{
 	        var current_display_time = DATA_CENTER.global_variable.current_display_time;
 	        var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
-			
 	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
-
 	        if (typeof(current_display_time)!=undefined)
 	        {
-				chart.xAxis[0].addPlotLine({           //在x轴上增加
-					    value:current_display_time,    //在值为current_display_time的地方
-					    width:1,                       //标示线的宽度为2px
-					    color: '#FF0000',              //标示线的颜色
-					    id: 'time-tick',               //标示线的id，在删除该标示线的时候需要该id标示
-						dashStyle:"shortdot",
+	        	this._plot_tickline(chart,0,"time-tick",current_display_time,"#FF0000","shortdot");
+			}
+		}
 
-						zIndex:99,//值越大，显示的优先级越高
-					});		
+		if (message == "set:mouseover_time")
+		{
+			var mouseover_time = DATA_CENTER.timeline_variable.mouseover_time;
+			var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
+			chart.xAxis[0].removePlotLine("mouseover-tick"); //把id为mouseover-tick的标示线删除
+			if (typeof (mouseover_time)!="undefined")
+			{
+				this._plot_tickline(chart,0,"mouseover-tick",mouseover_time,"#55BB55","solid");
 			}
 		}
 
@@ -253,8 +254,20 @@ var timeline_view = {
         d3.select("#"+divID).selectAll("*").remove()
 
        	var div = $("#"+divID);
+
         div.highcharts({
+        	plotOptions: {
+        		line:{
+        			events:{
+        				mouseOver:function(e){
+        					//console.log(e)
+        				}
+        			}
+        		}
+        	},
+
             chart: {
+            	spacingTop:0,
                 spacingBottom:0,//压缩掉下侧的空白
                 renderTo: divID,// 图表加载的位置
                 type: 'line',
@@ -263,8 +276,9 @@ var timeline_view = {
                 panKey: 'shift',
                 events:{
                     selection:function(e){
-                        console.log(e)
-                    }
+                        //console.log(e)
+                    },
+
                 }
             },
             legend:{
@@ -315,7 +329,30 @@ var timeline_view = {
             }]
         });
 
-        var chart = div.highcharts()
+        var chart = div.highcharts();
+
+        div.bind('mousemove touchmove touchstart', function (e) {
+       		var event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart   
+       		var point = chart.series[0].searchPoint(event, true); // Get the hovered point
+       		if (typeof(point)!="undefined")
+       		{
+       			var mouseover_time = point.x;
+       			DATA_CENTER.set_timeline_variable("mouseover_time",mouseover_time)
+       		}
+	    });
+
         return chart;
+	},
+
+	_plot_tickline:function(chart,series_index,tick_id,x_position,color,dashStyle)
+	{
+		chart.xAxis[series_index].addPlotLine({           //在x轴上增加
+			value:x_position,    //在值为current_display_time的地方
+			width:1,                       //标示线的宽度为2px
+			color: color,              //标示线的颜色
+			id: tick_id,               //标示线的id，在删除该标示线的时候需要该id标示
+			dashStyle:dashStyle/*"shortdot"*/,
+			zIndex:99,//值越大，显示的优先级越高
+		});		
 	},
 }
