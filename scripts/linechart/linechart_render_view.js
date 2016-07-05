@@ -440,6 +440,14 @@ var linechart_render_view = {
                 panning: true,
                 panKey: 'shift',
 
+                resetZoomButton:{
+                    position:{
+                        align:'right',
+                        verticalAlign:"top",
+                        y:-5,
+                    }
+                },
+
                 events:{
                     selection:function(e){
                         console.log(e)

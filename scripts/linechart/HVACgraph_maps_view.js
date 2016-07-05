@@ -1,6 +1,9 @@
 var HVACgraph_maps_view = {
 	FIRST_CALLED : true,
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
+	HVAC_ZONE_DOT_RADIUS :5.5,
+
+	DIV_CLASS_OF_RADARCHART_GLYPH:"radarchart_glyph-div",
 	
 	obsUpdate:function(message, data)
 	{
@@ -29,17 +32,14 @@ var HVACgraph_maps_view = {
         	var timestamp = DATA_CENTER.global_variable.current_display_time;
         	if (typeof(timestamp)!="undefined")
         	{
-        		/*
-        		var node = d3.selectAll(".HVACmap-circle")
+        		
+        		var node = d3.selectAll(".click_selected-HVACmap-circle")
         			.each(function(d,i){
-
-        				console.log($(this))
-        				var height = $(this).height();
-						var left = $(this).offset().left;
-						var top = $(this).offset().top-height;
+						var left = $(this).offset().left+HVACgraph_maps_view.HVAC_ZONE_DOT_RADIUS;
+						var top = $(this).offset().top+HVACgraph_maps_view.HVAC_ZONE_DOT_RADIUS;
         				HVACgraph_maps_view._render_radarchart_glyph(d.name,d.type,left,top,timestamp)
         			})
-*/
+
         	}
 			
 
@@ -92,8 +92,7 @@ var HVACgraph_maps_view = {
 			.datum({name:"building"})
 			.attr("class","HVACmap-rect building-HVACmap-rect")
 			.attr("height",building_div_content_height)
-			.attr("width",building_div_content_width)	             
-			//.attr("fill","blue").attr("opacity",0.2)
+			.attr("width",building_div_content_width)	         
 			.on("click",function(d,i){
 				var selected_building_set = DATA_CENTER.global_variable.selected_building_set;
 				var index = selected_building_set.indexOf(d.name);
@@ -356,7 +355,7 @@ var HVACgraph_maps_view = {
 						    	}
 						    		
 						    })
-					      	.attr("r", 5.5)
+					      	.attr("r", HVACgraph_maps_view.HVAC_ZONE_DOT_RADIUS)
 					      	.on("mouseover",function(d,i){
 
 					      		_highlight_communication(d,i);
@@ -451,6 +450,7 @@ var HVACgraph_maps_view = {
 
 	_render_radarchart_glyph:function(place_name,place_type,center_x,center_y,raw_timestamp)
 	{
+		var dataset = _cal_dataset(place_name,place_type);
 		function _cal_dataset(place_name,place_type)
 		{
 			var detail_attr_set = [];
@@ -486,50 +486,49 @@ var HVACgraph_maps_view = {
 
 			return frame_needed_data;
 		}
-		var dataset = _cal_dataset(place_name,place_type);
-
-		console.log(dataset);
-
+		
+		_render_radarchart(dataset,center_x,center_y);
 		function _render_radarchart(data,center_x,center_y)
 		{
-			var width = 50;
-			var height = 50;
-			var radius = Math.min(width, height) / 2;
-			var innerRadius = 0;
+			var width = 100;
+			var height = 100;
+			var radius = 25;
+			var innerRadius = HVACgraph_maps_view.HVAC_ZONE_DOT_RADIUS;
+			var degree = 360/data.length;
 
 			var pie = d3.layout.pie()
 			    .sort(null)
-			    .value(function(d) { return d.width; });
-
+			    .value(function(d) { return degree; });
 			var arc = d3.svg.arc()
 			  	.innerRadius(innerRadius)
 			  	.outerRadius(function (d) { 
-			  		var value = 0;
-			  		if (typeof(d.data.value)!= "undefined")
+			  		console.log(d)
+			  		var value = 0.01;
+			  		if (typeof(d.data.value)!= "undefined" && d.data.value>0)
 			  			value = d.data.value;
-			    	return (radius - innerRadius) * (d.data.value / 100000.0) + innerRadius; 
+			    	return (radius - innerRadius) * (d.data.value / 1000.0) + innerRadius; 
 			  	});
-
 			var outlineArc = d3.svg.arc()
 			        .innerRadius(innerRadius)
 			        .outerRadius(radius);
 
 			var div_of_radarchart_glyph = d3.select("body")//放在body上append使得他能显示出来
 					.append("div")
-						.attr("class","radarchart_glyph-div")
+						.attr("class",HVACgraph_maps_view.DIV_CLASS_OF_RADARCHART_GLYPH)
 						.style("position","absolute")
 						.style("top",center_y-height/2 + 'px')
-				    	.style("left",center_x-width/2 + 'px');
+				    	.style("left",center_x-width/2 + 'px')
+				    	.style("width",width + 'px')
+				    	.style("height",height + 'px')
+				    	.style("pointer-events","none")
 
 			var svg = div_of_radarchart_glyph.append("svg")
-			    .attr("width", width)
-			    .attr("height", height)
+				    .attr("width", width)
+				    .attr("height", height)
 			    .append("g")
-			    //.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+			    	.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
 
 
-			console.log(svg);
-			/*	
 			var path = svg.selectAll(".solidArc")
 			      	.data(pie(data))
 			    .enter().append("path")
@@ -537,19 +536,28 @@ var HVACgraph_maps_view = {
 			      	.attr("class", "solidArc")
 			      	.attr("stroke", "gray")
 			      	.attr("d", arc)
-
+			      	.style("pointer-events","auto")
+			      	.on("mouseover",function(d,i){
+			      		console.log(d)
+			      	})
+			      	.attr("opacity", 1)
+			    .transition()
+		          	.duration(1500)
+		          	.attr("opacity", 0)
+			      	
 		  	var outerPath = svg.selectAll(".outlineArc")
 		      		.data(pie(data))
 		    	.enter().append("path")
 			      	.attr("fill", "none")
 			      	.attr("stroke", "gray")
 			      	.attr("class", "outlineArc")
-			      	.attr("d", outlineArc);  
-			      	*/
-			
-
+			      	.attr("d", outlineArc)
+			      	.attr("opacity", 1)
+			    .transition()
+		          	.duration(1500)
+		          	.attr("opacity", 0)
 		}
-		_render_radarchart(dataset,center_x,center_y);
+		
 
 
 
