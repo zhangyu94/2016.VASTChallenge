@@ -116,6 +116,17 @@ body {
 	overflow-y:scroll;/*内容多时提供滚轮*/
 	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
 }
+#linechartview-collection > .linechartContainer > #HVAC-mdsgraph{
+	position:absolute;
+	top:14%;
+	height:86%;
+	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	/*background-color: #f8f8f8;*/
+	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
+}
 
 
 /*trajectory视图*/
