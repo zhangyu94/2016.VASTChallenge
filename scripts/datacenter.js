@@ -2,6 +2,31 @@ var DATA_CENTER = {
 	original_data : [],//访问时形如DATA_CENTER.original_data["bldg-MC2.csv"]
 	derived_data : [],//访问时形如DATA_CENTER.derived_data["..."]
 
+
+	//登记所有存在的view
+	VIEW_COLLECTION : {
+		"HVACgraph_attrbtn_view":HVACgraph_attrbtn_view,
+		"HVACgraph_maps_view":HVACgraph_maps_view,
+		"linechart_linebtn_view":linechart_linebtn_view,
+		"linechart_render_view":linechart_render_view,
+
+		"bigmap_view":bigmap_view,
+		"ganttchart_view":ganttchart_view,
+		"histogram_view":histogram_view,
+		"proxgraph_maps_view":proxgraph_maps_view,
+
+		"mdsgraph_view":mdsgraph_view,
+
+		"timeline_view":timeline_view,
+	},
+	trigger_view_display : function(view_name,value){
+		SUBJECT.notifyObserver("display:"+view_name, value);
+	},
+	trigger_view_hide : function(view_name,value){
+		SUBJECT.notifyObserver("hide:"+view_name, value);
+	},
+
+
 	//view之间通信需要利用的全局变量
 	global_variable : {
 		selected_floor: 0,

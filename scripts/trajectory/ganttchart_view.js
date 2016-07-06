@@ -1,4 +1,7 @@
 var ganttchart_view = {
+	ganttchart_view_DIV_ID : "trajectory-ganttchart",
+	
+
 	root:null,
 	width:null,
 	height:null,
@@ -7,6 +10,16 @@ var ganttchart_view = {
 	zoneColorScale:null,
 	obsUpdate:function(message, data)
 	{
+		if (message == "display:ganttchart_view")
+        {
+            $("#"+this.ganttchart_view_DIV_ID).css("display","block");
+            this.render(this.ganttchart_view_DIV_ID);
+        }
+
+        if (message == "hide:ganttchart_view")
+        {
+            $("#"+this.ganttchart_view_DIV_ID).css("display","none");
+        }
 
 	},
 	render:function(divID)

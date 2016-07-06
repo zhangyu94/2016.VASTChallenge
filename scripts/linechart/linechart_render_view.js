@@ -1,4 +1,7 @@
 var linechart_render_view = {
+    FIRST_CALLED : true,
+    linechart_render_view_DIV_ID : "linechart-renderplace",
+
     HAZIUM_DATA_FILENAME_MAPPING:{
         "F_1_Z_8A Hazium Concentration":"f1z8a-MC2.csv",
         "F_2_Z_2 Hazium Concentration":"f2z2-MC2.csv",
@@ -16,6 +19,25 @@ var linechart_render_view = {
 
 	obsUpdate:function(message, data)
 	{
+        if (message == "display:linechart_render_view")
+        {
+            $("#"+this.linechart_render_view_DIV_ID).css("display","block");
+
+            if (this.FIRST_CALLED)
+            {
+                $( "#"+this.linechart_render_view_DIV_ID ).sortable({
+                    handle: ".HVAClinechart-btntitle-span",//btn作为sort的时候的把手
+                });
+                this.FIRST_CALLED = false;
+            }
+        }
+
+        if (message == "hide:linechart_render_view")
+        {
+            $("#"+this.linechart_render_view_DIV_ID).css("display","none");
+        }
+
+
         if ( message == "set:selected_linechart_set" )
         {
             var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;

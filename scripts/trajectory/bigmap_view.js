@@ -1,7 +1,23 @@
 var bigmap_view = {
+	bigmap_view_DIV_ID : "trajectory-bigmap",
+
+
+
 	obsUpdate:function(message, data)
 	{
-		var divID = "trajectory-bigmap";
+		if (message == "display:bigmap_view")
+        {
+            $("#"+this.bigmap_view_DIV_ID).css("display","block");
+            this.render(this.bigmap_view_DIV_ID);
+        }
+
+        if (message == "hide:bigmap_view")
+        {
+            $("#"+this.bigmap_view_DIV_ID).css("display","none");
+        }
+
+		var divID = this.bigmap_view_DIV_ID;// = "trajectory-bigmap";
+
 		if (message == "set:current_display_time"){
 			var global_display_time = DATA_CENTER.global_variable.current_display_time;
 			this.updateView(divID, global_display_time);

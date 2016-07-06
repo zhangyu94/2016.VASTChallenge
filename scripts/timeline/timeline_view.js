@@ -1,4 +1,7 @@
 var timeline_view = {
+	FIRST_CALLED : true,
+	timeline_view_DIV_ID : "timeline-renderplace",
+
 	DISPLAY_RATE:undefined,//3600,//播放的速度是现实速度的多少倍
 	DISPLAY_INTERVAL:undefined,//播放时每隔多久更新一次时间,单位ms
 
@@ -11,6 +14,22 @@ var timeline_view = {
 	timeline_div_id : "timeline_div",
 	obsUpdate:function(message, data)
 	{
+		if (message == "display:timeline_view")
+		{
+			$("#"+this.timeline_view_DIV_ID).css("display","block");
+			if (this.FIRST_CALLED)
+			{
+				this.render(this.timeline_view_DIV_ID);
+				this.FIRST_CALLED = false;
+			}
+		}
+
+		if (message == "hide:timeline_view")
+		{
+			$("#"+this.timeline_view_DIV_ID).css("display","none");
+		}
+
+
 		if (message == "set:added_timerange")
 		{
 			var added_timerange = DATA_CENTER.global_variable.added_timerange;

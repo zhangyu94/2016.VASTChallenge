@@ -1,5 +1,5 @@
 var HVACgraph_attrbtn_view = {
-	DIV_ID : "HVACgraph-attr-btn",
+	HVACgraph_attrbtn_view_DIV_ID : "HVACgraph-attr-btn",
 	DIV_CLASS_OF_SMALLSPANS:"HVACattrbtn-span-div_of_smallspans",
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 
@@ -7,6 +7,19 @@ var HVACgraph_attrbtn_view = {
 
 	obsUpdate:function(message, data)
 	{
+		if (message == "display:HVACgraph_attrbtn_view")
+		{
+			$("#"+this.HVACgraph_attrbtn_view_DIV_ID).css("display","block");
+			this.show_all_smallspans();
+		}
+
+		if (message == "hide:HVACgraph_attrbtn_view")
+		{
+			$("#"+this.HVACgraph_attrbtn_view_DIV_ID).css("display","none");
+			this.hide_all_smallspans();
+		}
+
+
 		if ( 	(message == "set:selected_building_set") || 
 				(message == "set:selected_floor_set") || 
 				(message == "set:selected_HVACzone_set") )
@@ -36,7 +49,7 @@ var HVACgraph_attrbtn_view = {
 			DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set);
 
 			//2.更新渲染
-			this.update_render(this.DIV_ID,this.rendered_attrbtn_set);			
+			this.update_render(this.HVACgraph_attrbtn_view_DIV_ID,this.rendered_attrbtn_set);			
 		}
 
 		if ( message == "set:highlight_attr_set" )

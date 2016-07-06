@@ -1,5 +1,7 @@
 var HVACgraph_maps_view = {
 	FIRST_CALLED : true,
+	HVACgraph_maps_view_DIV_ID : "HVACgraph-maps",
+
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 	HVAC_ZONE_DOT_RADIUS :5.5,
 
@@ -7,6 +9,23 @@ var HVACgraph_maps_view = {
 	
 	obsUpdate:function(message, data)
 	{
+		if (message == "display:HVACgraph_maps_view")
+		{
+			$("#"+this.HVACgraph_maps_view_DIV_ID).css("display","block");
+			if (this.FIRST_CALLED)
+			{
+				this.render(this.HVACgraph_maps_view_DIV_ID);
+				this.FIRST_CALLED = false;
+			}
+		}
+
+		if (message == "hide:HVACgraph_maps_view")
+		{
+			$("#"+this.HVACgraph_maps_view_DIV_ID).css("display","none");
+		}
+
+
+
 		if (	(message == "set:highlight_HVACzone_set")  || 
 				(message == "set:highlight_floor_set")  ||
 				(message == "set:highlight_building_set")  )
@@ -544,6 +563,7 @@ var HVACgraph_maps_view = {
 			    .transition()
 		          	.duration(1500)
 		          	.attr("opacity", 0)
+		          	.remove()
 			      	
 		  	var outerPath = svg.selectAll(".outlineArc")
 		      		.data(pie(data))
@@ -556,6 +576,7 @@ var HVACgraph_maps_view = {
 			    .transition()
 		          	.duration(1500)
 		          	.attr("opacity", 0)
+		          	.remove()
 		}
 		
 

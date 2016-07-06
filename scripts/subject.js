@@ -9,7 +9,7 @@ var SUBJECT = {
 
     notifyObserver : function(message, data) {
         if (this.messageFilter && this.messageFilter.indexOf(message) < 0) {
-            console.warn("WARN: the message posted is invalid!");
+            console.warn("WARN: the message posted is invalid!",message);
             return;
         }
 

@@ -30,6 +30,28 @@ function main(){
 			"set:highlight_building_set",
 			"set:highlight_linechart_set",
 
+
+			"display:HVACgraph_attrbtn_view",
+			"display:HVACgraph_maps_view",
+			"display:linechart_linebtn_view",
+			"display:linechart_render_view",
+			"hide:HVACgraph_attrbtn_view",
+			"hide:HVACgraph_maps_view",
+			"hide:linechart_linebtn_view",
+			"hide:linechart_render_view",
+
+			"display:bigmap_view",
+			"display:ganttchart_view",
+			"display:histogram_view",
+			"display:proxgraph_maps_view",
+			"hide:bigmap_view",
+			"hide:ganttchart_view",
+			"hide:histogram_view",
+			"hide:proxgraph_maps_view",
+
+			"display:timeline_view",
+			"hide:timeline_view",
+			
 		];
 		SUBJECT.setMessageFilter(MESSAGE_COLLECTION)
 	}
@@ -39,23 +61,12 @@ function main(){
 	function REGISTER_VIEWS_AS_OBSERVERS()
 	{
 		//被登记到subject作为observer的视图们
-		var VIEW_COLLECTION = [
-			HVACgraph_attrbtn_view,
-			HVACgraph_maps_view,
-			linechart_linebtn_view,
-			linechart_render_view,
+		var VIEW_COLLECTION = DATA_CENTER.VIEW_COLLECTION;
 
-			bigmap_view,
-			ganttchart_view,
-			histogram_view,
-			proxgraph_maps_view,
-
-			timeline_view,
-		];
-
-		for (var i=0;i<VIEW_COLLECTION.length;++i)
+		for (var view_name in VIEW_COLLECTION)
 		{
-			SUBJECT.registerObserver(VIEW_COLLECTION[i])
+			view = VIEW_COLLECTION[view_name]
+			SUBJECT.registerObserver(view)
 		}
 	}
 
@@ -80,10 +91,63 @@ function main(){
 
 	//绑定视图切换的btn的click
 	$(".panelContainer>.pagination>li>a").click(function(){
-		var view_name = $(this).attr("id");
+		var view_collection_name = $(this).attr("id");
 		$(".panelContainer>.pagination>.active").removeClass("active");
-		$(".panelContainer>.pagination>"+"#" + view_name + "li").attr("class", "active");
+		$(".panelContainer>.pagination>"+"#" + view_collection_name + "li").attr("class", "active");
 
+
+		var VIEW_COLLECTION = DATA_CENTER.VIEW_COLLECTION;
+		if (view_collection_name == "trajectoryview")
+		{
+			var displayed_view = {
+				"ganttchart_view":undefined,
+				"proxgraph_maps_view":undefined,
+				"bigmap_view":undefined,
+				"histogram_view":undefined,
+
+				"timeline_view":undefined,
+			};
+			for (view_name in VIEW_COLLECTION)
+			{
+				if (view_name in displayed_view)
+				{
+					DATA_CENTER.trigger_view_display(view_name,"");
+				}
+				else
+				{
+					DATA_CENTER.trigger_view_hide(view_name,"");
+				}
+			}
+
+		}
+		else if (view_collection_name == "linechartview")
+		{
+			var displayed_view = {
+				"HVACgraph_attrbtn_view":undefined,
+				"HVACgraph_maps_view":undefined,
+				"linechart_linebtn_view":undefined,
+				"linechart_render_view":undefined,
+
+				"timeline_view":undefined,
+			};
+			for (view_name in VIEW_COLLECTION)
+			{
+				if (view_name in displayed_view)
+				{
+					DATA_CENTER.trigger_view_display(view_name,"");
+				}
+				else
+				{
+					DATA_CENTER.trigger_view_hide(view_name,"");
+				}
+			}
+		}
+		else
+		{
+			console.log("invalid view_collection_name");
+		}
+
+		/*
 		var view_collections = $(".view-collection");
 		for (var i=0;i<view_collections.length;++i)
 		{
@@ -106,11 +170,12 @@ function main(){
 		{
 			console.log("invalid view_name");
 		}
+		*/
 	})
 
 	$("#linechartview").click();//先触发一下视图切换
 
-	timeline_view.render("timeline-renderplace")
+	//timeline_view.render("timeline-renderplace")
 
 
 	//linechart视图调用的地方

@@ -1,6 +1,23 @@
 var proxgraph_maps_view = {
+	FIRST_CALLED : true,
+	proxgraph_maps_view_DIV_ID : "proxgraph-maps",
+
 	obsUpdate:function(message, data)
 	{
+		if (message == "display:proxgraph_maps_view")
+        {
+            $("#"+this.proxgraph_maps_view_DIV_ID).css("display","block");
+            if (this.FIRST_CALLED)
+			{
+            	this.render(this.proxgraph_maps_view_DIV_ID);
+            	this.FIRST_CALLED = false;
+            }
+        }
+
+        if (message == "hide:bigmap_view")
+        {
+            $("#"+this.proxgraph_maps_view_DIV_ID).css("display","none");
+        }
 
 	},
 	render:function(divID)

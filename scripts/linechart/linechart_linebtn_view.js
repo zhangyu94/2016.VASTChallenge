@@ -1,9 +1,22 @@
 var linechart_linebtn_view = {
+	linechart_linebtn_view_DIV_ID : "linechart-line-btn",
+
 	rendered_linechartbtn_set : [],
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 
 	obsUpdate:function(message, data)
 	{
+		if (message == "display:linechart_linebtn_view")
+		{
+			$("#"+this.linechart_linebtn_view_DIV_ID).css("display","block");
+		}
+
+		if (message == "hide:linechart_linebtn_view")
+		{
+			$("#"+this.linechart_linebtn_view_DIV_ID).css("display","none");
+		}
+
+
 		if ( 	(message == "set:selected_building_set") || 
 				(message == "set:selected_floor_set") || 
 				(message == "set:selected_HVACzone_set") ||
