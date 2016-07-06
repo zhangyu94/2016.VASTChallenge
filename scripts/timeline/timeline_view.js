@@ -84,7 +84,7 @@ var timeline_view = {
 
 	_add_marking_plotband:function(min,max)
 	{
-		var id = "PlotBand"+min+max;//有相同的id的人是一起删除的
+		var id = "marking-PlotBand"+min+max;//有相同的id的人是一起删除的
 		var chart = $("#"+this.timeline_div_id).highcharts();
 		var axis = chart.xAxis[0];
 		axis.addPlotBand({
@@ -102,13 +102,14 @@ var timeline_view = {
 	            },
 	            mousemove: function(e) {
 	            }
-	        }
+	        },
+	        zIndex:3,
 		}); 
 	},
 
 	_add_robotworktime_plotband:function(min,max)
 	{
-		var id = "PlotBand"+min+max;//有相同的id的人是一起删除的
+		var id = "robotworktime-PlotBand"+min+max;//有相同的id的人是一起删除的
 		var chart = $("#"+this.timeline_div_id).highcharts();
 		var axis = chart.xAxis[0];
 		axis.addPlotBand({
@@ -126,10 +127,33 @@ var timeline_view = {
 	            },
 	            mousemove: function(e) {
 	            }
-	        }
+	        },
+	        zIndex:2,
 		}); 
+	},
 
-
+	_add_weekend_plotband:function(min,max)
+	{
+		var id = "weekend-PlotBand"+min+max;//有相同的id的人是一起删除的
+		var chart = $("#"+this.timeline_div_id).highcharts();
+		var axis = chart.xAxis[0];
+		axis.addPlotBand({
+		   id: id,     // id 用于后续删除用
+		   color: '#FFFFE8',
+		   from: min,
+		   to: max,
+		   events: {             // 事件，支持 click、mouseover、mouseout、mousemove等事件
+	            click: function(e) {
+	            },
+	            mouseover: function(e) {
+	            },
+	            mouseout: function(e) {
+	            },
+	            mousemove: function(e) {
+	            }
+	        },
+	        zIndex:1,
+		}); 
 	},
 
 	render:function(divID)
@@ -342,20 +366,21 @@ var timeline_view = {
                 enabled: false,
             },
             xAxis: {
+            	tickLength:0,
             	tickPosition:"inside",
             	labels:{
             		//enabled:false
             	},
                 type: 'datetime',
                 dateTimeLabelFormats:{
-                    millisecond:"%b %e, %H:00",
-                    second:"%b %e, %H:00",
-                    minute:"%b %e, %H:00",
-                    hour:"%b %e, %H:00",
-                    day:"%b %e",
-                    week:"%b %e",
-                    month:"%b",
-                    year:"%Y"
+                    millisecond:"%m.%e, %H:%M",
+                    second:"%m.%e, %H:%M",
+                    minute:"%m.%e, %H:%M",
+                    hour:"%m.%e, %H:%M",
+                    day:"%m.%e",
+                    week:"%m.%e",
+                    month:"%m",
+                    year:"%Y",
                 }
             },
             
@@ -369,15 +394,19 @@ var timeline_view = {
             },
 
             tooltip: {
+            	xDateFormat: '%H:%M',
 	            pointFormatter: function() {
 	            	//直接去掉值的显示
-				    return ''//'<span style="color:{'+this.series.color+'}">u25CF</span> {'+
-				           //this.series.name+'}: <b>{'+this.y+'}</b><br/>.'
+				    return ''
 				},
+				
 			},
             
             series: [{
-                data: xyAxis_data
+                data: xyAxis_data,
+                marker:{
+                	radius:1,
+                },
             }]
         });
 
@@ -401,21 +430,56 @@ var timeline_view = {
 	    	for (var i=0;i<DATES.length;++i)
 	    	{
 	    		var cur_date = DATES[i];
+	    		var day = (new Date(cur_date)).getDay();
+	    		if ( ! ((day==6)||(day==0)) )
+	    		{
+					var morning_start_string = cur_date+" "+timeline_view.ROBOT_MORNING_WORKTIME_START;
+					var morning_start = new Date(morning_start_string).getTime();
+					var morning_end_string = cur_date+" "+timeline_view.ROBOT_MORNING_WORKTIME_END;
+					var morning_end = new Date(morning_end_string).getTime();
+					timeline_view._add_robotworktime_plotband(morning_start,morning_end);
 
-				var morning_start_string = cur_date+" "+timeline_view.ROBOT_MORNING_WORKTIME_START;
-				var morning_start = new Date(morning_start_string).getTime();
-				var morning_end_string = cur_date+" "+timeline_view.ROBOT_MORNING_WORKTIME_END;
-				var morning_end = new Date(morning_end_string).getTime();
-				timeline_view._add_robotworktime_plotband(morning_start,morning_end);
-
-				var afternoon_start_string = cur_date+" "+timeline_view.ROBOT_AFTERNOON_WORKTIME_START;
-				var afternoon_start = new Date(afternoon_start_string).getTime();
-				var afternoon_end_string = cur_date+" "+timeline_view.ROBOT_AFTERNOON_WORKTIME_END;
-				var afternoon_end = new Date(afternoon_end_string).getTime();
-				timeline_view._add_robotworktime_plotband(afternoon_start,afternoon_end);
+					var afternoon_start_string = cur_date+" "+timeline_view.ROBOT_AFTERNOON_WORKTIME_START;
+					var afternoon_start = new Date(afternoon_start_string).getTime();
+					var afternoon_end_string = cur_date+" "+timeline_view.ROBOT_AFTERNOON_WORKTIME_END;
+					var afternoon_end = new Date(afternoon_end_string).getTime();
+					timeline_view._add_robotworktime_plotband(afternoon_start,afternoon_end);
+				}
 	    	}
-
 	    }
+
+	    _draw_weekend_time();
+	    function _draw_weekend_time()
+	    {
+	    	//引用全局变量DATES
+	    	for (var i=0;i<DATES.length;++i)
+	    	{
+	    		var cur_date = DATES[i];
+	    		var day = (new Date(cur_date)).getDay();
+	    		if ( (day==6)||(day==0) )
+	    		{
+	    			var weekend_day_start_time = (new Date(cur_date)).setHours(0);
+	    			var weekend_day_end_time = (new Date(cur_date)).setHours(24);
+					timeline_view._add_weekend_plotband(weekend_day_start_time,weekend_day_end_time);
+	    		}
+	    	}
+	    }
+
+	    _draw_day_starttime();
+	    function _draw_day_starttime()
+	    {
+	    	var chart = $("#"+timeline_view.timeline_div_id).highcharts();
+	    	for (var i=0;i<DATES.length;++i)
+	    	{
+	    		var cur_date = DATES[i];
+	    		day_start_time = (new Date(cur_date)).setHours(0);
+	    		timeline_view._plot_tickline(chart,0,"day-starttime-tick",day_start_time,'#80a0F0',"shortdot");
+	    	}
+	    	
+	    }
+	    
+
+
 
         return chart;
 	},
@@ -428,7 +492,7 @@ var timeline_view = {
 			color: color,              //标示线的颜色
 			id: tick_id,               //标示线的id，在删除该标示线的时候需要该id标示
 			dashStyle:dashStyle,
-			zIndex:99,//值越大，显示的优先级越高
+			zIndex:4,//值越大，显示的优先级越高
 		});		
 	},
 
