@@ -30,6 +30,7 @@ var DATA_CENTER = {
 	//view之间通信需要利用的全局变量
 	global_variable : {
 		selected_floor: 0,
+		floors_zone_set: [],
 		personInZone: [], 
 		selected_attr_set:[],
 		selected_linechart_set:[],
@@ -307,7 +308,27 @@ var DATA_CENTER = {
 											personInZone[i].zoneNum = -1;
 										}
 										DATA_CENTER.derived_data["personInZone"] = personInZone;
-										d3.json(derived_path+d_file_name[1], function(data8) {
+										d3.json(derived_path+d_file_name[1], function(data8) {//room.json data
+											//room数据处理得到每个楼层的各个zone有哪些区域
+											console.log(data8);
+											var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
+											var floorNum = 3;
+											var proxZoneNumArray = [8, 7, 6];
+											for(var i = 0;i < floorNum;i++){
+												floors_zone_set[i] = new Array();
+												var proxZoneNum = proxZoneNumArray[i];
+												for(var j = 0;j < proxZoneNum;j++){
+													floors_zone_set[i][j] = new Array();
+												}
+											}
+											for(var i = 0;i < data8.length;i++){
+												if(data8[i].proxZone != undefined){
+													var floorNum = +data8[i].floor - 1;
+													var proxZoneNum = +data8[i].proxZone - 1;
+													floors_zone_set[floorNum][proxZoneNum].push(data8[i]);
+												}
+											}
+											console.log(floors_zone_set);
 											d3.json(derived_path + d_file_name[2], function(data9){//zone_floor1
 												d3.json(derived_path + d_file_name[3], function(data10){//zone_floor2
 													d3.json(derived_path + d_file_name[4], function(data11){//zone_floor3

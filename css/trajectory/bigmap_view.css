@@ -1,6 +1,17 @@
 .room{
-	fill: "#ccc";
 	opacity: .5;
-	stroke: black;
-	stroke-width: 1;
+}
+circle[class~=mouseover-highlight]{
+    fill: steelblue;
+    stroke: steelblue;
+    stroke-width: 2;
+    -webkit-border-radius: 8;
+    -moz-border-radius: 8;
+}
+circle[class~=click-highlight]{
+    fill:blue;
+    stroke: blue;
+    stroke-width: 2;
+    -webkit-border-radius: 8;
+    -moz-border-radius: 8;
 }
