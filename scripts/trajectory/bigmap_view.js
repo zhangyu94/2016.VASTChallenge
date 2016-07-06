@@ -16,7 +16,7 @@ var bigmap_view = {
             $("#"+this.bigmap_view_DIV_ID).css("display","none");
         }
 
-		var divID = this.bigmap_view_DIV_ID;// = "trajectory-bigmap";
+		var divID = this.bigmap_view_DIV_ID;
 
 		if (message == "set:current_display_time"){
 			var global_display_time = DATA_CENTER.global_variable.current_display_time;

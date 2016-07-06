@@ -96,7 +96,28 @@ function main(){
 		$(".panelContainer>.pagination>"+"#" + view_collection_name + "li").attr("class", "active");
 
 
-		var VIEW_COLLECTION = DATA_CENTER.VIEW_COLLECTION;
+		function _hide_and_display_view(displayed_view)
+		{
+			var VIEW_COLLECTION = DATA_CENTER.VIEW_COLLECTION;
+
+			for (view_name in VIEW_COLLECTION)
+			{
+				if (!(view_name in displayed_view) )
+				{
+					DATA_CENTER.trigger_view_hide(view_name,"");
+				}
+				
+			}
+			for (view_name in VIEW_COLLECTION)
+			{
+				if (view_name in displayed_view)
+				{
+					DATA_CENTER.trigger_view_display(view_name,"");
+				}
+				
+			}
+		}
+		
 		if (view_collection_name == "trajectoryview")
 		{
 			var displayed_view = {
@@ -107,97 +128,27 @@ function main(){
 
 				"timeline_view":undefined,
 			};
-			for (view_name in VIEW_COLLECTION)
-			{
-				if (view_name in displayed_view)
-				{
-					DATA_CENTER.trigger_view_display(view_name,"");
-				}
-				else
-				{
-					DATA_CENTER.trigger_view_hide(view_name,"");
-				}
-			}
-
+			_hide_and_display_view(displayed_view)
 		}
 		else if (view_collection_name == "linechartview")
-		{
+		{		
 			var displayed_view = {
 				"HVACgraph_attrbtn_view":undefined,
 				"HVACgraph_maps_view":undefined,
 				"linechart_linebtn_view":undefined,
 				"linechart_render_view":undefined,
 
-				"timeline_view":undefined,
+				"timeline_view":undefined,	
 			};
-			for (view_name in VIEW_COLLECTION)
-			{
-				if (view_name in displayed_view)
-				{
-					DATA_CENTER.trigger_view_display(view_name,"");
-				}
-				else
-				{
-					DATA_CENTER.trigger_view_hide(view_name,"");
-				}
-			}
+			_hide_and_display_view(displayed_view);
 		}
 		else
 		{
 			console.log("invalid view_collection_name");
 		}
 
-		/*
-		var view_collections = $(".view-collection");
-		for (var i=0;i<view_collections.length;++i)
-		{
-			$(view_collections[i]).css("display","none");
-		}
-
-		if (view_name == "trajectoryview")
-		{
-			$("#trajectoryview-collection").css("display","block");
-			HVACgraph_attrbtn_view.hide_all_smallspans();
-			display_trajectory_view();
-		}
-		else if (view_name == "linechartview")
-		{
-			$("#linechartview-collection").css("display","block");
-			display_linechart_view();
-			HVACgraph_attrbtn_view.show_all_smallspans();
-		}
-		else
-		{
-			console.log("invalid view_name");
-		}
-		*/
 	})
 
 	$("#linechartview").click();//先触发一下视图切换
-
-	//timeline_view.render("timeline-renderplace")
-
-
-	//linechart视图调用的地方
-	function display_linechart_view()
-	{
-		if (HVACgraph_maps_view.FIRST_CALLED)
-		{
-			HVACgraph_maps_view.render("HVACgraph-maps");
-
-			//让linechart可以sort
-			$( "#linechart-renderplace" ).sortable({
-				handle: ".HVAClinechart-btntitle-span",//btn作为sort的时候的把手
-			});
-		}
-	}
-
-	//trajectory视图调用的地方
-	function display_trajectory_view()
-	{
-		ganttchart_view.render("trajectory-ganttchart");
-		proxgraph_maps_view.render("proxgraph-maps");
-		bigmap_view.render("trajectory-bigmap");
-	}
 
 }

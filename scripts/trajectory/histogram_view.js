@@ -7,7 +7,7 @@ var histogram_view = {
 		if (message == "display:histogram_view")
         {
             $("#"+this.histogram_view_DIV_ID).css("display","block");
-            //this.render(this.histogram_view_DIV_ID);
+            this.render(this.histogram_view_DIV_ID);
         }
 
         if (message == "hide:histogram_view")
@@ -21,7 +21,9 @@ var histogram_view = {
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
 
+	    /*
 	    var svg = d3.select("#"+divID).append("svg")
-	                .attr("class","mainsvg")        
+	                .attr("class","mainsvg")   
+	                */     
 	}
 }
