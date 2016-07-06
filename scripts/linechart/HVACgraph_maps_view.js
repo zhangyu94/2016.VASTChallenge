@@ -3,7 +3,7 @@ var HVACgraph_maps_view = {
 	HVACgraph_maps_view_DIV_ID : "HVACgraph-maps",
 
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
-	HVAC_ZONE_DOT_RADIUS :5.5,
+	HVAC_ZONE_DOT_RADIUS :4.5,
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"radarchart_glyph-div",
 	
@@ -509,9 +509,9 @@ var HVACgraph_maps_view = {
 		_render_radarchart(dataset,center_x,center_y);
 		function _render_radarchart(data,center_x,center_y)
 		{
-			var width = 100;
-			var height = 100;
-			var radius = 25;
+			var width = 48;
+			var height = 48;
+			var radius = 12;
 			var innerRadius = HVACgraph_maps_view.HVAC_ZONE_DOT_RADIUS;
 			var degree = 360/data.length;
 

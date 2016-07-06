@@ -14,7 +14,7 @@ var linechart_render_view = {
 
     //为折线图的大框设置最小尺寸，避免过小看不清楚
     MINIMUM_LINECHART_RECT_HEIGHT : 27,
-    EXPECTED_LINECHART_NUM: 10,
+    EXPECTED_LINECHART_NUM: 15,
 
 
 	obsUpdate:function(message, data)
@@ -126,16 +126,12 @@ var linechart_render_view = {
 
         var update_linechartspan_div = update_linechartspan.select("div")
                 .style("height",linechart_height+"px")
-                .each(function(d,i){
-                    var divID = this.id
-                    var yAxis_attr_name = d;
-                    var xyAxis_data = linechart_render_view._get_xyAxis_data(yAxis_attr_name);
-
-
-                    //找到绑定好的highchart
-                    var chart = $("#"+divID).highcharts();
-                    chart.reflow();//适应新的div尺寸
-                });
+                //.each(function(d,i){
+                //    var divID = this.id;
+                //    //找到绑定好的highchart
+                //    var chart = $("#"+divID).highcharts();
+                //    chart.reflow();//适应新的div尺寸
+                //});
 
 
 
@@ -224,10 +220,11 @@ var linechart_render_view = {
                 })
                 .style("width",btn_width+"px")
                 .text(function(d,i){
-                    var buttonLabel = d.substring(0,btn_width/18);
+                    var attr = d;
+                    var compressed_name = DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name(attr);
+                    var buttonLabel = compressed_name.substring(0,btn_width/9.5);
                     return buttonLabel;
                 });
-
         $('.HVAClinechart-btntitle-span').each(function() {
             $(this).tipsy({
                 gravity: "s",
@@ -304,12 +301,12 @@ var linechart_render_view = {
                     var father_id = "linechart-renderplace";
                     linechart_render_view._move_to(child_id,father_id,"bottom");//点击以后走到最下面
                 })
-        //5). 点击以后减去均值
-        var enter_spans_btnspan_minusaveragespan = enter_spans_btnspan.append("span") 
-                .attr("class","HVAClinechart-btn-minusaverage-span")
+        //5). 点击以后归一化
+        var enter_spans_btnspan_normalizespan = enter_spans_btnspan.append("span") 
+                .attr("class","HVAClinechart-btn-normalize-span")
                 .attr("id",function(d,i){
                     //id中不能带空格，否则后面选不中
-                    return "HVAClinechart-btn-minusaverage-span-"+linechart_render_view._compress_string(d);
+                    return "HVAClinechart-btn-normalize-span-"+linechart_render_view._compress_string(d);
                 })
                 .attr("value",function(d,i){
                     var buttonValue = new_linechart_list[i];
@@ -320,7 +317,7 @@ var linechart_render_view = {
                     var related_linechart_div_id = "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d)
                     var chart = $("#"+related_linechart_div_id).highcharts();
 
-                    var minus_average_data=[];
+                    var normalize_data=[];
                     
                     var data = chart.series[0].data;
                     
@@ -348,13 +345,13 @@ var linechart_render_view = {
                         }
                         var x_value = data[j].x;
                         var temp = [x_value,y_value];
-                        minus_average_data.push(temp)
+                        normalize_data.push(temp)
                     }
 
                     chart.series[0].remove(false);
                     chart.addSeries({
                         name: d.substring(0,7),
-                        data:minus_average_data,
+                        data:normalize_data,
                         zones:[
                         {
                             value: -linechart_render_view.ABNORMAL_VALUE_THRESHOLD,
@@ -396,11 +393,11 @@ var linechart_render_view = {
                 .each(function(d,i){
                     var divID = this.id;
                     var yAxis_attr_name = d;
-
                     var xyAxis_data = linechart_render_view._get_xyAxis_data(yAxis_attr_name);
 
+                    var compressed_name = DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name(yAxis_attr_name);
                     //调用完以后，highchart就绑定到这个div上了
-                    var chart = linechart_render_view._plot_linechart(divID,xyAxis_data,yAxis_attr_name);
+                    var chart = linechart_render_view._plot_linechart(divID,xyAxis_data,compressed_name);
                 });
 
 
@@ -441,11 +438,10 @@ var linechart_render_view = {
 	_plot_linechart:function(divID,xyAxis_data,yAxis_attr_name)
 	{
         d3.select("#"+divID).selectAll("*").remove();
-
 		//var width  = $("#"+divID).width();
         //var height  = $("#"+divID).height();
-
-       	var div = $("#"+divID);
+        
+        var div = $("#"+divID);
         Highcharts.setOptions({ global: { useUTC: false } });//使用本地时间
         div.highcharts({
             chart: {
@@ -453,15 +449,13 @@ var linechart_render_view = {
                 spacingLeft:0,
                 spacingTop:0,
                 spacingBottom:0,//压缩掉下侧的空白
-
                 //width:width,
                 //height:height,
                 renderTo: divID,// 图表加载的位置
-                type: 'line',
+                type: 'line',//'column',
                 zoomType: 'x',
                 panning: true,
                 panKey: 'shift',
-
                 resetZoomButton:{
                     position:{
                         align:'right',
@@ -469,7 +463,6 @@ var linechart_render_view = {
                         y:-5,
                     }
                 },
-
                 events:{
                     selection:function(e){
                         console.log(e)
@@ -532,7 +525,7 @@ var linechart_render_view = {
             },
             
             series: [{
-                name: yAxis_attr_name.substring(0,7),
+                name: yAxis_attr_name,//.substring(0,7),
                 data: xyAxis_data,
             }]
         });
@@ -618,6 +611,27 @@ var linechart_render_view = {
 
     },
 
+    //将原始数据中一个具体的带着地点和属性信息的字符串压缩成合适的新字符串
+    _compress_full_attr_name:function(full_attr_name)
+    {
+        var place_attr = DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view._parse_position_attr(full_attr_name);
+        var place = place_attr.place;
+        place = (DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_string(place)).substring(0,6);
+        var attr = DATA_CENTER.VIEW_COLLECTION.linechart_render_view._map_pureattr_name_to_abbreviation(place_attr.attr);
+        var return_attr_name = place + " " + attr;
+        return return_attr_name;
+    },
+
+    _map_pureattr_name_to_abbreviation:function(pureattr_name)
+    {
+        var attr = DATA_CENTER.GLOBAL_STATIC.attribute_abbreviation[pureattr_name];
+        if ( typeof(attr) =="undefined" )
+        {
+            console.warn("invalid attr",full_attr_name,attr,place);
+            return pureattr_name;
+        }
+        return attr;
+    },
 
 
 }

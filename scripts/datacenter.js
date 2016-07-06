@@ -55,7 +55,7 @@ var DATA_CENTER = {
 			max:undefined
 		},
 
-		current_display_time:1464656400000,//timeline当前播放到的时间
+		current_display_time:undefined,//timeline当前播放到的时间
 
 		selected_card_set:[],
 		selected_person_set:[],		
@@ -151,7 +151,47 @@ var DATA_CENTER = {
 			"F_2_Z_2",
 			"F_2_Z_4",
 			"F_3_Z_1"
-		]
+		],
+		attribute_abbreviation : {
+			"BATH_EXHAUST:Fan Power":"bath fan power",
+			"VAV_SYS AIR LOOP INLET Mass Flow Rate":"return air rate",
+			"VAV_SYS AIR LOOP INLET Temperature":"return air temperature",
+			"VAV Availability Manager Night Cycle Control Status":"control status",
+			"VAV_SYS COOLING COIL Power":"cooling power",
+			"VAV_SYS HEATING COIL Power":"heating power",
+			"VAV_SYS SUPPLY FAN OUTLET Mass Flow Rate":"output air rate",
+			"VAV_SYS SUPPLY FAN OUTLET Temperature":"output air temperature",
+			"VAV_SYS SUPPLY FAN:Fan Power":"fan power",
+			"VAV_SYS Outdoor Air Flow Fraction":"outdoor air percent",
+			"VAV_SYS Outdoor Air Mass Flow Rate":"outdoor air rate",
+			"COOL Schedule Value":"air cool setpoint",
+			"DELI-FAN Power":"deli fan power",
+			"Drybulb Temperature":"outdoor temperature",
+			"Wind Direction":"wind direction",
+			"Wind Speed":"wind speed",
+			"HEAT Schedule Value":"air heat setpoint",
+			"Pump Power":"pump power",
+			"Water Heater Setpoint":"water heater setpoint",
+			"Water Heater Gas Rate":"water heater power",
+			"Water Heater Tank Temperature":"water heater temperature",
+			"Loop Temp Schedule":"water loop setpoint",
+			"Supply Side Inlet Mass Flow Rate":"input water rate",
+			"Supply Side Inlet Temperature":"input water temperature",
+			"Supply Side Outlet Temperature":"output water temperature",
+			"REHEAT COIL Power":"air reheat power",
+			"RETURN OUTLET CO2 Concentration":"return CO2 concentration",
+			"SUPPLY INLET Mass Flow Rate":"input air rate",
+			"SUPPLY INLET Temperature":"input air temperature",
+			"VAV REHEAT Damper Position":"input air damper",
+			"Equipment Power":"total power",
+			"Lights Power":"light power",
+			"Mechanical Ventilation Mass Flow Rate":"Ventilation air rate",
+			"Thermostat Temp":"air temperature",
+			"Thermostat Cooling Setpoint":"air cool threshold",
+			"Thermostat Heating Setpoint":"air heat threshold",
+			"Total Electric Demand Power":"total power",
+			"HVAC Electric Demand Power":"HVAC power",
+		}
 	},
 
 	

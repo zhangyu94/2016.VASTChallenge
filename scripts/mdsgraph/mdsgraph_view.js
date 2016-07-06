@@ -26,56 +26,62 @@ var mdsgraph_view = {
 	                .attr("height",height)
 	                .attr("position","relative")
 
-	    var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-	    var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"];
-	    var data_array = [];
-	    for (var i=0;i<ori_data_array.length;++i)
+	    var start_time_number;
+	    var end_time_number;
+	    var binded_data = _get_binded_data(start_time_number,end_time_number);
+	    function _get_binded_data()
 	    {
-	    	var temp_data =[];
-	    	var cur_ori_data = ori_data_array[i];
-	    	for (var j=0;j<selected_linechart_set.length;++j)
-	    	{
-	    		var cur_dim = cur_ori_data[selected_linechart_set[j]];
-	    		if (typeof(cur_dim)=="undefined")
-	    		{
-	    			console.warn("undefined cur_dim")
-	    		}
-	    		temp_data.push(cur_dim);
-	    	}
-	    	data_array.push(temp_data);
-	    }
+		    var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
+		    var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"];
+		    var data_array = [];
+		    for (var i=0;i<ori_data_array.length;++i)
+		    {
+		    	var temp_data =[];
+		    	var cur_ori_data = ori_data_array[i];
+		    	for (var j=0;j<selected_linechart_set.length;++j)
+		    	{
+		    		var cur_dim = cur_ori_data[selected_linechart_set[j]];
+		    		if (typeof(cur_dim)=="undefined")
+		    		{
+		    			console.warn("undefined cur_dim")
+		    		}
+		    		temp_data.push(cur_dim);
+		    	}
+		    	data_array.push(temp_data);
+		    }
 
-	    
-	    console.log(ori_data_array)
-
-	    var mds_dot_layout = MDS.byData(data_array);
-	    var x_array = [];
-	    var y_array = [];
-	    for (var i=0;i<mds_dot_layout.length;++i)
-	    {
-	    	x_array.push(mds_dot_layout[i][0]);
-	    	y_array.push(mds_dot_layout[i][1])
-	    }
-	    var render_scale = { 
-		    x:d3.scale.linear()
-		        .domain(d3.extent(x_array))
-		        .range([width*0.1,width*0.9]),
-		    y:d3.scale.linear()
-		        .domain(d3.extent(y_array))
-		        .range([height*0.1,height*0.9])
-		};
+		    
+		    var mds_dot_layout = MDS.byData(data_array);
+		    var x_array = [];
+		    var y_array = [];
+		    for (var i=0;i<mds_dot_layout.length;++i)
+		    {
+		    	x_array.push(mds_dot_layout[i][0]);
+		    	y_array.push(mds_dot_layout[i][1])
+		    }
+		    var render_scale = { 
+			    x:d3.scale.linear()
+			        .domain(d3.extent(x_array))
+			        .range([width*0.1,width*0.9]),
+			    y:d3.scale.linear()
+			        .domain(d3.extent(y_array))
+			        .range([height*0.1,height*0.9])
+			};
 
 
-		var binded_data = [];
-		for (var i=0;i<mds_dot_layout.length;++i)
-		{
-			var temp_element = {};
-			temp_element.x = mds_dot_layout[i][0];
-			temp_element.y = mds_dot_layout[i][1];
-			temp_element.timestring = ori_data_array[i]["Date/Time"];
-			temp_element.timenumber = new Date(temp_element.timestring).getTime();
+			var binded_data = [];
+			for (var i=0;i<mds_dot_layout.length;++i)
+			{
+				var temp_element = {};
+				temp_element.x = mds_dot_layout[i][0];
+				temp_element.y = mds_dot_layout[i][1];
+				temp_element.timestring = ori_data_array[i]["Date/Time"];
+				temp_element.timenumber = new Date(temp_element.timestring).getTime();
 
-			binded_data.push(temp_element)
+				binded_data.push(temp_element)
+			}
+
+			return binded_data;
 		}
 
 

@@ -196,7 +196,7 @@ var HVACgraph_attrbtn_view = {
 				.on("click",function(d,i){
 					var attr_name = d;
 
-				//start of set
+					//start of set
 					var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
 					var index = selected_attr_set.indexOf(attr_name);
 					if (index >=0 )
@@ -212,7 +212,7 @@ var HVACgraph_attrbtn_view = {
 
 						DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set.concat(attr_name));
 					}
-				//end of set
+					//end of set
 
 					var compressed_attr_name = linechart_render_view._compress_string(attr_name);
 					d3.select("body").selectAll("."+ compressed_attr_name + "-HVACattrbtn-span-smallspans").remove();
