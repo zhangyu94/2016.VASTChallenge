@@ -7,10 +7,8 @@
 	"proxZone": "1",
 	"energyZone": "3",
 	"x": "150",
-	"y": "0",
-	"positionSet": []
-}, 
-{
+	"y": "0"
+}, {
 	"name": "Office",
 	"floor": 1,
 	"doornum": 1010,
@@ -19,10 +17,8 @@
 	"proxZone": "7",
 	"energyZone": "4",
 	"x": "150",
-	"y": "95",
-	"positionSet": ["(165,15)"]
-}, 
-{
+	"y": "95"
+}, {
 	"name": "Office",
 	"floor": 1,
 	"doornum": 1020,
@@ -31,8 +27,7 @@
 	"proxZone": "8",
 	"energyZone": "4",
 	"x": "170",
-	"y": "95",
-	"positionSet": ["(174,15)"]
+	"y": "95"
 }, {
 	"name": "Conf",
 	"floor": 1,
@@ -42,8 +37,7 @@
 	"proxZone": "6",
 	"energyZone": "5",
 	"x": "75",
-	"y": "66",
-	"positionSet": []
+	"y": "66"
 }, {
 	"name": "Toilet",
 	"floor": 1,
@@ -53,8 +47,7 @@
 	"proxZone": "1",
 	"energyZone": "6",
 	"x": "93",
-	"y": "46",
-	"positionSet": []
+	"y": "46"
 }, {
 	"name": "Mech/Elev",
 	"floor": 1,
@@ -63,8 +56,7 @@
 	"proxZone": "4",
 	"energyZone": "6",
 	"x": "67",
-	"y": "46",
-	"positionSet": []
+	"y": "46"
 }, {
 	"name": "Lg Meeting",
 	"floor": 1,
@@ -74,8 +66,7 @@
 	"proxZone": "5",
 	"energyZone": "2",
 	"x": "59",
-	"y": "0",
-	"positionSet": []
+	"y": "0"
 }, {
 	"name": "Deli",
 	"floor": 1,
@@ -85,8 +76,7 @@
 	"proxZone": "2",
 	"energyZone": "1",
 	"x": "0",
-	"y": "0",
-	"positionSet": ["(27,71)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 1,
@@ -96,8 +86,7 @@
 	"proxZone": "1",
 	"energyZone": "7",
 	"x": "0",
-	"y": "40",
-	"positionSet": ["(15,63)"]
+	"y": "40"
 }, {
 	"name": "Loading",
 	"floor": 1,
@@ -107,8 +96,7 @@
 	"proxZone": "3",
 	"energyZone": "7",
 	"x": "0",
-	"y": "50",
-	"positionSet": []
+	"y": "50"
 }, {
 	"name": "Office",
 	"floor": 1,
@@ -118,8 +106,7 @@
 	"proxZone": "1",
 	"energyZone": "7",
 	"x": "0",
-	"y": "91",
-	"positionSet": []
+	"y": "91"
 }, {
 	"name": "Office",
 	"floor": 1,
@@ -129,8 +116,7 @@
 	"proxZone": "1",
 	"energyZone": "7",
 	"x": "16",
-	"y": "95",
-	"positionSet": []
+	"y": "95"
 }, {
 	"name": "Server",
 	"floor": 1,
@@ -140,8 +126,7 @@
 	"proxZone": "1",
 	"energyZone": "7",
 	"x": "28",
-	"y": "95",
-	"positionSet": ["(31,15)"]
+	"y": "95"
 }, {
 	"name": "Stairs",
 	"floor": 1,
@@ -149,8 +134,7 @@
 	"ylength": 20,
 	"proxZone": "4",
 	"x": "141",
-	"y": "46",
-	"positionSet": []
+	"y": "46"
 }, {
 	"name": "Elevators and stairs",
 	"floor": 1,
@@ -158,190 +142,17 @@
 	"ylength": 20,
 	"proxZone": "4",
 	"x": "37",
-	"y": "46",
-	"positionSet": []
+	"y": "46"
 }, {
 	"name": "Corridor1",
 	"floor": 1,
-	"xlength": 11,
-	"ylength": 46,
 	"proxZone": "1",
-	"energyZone": "8A",
-	"x": "48",
-	"y": "0",
-	"positionSet": []
+	"energyZone": "8A"
 }, {
 	"name": "Corridor2",
 	"floor": 1,
-	"xlength": 32,
-	"ylength": 6,
 	"proxZone": "1",
-	"energyZone": "8A",
-	"x": "16",
-	"y": "40",
-	"positionSet": []
-}, {
-	"name": "Corridor3",
-	"floor": 1,
-	"xlength": 75,
-	"ylength": 10,
-	"proxZone": "1",
-	"energyZone": "8A",
-	"x": "59",
-	"y": "36",
-	"positionSet": []
-}, {
-	"name": "Corridor4",
-	"floor": 1,
-	"xlength": 16,
-	"ylength": 46,
-	"proxZone": "1",
-	"energyZone": "8A",
-	"x": "134",
-	"y": "0",
-	"positionSet": []
-}, {
-	"name": "Corridor6",
-	"floor": 1,
-	"xlength": 21,
-	"ylength": 20,
-	"proxZone": "1",
-	"energyZone": "8A",
-	"x": "16",
-	"y": "46",
-	"positionSet": []
-}, {
-	"name": "Corridor7",
-	"floor": 1,
-	"xlength": 14,
-	"ylength": 20,
-	"proxZone": "1",
-	"energyZone": "8A",
-	"x": "53",
-	"y": "46",
-	"positionSet": []
-}, {
-	"name": "Corridor8",
-	"floor": 1,
-	"xlength": 22,
-	"ylength": 20,
-	"proxZone": "1",
-	"energyZone": "8A",
-	"x": "119",
-	"y": "46",
-	"positionSet": []
-}, {
-	"name": "Corridor9",
-	"floor": 1,
-	"xlength": 59,
-	"ylength": 24,
-	"proxZone": "1",
-	"energyZone": "8B",
-	"x": "16",
-	"y": "66",
-	"positionSet": []
-}, {
-	"name": "Corridor10",
-	"floor": 1,
-	"xlength": 31,
-	"ylength": 24,
-	"proxZone": "1",
-	"energyZone": "8B",
-	"x": "119",
-	"y": "66",
-	"positionSet": []
-}, {
-	"name": "Corridor11",
-	"floor": 1,
-	"xlength": 32,
-	"ylength": 5,
-	"proxZone": "1",
-	"energyZone": "8B",
-	"x": "16",
-	"y": "90",
-	"positionSet": []
-}, {
-	"name": "Corridor12",
-	"floor": 1,
-	"xlength": 102,
-	"ylength": 21,
-	"proxZone": "1",
-	"energyZone": "8B",
-	"x": "48",
-	"y": "90",
-	"positionSet": []
-}, {
-	"name": "ZONE2",
-	"floor": 1,
-	"zoneID": "floor1-ZONE2-1",
-	"xlength": 48,
-	"ylength": 40,
-	"x": 0,
-	"y": 0
-}, {
-	"name": "ZONE3",
-	"floor": 1,
-	"zoneID": "floor1-ZONE3-1",
-	"xlength": 16,
-	"ylength": 41,
-	"x": 0,
-	"y": 50
-}, {
-	"name": "ZONE4",
-	"floor": 1,
-	"zoneID": "floor1-ZONE4-1",
-	"xlength": 16,
-	"ylength": 20,
-	"x": 37,
-	"y": 46
-}, {
-	"name": "ZONE4",
-	"floor": 1,
-	"zoneID": "floor1-ZONE4-2",
-	"xlength": 26,
-	"ylength": 20,
-	"x": 67,
-	"y": 46
-}, {
-	"name": "ZONE4",
-	"floor": 1,
-	"zoneID": "floor1-ZONE4-3",
-	"xlength": 9,
-	"ylength": 20,
-	"x": 141,
-	"y": 46
-}, {
-	"name": "ZONE5",
-	"floor": 1,
-	"zoneID": "floor1-ZONE5-1",
-	"xlength": 75,
-	"ylength": 36,
-	"x": 59,
-	"y": 0
-}, {
-	"name": "ZONE6",
-	"floor": 1,
-	"zoneID": "floor1-ZONE6-1",
-	"xlength": 44,
-	"ylength": 24,
-	"x": 75,
-	"y": 66
-}, {
-	"name": "ZONE7",
-	"floor": 1,
-	"zoneID": "floor1-ZONE7-1",
-	"xlength": 20,
-	"ylength": 16,
-	"x": 150,
-	"y": 95
-}, {
-	"name": "ZONE8",
-	"floor": 1,
-	"zoneID": "floor1-ZONE8-1",
-	"xlength": 20,
-	"ylength": 16,
-	"x": 170,
-	"y": 95
+	"energyZone": "8B"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -351,8 +162,7 @@
 	"proxZone": "2",
 	"energyZone": "1",
 	"x": "0",
-	"y": "0",
-	"positionSet": ["(17,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -362,8 +172,7 @@
 	"proxZone": "2",
 	"energyZone": "2",
 	"x": "20",
-	"y": "0",
-	"positionSet": ["(22,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -373,8 +182,7 @@
 	"proxZone": "1",
 	"energyZone": "2",
 	"x": "32",
-	"y": "0",
-	"positionSet": ["(49,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -384,8 +192,7 @@
 	"proxZone": "1",
 	"energyZone": "2",
 	"x": "52",
-	"y": "0",
-	"positionSet": ["(59,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -395,8 +202,7 @@
 	"proxZone": "1",
 	"energyZone": "2",
 	"x": "62",
-	"y": "0",
-	"positionSet": ["(64,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -406,8 +212,7 @@
 	"proxZone": "1",
 	"energyZone": "2",
 	"x": "72",
-	"y": "0",
-	"positionSet": ["(79,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -417,8 +222,7 @@
 	"proxZone": "1",
 	"energyZone": "2",
 	"x": "82",
-	"y": "0",
-	"positionSet": []
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -428,8 +232,7 @@
 	"proxZone": "7",
 	"energyZone": "2",
 	"x": "92",
-	"y": "0",
-	"positionSet": []
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -439,8 +242,7 @@
 	"proxZone": "7",
 	"energyZone": "2",
 	"x": "102",
-	"y": "0",
-	"positionSet": []
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -450,8 +252,7 @@
 	"proxZone": "7",
 	"energyZone": "2",
 	"x": "112",
-	"y": "0",
-	"positionSet": ["(119,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -461,8 +262,7 @@
 	"proxZone": "7",
 	"energyZone": "2",
 	"x": "122",
-	"y": "0",
-	"positionSet": ["(129,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -472,8 +272,7 @@
 	"proxZone": "7",
 	"energyZone": "2",
 	"x": "132",
-	"y": "0",
-	"positionSet": ["(139,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -483,8 +282,7 @@
 	"proxZone": "3",
 	"energyZone": "2",
 	"x": "142",
-	"y": "0",
-	"positionSet": ["(159,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -494,8 +292,7 @@
 	"proxZone": "7",
 	"energyZone": "2",
 	"x": "162",
-	"y": "0",
-	"positionSet": ["(164,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -505,8 +302,7 @@
 	"proxZone": "7",
 	"energyZone": "3",
 	"x": "174",
-	"y": "0",
-	"positionSet": ["(174,93)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -516,8 +312,7 @@
 	"proxZone": "7",
 	"energyZone": "4",
 	"x": "174",
-	"y": "20",
-	"positionSet": ["(174,88)"]
+	"y": "20"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -527,8 +322,7 @@
 	"proxZone": "7",
 	"energyZone": "4",
 	"x": "174",
-	"y": "30",
-	"positionSet": ["(174,73)"]
+	"y": "30"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -538,8 +332,7 @@
 	"proxZone": "7",
 	"energyZone": "4",
 	"x": "174",
-	"y": "40",
-	"positionSet": ["(174,63)"]
+	"y": "40"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -549,8 +342,7 @@
 	"proxZone": "7",
 	"energyZone": "4",
 	"x": "174",
-	"y": "50",
-	"positionSet": ["(174,53)"]
+	"y": "50"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -560,8 +352,7 @@
 	"proxZone": "6",
 	"energyZone": "4",
 	"x": "174",
-	"y": "60",
-	"positionSet": ["(174,43)"]
+	"y": "60"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -571,8 +362,7 @@
 	"proxZone": "6",
 	"energyZone": "4",
 	"x": "174",
-	"y": "70",
-	"positionSet": []
+	"y": "70"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -582,8 +372,7 @@
 	"proxZone": "6",
 	"energyZone": "4",
 	"x": "174",
-	"y": "80",
-	"positionSet": []
+	"y": "80"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -593,8 +382,7 @@
 	"proxZone": "6",
 	"energyZone": "5",
 	"x": "170",
-	"y": "95",
-	"positionSet": []
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -604,8 +392,7 @@
 	"proxZone": "6",
 	"energyZone": "6",
 	"x": "158",
-	"y": "95",
-	"positionSet": ["(160,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -615,8 +402,7 @@
 	"proxZone": "6",
 	"energyZone": "6",
 	"x": "138",
-	"y": "95",
-	"positionSet": ["(155,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -626,8 +412,7 @@
 	"proxZone": "6",
 	"energyZone": "6",
 	"x": "128",
-	"y": "95",
-	"positionSet": ["(135,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -637,8 +422,7 @@
 	"proxZone": "6",
 	"energyZone": "6",
 	"x": "118",
-	"y": "95",
-	"positionSet": ["(125,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -648,8 +432,7 @@
 	"proxZone": "6",
 	"energyZone": "6",
 	"x": "108",
-	"y": "95",
-	"positionSet": ["(115,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -659,8 +442,7 @@
 	"proxZone": "6",
 	"energyZone": "6",
 	"x": "88",
-	"y": "95",
-	"positionSet": ["(105,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -670,8 +452,7 @@
 	"proxZone": "6",
 	"energyZone": "6",
 	"x": "78",
-	"y": "95",
-	"positionSet": ["(85,15)"]
+	"y": "95"
 }, {
 	"name": "Conf",
 	"floor": 2,
@@ -681,8 +462,7 @@
 	"proxZone": "1",
 	"energyZone": "6",
 	"x": "48",
-	"y": "95",
-	"positionSet": ["(75,15)", "(50,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -692,8 +472,7 @@
 	"proxZone": "2",
 	"energyZone": "6",
 	"x": "38",
-	"y": "95",
-	"positionSet": ["(40,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -703,8 +482,7 @@
 	"proxZone": "2",
 	"energyZone": "6",
 	"x": "28",
-	"y": "95",
-	"positionSet": ["(30,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -714,8 +492,7 @@
 	"proxZone": "2",
 	"energyZone": "6",
 	"x": "16",
-	"y": "95",
-	"positionSet": ["(18,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -725,8 +502,7 @@
 	"proxZone": "2",
 	"energyZone": "7",
 	"x": "0",
-	"y": "91",
-	"positionSet": ["(15,17)"]
+	"y": "91"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -736,8 +512,7 @@
 	"proxZone": "2",
 	"energyZone": "8",
 	"x": "0",
-	"y": "79",
-	"positionSet": ["(15,29)"]
+	"y": "79"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -747,8 +522,7 @@
 	"proxZone": "2",
 	"energyZone": "8",
 	"x": "0",
-	"y": "69",
-	"positionSet": ["(15,39)"]
+	"y": "69"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -758,8 +532,7 @@
 	"proxZone": "2",
 	"energyZone": "8",
 	"x": "0",
-	"y": "59",
-	"positionSet": ["(15,49)"]
+	"y": "59"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -769,8 +542,7 @@
 	"proxZone": "2",
 	"energyZone": "8",
 	"x": "0",
-	"y": "49",
-	"positionSet": ["(15,59)"]
+	"y": "49"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -780,8 +552,7 @@
 	"proxZone": "2",
 	"energyZone": "8",
 	"x": "0",
-	"y": "39",
-	"positionSet": []
+	"y": "39"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -791,8 +562,7 @@
 	"proxZone": "2",
 	"energyZone": "8",
 	"x": "0",
-	"y": "30",
-	"positionSet": ["(15,78)"]
+	"y": "30"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -802,8 +572,7 @@
 	"proxZone": "2",
 	"energyZone": "8",
 	"x": "0",
-	"y": "16",
-	"positionSet": ["(15,83)"]
+	"y": "16"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -813,8 +582,7 @@
 	"proxZone": "5",
 	"energyZone": "9",
 	"x": "21",
-	"y": "64",
-	"positionSet": []
+	"y": "64"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -824,8 +592,7 @@
 	"proxZone": "2",
 	"energyZone": "9",
 	"x": "21",
-	"y": "54",
-	"positionSet": ["(21,49)"]
+	"y": "54"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -835,8 +602,7 @@
 	"proxZone": "2",
 	"energyZone": "9",
 	"x": "21",
-	"y": "44",
-	"positionSet": ["(21,64)"]
+	"y": "44"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -846,8 +612,7 @@
 	"proxZone": "2",
 	"energyZone": "9",
 	"x": "21",
-	"y": "32",
-	"positionSet": ["(21,70)"]
+	"y": "32"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -857,8 +622,7 @@
 	"proxZone": "2",
 	"energyZone": "9",
 	"x": "21",
-	"y": "21",
-	"positionSet": ["(21,81)"]
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -868,8 +632,7 @@
 	"proxZone": "1",
 	"energyZone": "9",
 	"x": "41",
-	"y": "21",
-	"positionSet": ["(42,87)"]
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -879,8 +642,7 @@
 	"proxZone": "1",
 	"energyZone": "9",
 	"x": "41",
-	"y": "32",
-	"positionSet": ["(42,73)"]
+	"y": "32"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -890,8 +652,7 @@
 	"proxZone": "1",
 	"energyZone": "9",
 	"x": "51",
-	"y": "32",
-	"positionSet": ["(61,73)"]
+	"y": "32"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -901,8 +662,7 @@
 	"proxZone": "1",
 	"energyZone": "10",
 	"x": "73",
-	"y": "21",
-	"positionSet": ["(73,82)"]
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -912,8 +672,7 @@
 	"proxZone": "1",
 	"energyZone": "10",
 	"x": "80",
-	"y": "21",
-	"positionSet": ["(86,77)"]
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -923,8 +682,7 @@
 	"proxZone": "1",
 	"energyZone": "10",
 	"x": "80",
-	"y": "31",
-	"positionSet": ["(73,77)"]
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -934,8 +692,7 @@
 	"proxZone": "1",
 	"energyZone": "10",
 	"x": "73",
-	"y": "31",
-	"positionSet": []
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -945,8 +702,7 @@
 	"proxZone": "1",
 	"energyZone": "10",
 	"x": "92",
-	"y": "21",
-	"positionSet": []
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -956,8 +712,7 @@
 	"proxZone": "7",
 	"energyZone": "10",
 	"x": "99",
-	"y": "21",
-	"positionSet": []
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -967,8 +722,7 @@
 	"proxZone": "7",
 	"energyZone": "10",
 	"x": "99",
-	"y": "31",
-	"positionSet": []
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -978,8 +732,7 @@
 	"proxZone": "1",
 	"energyZone": "10",
 	"x": "92",
-	"y": "31",
-	"positionSet": []
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -989,8 +742,7 @@
 	"proxZone": "7",
 	"energyZone": "10",
 	"x": "111",
-	"y": "21",
-	"positionSet": []
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1000,8 +752,7 @@
 	"proxZone": "7",
 	"energyZone": "10",
 	"x": "118",
-	"y": "21",
-	"positionSet": ["(124,82)"]
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1011,8 +762,7 @@
 	"proxZone": "7",
 	"energyZone": "10",
 	"x": "118",
-	"y": "31",
-	"positionSet": ["(124,77)"]
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1022,8 +772,7 @@
 	"proxZone": "7",
 	"energyZone": "10",
 	"x": "111",
-	"y": "31",
-	"positionSet": ["(111,77)"]
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1033,8 +782,7 @@
 	"proxZone": "7",
 	"energyZone": "10",
 	"x": "130",
-	"y": "21",
-	"positionSet": ["(130,82)"]
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1044,8 +792,7 @@
 	"proxZone": "7",
 	"energyZone": "10",
 	"x": "137",
-	"y": "21",
-	"positionSet": ["(143,82)"]
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1055,8 +802,7 @@
 	"proxZone": "7",
 	"energyZone": "10",
 	"x": "137",
-	"y": "31",
-	"positionSet": []
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1066,8 +812,7 @@
 	"proxZone": "7",
 	"energyZone": "10",
 	"x": "130",
-	"y": "31",
-	"positionSet": ["(130,77)"]
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1077,8 +822,7 @@
 	"proxZone": "7",
 	"energyZone": "11",
 	"x": "153",
-	"y": "21",
-	"positionSet": ["(166,89)"]
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1088,8 +832,7 @@
 	"proxZone": "7",
 	"energyZone": "11",
 	"x": "159",
-	"y": "31",
-	"positionSet": ["(161,70)"]
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1099,8 +842,7 @@
 	"proxZone": "7",
 	"energyZone": "11",
 	"x": "149",
-	"y": "31",
-	"positionSet": ["(156,70)"]
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1110,8 +852,7 @@
 	"proxZone": "7",
 	"energyZone": "15",
 	"x": "155",
-	"y": "46",
-	"positionSet": ["(155,57)"]
+	"y": "46"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1121,8 +862,7 @@
 	"proxZone": "7",
 	"energyZone": "15",
 	"x": "162",
-	"y": "46",
-	"positionSet": ["(168,57)"]
+	"y": "46"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1132,8 +872,7 @@
 	"proxZone": "7",
 	"energyZone": "15",
 	"x": "162",
-	"y": "56",
-	"positionSet": []
+	"y": "56"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1143,8 +882,7 @@
 	"proxZone": "7",
 	"energyZone": "15",
 	"x": "155",
-	"y": "56",
-	"positionSet": ["(155,52)"]
+	"y": "56"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1154,8 +892,7 @@
 	"proxZone": "6",
 	"energyZone": "16",
 	"x": "159",
-	"y": "75",
-	"positionSet": []
+	"y": "75"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1165,8 +902,7 @@
 	"proxZone": "6",
 	"energyZone": "16",
 	"x": "149",
-	"y": "75",
-	"positionSet": []
+	"y": "75"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1176,8 +912,7 @@
 	"proxZone": "6",
 	"energyZone": "16",
 	"x": "134",
-	"y": "70",
-	"positionSet": []
+	"y": "70"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1187,8 +922,7 @@
 	"proxZone": "6",
 	"energyZone": "16",
 	"x": "124",
-	"y": "70",
-	"positionSet": []
+	"y": "70"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1198,8 +932,7 @@
 	"proxZone": "6",
 	"energyZone": "16",
 	"x": "124",
-	"y": "80",
-	"positionSet": []
+	"y": "80"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1209,9 +942,8 @@
 	"proxZone": "6",
 	"energyZone": "16",
 	"x": "134",
-	"y": "80",
-	"positionSet": []
-}, {
+	"y": "80"
+},{
 	"name": "Wkrm/Stairs",
 	"floor": 2,
 	"doornum": 2690,
@@ -1239,8 +971,7 @@
 	"ylength": 20,
 	"proxZone": "7",
 	"x": "93",
-	"y": "46",
-	"positionSet": ["(118,62)"]
+	"y": "46"
 }, {
 	"name": "Mech/Elev",
 	"floor": 2,
@@ -1249,8 +980,7 @@
 	"proxZone": "4",
 	"energyZone": "13",
 	"x": "67",
-	"y": "46",
-	"positionSet": []
+	"y": "46"
 }, {
 	"name": "Mtg/Training",
 	"floor": 2,
@@ -1260,8 +990,7 @@
 	"proxZone": "6",
 	"energyZone": "14",
 	"x": "75",
-	"y": "66",
-	"positionSet": ["(118,42)", "(95,21)", "(90,21)"]
+	"y": "66"
 }, {
 	"name": "Office",
 	"floor": 2,
@@ -1271,8 +1000,7 @@
 	"proxZone": "2",
 	"energyZone": "9",
 	"x": "37",
-	"y": "82",
-	"positionSet": []
+	"y": "82"
 }, {
 	"name": "Break Room",
 	"floor": 2,
@@ -1282,8 +1010,7 @@
 	"proxZone": "1",
 	"energyZone": "9",
 	"x": "37",
-	"y": "66",
-	"positionSet": []
+	"y": "66"
 }, {
 	"name": "Elevators and stairs",
 	"floor": 2,
@@ -1291,407 +1018,19 @@
 	"ylength": 20,
 	"proxZone": "4",
 	"x": "37",
-	"y": "46",
-	"positionSet": []
+	"y": "46"
 }, {
 	"name": "Corridor1",
 	"floor": 2,
-	"xlength": 21,
-	"ylength": 5,
-	"proxZone": "2",
-	"energyZone": "12A",
-	"x": "16",
-	"y": "16",
-	"positionSet": []
+	"energyZone": "12A"
 }, {
 	"name": "Corridor2",
 	"floor": 2,
-	"xlength": 55,
-	"ylength": 5,
-	"proxZone": "1",
-	"energyZone": "12A",
-	"x": "37",
-	"y": "16",
-	"positionSet": []
+	"energyZone": "12B"
 }, {
 	"name": "Corridor3",
 	"floor": 2,
-	"xlength": 82,
-	"ylength": 5,
-	"proxZone": "7",
-	"energyZone": "12A",
-	"x": "92",
-	"y": "16",
-	"positionSet": []
-}, {
-	"name": "Corridor4",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 23,
-	"proxZone": "2",
-	"energyZone": "12A",
-	"x": "16",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor5",
-	"floor": 2,
-	"xlength": 4,
-	"ylength": 21,
-	"proxZone": "1",
-	"energyZone": "12A",
-	"x": "37",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor6",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "1",
-	"energyZone": "12A",
-	"x": "87",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor7",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "7",
-	"energyZone": "12A",
-	"x": "106",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor8",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "7",
-	"energyZone": "12A",
-	"x": "125",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor9",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "7",
-	"energyZone": "12A",
-	"x": "144",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor10",
-	"floor": 2,
-	"xlength": 4,
-	"ylength": 10,
-	"proxZone": "7",
-	"energyZone": "12A",
-	"x": "149",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor11",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "7",
-	"energyZone": "12A",
-	"x": "169",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor12",
-	"floor": 2,
-	"xlength": 36,
-	"ylength": 2,
-	"proxZone": "1",
-	"energyZone": "12A",
-	"x": "37",
-	"y": "42",
-	"positionSet": []
-}, {
-	"name": "Corridor13",
-	"floor": 2,
-	"xlength": 81,
-	"ylength": 2,
-	"proxZone": "7",
-	"energyZone": "12A",
-	"x": "93",
-	"y": "41",
-	"positionSet": []
-}, {
-	"name": "Corridor14",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 22,
-	"proxZone": "2",
-	"energyZone": "12B",
-	"x": "16",
-	"y": "44",
-	"positionSet": []
-}, {
-	"name": "Corridor15",
-	"floor": 2,
-	"xlength": 56,
-	"ylength": 2,
-	"proxZone": "1",
-	"energyZone": "12B",
-	"x": "37",
-	"y": "44",
-	"positionSet": []
-}, {
-	"name": "Corridor16",
-	"floor": 2,
-	"xlength": 81,
-	"ylength": 3,
-	"proxZone": "7",
-	"energyZone": "12B",
-	"x": "93",
-	"y": "43",
-	"positionSet": []
-}, {
-	"name": "Corridor17",
-	"floor": 2,
-	"xlength": 14,
-	"ylength": 20,
-	"proxZone": "1",
-	"energyZone": "12B",
-	"x": "53",
-	"y": "46",
-	"positionSet": []
-}, {
-	"name": "Corridor18",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "7",
-	"energyZone": "12B",
-	"x": "119",
-	"y": "46",
-	"positionSet": []
-}, {
-	"name": "Corridor19",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "7",
-	"energyZone": "12B",
-	"x": "150",
-	"y": "46",
-	"positionSet": []
-}, {
-	"name": "Corridor20",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "7",
-	"energyZone": "12C",
-	"x": "169",
-	"y": "46",
-	"positionSet": []
-}, {
-	"name": "Corridor21",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 29,
-	"proxZone": "2",
-	"energyZone": "12C",
-	"x": "16",
-	"y": "66",
-	"positionSet": []
-}, {
-	"name": "Corridor22",
-	"floor": 2,
-	"xlength": 24,
-	"ylength": 5,
-	"proxZone": "2",
-	"energyZone": "12C",
-	"x": "21",
-	"y": "90",
-	"positionSet": []
-}, {
-	"name": "Corridor23",
-	"floor": 2,
-	"xlength": 30,
-	"ylength": 29,
-	"proxZone": "1",
-	"energyZone": "12C",
-	"x": "45",
-	"y": "66",
-	"positionSet": []
-}, {
-	"name": "Corridor24",
-	"floor": 2,
-	"xlength": 3,
-	"ylength": 5,
-	"proxZone": "1",
-	"energyZone": "12C",
-	"x": "75",
-	"y": "90",
-	"positionSet": []
-}, {
-	"name": "Corridor25",
-	"floor": 2,
-	"xlength": 96,
-	"ylength": 5,
-	"proxZone": "6",
-	"energyZone": "12C",
-	"x": "78",
-	"y": "90",
-	"positionSet": []
-}, {
-	"name": "Corridor26",
-	"floor": 2,
-	"xlength": 55,
-	"ylength": 4,
-	"proxZone": "6",
-	"energyZone": "12C",
-	"x": "119",
-	"y": "66",
-	"positionSet": []
-}, {
-	"name": "Corridor27",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "6",
-	"energyZone": "12C",
-	"x": "119",
-	"y": "70",
-	"positionSet": []
-}, {
-	"name": "Corridor28",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "6",
-	"energyZone": "12C",
-	"x": "144",
-	"y": "70",
-	"positionSet": []
-}, {
-	"name": "Corridor29",
-	"floor": 2,
-	"xlength": 20,
-	"ylength": 5,
-	"proxZone": "6",
-	"energyZone": "12C",
-	"x": "149",
-	"y": "70",
-	"positionSet": []
-}, {
-	"name": "Corridor30",
-	"floor": 2,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "6",
-	"energyZone": "12C",
-	"x": "169",
-	"y": "70",
-	"positionSet": []
-}, {
-	"name": "Corridor31",
-	"floor": 2,
-	"xlength": 4,
-	"ylength": 11,
-	"proxZone": "1",
-	"energyZone": "12A",
-	"x": "57",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor32",
-	"floor": 2,
-	"xlength": 12,
-	"ylength": 21,
-	"proxZone": "1",
-	"energyZone": "12A",
-	"x": "61",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor33",
-	"floor": 2,
-	"xlength": 20,
-	"ylength": 3,
-	"proxZone": "1",
-	"energyZone": "12A",
-	"x": "73",
-	"y": "41",
-	"positionSet": []
-}, {
-	"name": "ZONE2",
-	"floor": 2,
-	"zoneID": "floor2-ZONE2-1",
-	"points": "0,0 0,111 48,111 48,95 45,95 45,82 37,82 37,90 21,90 21,64 37,64 37,16 32,16 32,0 0,0"
-}, {
-	"name": "ZONE3",
-	"floor": 2,
-	"zoneID": "floor2-ZONE3-1",
-	"xlength": 16,
-	"ylength": 41,
-	"x": 0,
-	"y": 50
-}, {
-	"name": "ZONE4",
-	"floor": 2,
-	"zoneID": "floor2-ZONE4-1",
-	"xlength": 16,
-	"ylength": 20,
-	"x": 37,
-	"y": 46
-}, {
-	"name": "ZONE4",
-	"floor": 2,
-	"zoneID": "floor2-ZONE4-2",
-	"xlength": 26,
-	"ylength": 20,
-	"x": 67,
-	"y": 46
-}, {
-	"name": "ZONE4",
-	"floor": 2,
-	"zoneID": "floor2-ZONE4-3",
-	"xlength": 9,
-	"ylength": 20,
-	"x": 141,
-	"y": 46
-}, {
-	"name": "ZONE5",
-	"floor": 2,
-	"zoneID": "floor2-ZONE5-1",
-	"xlength": 75,
-	"ylength": 36,
-	"x": 59,
-	"y": 0
-}, {
-	"name": "ZONE6",
-	"floor": 2,
-	"zoneID": "floor2-ZONE6-1",
-	"xlength": 44,
-	"ylength": 24,
-	"x": 75,
-	"y": 66
-}, {
-	"name": "ZONE7",
-	"floor": 2,
-	"zoneID": "floor2-ZONE7-1",
-	"xlength": 20,
-	"ylength": 16,
-	"x": 150,
-	"y": 95
-}, {
-	"name": "ZONE8",
-	"floor": 2,
-	"zoneID": "floor2-ZONE8-1",
-	"xlength": 20,
-	"ylength": 16,
-	"x": 170,
-	"y": 95
+	"energyZone": "12C"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1701,8 +1040,7 @@
 	"proxZone": "6",
 	"energyZone": "1",
 	"x": "0",
-	"y": "0",
-	"positionSet": ["(27,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1712,8 +1050,7 @@
 	"proxZone": "6",
 	"energyZone": "2",
 	"x": "30",
-	"y": "0",
-	"positionSet": ["(32,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1723,8 +1060,7 @@
 	"proxZone": "1",
 	"energyZone": "2",
 	"x": "40",
-	"y": "0",
-	"positionSet": ["(47,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1734,8 +1070,7 @@
 	"proxZone": "1",
 	"energyZone": "2",
 	"x": "50",
-	"y": "0",
-	"positionSet": ["(53,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1745,8 +1080,7 @@
 	"proxZone": "2",
 	"energyZone": "2",
 	"x": "74",
-	"y": "0",
-	"positionSet": ["(76,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1756,8 +1090,7 @@
 	"proxZone": "2",
 	"energyZone": "2",
 	"x": "94",
-	"y": "0",
-	"positionSet": ["(101,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1767,8 +1100,7 @@
 	"proxZone": "2",
 	"energyZone": "2",
 	"x": "104",
-	"y": "0",
-	"positionSet": ["(106,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1778,8 +1110,7 @@
 	"proxZone": "2",
 	"energyZone": "2",
 	"x": "114",
-	"y": "0",
-	"positionSet": ["(116,95)"]
+	"y": "0"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1789,8 +1120,7 @@
 	"proxZone": "3",
 	"energyZone": "8",
 	"x": "0",
-	"y": "16",
-	"positionSet": ["(15,73)"]
+	"y": "16"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1800,8 +1130,7 @@
 	"proxZone": "3",
 	"energyZone": "8",
 	"x": "0",
-	"y": "40",
-	"positionSet": ["(15,68)"]
+	"y": "40"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1811,8 +1140,7 @@
 	"proxZone": "3",
 	"energyZone": "8",
 	"x": "0",
-	"y": "50",
-	"positionSet": ["(15,38)"]
+	"y": "50"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1822,8 +1150,7 @@
 	"proxZone": "3",
 	"energyZone": "8",
 	"x": "0",
-	"y": "75",
-	"positionSet": ["(15,26)"]
+	"y": "75"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1833,8 +1160,7 @@
 	"proxZone": "3",
 	"energyZone": "7",
 	"x": "0",
-	"y": "87",
-	"positionSet": ["(15,21)"]
+	"y": "87"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1844,8 +1170,7 @@
 	"proxZone": "3",
 	"energyZone": "6",
 	"x": "16",
-	"y": "95",
-	"positionSet": ["(25,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1855,8 +1180,7 @@
 	"proxZone": "1",
 	"energyZone": "6",
 	"x": "28",
-	"y": "95",
-	"positionSet": ["(45,15)"]
+	"y": "95"
 }, {
 	"name": "Conf",
 	"floor": 3,
@@ -1866,8 +1190,7 @@
 	"proxZone": "1",
 	"energyZone": "6",
 	"x": "48",
-	"y": "95",
-	"positionSet": ["(50,15)", "(75,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1877,8 +1200,7 @@
 	"proxZone": "2",
 	"energyZone": "6",
 	"x": "78",
-	"y": "95",
-	"positionSet": ["(85,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1888,8 +1210,7 @@
 	"proxZone": "2",
 	"energyZone": "6",
 	"x": "88",
-	"y": "95",
-	"positionSet": ["(105,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1899,19 +1220,17 @@
 	"proxZone": "2",
 	"energyZone": "6",
 	"x": "108",
-	"y": "95",
-	"positionSet": ["(115,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 3,
 	"doornum": 3370,
-	"xlength": 16,
+	"xlength": 20,
 	"ylength": 16,
 	"proxZone": "2",
 	"energyZone": "6",
 	"x": "118",
-	"y": "95",
-	"positionSet": ["(120,15)"]
+	"y": "95"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1921,8 +1240,7 @@
 	"proxZone": "3",
 	"energyZone": "10",
 	"x": "21",
-	"y": "21",
-	"positionSet": []
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1932,8 +1250,7 @@
 	"proxZone": "3",
 	"energyZone": "10",
 	"x": "21",
-	"y": "32",
-	"positionSet": ["(21,69)"]
+	"y": "32"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1943,8 +1260,7 @@
 	"proxZone": "3",
 	"energyZone": "10",
 	"x": "21",
-	"y": "44",
-	"positionSet": ["(21,64)"]
+	"y": "44"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1954,19 +1270,17 @@
 	"proxZone": "3",
 	"energyZone": "10",
 	"x": "21",
-	"y": "54",
-	"positionSet": ["(21,49)"]
+	"y": "54"
 }, {
 	"name": "Server",
 	"floor": 3,
 	"doornum": 3440,
 	"xlength": 16,
 	"ylength": 26,
-	"proxZone": "4",
+	"proxZone": "7",
 	"energyZone": "9",
 	"x": "21",
-	"y": "64",
-	"positionSet": ["(21,27)"]
+	"y": "64"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1976,8 +1290,7 @@
 	"proxZone": "1",
 	"energyZone": "9",
 	"x": "37",
-	"y": "66",
-	"positionSet": ["(44,31)"]
+	"y": "66"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1987,8 +1300,7 @@
 	"proxZone": "3",
 	"energyZone": "9",
 	"x": "37",
-	"y": "82",
-	"positionSet": ["(40,21)"]
+	"y": "82"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -1998,8 +1310,7 @@
 	"proxZone": "1",
 	"energyZone": "3",
 	"x": "73",
-	"y": "21",
-	"positionSet": ["(73,82)"]
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -2009,8 +1320,7 @@
 	"proxZone": "2",
 	"energyZone": "3",
 	"x": "80",
-	"y": "21",
-	"positionSet": []
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -2020,8 +1330,7 @@
 	"proxZone": "2",
 	"energyZone": "3",
 	"x": "80",
-	"y": "31",
-	"positionSet": []
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -2031,8 +1340,7 @@
 	"proxZone": "1",
 	"energyZone": "3",
 	"x": "73",
-	"y": "31",
-	"positionSet": ["(73,77)"]
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -2042,8 +1350,7 @@
 	"proxZone": "2",
 	"energyZone": "3",
 	"x": "92",
-	"y": "21",
-	"positionSet": []
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -2053,8 +1360,7 @@
 	"proxZone": "2",
 	"energyZone": "3",
 	"x": "99",
-	"y": "21",
-	"positionSet": []
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -2064,8 +1370,7 @@
 	"proxZone": "2",
 	"energyZone": "3",
 	"x": "99",
-	"y": "31",
-	"positionSet": []
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -2075,8 +1380,7 @@
 	"proxZone": "2",
 	"energyZone": "3",
 	"x": "92",
-	"y": "31",
-	"positionSet": []
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -2086,8 +1390,7 @@
 	"proxZone": "2",
 	"energyZone": "3",
 	"x": "111",
-	"y": "21",
-	"positionSet": []
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -2097,8 +1400,7 @@
 	"proxZone": "2",
 	"energyZone": "3",
 	"x": "118",
-	"y": "21",
-	"positionSet": []
+	"y": "21"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -2108,8 +1410,7 @@
 	"proxZone": "2",
 	"energyZone": "3",
 	"x": "118",
-	"y": "31",
-	"positionSet": []
+	"y": "31"
 }, {
 	"name": "Office",
 	"floor": 3,
@@ -2119,8 +1420,7 @@
 	"proxZone": "2",
 	"energyZone": "3",
 	"x": "111",
-	"y": "31",
-	"positionSet": []
+	"y": "31"
 }, {
 	"name": "Toilet",
 	"floor": 3,
@@ -2129,8 +1429,7 @@
 	"ylength": 20,
 	"proxZone": "2",
 	"x": "93",
-	"y": "46",
-	"positionSet": ["(118,47)", "(118,62)"]
+	"y": "46"
 }, {
 	"name": "Mech/Elev",
 	"floor": 3,
@@ -2139,8 +1438,7 @@
 	"proxZone": "4",
 	"energyZone": "4",
 	"x": "67",
-	"y": "46",
-	"positionSet": []
+	"y": "46"
 }, {
 	"name": "Trg/Conf",
 	"floor": 3,
@@ -2150,8 +1448,16 @@
 	"proxZone": "2",
 	"energyZone": "5",
 	"x": "75",
-	"y": "66",
-	"positionSet": ["(118,42)", "(95,21)", "(90,21)"]
+	"y": "66"
+}, {
+	"name": "Stairs",
+	"floor": 3,
+	"xlength": 9,
+	"ylength": 20,
+	"proxZone": "5",
+	"energyZone": "12",
+	"x": "141",
+	"y": "46"
 }, {
 	"name": "Future Expansion",
 	"floor": 3,
@@ -2160,235 +1466,25 @@
 	"proxZone": "5",
 	"energyZone": "12",
 	"x": "134",
-	"y": "0",
-	"positionSet": []
-},{
-	"name": "Stairs",
-	"floor": 3,
-	"xlength": 9,
-	"ylength": 20,
-	"proxZone": "5",
-	"energyZone": "12",
-	"x": "141",
-	"y": "46",
-	"positionSet": []
-},{
+	"y": "0"
+}, {
 	"name": "Elevators and stairs",
 	"floor": 3,
 	"xlength": 16,
 	"ylength": 20,
-	"proxZone": 4,
+	"proxZone": "4", 
 	"x": "37",
-	"y": "46",
-	"positionSet": []
+	"y": "46"
 }, {
 	"name": "Corridor1",
 	"floor": 3,
-	"xlength": 24,
-	"ylength": 5,
-	"proxZone": "6",
-	"energyZone": "11A",
-	"x": "16",
-	"y": "16",
-	"positionSet": []
+	"energyZone": "11A"
 }, {
 	"name": "Corridor2",
 	"floor": 3,
-	"xlength": 34,
-	"ylength": 5,
-	"proxZone": "1",
-	"energyZone": "11A",
-	"x": "40",
-	"y": "16",
-	"positionSet": []
+	"energyZone": "11B"
 }, {
 	"name": "Corridor3",
 	"floor": 3,
-	"xlength": 60,
-	"ylength": 5,
-	"proxZone": "2",
-	"energyZone": "11A",
-	"x": "74",
-	"y": "16",
-	"positionSet": []
-}, {
-	"name": "Corridor4",
-	"floor": 3,
-	"xlength": 5,
-	"ylength": 23,
-	"proxZone": "3",
-	"energyZone": "11A",
-	"x": "16",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor5",
-	"floor": 3,
-	"xlength": 36,
-	"ylength": 23,
-	"proxZone": "1",
-	"energyZone": "11A",
-	"x": "37",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor6",
-	"floor": 3,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "2",
-	"energyZone": "11A",
-	"x": "87",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor7",
-	"floor": 3,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "2",
-	"energyZone": "11A",
-	"x": "106",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor8",
-	"floor": 3,
-	"xlength": 9,
-	"ylength": 20,
-	"proxZone": "2",
-	"energyZone": "11A",
-	"x": "125",
-	"y": "21",
-	"positionSet": []
-}, {
-	"name": "Corridor9",
-	"floor": 3,
-	"xlength": 5,
-	"ylength": 20,
-	"proxZone": "3",
-	"energyZone": "11B",
-	"x": "16",
-	"y": "44",
-	"positionSet": []
-}, {
-	"name": "Corridor10",
-	"floor": 3,
-	"xlength": 36,
-	"ylength": 2,
-	"proxZone": "1",
-	"energyZone": "11B",
-	"x": "37",
-	"y": "44",
-	"positionSet": []
-}, {
-	"name": "Corridor11",
-	"floor": 3,
-	"xlength": 14,
-	"ylength": 20,
-	"proxZone": "1",
-	"energyZone": "11B",
-	"x": "53",
-	"y": "46",
-	"positionSet": []
-}, {
-	"name": "Corridor12",
-	"floor": 3,
-	"xlength": 61,
-	"ylength": 3,
-	"proxZone": "2",
-	"energyZone": "11A",
-	"x": "73",
-	"y": "41",
-	"positionSet": []
-}, {
-	"name": "Corridor13",
-	"floor": 3,
-	"xlength": 61,
-	"ylength": 2,
-	"proxZone": "2",
-	"energyZone": "11B",
-	"x": "73",
-	"y": "44",
-	"positionSet": []
-}, {
-	"name": "Corridor14",
-	"floor": 3,
-	"xlength": 15,
-	"ylength": 20,
-	"proxZone": "2",
-	"energyZone": "11B",
-	"x": "119",
-	"y": "46",
-	"positionSet": []
-}, {
-	"name": "Corridor15",
-	"floor": 3,
-	"xlength": 5,
-	"ylength": 31,
-	"proxZone": "3",
-	"energyZone": "11C",
-	"x": "16",
-	"y": "64",
-	"positionSet": []
-}, {
-	"name": "Corridor16",
-	"floor": 3,
-	"xlength": 30,
-	"ylength": 24,
-	"proxZone": "1",
-	"energyZone": "11C",
-	"x": "45",
-	"y": "66",
-	"positionSet": []
-}, {
-	"name": "Corridor17",
-	"floor": 3,
-	"xlength": 15,
-	"ylength": 24,
-	"proxZone": "2",
-	"energyZone": "11C",
-	"x": "119",
-	"y": "66",
-	"positionSet": []
-}, {
-	"name": "Corridor18",
-	"floor": 3,
-	"xlength": 24,
-	"ylength": 5,
-	"proxZone": "3",
-	"energyZone": "11C",
-	"x": "21",
-	"y": "90",
-	"positionSet": []
-}, {
-	"name": "Corridor19",
-	"floor": 3,
-	"xlength": 30,
-	"ylength": 5,
-	"proxZone": "1",
-	"energyZone": "11C",
-	"x": "45",
-	"y": "90",
-	"positionSet": []
-}, {
-	"name": "Corridor20",
-	"floor": 3,
-	"xlength": 3,
-	"ylength": 5,
-	"proxZone": "2",
-	"energyZone": "11C",
-	"x": "75",
-	"y": "90",
-	"positionSet": []
-}, {
-	"name": "Corridor20",
-	"floor": 3,
-	"xlength": 56,
-	"ylength": 5,
-	"proxZone": "2",
-	"energyZone": "11C",
-	"x": "78",
-	"y": "90",
-	"positionSet": []
+	"energyZone": "11C"
 }]

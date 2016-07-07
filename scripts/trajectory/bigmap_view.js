@@ -34,7 +34,8 @@ var bigmap_view = {
 	},
 	render:function(divID, floorNum)
 	{
-		var colorArray = ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fbdf6f', '#ff7f00', '#cab2d6'];
+		var self = this;
+		var colorArray = ['#cccccc', '#f1e2cc', '#fff2ae', '#e6f5c9', '#f4cae4', '#cbd5e8', '#fdcdac', '#b3e2cd'];
 		d3.selectAll("#"+divID).selectAll("*").remove();
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
@@ -45,7 +46,10 @@ var bigmap_view = {
 	                .attr('width', width)
 	                .attr('height', height);
 
-	    var roomData = DATA_CENTER.derived_data['room.json']; 
+	    var roomData = DATA_CENTER.derived_data['room.json'];
+	    var singleroomData = DATA_CENTER.derived_data['singleroom.json'];
+	    console.log(singleroomData);
+
 	    var xScale = d3.scale.linear()
 			.range([0, width])
 			.domain([0, 190]);
@@ -53,22 +57,19 @@ var bigmap_view = {
 		var yScale = d3.scale.linear()
 			.range([0, height])
 			.domain([0, 111]);
-
-		svg.selectAll('.zone')
-		.data(roomData.filter(function(d){
-			return d.floor == floorNum && d.x == null
-		}));
-
+		//在楼层中绘制zone, zone是由多个不同的room使用相同的颜色拼接得到
 	    var roomG = svg.selectAll('.room')
 	    .data(roomData.filter(function(d){
-			return d.floor == floorNum && d.x != null && d.xlength != "";
+			return d.floor == floorNum && d.x != null && d.xlength != "" && d.proxZone != undefined;
 		}))
 	    .enter()
 	    .append('g')
 	    .attr('class', 'room');
 
 	    roomG.append('rect')
-	    .attr('class','room-rect')
+	    .attr('class',function(d,i){
+	    	return 'room-rect ' + 'zone-'+d.proxZone; 
+	    })
 	    .attr('id', function(d,i){
 	    	return 'room-' + d.doornum;
 	    })
@@ -87,8 +88,32 @@ var bigmap_view = {
 	    .attr('fill',function(d,i){
 	      var zoneNum = +d.proxZone;
 	      return colorArray[zoneNum - 1];
+	    })
+	    .on('mouseover',function(d,i){
+	    	var zoneClass = 'zone-' + d.proxZone;
+	    	d3.selectAll('.' + zoneClass)
+	    	.classed('mouseover-highlight', true);
+	    })
+	    .on('mouseout', function(d,i){
+	    	var zoneClass = 'zone-' + d.proxZone;
+	    	d3.selectAll('.' + zoneClass)
+	    	.classed('mouseover-highlight', false);
+	    })
+	    .on('click', function(d,i){
+	    	var zoneClass = 'zone-' + d.proxZone;
+	    	if(!d3.select(this).classed('click-highlight')){
+	    		d3.selectAll('.' + zoneClass)
+	    		.classed('click-highlight', true);
+	    	}else{
+	    		d3.selectAll('.' + zoneClass)
+	    		.classed('click-highlight', false);
+	    	}
+	    	var zoneNodeClass = 'zone-node-' + d.proxZone;
+	    	console.log(zoneNodeClass);
+	    	d3.selectAll('.' + zoneNodeClass)
+	    	.classed('click-highlight', true);
 	    });
-
+	    
 	    roomG.append('text')
 	    .attr('class', 'room-num-text')
 	    .attr('id', function(d,i){
@@ -103,7 +128,7 @@ var bigmap_view = {
 	    .attr('y',function(d,i){
 	    	return yScale(d.y) + 15;
 	    });
-
+	    //在房间上面增加zone的相关的信息
 	    roomG.append('text')
 	    .attr('class', 'room-name-text')
 	    .attr('id', function(d,i){
@@ -120,7 +145,65 @@ var bigmap_view = {
 	    .attr('y',function(d,i){
 	    	return yScale(d.y) + 30;
 	    });
-	    this.removeRoomLabel();
+	    //
+	   var singleroomG = svg.selectAll('.single-room')
+		.data(singleroomData.filter(function(d){
+			return d.floor == floorNum && d.x != null;
+		}))
+		.enter()
+		.append('g')
+		.attr('class', 'single-room-g');
+
+		singleroomG.append('rect')
+		.attr('class', function(d,i){
+			return 'single-room ' + 'zone-'+d.proxZone;
+		})
+		.attr('id', function(d,i){
+			return 'room-' + d.doornum;
+		})
+		.attr('x', function(d,i){
+			return xScale(d.x);
+		})
+		.attr('y', function(d,i){
+			return yScale(d.y);
+		})
+		.attr('width', function(d,i){
+			return xScale(d.xlength);
+		})
+		.attr('height', function(d,i){
+			return yScale(d.ylength);
+		})
+		.attr('fill', function(d,i){
+			var zoneNum = +d.proxZone;
+			return colorArray[zoneNum - 1];
+		})
+		.attr('stroke', "black")
+	 	.on('mouseover',function(d,i){
+	    	var zoneClass = 'zone-' + d.proxZone;
+	    	d3.selectAll('.' + zoneClass)
+	    	.classed('mouseover-highlight', true);
+	    })
+	    .on('mouseout', function(d,i){
+	    	var zoneClass = 'zone-' + d.proxZone;
+	    	d3.selectAll('.' + zoneClass)
+	    	.classed('mouseover-highlight', false);
+	    })
+	    .on('click', function(d,i){
+	    	var zoneClass = 'zone-' + d.proxZone;
+	    	if(d3.select(this).classed('click-highlight')){
+		    	d3.selectAll('.' + zoneClass)
+		    	.classed('click-highlight', false);	    		
+	    	}else{
+	    		d3.selectAll('.' + zoneClass)
+		    	.classed('click-highlight', true);	  
+	    	}
+	    	var zoneNodeClass = 'zone-node-' + d.proxZone;
+	    	console.log(zoneNodeClass);
+	    	d3.selectAll('.' + zoneNodeClass)
+	    	.classed('click-highlight', true);
+	    });
+	  	//删除zone文字
+	  	d3.selectAll('.room-name-text').remove();
 	}, 
 	//去掉房间的label
 	removeRoomLabel:function(){
@@ -130,6 +213,7 @@ var bigmap_view = {
 	//传递控制全局的时间变量，并且对于绘制视图进行更新
 	updateView: function(divID, globalTime){
 		//存储当前的人在哪一个zone里面
+		var self = this;
 		var globalTime = +globalTime;
 		var zoneDataArray = [];
 		var pointSize = 3;
@@ -161,10 +245,6 @@ var bigmap_view = {
 						break;
 					}
 				}
-				/*if(k == routeRcords1Days.length){
-					personInZone[i].formerZoneNum = +personInZone[i].zoneNum;
-					personInZone[i].zoneNum = -1;
-				}*/
 			}
 		}
 		var width  = $("#"+divID).width();
@@ -173,7 +253,6 @@ var bigmap_view = {
 	   	var xScale = d3.scale.linear()
 			.range([0, width])
 			.domain([0, 190]);
-
 		var yScale = d3.scale.linear()
 			.range([0, height])
 			.domain([0, 111]);
@@ -188,20 +267,19 @@ var bigmap_view = {
 		});
 		nodeSelection.enter()
 		.append('circle')
-		.attr('class','person-label')
+		.attr('class',function(d,i){
+			return 'person-label ' + 'zone-node-' + d.zoneNum; 
+		})
 		.attr('r', pointSize)
 		.attr('cx', function(d,i){
-			var zoneId = +d.zoneNum - 1;
-
-			var xLength = +zoneData[zoneId].xLength;
-			var centerX = +zoneData[zoneId].x;
-			return xScale(+centerX - (Math.random() * 2 - 1) * xLength);//
+			var zoneId = +d.zoneNum;
+			var nodeX = +self.randomXLocation(floorNum, zoneId);
+			return xScale(nodeX);
 		})
 		.attr('cy', function(d,i){
-			var zoneId = +d.zoneNum - 1;
-			var yLength = +zoneData[zoneId].yLength;
-			var centerY = +zoneData[zoneId].y;//
-			return yScale(+centerY - (Math.random() * 2 - 1) * yLength);
+			var zoneId = +d.zoneNum;
+			var nodeY = self.randomYLocation(floorNum, zoneId);
+			return yScale(nodeY);
 		})
 		.on('click',function(d,i){
 			if(d3.select(this).classed('click-highlight')){
@@ -224,16 +302,17 @@ var bigmap_view = {
 		nodeSelection.transition()
 		.duration(DURATION)
 		.attr('cx', function(d,i){
-			var zoneId = +d.zoneNum - 1;
-			var xLength = +zoneData[zoneId].xLength;
-			var centerX = +zoneData[zoneId].x;
-			return xScale(+centerX - (Math.random() * 2 - 1) * xLength);//
+			var zoneId = +d.zoneNum;
+			var nodeX = self.randomXLocation(floorNum, zoneId);
+			return xScale(nodeX);
 		})
 		.attr('cy', function(d,i){
-			var zoneId = +d.zoneNum - 1;
-			var yLength = +zoneData[zoneId].yLength;
-			var centerY = +zoneData[zoneId].y;//
-			return yScale(+centerY - (Math.random() * 2 - 1) * yLength);
+			var zoneId = +d.zoneNum;
+			var nodeY = self.randomYLocation(floorNum, zoneId);
+			return yScale(nodeY);
+		})
+		.attr('class', function(d,i){
+			return 'person-label ' + 'zone-node-' + d.zoneNum; 
 		})
 		.attr('stroke-width', 1)
 		.attr('stroke', 'black')
@@ -258,20 +337,31 @@ var bigmap_view = {
 			return d.personName;
 		})
 		.exit()
-		.remove();	
+		.remove();
 	},
-	randomLocation: function(floorNum, zoonNum){
+	randomXLocation: function(floorNum, zoneNum){
 		var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
-		var roomArray = floors_zone_set[floorNum][zoonNum];
+		var indexZoneNum = zoneNum - 1;
+		var indexFloorNum = floorNum - 1;
+		var roomArray = floors_zone_set[indexFloorNum][indexZoneNum];
 		var length = roomArray.length;
 		var randomRoomId = Math.floor(length * Math.random());
-		var x = roomArray[randomRoomId].x;
-		var y = roomArray[randomRoomId].y;
-		var xLength = roomArray[randomRoomId].xLength;
-		var yLength = roomArray[randomRoomId].yLength;
-		var returnX = x + xLength * Math.random();
-		var returnY = y + yLength * Math.random();
-		return [returnX, returnY];
+		var x = +roomArray[randomRoomId].x;
+		var xLength = +roomArray[randomRoomId].xlength;
+		var returnX = x + Math.floor(xLength * Math.random());
+		return returnX;
+	},
+	randomYLocation: function(floorNum, zoneNum){
+		var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
+		var indexZoneNum = zoneNum - 1;
+		var indexFloorNum = floorNum - 1;
+		var roomArray = floors_zone_set[indexFloorNum][indexZoneNum];
+		var length = roomArray.length;
+		var randomRoomId = Math.floor(length * Math.random());
+		var y = +roomArray[randomRoomId].y;
+		var yLength = +roomArray[randomRoomId].ylength;
+		var returnY = y + Math.floor(yLength * Math.random());
+		return returnY;
 	},
 	//传递控制全局的时间变量，绘制机器人进行移动的视图
 	updateRobotView: function(divID, globalTime){
@@ -315,8 +405,17 @@ var bigmap_view = {
 			}), function(d,i){
 				return d.proxId;
 			});
-		robotNodeSelection.enter()
-			.append('circle')
+
+		var robotNodeG = robotNodeSelection.enter()
+			.append('g')
+			.attr('x', function(d,i){
+				return xScale(d.x);
+			})
+			.attr('y', function(d,i){
+				return yScale(d.y);
+			});
+
+		robotNodeG.append('circle')
 			.attr('class','robot-label')
 			.attr('r',pointSize)
 			.attr('cx', function(d,i){
@@ -332,6 +431,10 @@ var bigmap_view = {
 					transparency = transparencyScale(timeGap);
 				}
 				return transparency;
+			});
+		robotNodeG.append('text')
+			.text(function(d,i){
+				return d.timestamp;
 			});
 		robotNodeSelection.transition()
 			.duration(DURATION)
