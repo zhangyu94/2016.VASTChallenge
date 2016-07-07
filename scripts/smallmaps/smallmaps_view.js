@@ -1,6 +1,6 @@
-var HVACgraph_maps_view = {
+var smallmaps_view = {
 	FIRST_CALLED : true,
-	HVACgraph_maps_view_DIV_ID : "HVACgraph-maps",
+	smallmaps_view_DIV_ID : "smallmaps-renderplace",
 
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 	HVAC_ZONE_DOT_RADIUS :4.5,
@@ -9,19 +9,19 @@ var HVACgraph_maps_view = {
 	
 	obsUpdate:function(message, data)
 	{
-		if (message == "display:HVACgraph_maps_view")
+		if (message == "display:smallmaps_view")
 		{
-			$("#"+this.HVACgraph_maps_view_DIV_ID).css("display","block");
+			$("#"+this.smallmaps_view_DIV_ID).css("display","block");
 			if (this.FIRST_CALLED)
 			{
-				this.render(this.HVACgraph_maps_view_DIV_ID);
+				this.render(this.smallmaps_view_DIV_ID);
 				this.FIRST_CALLED = false;
 			}
 		}
 
-		if (message == "hide:HVACgraph_maps_view")
+		if (message == "hide:smallmaps_view")
 		{
-			$("#"+this.HVACgraph_maps_view_DIV_ID).css("display","none");
+			$("#"+this.smallmaps_view_DIV_ID).css("display","none");
 		}
 
 
@@ -54,9 +54,9 @@ var HVACgraph_maps_view = {
         		
         		var node = d3.selectAll(".click_selected-HVACmap-circle")
         			.each(function(d,i){
-						var left = $(this).offset().left+HVACgraph_maps_view.HVAC_ZONE_DOT_RADIUS;
-						var top = $(this).offset().top+HVACgraph_maps_view.HVAC_ZONE_DOT_RADIUS;
-        				HVACgraph_maps_view._render_radarchart_glyph(d.name,d.type,left,top,timestamp)
+						var left = $(this).offset().left+smallmaps_view.HVAC_ZONE_DOT_RADIUS;
+						var top = $(this).offset().top+smallmaps_view.HVAC_ZONE_DOT_RADIUS;
+        				smallmaps_view._render_radarchart_glyph(d.name,d.type,left,top,timestamp)
         			})
 
         	}
@@ -374,7 +374,7 @@ var HVACgraph_maps_view = {
 						    	}
 						    		
 						    })
-					      	.attr("r", HVACgraph_maps_view.HVAC_ZONE_DOT_RADIUS)
+					      	.attr("r", smallmaps_view.HVAC_ZONE_DOT_RADIUS)
 					      	.on("mouseover",function(d,i){
 
 					      		_highlight_communication(d,i);
@@ -391,7 +391,7 @@ var HVACgraph_maps_view = {
 					    			for (var j=0;j<HVACzone_HVACattr_set.length;++j)
 					    			{
 					    				var cur_HVACattr = HVACzone_HVACattr_set[j];
-					    				if (cur_HVACattr != HVACgraph_maps_view.HAZIUM_ATTR_NAME)
+					    				if (cur_HVACattr != smallmaps_view.HAZIUM_ATTR_NAME)
 					    				{
 					    					highlight_attr_set.push(cur_HVACattr)
 					    				}
@@ -450,7 +450,7 @@ var HVACgraph_maps_view = {
 				      	.attr("dy", "1.2em")
 					    .style("text-anchor", "middle")
 					    .text(function(d) {
-					    	var name = HVACgraph_maps_view._HVACzone_name_to_abbreviation(d.name);
+					    	var name = smallmaps_view._HVACzone_name_to_abbreviation(d.name);
 					    	return name; 
 					    });
 
@@ -490,7 +490,7 @@ var HVACgraph_maps_view = {
 				detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[],[],[place_name]);
 			}
 
-			var frame_full_data = HVACgraph_maps_view._binary_search("bldg-MC2.csv","Date/Time",raw_timestamp);
+			var frame_full_data = smallmaps_view._binary_search("bldg-MC2.csv","Date/Time",raw_timestamp);
 			
 			var frame_needed_data = [];
 			for (var i=0;i<detail_attr_set.length;++i)
@@ -512,7 +512,7 @@ var HVACgraph_maps_view = {
 			var width = 48;
 			var height = 48;
 			var radius = 12;
-			var innerRadius = HVACgraph_maps_view.HVAC_ZONE_DOT_RADIUS;
+			var innerRadius = smallmaps_view.HVAC_ZONE_DOT_RADIUS;
 			var degree = 360/data.length;
 
 			var pie = d3.layout.pie()
@@ -533,7 +533,7 @@ var HVACgraph_maps_view = {
 
 			var div_of_radarchart_glyph = d3.select("body")//放在body上append使得他能显示出来
 					.append("div")
-						.attr("class",HVACgraph_maps_view.DIV_CLASS_OF_RADARCHART_GLYPH)
+						.attr("class",smallmaps_view.DIV_CLASS_OF_RADARCHART_GLYPH)
 						.style("position","absolute")
 						.style("top",center_y-height/2 + 'px')
 				    	.style("left",center_x-width/2 + 'px')
@@ -586,7 +586,7 @@ var HVACgraph_maps_view = {
 
 
 	//二分查找，返回小于等于键值target_value的最大的键值对应的数据
-	//HVACgraph_maps_view._binary_search("bldg-MC2.csv","Date/Time",1465845339000)
+	//smallmaps_view._binary_search("bldg-MC2.csv","Date/Time",1465845339000)
 	_binary_search:function(filename,sorted_attr,target_value)
 	{
 		if (sorted_attr != "Date/Time")

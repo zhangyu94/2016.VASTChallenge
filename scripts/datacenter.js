@@ -6,16 +6,16 @@ var DATA_CENTER = {
 	//登记所有存在的view
 	VIEW_COLLECTION : {
 		"HVACgraph_attrbtn_view":HVACgraph_attrbtn_view,
-		"HVACgraph_maps_view":HVACgraph_maps_view,
 		"linechart_linebtn_view":linechart_linebtn_view,
 		"linechart_render_view":linechart_render_view,
+
+		"mdsgraph_view":mdsgraph_view,
 
 		"bigmap_view":bigmap_view,
 		"ganttchart_view":ganttchart_view,
 		"histogram_view":histogram_view,
 
-		"mdsgraph_view":mdsgraph_view,
-
+		"smallmaps_view":smallmaps_view,
 		"timeline_view":timeline_view,
 	},
 	trigger_view_display : function(view_name,value){

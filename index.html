@@ -3,23 +3,24 @@
 	<meta charset="utf-8">
 	<title>VAST Challenge</title>
 	
-	<link rel="stylesheet" href="libs/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/tipsy.css">
 	<link rel="stylesheet" href="css/jquery-ui.css">
 
 	<link rel="stylesheet" href="css/index.css"><!--所有的view的视图整体框架的layout-->
 
-	<!--1. linechart相关的view的css-->
-	<link rel="stylesheet" href="css/linechart/HVACgraph_maps_view.css">
+	<!--1. smallmaps相关的css-->
+	<link rel="stylesheet" href="css/smallmaps/smallmaps_view.css">
+	<!--2. linechart相关的view的css-->
 	<link rel="stylesheet" href="css/linechart/HVACgraph_attrbtn_view.css">
 	<link rel="stylesheet" href="css/linechart/linechart_linebtn_view.css">
 	<link rel="stylesheet" href="css/linechart/linechart_render_view.css">
-	<!--2. trajectory相关的view的css-->
+	<!--3. trajectory相关的view的css-->
 	<link rel="stylesheet" href="css/trajectory/bigmap_view.css">
 	<link rel="stylesheet" href="css/trajectory/ganttchart_view.css">
 	<link rel="stylesheet" href="css/trajectory/histogram_view.css">
-	<!--3. mdsgraph相关的css-->
-	<link rel="stylesheet" href="css/linechart/mdsgraph_view.css">
+	<!--4. mdsgraph相关的css-->
+	<link rel="stylesheet" href="css/mdsgraph/mdsgraph_view.css">
 	<style>
 
 
@@ -48,18 +49,19 @@
 >>>>>>> Stashed changes
 
 <!--views-->
-<!--1. linechart相关的view-->
-<script src="scripts/linechart/HVACgraph_maps_view.js"></script>
+<!--1. smallmaps相关的view-->
+<script src="scripts/smallmaps/smallmaps_view.js"></script>
+<!--2. linechart相关的view-->
 <script src="scripts/linechart/HVACgraph_attrbtn_view.js"></script>
 <script src="scripts/linechart/linechart_linebtn_view.js"></script>
 <script src="scripts/linechart/linechart_render_view.js"></script>
-<!--2. trajectory相关的view-->
+<!--3. trajectory相关的view-->
 <script src="scripts/trajectory/bigmap_view.js"></script>
 <script src="scripts/trajectory/ganttchart_view.js"></script>
 <script src="scripts/trajectory/histogram_view.js"></script>
-<!--3. mdsgraph相关的view-->
+<!--4. mdsgraph相关的view-->
 <script src="scripts/mdsgraph/mdsgraph_view.js"></script>
-<!--4. timeline相关的view-->
+<!--5. timeline相关的view-->
 <script src="scripts/timeline/timeline_view.js"></script>
 
 <!--datacenter-->
@@ -79,24 +81,24 @@
 
 			<div class="globalvariableContainer">
 				<ul class="pagination displayinterval-btn">
-	    				<label for="displayinterval-btn"></label>
-					    <select name="displayinterval-btn" id="displayinterval-btn">
-					      	<option>20ms</option>
-					      	<option>100ms</option>
-					      	<option>500ms</option>
-					      	<option selected="selected">1000ms</option>
-	    				</select>
+	    			<label for="displayinterval-btn"></label>
+					<select name="displayinterval-btn" id="displayinterval-btn">
+					    <option>20ms</option>
+					    <option>100ms</option>
+					    <option>500ms</option>
+					    <option selected="selected">1000ms</option>
+	    			</select>
 				</ul>
 				<ul class="pagination displayrate-btn">
-						<label for="displayrate-btn"></label>
-					    <select name="displayrate-btn" id="displayrate-btn">
-					      	<option>X 1</option>
-					      	<option>X 15</option>
-					      	<option>X 60</option>
-					      	<option selected="selected">X 3600</option>
-					      	<option>X 18000</option>
-					      	<option>X 86400</option>
-	    				</select>
+					<label for="displayrate-btn"></label>
+					<select name="displayrate-btn" id="displayrate-btn">
+					    <option>X 1</option>
+					    <option>X 15</option>
+					    <option>X 60</option>
+					    <option selected="selected">X 3600</option>
+					    <option>X 18000</option>
+					    <option>X 86400</option>
+	    			</select>
 				</ul>
 			</div>
 
@@ -112,13 +114,17 @@
 		</div>
 	</div>
 
-	<!--第一个linechart视图相关的-->
-	<div class="view-collection" id="linechartview-collection">
-		<div class="HVACgraphContainer">
-			<div id="HVACgraph-maps">
+
+	<!--1. 小map视图相关的-->
+	<div class="view-collection" id="smallmapsview-collection">
+		<div class="smallmapsContainer">
+			<div id="smallmaps-renderplace">
 			</div>
 		</div>
+	</div>
 
+	<!--2. linechart视图相关的-->
+	<div class="view-collection" id="linechartview-collection">
 		<div class="linechartContainer">
 			<div id="HVACgraph-attr-btn">
 			</div>
@@ -131,7 +137,7 @@
 		</div>
 	</div>
 
-	<!--第二个trajectory视图相关的-->
+	<!--3. trajectory视图相关的-->
 	<div class="view-collection" id="trajectoryview-collection">
 		<div class="trajectoryContainer">
 			<div id="trajectory-bigmap">
@@ -143,6 +149,7 @@
 		</div>
 	</div>
 
+	<!--4. timeline视图相关的-->
 	<div class="view-collection" id="timelineview-collection">
 		<div class="timelineContainer">
 			<div id="timeline-renderplace">
