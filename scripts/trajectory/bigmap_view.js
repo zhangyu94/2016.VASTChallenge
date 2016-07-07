@@ -26,9 +26,26 @@ var bigmap_view = {
 		if (message == "set:selected_floor_set")
 		{
 			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
+			if (selected_floor_set.length > 1)
+			{
+				console.warn("more than 1 selected floor");
+			}
+			if (typeof(selected_floor_set[0])!=undefined)
+			{
+				var selected_floor_number = DATA_CENTER.GLOBAL_STATIC.floor_name_number_mapping[selected_floor_set[0]];
+			}
+			else
+			{
+				var selected_floor_number = 1;
+			}
+			console.log(selected_floor_number)
+			this.render(divID, selected_floor_number);	
+			/*
+			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
 			var selected_floor = DATA_CENTER.global_variable.selected_floor;
 			var set_length = selected_floor_set.length;
 			this.render(divID, selected_floor);	
+			*/
 			//this.updateView(divID, 1464685493000);
 		}
 	},

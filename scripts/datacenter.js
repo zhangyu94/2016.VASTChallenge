@@ -193,7 +193,12 @@ var DATA_CENTER = {
 			"Total Electric Demand Power":"total power",
 			"HVAC Electric Demand Power":"HVAC power",
 			"Hazium Concentration":"Hazium",
-		}
+		},
+		floor_name_number_mapping : {
+			"F_1":1,
+			"F_2":2,
+			"F_3":3,
+		},
 	},
 
 	
