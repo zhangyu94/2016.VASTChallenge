@@ -43,6 +43,9 @@ function main(){
 			"display:mdsgraph_view",
 			"hide:mdsgraph_view",
 
+			"display:relationshipgraph_view",
+			"hide:relationshipgraph_view",
+
 			"display:bigmap_view",
 			"display:ganttchart_view",
 			"display:histogram_view",
@@ -149,6 +152,18 @@ function main(){
 				"HVACgraph_attrbtn_view":undefined,
 				"linechart_linebtn_view":undefined,
 				"mdsgraph_view":undefined,
+
+				"smallmaps_view":undefined,
+				"timeline_view":undefined,	
+			};
+			_hide_and_display_view(displayed_view);
+		}
+		else if (view_collection_name == "relationshipgraphview")
+		{
+			var displayed_view = {
+				"HVACgraph_attrbtn_view":undefined,
+				"linechart_linebtn_view":undefined,
+				"relationshipgraph_view":undefined,
 
 				"smallmaps_view":undefined,
 				"timeline_view":undefined,	

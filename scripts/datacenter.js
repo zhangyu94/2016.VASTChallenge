@@ -11,6 +11,8 @@ var DATA_CENTER = {
 
 		"mdsgraph_view":mdsgraph_view,
 
+		"relationshipgraph_view":relationshipgraph_view,
+
 		"bigmap_view":bigmap_view,
 		"ganttchart_view":ganttchart_view,
 		"histogram_view":histogram_view,

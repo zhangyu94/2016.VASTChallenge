@@ -496,8 +496,8 @@ var smallmaps_view = {
 			}
 		}
 		
-		_render_radarchart(dataset,place_name,center_x,center_y)
-		function _render_radarchart(data,place_name,center_x,center_y)
+		_render_radarchart(dataset,place_name,raw_timestamp,center_x,center_y)
+		function _render_radarchart(data,place_name,raw_timestamp,center_x,center_y)
 		{
 			var width = 48;
 			var height = 48;
@@ -558,7 +558,6 @@ var smallmaps_view = {
 			//a.1) update的内层path的update部分
 			update_div_g_updatepath
 				.transition()
-					//.duration(500)
 					.attr("fill", function(d) { 
 			      		var normalized_value = 0.;
 				  		if (typeof(d.data.value)!= "undefined")
@@ -576,10 +575,14 @@ var smallmaps_view = {
 							html:true,
 							title:function(){
 							   	var d = this.__data__;
-								var normalized_value = 0.;
+							   	var time_string = new Date(raw_timestamp);
+							   	time_string = time_string.toLocaleString();
+							   	
+								var signed_normalized_value = 0;
 							  	if (typeof(d.data.value)!= "undefined")
-							  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
-							    var content = 	d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + normalized_value.toFixed(1) + ")" + "</span>";
+							  		signed_normalized_value = HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value);
+							    var content = 	//"<span style='color:red'>" + time_string  + "</span>"+ "</br>" +
+							    				d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + signed_normalized_value.toFixed(1) + ")" + "</span>";
 							    return content;
 							},
 							trigger: 'manual',
@@ -591,10 +594,6 @@ var smallmaps_view = {
 				  		{
 				  			$(this).tipsy("show");
 				  		}
-				  		var mem = $(this)
-				  		setTimeout(function(){
-				  			mem.tipsy("hide")
-				  		},5000)
 			      	})
 			//a.2) update的内层path的enter部分      	
 			update_div_g_enterpath
@@ -617,16 +616,23 @@ var smallmaps_view = {
 			      	.attr("opacity", function(d,i){
 			      		return 1;
 			      	})
+			      	.on("mouseover",function(d,i){
+			      		$(this).tipsy()
+			      	})
 			      	.each(function(d,i){
 			      		$(this).tipsy({
 							gravity: "s",
 							html:true,
 							title:function(){
 							   	var d = this.__data__;
-								var normalized_value = 0.;
+							   	var time_string = new Date(raw_timestamp);
+							   	time_string = time_string.toLocaleString();
+							   	
+								var signed_normalized_value = 0;
 							  	if (typeof(d.data.value)!= "undefined")
-							  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
-							    var content = 	d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + normalized_value.toFixed(1) + ")" + "</span>";
+							  		signed_normalized_value = HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value);
+							    var content = 	//"<span style='color:red'>" + time_string  + "</span>"+ "</br>" +
+							    				d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + signed_normalized_value.toFixed(1) + ")" + "</span>";
 							    return content;
 							},
 							trigger: 'manual',
@@ -638,10 +644,6 @@ var smallmaps_view = {
 				  		{
 				  			$(this).tipsy("show");
 				  		}
-				  		var mem = $(this)
-				  		setTimeout(function(){
-				  			mem.tipsy("hide")
-				  		},5000)
 			      	})
 			//a.3) update的内层path的exit部分          	
 			update_div_g_exitpath.remove()
@@ -696,16 +698,23 @@ var smallmaps_view = {
 			      	.attr("opacity", function(d,i){
 			      		return 1;
 			      	})
+			      	.on("mouseover",function(d,i){
+			      		$(this).tipsy()
+			      	})
 			      	.each(function(d,i){
 			      		$(this).tipsy({
 							gravity: "s",
 							html:true,
 							title:function(){
 							   	var d = this.__data__;
-								var normalized_value = 0.;
+							   	var time_string = new Date(raw_timestamp);
+							   	time_string = time_string.toLocaleString();
+							   	
+								var signed_normalized_value = 0;
 							  	if (typeof(d.data.value)!= "undefined")
-							  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
-							    var content = 	d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + normalized_value.toFixed(1) + ")" + "</span>";
+							  		signed_normalized_value = HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value);
+							    var content = 	//"<span style='color:red'>" + time_string  + "</span>"+ "</br>" +
+							    				d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + signed_normalized_value.toFixed(1) + ")" + "</span>";
 							    return content;
 							},
 							trigger: 'manual',
@@ -717,10 +726,6 @@ var smallmaps_view = {
 				  		{
 				  			$(this).tipsy("show");
 				  		}
-				  		var mem = $(this)
-				  		setTimeout(function(){
-				  			mem.tipsy("hide")
-				  		},5000)
 			      	})
 
 			//b. enter的外层path的处理模板(只需要考虑path的enter部分,因为div是新enter的,path不可能存在update和exit部分)	         	

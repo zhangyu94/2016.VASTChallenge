@@ -45,7 +45,7 @@ var timeline_view = {
 	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
 	        if (typeof(current_display_time)!=undefined)
 	        {
-	        	this._plot_tickline(chart,0,"time-tick",current_display_time,"#FF0000","shortdot");
+	        	this._plot_tickline(chart,0,"time-tick",current_display_time,"#FF0000","solids");
 			}
 		}
 
