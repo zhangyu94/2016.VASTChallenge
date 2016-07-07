@@ -46,11 +46,9 @@ function main(){
 			"display:bigmap_view",
 			"display:ganttchart_view",
 			"display:histogram_view",
-			"display:proxgraph_maps_view",
 			"hide:bigmap_view",
 			"hide:ganttchart_view",
 			"hide:histogram_view",
-			"hide:proxgraph_maps_view",
 
 			"display:timeline_view",
 			"hide:timeline_view",
@@ -125,7 +123,6 @@ function main(){
 		{
 			var displayed_view = {
 				"ganttchart_view":undefined,
-				//proxgraph_maps_view":undefined,
 				"HVACgraph_maps_view":undefined,
 				"bigmap_view":undefined,
 				"histogram_view":undefined,

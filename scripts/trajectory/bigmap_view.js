@@ -1,6 +1,6 @@
 var bigmap_view = {
 	bigmap_view_DIV_ID : "trajectory-bigmap",
-
+	DISPLAYED_FLOOR_NUMBER : undefined,
 
 
 	obsUpdate:function(message, data)
@@ -38,6 +38,7 @@ var bigmap_view = {
 			{
 				var selected_floor_number = 1;
 			}
+			this.DISPLAYED_FLOOR_NUMBER = selected_floor_number;
 			console.log(selected_floor_number)
 			this.render(divID, selected_floor_number);	
 			/*
@@ -243,7 +244,10 @@ var bigmap_view = {
 		    return [value];
 		});
 		var personInZone = DATA_CENTER.derived_data["personInZone"];
-		var floorNum = DATA_CENTER.global_variable.selected_floor;
+
+		//var floorNum = DATA_CENTER.global_variable.selected_floor;
+		var floorNum = this.DISPLAYED_FLOOR_NUMBER;
+
 		var zoneData = zoneDataArray[floorNum - 1];
 		for(var i = 0;i < personArray.length;i++){
 			var routeRocrds10Days = personArray[i].fixRecords;
@@ -394,7 +398,11 @@ var bigmap_view = {
 		var yScale = d3.scale.linear()
 			.range([0, height])
 			.domain([0, 111]);
-		var floorNum = DATA_CENTER.global_variable.selected_floor;
+		
+		//var floorNum = DATA_CENTER.global_variable.selected_floor;
+		var floorNum = this.DISPLAYED_FLOOR_NUMBER;
+
+
 		var svg = d3.select("#floor-svg");
 		for(var i = 0; i < robotData.length;i++){
 			robotData[i]['robotTime'] = new Date(robotData[i]['timestamp']).getTime();

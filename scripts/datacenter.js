@@ -13,7 +13,6 @@ var DATA_CENTER = {
 		"bigmap_view":bigmap_view,
 		"ganttchart_view":ganttchart_view,
 		"histogram_view":histogram_view,
-		"proxgraph_maps_view":proxgraph_maps_view,
 
 		"mdsgraph_view":mdsgraph_view,
 
@@ -29,7 +28,6 @@ var DATA_CENTER = {
 
 	//view之间通信需要利用的全局变量
 	global_variable : {
-		selected_floor: 0,
 		floors_zone_set: [],
 		personInZone: [], 
 		selected_attr_set:[],

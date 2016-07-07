@@ -109,6 +109,7 @@ var timeline_view = {
             	marker:{
             		enabled:false,
             		symbol:"circle",
+            		radius:1,
             	},
                 name: "timeline",
                 data: new_data,
@@ -456,7 +457,7 @@ var timeline_view = {
             	marker:{
             		enabled:false,
             		symbol:"circle",
-            		//radius:1,
+            		radius:1,
             	},
             	name: "timeline",
                 data: xyAxis_data,

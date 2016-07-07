@@ -138,23 +138,6 @@ body {
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
-#trajectoryview-collection > .proxgraphContainer {
-	position:absolute;
-	height:100%;
-	width:20%;
-	float: left;
-	pointer-events:none;/*大框是始终存在的，不能点的*/
-}
-#trajectoryview-collection > .proxgraphContainer > #proxgraph-maps{
-	position:absolute;
-	height:100%;
-	width:100%;
-	float: left;
-	border: solid #ccc 1px;
-	border-radius: 5px;
-	background-color: #f8f8f8;
-	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
-}
 #trajectoryview-collection > .trajectoryContainer {
 	position:absolute;
 	left:20.5%;

@@ -14,12 +14,12 @@
 	<link rel="stylesheet" href="css/linechart/HVACgraph_attrbtn_view.css">
 	<link rel="stylesheet" href="css/linechart/linechart_linebtn_view.css">
 	<link rel="stylesheet" href="css/linechart/linechart_render_view.css">
-	<link rel="stylesheet" href="css/linechart/mdsgraph_view.css">
 	<!--2. trajectory相关的view的css-->
-	<link rel="stylesheet" href="css/trajectory/proxgraph_maps_view.css">
 	<link rel="stylesheet" href="css/trajectory/bigmap_view.css">
 	<link rel="stylesheet" href="css/trajectory/ganttchart_view.css">
 	<link rel="stylesheet" href="css/trajectory/histogram_view.css">
+	<!--3. mdsgraph相关的css-->
+	<link rel="stylesheet" href="css/linechart/mdsgraph_view.css">
 	<style>
 
 
@@ -54,13 +54,12 @@
 <script src="scripts/linechart/linechart_linebtn_view.js"></script>
 <script src="scripts/linechart/linechart_render_view.js"></script>
 <!--2. trajectory相关的view-->
-<script src="scripts/trajectory/proxgraph_maps_view.js"></script>
 <script src="scripts/trajectory/bigmap_view.js"></script>
 <script src="scripts/trajectory/ganttchart_view.js"></script>
 <script src="scripts/trajectory/histogram_view.js"></script>
-<!--2. mdsgraph相关的view-->
+<!--3. mdsgraph相关的view-->
 <script src="scripts/mdsgraph/mdsgraph_view.js"></script>
-<!--3. timeline相关的view-->
+<!--4. timeline相关的view-->
 <script src="scripts/timeline/timeline_view.js"></script>
 
 <!--datacenter-->
@@ -134,11 +133,6 @@
 
 	<!--第二个trajectory视图相关的-->
 	<div class="view-collection" id="trajectoryview-collection">
-		<div class="proxgraphContainer">
-			<div id="proxgraph-maps">
-			</div>
-		</div>
-
 		<div class="trajectoryContainer">
 			<div id="trajectory-bigmap">
 			</div>
