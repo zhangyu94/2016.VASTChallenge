@@ -50,7 +50,7 @@ body {
 #smallmapsview-collection {
 	position:absolute;
 	top:9%;
-	height:91%;
+	height:80%;
 	width:20%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
@@ -192,10 +192,9 @@ body {
 /*timeline视图*/
 #timelineview-collection {
 	position:absolute;
-	left:21%;
 	top:90%;
 	height:10%;
-	width:78.5%;
+	width:99%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }

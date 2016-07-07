@@ -30,14 +30,14 @@ var smallmaps_view = {
 				(message == "set:highlight_floor_set")  ||
 				(message == "set:highlight_building_set")  )
         {
-            d3.selectAll(".HVACmap-circle")
-        		.classed("mouseover_selected-HVACmap-circle",function(d,i){      			
+            d3.selectAll(".smallmaps-HVACzone-circle")
+        		.classed("mouseover_selected-smallmaps-HVACzone-circle",function(d,i){      			
         			var flag = (DATA_CENTER.linechart_variable.highlight_HVACzone_set.indexOf(d.name) >= 0);
         			return flag;
         		})
 
-        	d3.selectAll(".HVACmap-rect")
-        		.classed("mouseover_selected-HVACmap-rect",function(d,i){      			
+        	d3.selectAll(".smallmaps-rect")
+        		.classed("mouseover_selected-smallmaps-rect",function(d,i){      			
         			var flag = false;
         			flag = flag | (DATA_CENTER.linechart_variable.highlight_floor_set.indexOf(d.name) >= 0);
         			flag = flag | (DATA_CENTER.linechart_variable.highlight_building_set.indexOf(d.name) >= 0);
@@ -46,22 +46,17 @@ var smallmaps_view = {
         }
 
         if (message == "set:current_display_time")
-        {
-        	
+        {	
         	var timestamp = DATA_CENTER.global_variable.current_display_time;
-        	if (typeof(timestamp)!="undefined")
-        	{
-        		
-        		var node = d3.selectAll(".click_selected-HVACmap-circle")
-        			.each(function(d,i){
-						var left = $(this).offset().left+smallmaps_view.HVAC_ZONE_DOT_RADIUS;
-						var top = $(this).offset().top+smallmaps_view.HVAC_ZONE_DOT_RADIUS;
-        				smallmaps_view._render_radarchart_glyph(d.name,d.type,left,top,timestamp)
-        			})
 
-        	}
+			var node = d3.selectAll(".smallmaps-HVACzone-circle")
+        		.each(function(d,i){
+        			var is_selected = d3.select(this).classed("click_selected-smallmaps-HVACzone-circle")
+        			var left = $(this).offset().left+smallmaps_view.HVAC_ZONE_DOT_RADIUS;
+					var top = $(this).offset().top+smallmaps_view.HVAC_ZONE_DOT_RADIUS;
+        			smallmaps_view._render_radarchart_glyph(d.name,d.type,left,top,timestamp,is_selected)
+        		})
 			
-
         }
 
 	},
@@ -109,7 +104,7 @@ var smallmaps_view = {
 		var building_div_g = building_div_svg.append("g")
 		var building_rect = building_div_g.append("rect")
 			.datum({name:"building"})
-			.attr("class","HVACmap-rect building-HVACmap-rect")
+			.attr("class","smallmaps-rect building-smallmaps-rect")
 			.attr("height",building_div_content_height)
 			.attr("width",building_div_content_width)	         
 			.on("click",function(d,i){
@@ -117,13 +112,13 @@ var smallmaps_view = {
 				var index = selected_building_set.indexOf(d.name);
 				if (index >=0 )
 				{
-					d3.select(this).classed("click_selected-HVACmap-rect",false);
+					d3.select(this).classed("click_selected-smallmaps-rect",false);
 					selected_building_set.splice(index,1);
 					DATA_CENTER.set_global_variable("selected_building_set",selected_building_set);
 				}
 				else
 				{
-					d3.select(this).classed("click_selected-HVACmap-rect",true);			
+					d3.select(this).classed("click_selected-smallmaps-rect",true);			
 					DATA_CENTER.set_global_variable("selected_building_set",selected_building_set.concat(d.name));
 				}
 			})
@@ -200,29 +195,21 @@ var smallmaps_view = {
 				.attr("width",floor_div_content_width)
 		var floor_span_g = floor_span_svg.append("g")
 		var floor_rect = floor_span_g.append("rect")
-				.attr("class","HVACmap-rect floor-HVACmap-rect")
+				.attr("class","smallmaps-rect floor-smallmaps-rect")
 				.attr("height",floor_div_content_height)
 				.attr("width",floor_div_content_width)	
-				//.attr("fill",function(d,i){
-				//	if (i == 0)
-				//		return "brown";
-				//	else if (i == 1)
-				//		return "orange";
-				//	else if (i == 2)
-				//		return "yellow";
-				//}).attr("opacity",0.2)
 				.on("click",function(d,i){
 					var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
 					var index = selected_floor_set.indexOf(d.name);
 					if (index >=0 )
 					{
-						d3.select(this).classed("click_selected-HVACmap-rect",false);
+						d3.select(this).classed("click_selected-smallmaps-rect",false);
 						selected_floor_set.splice(index,1);
 						DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
 					}
 					else
 					{
-						d3.select(this).classed("click_selected-HVACmap-rect",true);
+						d3.select(this).classed("click_selected-smallmaps-rect",true);
 						DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
 					}
 				})     
@@ -258,7 +245,6 @@ var smallmaps_view = {
 
 
 	    //3.渲染floor的map
-	    //var left_padding = (div_width-building_div_all_width-floor_div_all_width)*0.05;
 	    var width = div_width-building_div_all_width-floor_div_all_width;
 	    var content_width = width - 2*all_dir_padding;
 	    var top_padding = all_dir_padding;
@@ -353,7 +339,7 @@ var smallmaps_view = {
 		      .style("stroke-width", function(d) { return 1; })
 		      .style("stroke", function(d) { return "#AAAAAA"; });
 
-		  	var node = floor_svg.selectAll(".HVACmap-circle")
+		  	var node = floor_svg.selectAll(".smallmaps-HVACzone-circle")
 					    .data(graph.nodes)
 					    .enter()
 					    .append("g")
@@ -366,11 +352,11 @@ var smallmaps_view = {
 						    {
 						    	if ( DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set.indexOf(d.name) >=0 )
 						    	{
-						    		return "HVACmap-circle hazium-HVACmap-circle";
+						    		return "smallmaps-HVACzone-circle hazium-smallmaps-HVACzone-circle";
 						    	}
 						    	else
 						    	{
-						    		return "HVACmap-circle ordinary-HVACmap-circle";
+						    		return "smallmaps-HVACzone-circle ordinary-smallmaps-HVACzone-circle";
 						    	}
 						    		
 						    })
@@ -434,13 +420,13 @@ var smallmaps_view = {
 								
 								if (index >=0 )
 								{
-									d3.select(this).classed("click_selected-HVACmap-circle",false);
+									d3.select(this).classed("click_selected-smallmaps-HVACzone-circle",false);
 									selected_HVACzone_set.splice(index,1);
 									DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set);
 								}
 								else
 								{
-									d3.select(this).classed("click_selected-HVACmap-circle",true);
+									d3.select(this).classed("click_selected-smallmaps-HVACzone-circle",true);
 									DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set.concat(d.name));
 								}
 								
@@ -467,47 +453,51 @@ var smallmaps_view = {
 	},
 
 
-	_render_radarchart_glyph:function(place_name,place_type,center_x,center_y,raw_timestamp)
+	_render_radarchart_glyph:function(place_name,place_type,center_x,center_y,raw_timestamp,is_selected)
 	{
-		var dataset = _cal_dataset(place_name,place_type);
-		function _cal_dataset(place_name,place_type)
+		var dataset = [];
+		if (is_selected && (typeof(raw_timestamp)!="undefined") )
 		{
-			var detail_attr_set = [];
-			var general_attr_set;
-			if (place_type == "HVAC_zone")
+			dataset = _cal_dataset(place_name,place_type);
+			function _cal_dataset(place_name,place_type)
 			{
-				general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([place_name],[],[]);
-				detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[place_name],[],[]);
-			}
-			else if (place_type == "floor")
-			{
-				general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([],[place_name],[]);
-				detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[],[place_name],[]);
-			}
-			else if (place_type == "building")
-			{
-				general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([],[],[place_name]);
-				detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[],[],[place_name]);
-			}
+				var detail_attr_set = [];
+				var general_attr_set;
+				if (place_type == "HVAC_zone")
+				{
+					general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([place_name],[],[]);
+					detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[place_name],[],[]);
+				}
+				else if (place_type == "floor")
+				{
+					general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([],[place_name],[]);
+					detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[],[place_name],[]);
+				}
+				else if (place_type == "building")
+				{
+					general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([],[],[place_name]);
+					detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[],[],[place_name]);
+				}
 
-			var frame_full_data = smallmaps_view._binary_search("bldg-MC2.csv","Date/Time",raw_timestamp);
-			
-			var frame_needed_data = [];
-			for (var i=0;i<detail_attr_set.length;++i)
-			{
-				var cur_attr = detail_attr_set[i];
-				var value = frame_full_data[cur_attr];
-				frame_needed_data.push({
-					name:cur_attr,
-					value:value,
-				})
-			}
+				var frame_full_data = smallmaps_view._binary_search("bldg-MC2.csv","Date/Time",raw_timestamp);
+				
+				var frame_needed_data = [];
+				for (var i=0;i<detail_attr_set.length;++i)
+				{
+					var cur_attr = detail_attr_set[i];
+					var value = frame_full_data[cur_attr];
+					frame_needed_data.push({
+						name:cur_attr,
+						value:value,
+					})
+				}
 
-			return frame_needed_data;
+				return frame_needed_data;
+			}
 		}
 		
-		_render_radarchart(dataset,center_x,center_y);
-		function _render_radarchart(data,center_x,center_y)
+		_render_radarchart(dataset,place_name,center_x,center_y)
+		function _render_radarchart(data,place_name,center_x,center_y)
 		{
 			var width = 48;
 			var height = 48;
@@ -521,66 +511,230 @@ var smallmaps_view = {
 			var arc = d3.svg.arc()
 			  	.innerRadius(innerRadius)
 			  	.outerRadius(function (d) { 
-			  		console.log(d)
-			  		var value = 0.01;
-			  		if (typeof(d.data.value)!= "undefined" && d.data.value>0)
-			  			value = d.data.value;
-			    	return (radius - innerRadius) * (d.data.value / 1000.0) + innerRadius; 
+			  		var normalized_value = 0;
+			  		if (typeof(d.data.value)!= "undefined")
+			  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+			  		return (radius - innerRadius) * (normalized_value / HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD) + innerRadius;
 			  	});
 			var outlineArc = d3.svg.arc()
 			        .innerRadius(innerRadius)
 			        .outerRadius(radius);
 
-			var div_of_radarchart_glyph = d3.select("body")//放在body上append使得他能显示出来
-					.append("div")
-						.attr("class",smallmaps_view.DIV_CLASS_OF_RADARCHART_GLYPH)
-						.style("position","absolute")
-						.style("top",center_y-height/2 + 'px')
-				    	.style("left",center_x-width/2 + 'px')
-				    	.style("width",width + 'px')
-				    	.style("height",height + 'px')
-				    	.style("pointer-events","none")
+			//1. 先完成div的处理模板
+			var update_div = d3.select("body")//放在body上append使得他能显示出来
+						.selectAll("#"+smallmaps_view.DIV_CLASS_OF_RADARCHART_GLYPH+"-"+place_name)
+						.data([place_name])
+			var enter_div = update_div.enter();		
+			var exit_div = update_div.exit();				
+			//1) div的update部分
+			update_div
+				.style("top",center_y-height/2 + 'px')
+				.style("left",center_x-width/2 + 'px')
+				.style("width",width + 'px')
+				.style("height",height + 'px')
+			//2) div的enter部分
+			enter_div = enter_div.append("div")
+					.attr("id",smallmaps_view.DIV_CLASS_OF_RADARCHART_GLYPH+"-"+place_name)
+					.attr("class",smallmaps_view.DIV_CLASS_OF_RADARCHART_GLYPH)
+					.style("position","absolute")
+					.style("top",center_y-height/2 + 'px')
+					.style("left",center_x-width/2 + 'px')
+					.style("width",width + 'px')
+					.style("height",height + 'px')
+					.style("pointer-events","none")
+			//3) div的exit部分
+			exit_div.remove()
 
-			var svg = div_of_radarchart_glyph.append("svg")
+
+			//2. 再完成update的div中的所有内层path和外层path的处理模板
+			var update_div_g = update_div
+				.select("svg")
+				.select("g")
+			//a. update的内层path的处理模板
+			var update_div_g_updatepath = update_div_g.selectAll(".solidArc")
+			      	.data(pie(data))
+			var update_div_g_enterpath = update_div_g_updatepath.enter();
+			var update_div_g_exitpath = update_div_g_updatepath.exit();
+			//a.1) update的内层path的update部分
+			update_div_g_updatepath
+				.transition()
+					//.duration(500)
+					.attr("fill", function(d) { 
+			      		var normalized_value = 0.;
+				  		if (typeof(d.data.value)!= "undefined")
+				  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+			      		var color_interpolator = d3.interpolateRgb("#00FF00","#FF0000");
+			      		var raw_color = color_interpolator(normalized_value / HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD);
+			      		var return_color = d3.hsl(raw_color);
+			      		return_color.l = 0.45;
+			      		return return_color;
+			      	})
+			      	.attr("d", arc)
+			      	.each(function(d,i){
+			      		$(this).tipsy({
+							gravity: "s",
+							html:true,
+							title:function(){
+							   	var d = this.__data__;
+								var normalized_value = 0.;
+							  	if (typeof(d.data.value)!= "undefined")
+							  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+							    var content = 	d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + normalized_value.toFixed(1) + ")" + "</span>";
+							    return content;
+							},
+							trigger: 'manual',
+						});
+			      		var normalized_value = 0.;
+				  		if (typeof(d.data.value)!= "undefined")
+				  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+				  		if (normalized_value >= 3)
+				  		{
+				  			$(this).tipsy("show");
+				  		}
+				  		var mem = $(this)
+				  		setTimeout(function(){
+				  			mem.tipsy("hide")
+				  		},5000)
+			      	})
+			//a.2) update的内层path的enter部分      	
+			update_div_g_enterpath
+				.append("path")
+					.attr("fill", function(d) { 
+			      		var normalized_value = 0.;
+				  		if (typeof(d.data.value)!= "undefined")
+				  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+			      		var color_interpolator = d3.interpolateRgb("#00FF00","#FF0000");
+			      		var raw_color = color_interpolator(normalized_value / HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD);
+			      		var return_color = d3.hsl(raw_color);
+			      		return_color.l = 0.45;
+			      		return return_color;
+			      	})
+			      	.attr("class", "solidArc")
+			      	.attr("stroke", "gray")
+			      	.attr("stroke-width",0.5)
+			      	.attr("d", arc)
+			      	.style("pointer-events","auto")
+			      	.attr("opacity", function(d,i){
+			      		return 1;
+			      	})
+			      	.each(function(d,i){
+			      		$(this).tipsy({
+							gravity: "s",
+							html:true,
+							title:function(){
+							   	var d = this.__data__;
+								var normalized_value = 0.;
+							  	if (typeof(d.data.value)!= "undefined")
+							  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+							    var content = 	d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + normalized_value.toFixed(1) + ")" + "</span>";
+							    return content;
+							},
+							trigger: 'manual',
+						});
+			      		var normalized_value = 0.;
+				  		if (typeof(d.data.value)!= "undefined")
+				  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+				  		if (normalized_value >= 3)
+				  		{
+				  			$(this).tipsy("show");
+				  		}
+				  		var mem = $(this)
+				  		setTimeout(function(){
+				  			mem.tipsy("hide")
+				  		},5000)
+			      	})
+			//a.3) update的内层path的exit部分          	
+			update_div_g_exitpath.remove()
+
+			//b. update的外层path的处理模板
+			var update_div_g_updateouterpath = update_div_g.selectAll(".outlineArc")
+			      	.data(pie(data))
+			var update_div_g_enterouterppath = update_div_g_updateouterpath.enter();
+			var update_div_g_exitouterppath = update_div_g_updateouterpath.exit();
+			//b.1) update的外层path的update部分
+			update_div_g_updateouterpath
+				.attr("d", outlineArc)
+			//b.2) update的外层path的enter部分	
+			update_div_g_enterouterppath
+				.append("path")
+		    		.attr("class", "outlineArc")
+			      	.attr("fill", "none")
+			      	.attr("stroke", "gray")
+			      	.attr("stroke-width",0.5)
+			      	.attr("d", outlineArc)
+			      	.attr("opacity", 1)
+			//b.3) update的外层path的exit部分	     	
+			update_div_g_exitouterppath.remove()
+
+			
+			//3. 再完成enter的div中的所有内层path和外层path的处理模板
+			var enter_div_g = enter_div	
+				.append("svg")
 				    .attr("width", width)
 				    .attr("height", height)
 			    .append("g")
 			    	.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
-
-
-			var path = svg.selectAll(".solidArc")
+			//a. enter的内层path的处理模板(只需要考虑path的enter部分,因为div是新enter的,path不可能存在update和exit部分)	   
+			var enter_div_g_enterpath = enter_div_g.selectAll(".solidArc")
 			      	.data(pie(data))
 			    .enter().append("path")
-			      	.attr("fill", function(d) { return "blue"; })
+			      	.attr("fill", function(d) { 
+			      		var normalized_value = 0.;
+				  		if (typeof(d.data.value)!= "undefined")
+				  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+			      		var color_interpolator = d3.interpolateRgb("#00FF00","#FF0000");
+			      		var raw_color = color_interpolator(normalized_value / HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD);
+			      		var return_color = d3.hsl(raw_color);
+			      		return_color.l = 0.45;
+			      		return return_color;
+			      	})
 			      	.attr("class", "solidArc")
 			      	.attr("stroke", "gray")
+			      	.attr("stroke-width",0.5)
 			      	.attr("d", arc)
 			      	.style("pointer-events","auto")
-			      	.on("mouseover",function(d,i){
-			      		console.log(d)
+			      	.attr("opacity", function(d,i){
+			      		return 1;
 			      	})
-			      	.attr("opacity", 1)
-			    .transition()
-		          	.duration(1500)
-		          	.attr("opacity", 0)
-		          	.remove()
-			      	
-		  	var outerPath = svg.selectAll(".outlineArc")
+			      	.each(function(d,i){
+			      		$(this).tipsy({
+							gravity: "s",
+							html:true,
+							title:function(){
+							   	var d = this.__data__;
+								var normalized_value = 0.;
+							  	if (typeof(d.data.value)!= "undefined")
+							  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+							    var content = 	d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + normalized_value.toFixed(1) + ")" + "</span>";
+							    return content;
+							},
+							trigger: 'manual',
+						});
+			      		var normalized_value = 0.;
+				  		if (typeof(d.data.value)!= "undefined")
+				  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+				  		if (normalized_value >= 3)
+				  		{
+				  			$(this).tipsy("show");
+				  		}
+				  		var mem = $(this)
+				  		setTimeout(function(){
+				  			mem.tipsy("hide")
+				  		},5000)
+			      	})
+
+			//b. enter的外层path的处理模板(只需要考虑path的enter部分,因为div是新enter的,path不可能存在update和exit部分)	         	
+		  	var enter_div_g_enterouterPath = enter_div_g.selectAll(".outlineArc")
 		      		.data(pie(data))
 		    	.enter().append("path")
+		    		.attr("class", "outlineArc")
 			      	.attr("fill", "none")
 			      	.attr("stroke", "gray")
-			      	.attr("class", "outlineArc")
+			      	.attr("stroke-width",0.5)
 			      	.attr("d", outlineArc)
 			      	.attr("opacity", 1)
-			    .transition()
-		          	.duration(1500)
-		          	.attr("opacity", 0)
-		          	.remove()
+
 		}
-		
-
-
 
 	},
 
@@ -618,9 +772,6 @@ var smallmaps_view = {
 			}
 		}
 		
-		//var result_value = data[start_index][sorted_attr];
-		//var result_value = new Date(result_value);
-		//var result_value = result_value.getTime();
 		return data[start_index];
 	}
 

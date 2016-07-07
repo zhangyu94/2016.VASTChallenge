@@ -87,12 +87,12 @@ var mdsgraph_view = {
 
 		var lasso_draw = function() {
 		  	// Style the possible dots
-		  	lasso.items().filter(function(d) {return d.possible===true})
-		    	.classed({"not_possible":false,"possible":true});
+		  	//lasso.items().filter(function(d) {return d.possible===true})
+		    //	.classed({"not_possible":false,"possible":true});
 
 		  	// Style the not possible dot
-		  	lasso.items().filter(function(d) {return d.possible===false})
-		    	.classed({"not_possible":true,"possible":false});
+		  	//lasso.items().filter(function(d) {return d.possible===false})
+		    //	.classed({"not_possible":true,"possible":false});
 
 		};
 
@@ -138,8 +138,6 @@ var mdsgraph_view = {
 
 
 
-
-
 		var x_array = [];
 		var y_array = [];
 		for (var i=0;i<binded_data.length;++i)
@@ -159,7 +157,7 @@ var mdsgraph_view = {
 		svg.selectAll(".mdsgraph_circle").remove();
 
 	    svg.selectAll(".data")
-		    .data(binded_data)
+		    .data(binded_data,function(d){return d.timenumber})
 		    .enter()
 		.append("circle")
 			.attr("class","mdsgraph_circle")

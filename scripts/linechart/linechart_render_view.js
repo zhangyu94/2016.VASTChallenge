@@ -9,9 +9,6 @@ var linechart_render_view = {
         "F_3_Z_1 Hazium Concentration":"f3z1-MC2.csv",
     },
 
-    //归一化以后的异常阈值
-    ABNORMAL_VALUE_THRESHOLD:4,
-
     //为折线图的大框设置最小尺寸，避免过小看不清楚
     MINIMUM_LINECHART_RECT_HEIGHT : 27,
     EXPECTED_LINECHART_NUM: 15,
@@ -354,11 +351,11 @@ var linechart_render_view = {
                         data:normalize_data,
                         zones:[
                         {
-                            value: -linechart_render_view.ABNORMAL_VALUE_THRESHOLD,
+                            value: -HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
                             color: "red",
                         },
                         {
-                            value: linechart_render_view.ABNORMAL_VALUE_THRESHOLD,
+                            value: HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
                             color: '#7cb5ec',
                         },
                         {
