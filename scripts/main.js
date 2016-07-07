@@ -125,7 +125,8 @@ function main(){
 		{
 			var displayed_view = {
 				"ganttchart_view":undefined,
-				"proxgraph_maps_view":undefined,
+				//proxgraph_maps_view":undefined,
+				"HVACgraph_maps_view":undefined,
 				"bigmap_view":undefined,
 				"histogram_view":undefined,
 

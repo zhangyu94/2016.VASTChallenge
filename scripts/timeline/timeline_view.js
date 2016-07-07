@@ -5,6 +5,8 @@ var timeline_view = {
 	DISPLAY_RATE:undefined,//3600,//播放的速度是现实速度的多少倍
 	DISPLAY_INTERVAL:undefined,//播放时每隔多久更新一次时间,单位ms
 
+	SELECTED_TIMEPOINT_VALUE:1,//被标记成selected的时间点在timeline上的取值
+
 	ROBOT_MORNING_WORKTIME_START:"9:00",
 	ROBOT_MORNING_WORKTIME_END:"10:02",
 	ROBOT_AFTERNOON_WORKTIME_START:"14:00",
@@ -80,6 +82,42 @@ var timeline_view = {
 	      	}
 		}
 
+		if (message == "set:selected_timepoint_set")
+        {
+            var selected_timepoint_set = DATA_CENTER.global_variable.selected_timepoint_set;
+
+            var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
+            var selected_timepoint_dict = {};
+            for (var i=0;i<selected_timepoint_set.length;++i)
+            {
+            	selected_timepoint_dict[selected_timepoint_set[i]] = undefined;
+            }
+			var new_data = this._initialize_xyAxis_data();
+
+			for (var i=0;i<new_data.length;++i)
+			{
+				var cur_element = new_data[i];
+				var cur_element_timenumber = cur_element[0];
+				if (cur_element_timenumber in selected_timepoint_dict)
+				{
+					cur_element[1] = this.SELECTED_TIMEPOINT_VALUE;
+				}
+			}
+			chart.series[0].remove(false);
+            chart.addSeries({
+            	color: '#7cb5ec',
+            	marker:{
+            		enabled:false,
+            		symbol:"circle",
+            	},
+                name: "timeline",
+                data: new_data,
+            },false)
+            chart.redraw();
+         	
+        }
+
+
 	},
 
 	_add_marking_plotband:function(min,max)
@@ -119,7 +157,6 @@ var timeline_view = {
 		   to: max,
 		   events: {             // 事件，支持 click、mouseover、mouseout、mousemove等事件
 	            click: function(e) {
-					/*axis.removePlotBand(this.id) */
 	            },
 	            mouseover: function(e) {
 	            },
@@ -350,11 +387,23 @@ var timeline_view = {
                 panning: true,
                 panKey: 'shift',
                 events:{
+                	click:function(e){
+                		var clicked_time = e.xAxis[0].value;
+                		var index = timeline_view._binary_search(chart.series[0].data,"x",clicked_time);
+                		var aligned_time = chart.series[0].data[index].x;
+                		DATA_CENTER.set_global_variable("current_display_time",aligned_time);
+                	},
+                	
                     selection:function(e){
                         //console.log(e)
                     },
-
-                }
+                },
+                resetZoomButton:{
+                    position:{
+                        align:'right',
+                        verticalAlign:"bottom",
+                    }
+                },
             },
             legend:{
                 enabled:false,
@@ -403,10 +452,14 @@ var timeline_view = {
 			},
             
             series: [{
+            	color: '#7cb5ec',
+            	marker:{
+            		enabled:false,
+            		symbol:"circle",
+            		//radius:1,
+            	},
+            	name: "timeline",
                 data: xyAxis_data,
-                marker:{
-                	radius:1,
-                },
             }]
         });
 

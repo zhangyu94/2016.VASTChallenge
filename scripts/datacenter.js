@@ -191,6 +191,7 @@ var DATA_CENTER = {
 			"Thermostat Heating Setpoint":"air heat threshold",
 			"Total Electric Demand Power":"total power",
 			"HVAC Electric Demand Power":"HVAC power",
+			"Hazium Concentration":"Hazium",
 		}
 	},
 

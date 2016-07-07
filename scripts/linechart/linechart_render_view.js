@@ -627,7 +627,7 @@ var linechart_render_view = {
         var attr = DATA_CENTER.GLOBAL_STATIC.attribute_abbreviation[pureattr_name];
         if ( typeof(attr) =="undefined" )
         {
-            console.warn("invalid attr",full_attr_name,attr,place);
+            console.warn("invalid attr",pureattr_name);
             return pureattr_name;
         }
         return attr;

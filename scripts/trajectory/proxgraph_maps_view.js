@@ -14,7 +14,7 @@ var proxgraph_maps_view = {
             }
         }
 
-        if (message == "hide:bigmap_view")
+        if (message == "hide:proxgraph_maps_view")
         {
             $("#"+this.proxgraph_maps_view_DIV_ID).css("display","none");
         }
