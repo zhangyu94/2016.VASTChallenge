@@ -21,11 +21,34 @@ var mdsgraph_view = {
             	.classed("current_display_time-selected-mdsgraph_circle",function(d,i){
             		var smoothed_current_display_time = DATA_CENTER.VIEW_COLLECTION.mdsgraph_view._binary_search(current_display_time);
             		if (d.timenumber == smoothed_current_display_time)
-            		{
             			return true;
-            		}
             		return false;
             	})
+        }
+
+        if (message == "set:selected_filter_timerange")
+        {
+        	var start_time = DATA_CENTER.global_variable.selected_filter_timerange.min;
+        	var end_time = DATA_CENTER.global_variable.selected_filter_timerange.max;
+        	if ( (typeof(start_time)!=undefined) && (typeof(end_time)!=undefined))
+        	{
+
+        		d3.selectAll(".mdsgraph_circle")
+	            	.classed("selected_filter_timerange-hided-mdsgraph_circle",function(d,i){
+	            		console.log(d.timenumber,start_time,end_time)
+	            		if ( (d.timenumber < start_time) || (d.timenumber > end_time) )
+	            		{
+	            			console.log("!!!")
+	            			return true;
+	            		}
+	            		return false;
+	            	})
+        	}
+        	else
+        	{
+        		d3.selectAll(".mdsgraph_circle")
+        			.classed("selected_filter_timerange-hided-mdsgraph_circle",false);
+        	}
         }
 	},
 	render:function(divID)
