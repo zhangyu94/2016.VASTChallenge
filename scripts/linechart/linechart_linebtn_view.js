@@ -174,57 +174,12 @@ var linechart_linebtn_view = {
 					}
 				})
 				.on("mouseover",function(d,i){
-
-					_highlight_communication(d,i);
-					function _highlight_communication(d,i)
-					{
-						//1. 高亮linechart
-						var highlight_linechart_set = [d];
-						DATA_CENTER.set_linechart_variable("highlight_linechart_set",highlight_linechart_set);
-
-						var place_attr = linechart_linebtn_view._parse_position_attr(d);
-
-						//2. 高亮attr
-						var attr = place_attr.attr;
-						var highlight_attr_set = [attr];
-						DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
-
-						//3. 高亮place
-						var place = place_attr.place;
-						var place_type = place_attr.place_type;
-						if (place_type == "building")
-						{
-							DATA_CENTER.set_linechart_variable("highlight_building_set",[place]);
-						}
-						else if (place_type == "floor")
-						{
-							DATA_CENTER.set_linechart_variable("highlight_floor_set",[place]);
-						}
-						else if (place_type == "HVACzone")
-						{
-							DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[place]);
-						}
-						
-					}
-
+					DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+						._highlight_communication_mouseover_linebtn(d);
 				})
 				.on("mouseout",function(d,i){
-
-					_highlight_communication(d,i);
-					function _highlight_communication(d,i)
-					{
-						//1. 取消高亮linechart
-						DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
-
-						//2. 取消高亮attr
-						DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
-
-						//3. 取消高亮place
-						DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[]);
-						DATA_CENTER.set_linechart_variable("highlight_floor_set",[]);
-						DATA_CENTER.set_linechart_variable("highlight_building_set",[]);
-					}
-
+					DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+						._highlight_communication_mouseout_linebtn();
 				})
 			.append("div")
                 .attr("style","position:relative")
@@ -334,5 +289,49 @@ var linechart_linebtn_view = {
 			attr:attr,
 		} 
 		return return_val;
-	}
+	},
+
+	_highlight_communication_mouseover_linebtn:function(attr_name)
+	{
+		//1. 高亮linechart
+		var highlight_linechart_set = [attr_name];
+		DATA_CENTER.set_linechart_variable("highlight_linechart_set",highlight_linechart_set);
+
+		var place_attr = linechart_linebtn_view._parse_position_attr(attr_name);
+
+		//2. 高亮attr
+		var attr = place_attr.attr;
+		var highlight_attr_set = [attr];
+		DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
+
+		//3. 高亮place
+		var place = place_attr.place;
+		var place_type = place_attr.place_type;
+		if (place_type == "building")
+		{
+			DATA_CENTER.set_linechart_variable("highlight_building_set",[place]);
+		}
+		else if (place_type == "floor")
+		{
+			DATA_CENTER.set_linechart_variable("highlight_floor_set",[place]);
+		}
+		else if (place_type == "HVACzone")
+		{
+			DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[place]);
+		}
+	},
+
+	_highlight_communication_mouseout_linebtn:function()
+	{
+		//1. 取消高亮linechart
+		DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
+
+		//2. 取消高亮attr
+		DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
+
+		//3. 取消高亮place
+		DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[]);
+		DATA_CENTER.set_linechart_variable("highlight_floor_set",[]);
+		DATA_CENTER.set_linechart_variable("highlight_building_set",[]);
+	},
 }

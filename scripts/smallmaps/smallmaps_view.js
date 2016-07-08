@@ -4,6 +4,7 @@ var smallmaps_view = {
 
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 	HVAC_ZONE_DOT_RADIUS :4.5,
+	RADARCHART_GLYPH_RADIUS :20,
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"radarchart_glyph-div",
 	
@@ -68,13 +69,6 @@ var smallmaps_view = {
 		//F1_HVAC_GRAPH.js
 		//全局变量结束
 
-		//定义静态变量
-		
-		//var F1_HVAC_IMG_SRC = "img/VAST_EnergyZones_F1.jpg";
-		//var F2_HVAC_IMG_SRC = "img/VAST_EnergyZones_F2.jpg";
-		//var F3_HVAC_IMG_SRC = "img/VAST_EnergyZones_F3.jpg";
-		
-		//静态变量定义结束
 
 		this.FIRST_CALLED = false;
 
@@ -505,9 +499,10 @@ var smallmaps_view = {
 		_render_radarchart(dataset,place_name,raw_timestamp,center_x,center_y)
 		function _render_radarchart(data,place_name,raw_timestamp,center_x,center_y)
 		{
-			var width = 48;
-			var height = 48;
-			var radius = 12;
+			var radius = DATA_CENTER.VIEW_COLLECTION.smallmaps_view.RADARCHART_GLYPH_RADIUS;
+			var width = 4*radius;
+			var height = 4*radius;
+
 			var innerRadius = smallmaps_view.HVAC_ZONE_DOT_RADIUS;
 			var degree = 360/data.length;
 
@@ -622,9 +617,15 @@ var smallmaps_view = {
 			      	.attr("opacity", function(d,i){
 			      		return 1;
 			      	})
-			      	.on("mouseover",function(d,i){
-			      		$(this).tipsy()
-			      	})
+					.on("mouseover",function(d,i){
+						$(this).tipsy()
+	                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+	                        ._highlight_communication_mouseover_linebtn(d.data.name);
+	                })
+	                .on("mouseout",function(d,i){
+	                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+	                        ._highlight_communication_mouseout_linebtn();
+	                })
 			      	.each(function(d,i){
 			      		$(this).tipsy({
 							gravity: "s",
@@ -653,7 +654,7 @@ var smallmaps_view = {
 			      	})
 			//a.3) update的内层path的exit部分          	
 			update_div_g_exitpath.remove()
-
+			/*
 			//b. update的外层path的处理模板
 			var update_div_g_updateouterpath = update_div_g.selectAll(".outlineArc")
 			      	.data(pie(data))
@@ -673,7 +674,7 @@ var smallmaps_view = {
 			      	.attr("opacity", 1)
 			//b.3) update的外层path的exit部分	     	
 			update_div_g_exitouterppath.remove()
-
+			*/
 			
 			//3. 再完成enter的div中的所有内层path和外层path的处理模板
 			var enter_div_g = enter_div	
@@ -704,9 +705,15 @@ var smallmaps_view = {
 			      	.attr("opacity", function(d,i){
 			      		return 1;
 			      	})
-			      	.on("mouseover",function(d,i){
-			      		$(this).tipsy()
-			      	})
+					.on("mouseover",function(d,i){
+						$(this).tipsy()
+	                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+	                        ._highlight_communication_mouseover_linebtn(d.data.name);
+	                })
+	                .on("mouseout",function(d,i){
+	                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+	                        ._highlight_communication_mouseout_linebtn();
+	                })
 			      	.each(function(d,i){
 			      		$(this).tipsy({
 							gravity: "s",
@@ -733,7 +740,7 @@ var smallmaps_view = {
 				  			$(this).tipsy("show");
 				  		}
 			      	})
-
+			/*
 			//b. enter的外层path的处理模板(只需要考虑path的enter部分,因为div是新enter的,path不可能存在update和exit部分)	         	
 		  	var enter_div_g_enterouterPath = enter_div_g.selectAll(".outlineArc")
 		      		.data(pie(data))
@@ -744,7 +751,7 @@ var smallmaps_view = {
 			      	.attr("stroke-width",0.5)
 			      	.attr("d", outlineArc)
 			      	.attr("opacity", 1)
-
+			*/
 		}
 
 	},

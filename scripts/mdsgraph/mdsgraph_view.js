@@ -1,8 +1,6 @@
 var mdsgraph_view = {
 	mdsgraph_view_DIV_ID : "HVAC-mdsgraph",
 
-	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
-
 	obsUpdate:function(message, data)
 	{
 		if (message == "display:mdsgraph_view")
@@ -15,6 +13,20 @@ var mdsgraph_view = {
         {
             $("#"+this.mdsgraph_view_DIV_ID).css("display","none");
         }
+
+        if (message == "set:current_display_time")
+        {
+        	var current_display_time = DATA_CENTER.global_variable.current_display_time;
+            d3.selectAll(".mdsgraph_circle")
+            	.classed("current_display_time-selected-mdsgraph_circle",function(d,i){
+            		var smoothed_current_display_time = DATA_CENTER.VIEW_COLLECTION.mdsgraph_view._binary_search(current_display_time);
+            		if (d.timenumber == smoothed_current_display_time)
+            		{
+            			return true;
+            		}
+            		return false;
+            	})
+        }
 	},
 	render:function(divID)
 	{
@@ -23,81 +35,43 @@ var mdsgraph_view = {
 	    var binded_data = _get_binded_data(start_time_number,end_time_number);
 	    function _get_binded_data(start_time_number,end_time_number)
 	    {
-		    var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-		    
-
-
-		    
 		    var data_array = [];
-		    /*
-		    for (var i=0;i<selected_linechart_set.length;++i)
-		    {
-		    	var cur_linechart_name = selected_linechart_set[i];
-		    	if (cur_linechart_name.indexOf(mdsgraph_view.HAZIUM_ATTR_NAME)>=0)//如果是hazium属性
-		    	{
-
-		    	}
-		    	else//如果是普通属性
-		    	{
-		    		var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"];
-		    		for (var j=0;j<ori_data_array.length;++j)
-		    		{
-		    			var cur_ori_data_vector = ori_data_array[j];
-		    			var cur_dim_value = cur_ori_data_vector[cur_linechart_name];
-			    		if (typeof(cur_dim_value)=="undefined")
-			    		{
-			    			console.warn("undefined cur_dim_value")
-			    		}
-			    		
-			    		if (typeof(data_array[j])=="undefined")
-			    		{
-			    			data_array[j][i]=
-			    		}
-
-		    		}
-
-		    	}
-		    }
-		    */
-		    
 		    var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"];
 		    for (var i=0;i<ori_data_array.length;++i)
 		    {
 		    	var temp_data =[];
 		    	var cur_ori_data = ori_data_array[i];
+
+		    	var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
 		    	for (var j=0;j<selected_linechart_set.length;++j)
 		    	{
 		    		var cur_linechart_name = selected_linechart_set[j];
 
-		    		if (cur_linechart_name.indexOf(mdsgraph_view.HAZIUM_ATTR_NAME)>=0)
+		    		//单独处理hazium的情况
+		    		if (cur_linechart_name.indexOf(DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view.HAZIUM_ATTR_NAME)>=0)
 		    		{
-
+		    			var filename = DATA_CENTER.VIEW_COLLECTION.linechart_render_view.HAZIUM_DATA_FILENAME_MAPPING[cur_linechart_name];
+		    			var cur_dim = DATA_CENTER.original_data[filename][i][cur_linechart_name];
 		    		}
 		    		else
 		    		{
 		    			var cur_dim = cur_ori_data[cur_linechart_name];
-			    		if (typeof(cur_dim)=="undefined")
-			    		{
-			    			console.warn("undefined cur_dim")
-			    		}
-			    		temp_data.push(cur_dim);
 		    		}
-
-		    		
+		    		if (typeof(cur_dim)=="undefined")
+			    	{
+			    		console.warn("undefined cur_dim",cur_linechart_name)
+			    	}
+			    	temp_data.push(cur_dim);
 		    	}
 		    	data_array.push(temp_data);
 		    }
-		    
 
-		    console.log(data_array)
 		    var mds_dot_layout = [];
 		    if (data_array.length!=0)
 		    {
 		    	mds_dot_layout =  MDS.byData(data_array);
 		    }
 		   
-		    
-		    
 			var binded_data = [];
 			for (var i=0;i<mds_dot_layout.length;++i)
 			{
@@ -111,7 +85,6 @@ var mdsgraph_view = {
 			}
 			return binded_data;
 		}
-
 
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = $("#"+divID).width();
@@ -130,7 +103,6 @@ var mdsgraph_view = {
                       .attr("height",height)
                       .style("z-index",0)
                       .style("opacity",0)
-
 
         // Lasso functions to execute while lassoing
 		var lasso_start = function() {
@@ -171,7 +143,7 @@ var mdsgraph_view = {
 		    selected_node.each(function(d,i){
 		    	selected_timepoint_set.push(d.timenumber);
 		    })
-		    console.log(selected_timepoint_set.length)
+		    console.log(selected_timepoint_set,selected_timepoint_set.length)
 		    DATA_CENTER.set_global_variable("selected_timepoint_set",selected_timepoint_set)
 		   	
 		};              
@@ -226,7 +198,6 @@ var mdsgraph_view = {
 		    .attr("cy",function(d){
 		        return render_scale.y(d.y);
 		    })
-		    .style("z-index",1)
 		    .on("mouseover",function(d,i){
 		    	var mouseover_time = d.timenumber;
                 DATA_CENTER.set_timeline_variable("mouseover_time",mouseover_time)
@@ -236,9 +207,7 @@ var mdsgraph_view = {
 		    });
 
 
-
 		lasso.items(d3.selectAll(".mdsgraph_circle"));  
-
 
 
 	    $('.mdsgraph_circle').each(function() {
@@ -256,5 +225,14 @@ var mdsgraph_view = {
         });
 
 
-	}
+	},
+
+	//二分查找，返回小于等于键值target_value的最大的键值对应的数字型的时间戳
+	//mdsgraph_view._binary_search("bldg-MC2.csv","Date/Time",1465845339000)
+	_binary_search:function(target_value)
+	{
+		var time_string = DATA_CENTER.VIEW_COLLECTION.smallmaps_view._binary_search("bldg-MC2.csv","Date/Time",target_value)["Date/Time"]
+		var time_number = (new Date(time_string)).valueOf();
+		return time_number;
+	},
 }

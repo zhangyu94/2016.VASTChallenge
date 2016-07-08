@@ -38,7 +38,7 @@ var linechart_render_view = {
         if ( message == "set:selected_linechart_set" )
         {
             var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-            this.update_render("linechart-renderplace",selected_linechart_set)
+            this.update_render(this.linechart_render_view_DIV_ID,selected_linechart_set)
         }
 
         if ( message == "set:highlight_linechart_set" )
@@ -150,57 +150,12 @@ var linechart_render_view = {
                     //console.log(d,i)
                 })
                 .on("mouseover",function(d,i){
-
-                    _highlight_communication(d,i);
-                    function _highlight_communication(d,i)
-                    {
-                        //1. 高亮linechart
-                        var highlight_linechart_set = [d];
-                        DATA_CENTER.set_linechart_variable("highlight_linechart_set",highlight_linechart_set);
-
-                        var place_attr = linechart_linebtn_view._parse_position_attr(d);
-
-                        //2. 高亮attr
-                        var attr = place_attr.attr;
-                        var highlight_attr_set = [attr];
-                        DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
-
-                        //3. 高亮place
-                        var place = place_attr.place;
-                        var place_type = place_attr.place_type;
-                        if (place_type == "building")
-                        {
-                            DATA_CENTER.set_linechart_variable("highlight_building_set",[place]);
-                        }
-                        else if (place_type == "floor")
-                        {
-                            DATA_CENTER.set_linechart_variable("highlight_floor_set",[place]);
-                        }
-                        else if (place_type == "HVACzone")
-                        {
-                            DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[place]);
-                        }
-                        
-                    }
-
+                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+                        ._highlight_communication_mouseover_linebtn(d);
                 })
                 .on("mouseout",function(d,i){
-
-                    _highlight_communication(d,i);
-                    function _highlight_communication(d,i)
-                    {
-                        //1. 取消高亮linechart
-                        DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
-
-                        //2. 取消高亮attr
-                        DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
-
-                        //3. 取消高亮place
-                        DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[]);
-                        DATA_CENTER.set_linechart_variable("highlight_floor_set",[]);
-                        DATA_CENTER.set_linechart_variable("highlight_building_set",[]);
-                    }
-
+                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+                        ._highlight_communication_mouseout_linebtn();
                 })
 
         //小按钮们
@@ -278,7 +233,7 @@ var linechart_render_view = {
                 .text("up")
                 .on("click",function(d,i){
                     var child_id = "HVAClinechart-span-"+linechart_render_view._compress_string(d);
-                    var father_id = "linechart-renderplace";
+                    var father_id = linechart_render_view.linechart_render_view_DIV_ID;
                     linechart_render_view._move_to(child_id,father_id,"top");//点击以后走到最上面
                 })
         //4). 点击以后走到最下边
@@ -295,7 +250,7 @@ var linechart_render_view = {
                 .text("dn")    
                 .on("click",function(d,i){
                     var child_id = "HVAClinechart-span-"+linechart_render_view._compress_string(d);
-                    var father_id = "linechart-renderplace";
+                    var father_id = linechart_render_view.linechart_render_view_DIV_ID;
                     linechart_render_view._move_to(child_id,father_id,"bottom");//点击以后走到最下面
                 })
         //5). 点击以后归一化

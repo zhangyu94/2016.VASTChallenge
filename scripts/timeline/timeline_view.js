@@ -226,6 +226,10 @@ var timeline_view = {
 	    					.style("background-color","#f8f8f8")
 
 	    var xyAxis_data = this._initialize_xyAxis_data();
+
+	    var start_time = xyAxis_data[0][0];
+        var end_time = xyAxis_data[xyAxis_data.length-1][0];
+        DATA_CENTER.set_global_variable("selected_filter_timerange",{min:start_time,max:end_time})
 	    var chart = this._plot_linechart(this.timeline_div_id,xyAxis_data);
 	},
 
@@ -396,7 +400,20 @@ var timeline_view = {
                 	},
                 	
                     selection:function(e){
-                        //console.log(e)
+                    	if (typeof(e.resetSelection)!="undefined")
+                    	{
+                    		if (e.resetSelection == true)//如果是按了reset键
+                    		{
+                    			var start_time = e.target.xAxis[0].dataMin;
+                        		var end_time = e.target.xAxis[0].dataMax;
+                    		}
+                    	}
+                    	else
+                    	{
+                    		var start_time = e.target.xAxis[0].min;
+                        	var end_time = e.target.xAxis[0].max;
+                    	}
+                        DATA_CENTER.set_global_variable("selected_filter_timerange",{min:start_time,max:end_time})
                     },
                 },
                 resetZoomButton:{
