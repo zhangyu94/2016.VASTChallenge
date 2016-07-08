@@ -70,8 +70,8 @@
 }
 
 
-.HVAClinechart-span >.mouseover_selected-HVAClinechart-btntitle-span{
-    border: solid 1px #DDDD00;
+.HVAClinechart-span >.mouseover_hided-HVAClinechart-btntitle-span{
+   opacity: 0.5;
 }
 
 .HVAClinechart-span >.HVAClinechart-linechart-span{    

@@ -153,46 +153,163 @@ var DATA_CENTER = {
 			"F_2_Z_4",
 			"F_3_Z_1"
 		],
-		attribute_abbreviation : {
-			"BATH_EXHAUST:Fan Power":"bath fan power",
-			"VAV_SYS AIR LOOP INLET Mass Flow Rate":"return air rate",
-			"VAV_SYS AIR LOOP INLET Temperature":"return air temperature",
-			"VAV Availability Manager Night Cycle Control Status":"control status",
-			"VAV_SYS COOLING COIL Power":"cooling power",
-			"VAV_SYS HEATING COIL Power":"heating power",
-			"VAV_SYS SUPPLY FAN OUTLET Mass Flow Rate":"output air rate",
-			"VAV_SYS SUPPLY FAN OUTLET Temperature":"output air temperature",
-			"VAV_SYS SUPPLY FAN:Fan Power":"fan power",
-			"VAV_SYS Outdoor Air Flow Fraction":"outdoor air percent",
-			"VAV_SYS Outdoor Air Mass Flow Rate":"outdoor air rate",
-			"COOL Schedule Value":"air cool setpoint",
-			"DELI-FAN Power":"deli fan power",
-			"Drybulb Temperature":"outdoor temperature",
-			"Wind Direction":"wind direction",
-			"Wind Speed":"wind speed",
-			"HEAT Schedule Value":"air heat setpoint",
-			"Pump Power":"pump power",
-			"Water Heater Setpoint":"water heater setpoint",
-			"Water Heater Gas Rate":"water heater power",
-			"Water Heater Tank Temperature":"water heater temperature",
-			"Loop Temp Schedule":"water loop setpoint",
-			"Supply Side Inlet Mass Flow Rate":"input water rate",
-			"Supply Side Inlet Temperature":"input water temperature",
-			"Supply Side Outlet Temperature":"output water temperature",
-			"REHEAT COIL Power":"air reheat power",
-			"RETURN OUTLET CO2 Concentration":"return CO2 concentration",
-			"SUPPLY INLET Mass Flow Rate":"input air rate",
-			"SUPPLY INLET Temperature":"input air temperature",
-			"VAV REHEAT Damper Position":"input air damper",
-			"Equipment Power":"total power",
-			"Lights Power":"light power",
-			"Mechanical Ventilation Mass Flow Rate":"Ventilation air rate",
-			"Thermostat Temp":"air temperature",
-			"Thermostat Cooling Setpoint":"air cool threshold",
-			"Thermostat Heating Setpoint":"air heat threshold",
-			"Total Electric Demand Power":"total power",
-			"HVAC Electric Demand Power":"HVAC power",
-			"Hazium Concentration":"Hazium",
+		attribute_description : {
+			"BATH_EXHAUST:Fan Power":{
+				abbreviation:"bath fan power",
+				type:["air","electricity"],
+			},
+			"VAV_SYS AIR LOOP INLET Mass Flow Rate":{
+				abbreviation:"return air rate",
+				type:["air"],
+			},
+			"VAV_SYS AIR LOOP INLET Temperature":{
+				abbreviation:"return air temperature",
+				type:["air","temperature"],
+			},
+			"VAV Availability Manager Night Cycle Control Status":{
+				abbreviation:"control status",
+				type:["others"],
+			},
+			"VAV_SYS COOLING COIL Power":{
+				abbreviation:"cooling power",
+				type:["electricity","temperature"],
+			},
+			"VAV_SYS HEATING COIL Power":{
+				abbreviation:"heating power",
+				type:["electricity","temperature"],
+			},
+			"VAV_SYS SUPPLY FAN OUTLET Mass Flow Rate":{
+				abbreviation:"output air rate",
+				type:["air"],
+			},
+			"VAV_SYS SUPPLY FAN OUTLET Temperature":{
+				abbreviation:"output air temperature",
+				type:["air","temperature"],
+			},
+			"VAV_SYS SUPPLY FAN:Fan Power":{
+				abbreviation:"fan power",
+				type:["air","electricity"],
+			},
+			"VAV_SYS Outdoor Air Flow Fraction":{
+				abbreviation:"outdoor air percent",
+				type:["air"],
+			},
+			"VAV_SYS Outdoor Air Mass Flow Rate":{
+				abbreviation:"outdoor air rate",
+				type:["air"],
+			},
+			"COOL Schedule Value":{
+				abbreviation:"air cool setpoint",
+				type:["air","temperature"],
+			},
+			"DELI-FAN Power":{
+				abbreviation:"deli fan power",
+				type:["electricity"],
+			},
+			"Drybulb Temperature":{
+				abbreviation:"outdoor temperature",
+				type:["temperature"],
+			},
+			"Wind Direction":{
+				abbreviation:"wind direction",
+				type:["air"],
+			},
+			"Wind Speed":{
+				abbreviation:"wind speed",
+				type:["air"],
+			},
+			"HEAT Schedule Value":{
+				abbreviation:"air heat setpoint",
+				type:["air","temperature"],
+			},
+			"Pump Power":{
+				abbreviation:"pump power",
+				type:["electricity"],
+			},
+			"Water Heater Setpoint":{
+				abbreviation:"water heater setpoint",
+				type:["water","temperature"],
+			},
+			"Water Heater Gas Rate":{
+				abbreviation:"water heater power",
+				type:["water","temperature","electricity"],
+			},
+			"Water Heater Tank Temperature":{
+				abbreviation:"water heater temperature",
+				type:["water","temperature"],
+			},
+			"Loop Temp Schedule":{
+				abbreviation:"water loop setpoint",
+				type:["water","temperature"],
+			},
+			"Supply Side Inlet Mass Flow Rate":{
+				abbreviation:"input water rate",
+				type:["water"],
+			},
+			"Supply Side Inlet Temperature":{
+				abbreviation:"input water temperature",
+				type:["water","temperature"],
+			},
+			"Supply Side Outlet Temperature":{
+				abbreviation:"output water temperature",
+				type:["water","temperature"],
+			},
+			"REHEAT COIL Power":{
+				abbreviation:"air reheat power",
+				type:["air","temperature","electricity"],
+			},
+			"RETURN OUTLET CO2 Concentration":{
+				abbreviation:"return CO2 concentration",
+				type:["air"],
+			},
+			"SUPPLY INLET Mass Flow Rate":{
+				abbreviation:"input air rate",
+				type:["air"],
+			},
+			"SUPPLY INLET Temperature":{
+				abbreviation:"input air temperature",
+				type:["air","temperature"],
+			},
+			"VAV REHEAT Damper Position":{
+				abbreviation:"input air damper",
+				type:["air"],
+			},
+			"Equipment Power":{
+				abbreviation:"total power",
+				type:["electricity"],
+			},
+			"Lights Power":{
+				abbreviation:"light power",
+				type:["electricity"],
+			},
+			"Mechanical Ventilation Mass Flow Rate":{
+				abbreviation:"Ventilation air rate",
+				type:["air"],
+			},
+			"Thermostat Temp":{
+				abbreviation:"air temperature",
+				type:["air","temperature"],
+			},
+			"Thermostat Cooling Setpoint":{
+				abbreviation:"air cool threshold",
+				type:["air","temperature"],
+			},
+			"Thermostat Heating Setpoint":{
+				abbreviation:"air heat threshold",
+				type:["air","temperature"],
+			},
+			"Total Electric Demand Power":{
+				abbreviation:"total power",
+				type:["electricity"],
+			},
+			"HVAC Electric Demand Power":{
+				abbreviation:"HVAC power",
+				type:["electricity"],
+			},
+			"Hazium Concentration":{
+				abbreviation:"Hazium",
+				type:["hazium"],
+			},
 		},
 		floor_name_number_mapping : {
 			"F_1":1,

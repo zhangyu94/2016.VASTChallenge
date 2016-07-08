@@ -23,8 +23,8 @@
 .click_selected-HVACattrbtn-span{
     background: #FF7060;
 }
-.mouseover_selected-HVACattrbtn-span{
-    border: solid 2px #DDDD00;
+.mouseover_hided-HVACattrbtn-span{
+    opacity: 0.5;
 }
 
 

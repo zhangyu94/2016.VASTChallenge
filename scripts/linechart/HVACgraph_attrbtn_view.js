@@ -54,14 +54,24 @@ var HVACgraph_attrbtn_view = {
 
 		if ( message == "set:highlight_attr_set" )
         {
-        	d3.selectAll(".HVACattrbtn-span")
-        		.classed("mouseover_selected-HVACattrbtn-span",function(d,i){
-        			if (DATA_CENTER.linechart_variable.highlight_attr_set.indexOf(d) >= 0)
-        			{
-        				return true;
-        			}
-        			return false;
-        		})
+        	var highlight_attr_set = DATA_CENTER.linechart_variable.highlight_attr_set;
+        	if (highlight_attr_set.length >=1 )
+        	{
+	        	d3.selectAll(".HVACattrbtn-span")
+	        		.classed("mouseover_hided-HVACattrbtn-span",function(d,i){
+	        			if (highlight_attr_set.indexOf(d) >= 0)
+	        			{
+	        				return false;
+	        			}
+	        			return true;
+	        		})
+        	}
+        	else
+        	{
+        		d3.selectAll(".HVACattrbtn-span")
+	        		.classed("mouseover_hided-HVACattrbtn-span",false)
+        	}
+
         }
 		
 	},
@@ -174,7 +184,8 @@ var HVACgraph_attrbtn_view = {
 		var update_div = update.select("div");
 		var update_div_span = update_div.select("span")
                 .text(function(d,i){
-                	var buttonLabel = new_attrbtn_list[i].substring(0,rect_width/13);
+                	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[new_attrbtn_list[i]].abbreviation;
+                	var buttonLabel = compressed_string.substring(0,rect_width/13);
                     return buttonLabel;
                 });
         
@@ -311,7 +322,8 @@ var HVACgraph_attrbtn_view = {
                     return buttonValue;
                 })
                 .text(function(d,i){
-                	var buttonLabel = new_attrbtn_list[i].substring(0,rect_width/13);
+                	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[new_attrbtn_list[i]].abbreviation;
+                	var buttonLabel = compressed_string.substring(0,rect_width/13);
                     return buttonLabel;
                 })
 
@@ -350,8 +362,8 @@ var HVACgraph_attrbtn_view = {
 		    	html:true,
 		    	title:function(){
 		    		var d = this.__data__;
-
-		    		var content = 	"attr: " + "<span style='color:red'>" + d + "</span>";
+		    		var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d].abbreviation;
+		    		var content = 	"attr: " + "<span style='color:red'>" + compressed_string + "</span>";
 		    		return content;
 		    	},
 		    });

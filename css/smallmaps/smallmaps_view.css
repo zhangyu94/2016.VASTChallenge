@@ -12,9 +12,8 @@
 .click_selected-smallmaps-rect{
 	fill: #FF7060;
 }
-.mouseover_selected-smallmaps-rect{
-	stroke: #DDDD00;
-	stroke-width: 2;
+.mouseover_hided-smallmaps-rect{
+	opacity: 0.5;
 }
 
 
@@ -32,7 +31,6 @@
 .click_selected-smallmaps-HVACzone-circle{
 	fill: #FF7060;
 }
-.mouseover_selected-smallmaps-HVACzone-circle{
-	stroke: #DDDD00;
-	stroke-width: 2;
+.mouseover_hided-smallmaps-HVACzone-circle{
+	opacity: 0.5;
 }

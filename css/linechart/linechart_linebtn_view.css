@@ -12,6 +12,6 @@
     background: #FF7060;
 }
 
-.mouseover_selected-HVAClinechartbtn-span{
-    border: solid 2px #DDDD00;
+.mouseover_hided-HVAClinechartbtn-span{
+    opacity: 0.5;
 }

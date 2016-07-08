@@ -31,19 +31,31 @@ var smallmaps_view = {
 				(message == "set:highlight_floor_set")  ||
 				(message == "set:highlight_building_set")  )
         {
-            d3.selectAll(".smallmaps-HVACzone-circle")
-        		.classed("mouseover_selected-smallmaps-HVACzone-circle",function(d,i){      			
-        			var flag = (DATA_CENTER.linechart_variable.highlight_HVACzone_set.indexOf(d.name) >= 0);
-        			return flag;
-        		})
-
-        	d3.selectAll(".smallmaps-rect")
-        		.classed("mouseover_selected-smallmaps-rect",function(d,i){      			
-        			var flag = false;
-        			flag = flag | (DATA_CENTER.linechart_variable.highlight_floor_set.indexOf(d.name) >= 0);
-        			flag = flag | (DATA_CENTER.linechart_variable.highlight_building_set.indexOf(d.name) >= 0);
-        			return flag;
-        		})
+        	var highlight_HVACzone_set = DATA_CENTER.linechart_variable.highlight_HVACzone_set;
+        	var highlight_floor_set = DATA_CENTER.linechart_variable.highlight_floor_set;
+        	var highlight_building_set = DATA_CENTER.linechart_variable.highlight_building_set;
+            if ( (highlight_HVACzone_set.length >=1) || (highlight_floor_set.length >=1) || (highlight_building_set.length >=1) )
+            {
+	            d3.selectAll(".smallmaps-HVACzone-circle")
+	        		.classed("mouseover_hided-smallmaps-HVACzone-circle",function(d,i){      			
+	        			var flag = (DATA_CENTER.linechart_variable.highlight_HVACzone_set.indexOf(d.name) >= 0);
+	        			return !flag;
+	        		})
+	        	d3.selectAll(".smallmaps-rect")
+	        		.classed("mouseover_hided-smallmaps-rect",function(d,i){      			
+	        			var flag = false;
+	        			flag = flag | (DATA_CENTER.linechart_variable.highlight_floor_set.indexOf(d.name) >= 0);
+	        			flag = flag | (DATA_CENTER.linechart_variable.highlight_building_set.indexOf(d.name) >= 0);
+	        			return !flag;
+	        		})
+        	}
+        	else
+        	{
+        		d3.selectAll(".smallmaps-HVACzone-circle")
+	        		.classed("mouseover_hided-smallmaps-HVACzone-circle",false);
+	        	d3.selectAll(".smallmaps-rect")
+	        		.classed("mouseover_hided-smallmaps-rect",false);
+        	}
         }
 
         if (message == "set:current_display_time")

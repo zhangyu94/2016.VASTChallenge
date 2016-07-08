@@ -53,14 +53,23 @@ var linechart_linebtn_view = {
 
 		if ( message == "set:highlight_linechart_set" )
         {
-        	d3.selectAll(".HVAClinechartbtn-span")
-        		.classed("mouseover_selected-HVAClinechartbtn-span",function(d,i){
-        			if (DATA_CENTER.linechart_variable.highlight_linechart_set.indexOf(d) >= 0)
-        			{
-        				return true;
-        			}
-        			return false;
-        		})
+        	var highlight_linechart_set = DATA_CENTER.linechart_variable.highlight_linechart_set;
+        	if (highlight_linechart_set.length >=1 )
+        	{
+	        	d3.selectAll(".HVAClinechartbtn-span")
+	        		.classed("mouseover_hided-HVAClinechartbtn-span",function(d,i){
+	        			if (DATA_CENTER.linechart_variable.highlight_linechart_set.indexOf(d) >= 0)
+	        			{
+	        				return false;
+	        			}
+	        			return true;
+	        		})
+        	}
+        	else
+        	{
+        		d3.selectAll(".HVAClinechartbtn-span")
+	        		.classed("mouseover_hided-HVAClinechartbtn-span",false)
+        	}
         }
 
 	},
