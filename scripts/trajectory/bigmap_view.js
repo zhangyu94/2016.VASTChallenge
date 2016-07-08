@@ -229,12 +229,8 @@ var bigmap_view = {
 		//存储当前的人在哪一个zone里面
 		var self = this;
 		var globalTime = +globalTime;
-		var zoneDataArray = [];
 		var pointSize = 3;
 		var highlightR = 4.5;
-		zoneDataArray[0] = DATA_CENTER.derived_data['zone_floor1.json']; 
-		zoneDataArray[1] = DATA_CENTER.derived_data['zone_floor2.json'];
-		zoneDataArray[2] = DATA_CENTER.derived_data['zone_floor3.json'];
 		var personData = DATA_CENTER.derived_data['person.json']; 
 		var personArray = $.map(personData, function(value, index) {
 		    return [value];
@@ -244,7 +240,6 @@ var bigmap_view = {
 		//var floorNum = DATA_CENTER.global_variable.selected_floor;
 		var floorNum = this.DISPLAYED_FLOOR_NUMBER;
 
-		var zoneData = zoneDataArray[floorNum - 1];
 		for(var i = 0;i < personArray.length;i++){
 			var routeRocrds10Days = personArray[i].fixRecords;
 			personInZone[i].floorNum = -1;
