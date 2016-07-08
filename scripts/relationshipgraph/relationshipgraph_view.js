@@ -112,59 +112,30 @@ var relationshipgraph_view = {
 	              if(result <=1 && result >=-1)
 	                links.push({source: nodes[i], target: nodes[j], weight: result});
 	           }
-	        //corre_list();
-
-	     // function corre_list() {
-	     //    list = links.concat();//复制数组
-	     //    list.sort(compare("weight"));//按照相关度排序
-	     //    var list_div = d3.select("#CorrelationList").selectAll('div')
-	     //        .data(list)
-	     //        .enter()
-	     //        .append('div')
-	     //        .attr("class","list_div")
-	     //        .html(function(d){return "<span style='color:steelblue'>"+d.source.id + "</span> " + d.target.id + " <span style='color:#880000'>" + d.weight.toFixed(3) + "</span>";});
-	     // }
-
-	     //  function compare(propertyName) { 
-	     //    return function (object1, object2) { 
-	     //        var value1 = object1[propertyName]; 
-	     //        var value2 = object2[propertyName]; 
-	     //        if (value2 < value1) { 
-	     //          return -1; 
-	     //        } 
-	     //      else if (value2 > value1) { 
-	     //        return 1; 
-	     //      } 
-	     //      else { 
-	     //        return 0; 
-	     //      } 
-	     //    } 
-	     //  } 
-
 
 	       link = link.data(force.links(), function(d) { return d.source.id + "-" + d.target.id; });
-	       //linkText = linkText.data(force.links(), function(d) { return d.source.id + "-" + d.target.id; });
+	       linkText = linkText.data(force.links(), function(d) { return d.source.id + "-" + d.target.id; });
 
 	       link.enter().insert("line", ".node")
 	       	.attr("class", "link-relation")
-	       	.attr("stroke",function(d){
-	       		if(d.weight < 0)
-	       			return "#DDDDDD";
-	       		else
-	       			return "#888888";
-	       	})
+	       	.attr("stroke","silver")
 	       	.attr("stroke-width",1.5)
+	       	.style("stroke-dasharray", function(d){
+	       		if(d.weight < 0)
+	       			return ("3, 3");
+	       		else
+	       			return ("0, 0");
+	       	})
 	       	.on('mouseover', tip.show)
         	.on('mouseout', tip.hide); 
 
-	      // linkText.enter().append("text")
-	      //    .attr("class", "link-label")
-	      //    .attr("text-anchor", "middle")
-	      //    .style('stroke-width',.1)
-	      //    .style('font-size','12px')
-	      //    .style('fill','grey')
-	      //    .attr('dy','-.6em')
-	      //    .text(function(d) { return d.weight.toFixed(3); });
+	      linkText.enter().append("text")
+	         .attr("class", "link-label")
+	         .attr("text-anchor", "middle")
+	         .style('font-size','10px')
+	         .style('fill','none')
+	         .attr('dy','-.6em')
+	         .text(function(d) { return d.weight.toFixed(3); });
 
 	     link.exit().remove();
 	     //linkText.exit().remove();
@@ -173,7 +144,8 @@ var relationshipgraph_view = {
 	   
 	        node_g = node.enter().append('g')
 	           .attr("class","node-relation")
-	           .call(force.drag); 
+	           .call(force.drag)
+	           .on('click', connectedNodes); //Added code 
 
 	        node_g.append("circle")
 	           .attr("r",5)
@@ -202,6 +174,48 @@ var relationshipgraph_view = {
 	        	force.tick();
 	        force.stop();
 
+	     //Toggle stores whether the highlighting is on
+			var toggle = 0;
+			//Create an array logging what is connected to what
+			var linkedByIndex = {};
+			for (var i = 0; i < nodes.length; i++) {
+			    linkedByIndex[nodes[i].id + "," + nodes[i].id] = 1;
+			};
+			links.forEach(function (d) {
+			    linkedByIndex[d.source.id + "," + d.target.id] = 1;
+			});
+
+			console.log(linkedByIndex)
+			//This function looks up whether a pair are neighbours
+			function neighboring(a, b) {
+			    return linkedByIndex[a.id + "," + b.id];
+			}
+			function connectedNodes() {
+			    if (toggle == 0) {
+			        //Reduce the opacity of all but the neighbouring nodes
+			        d = d3.select(this).node().__data__;
+			        node.style("opacity", function (o) {
+			        	//console.log(d)
+			        	//console.log(o)
+			            return neighboring(d, o) | neighboring(o, d) ? 1 : 0.1;
+			        });
+			        link.style("opacity", function (o) {
+			            return d.id==o.source.id | d.id==o.target.id ? 1 : 0.1;
+			        });
+			        linkText.style("fill",function (o) {
+			            return d.id==o.source.id | d.id==o.target.id ? "grey" : "none";
+			        });
+			        //Reduce the op
+			        toggle = 1;
+			    } else {
+			        //Put them back to opacity=1
+			        node.style("opacity", 1);
+			        link.style("opacity", 1);
+			        linkText.style("fill", "none");
+			        toggle = 0;
+			    }
+			}
+
 	     function tick() {
 	        node_g.attr('transform', function(d){
 	           return 'translate(' + d.x + ', ' + d.y + ')';
@@ -212,10 +226,10 @@ var relationshipgraph_view = {
 	           .attr("x2", function(d) { return d.target.x; })
 	           .attr("y2", function(d) { return d.target.y; });
 
-	       // linkText.attr("transform", function(d) { //calcul de l'angle du label
-	       //   var angle = Math.atan((d.source.y - d.target.y) / (d.source.x - d.target.x)) * 180 / Math.PI;
-	       //   return 'translate(' + [((d.source.x + d.target.x) / 2), ((d.source.y + d.target.y) / 2)] + ')rotate(' + angle + ')';
-	       // });
+	       linkText.attr("transform", function(d) { //calcul de l'angle du label
+	         var angle = Math.atan((d.source.y - d.target.y) / (d.source.x - d.target.x)) * 180 / Math.PI;
+	         return 'translate(' + [((d.source.x + d.target.x) / 2), ((d.source.y + d.target.y) / 2)] + ')rotate(' + angle + ')';
+	       });
 	     }
 	}
 }
