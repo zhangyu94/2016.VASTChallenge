@@ -41,8 +41,8 @@ var DATA_CENTER = {
 		selected_room_set:[],
 		selected_floor_set:[],
 		selected_building_set:[],
-
 		selected_timepoint_set:[],
+		person_robot_detection_array:[],
 
 		//linechart中被选中的一段时间通过设置这个全局变量传达到其他view
 		selected_filter_timerange:{
@@ -56,7 +56,7 @@ var DATA_CENTER = {
 			max:undefined
 		},
 
-		current_display_time:undefined,//timeline当前播放到的时间
+		current_display_time:1464656940000,//timeline当前播放到的时间
 
 		selected_card_set:[],
 		selected_person_set:[],		
@@ -298,7 +298,16 @@ var DATA_CENTER = {
 								}
 							}							
 
-							d3.csv(path+file_name[5],function(data5){
+							d3.csv(path+file_name[5],function(data5){//mobile out data
+								console.log(data5);
+								person_robot_detection_array = DATA_CENTER.global_variable.person_robot_detection_array;
+								for(var i = 0;i < data5.length;i++){
+									var proxId = data5[i][' prox-id'].replace(/\s+/g,"");;
+									if(person_robot_detection_array.indexOf(proxId) == -1){
+										person_robot_detection_array.push(proxId);
+									}
+								}
+								console.log(person_robot_detection_array);
 								d3.csv(path+file_name[6],function(data6){
 									d3.json(derived_path+d_file_name[0], function(data7) {//persondata
 										//增加personData的相关数据
