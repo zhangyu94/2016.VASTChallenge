@@ -479,7 +479,10 @@ var bigmap_view = {
 							})
 							.attr('y2', function(d,i){
 								return yScale(self.y);
-							});
+							})
+							.transition()
+							.duration(1000)
+							.remove();
 						}
 					}
 				}
