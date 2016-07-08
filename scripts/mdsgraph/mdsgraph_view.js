@@ -1,6 +1,8 @@
 var mdsgraph_view = {
 	mdsgraph_view_DIV_ID : "HVAC-mdsgraph",
 
+	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
+
 	obsUpdate:function(message, data)
 	{
 		if (message == "display:mdsgraph_view")
@@ -19,28 +21,81 @@ var mdsgraph_view = {
 	    var start_time_number;
 	    var end_time_number;
 	    var binded_data = _get_binded_data(start_time_number,end_time_number);
-	    function _get_binded_data()
+	    function _get_binded_data(start_time_number,end_time_number)
 	    {
 		    var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-		    var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"];
+		    
+
+
+		    
 		    var data_array = [];
+		    /*
+		    for (var i=0;i<selected_linechart_set.length;++i)
+		    {
+		    	var cur_linechart_name = selected_linechart_set[i];
+		    	if (cur_linechart_name.indexOf(mdsgraph_view.HAZIUM_ATTR_NAME)>=0)//如果是hazium属性
+		    	{
+
+		    	}
+		    	else//如果是普通属性
+		    	{
+		    		var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"];
+		    		for (var j=0;j<ori_data_array.length;++j)
+		    		{
+		    			var cur_ori_data_vector = ori_data_array[j];
+		    			var cur_dim_value = cur_ori_data_vector[cur_linechart_name];
+			    		if (typeof(cur_dim_value)=="undefined")
+			    		{
+			    			console.warn("undefined cur_dim_value")
+			    		}
+			    		
+			    		if (typeof(data_array[j])=="undefined")
+			    		{
+			    			data_array[j][i]=
+			    		}
+
+		    		}
+
+		    	}
+		    }
+		    */
+		    
+		    var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"];
 		    for (var i=0;i<ori_data_array.length;++i)
 		    {
 		    	var temp_data =[];
 		    	var cur_ori_data = ori_data_array[i];
 		    	for (var j=0;j<selected_linechart_set.length;++j)
 		    	{
-		    		var cur_dim = cur_ori_data[selected_linechart_set[j]];
-		    		if (typeof(cur_dim)=="undefined")
+		    		var cur_linechart_name = selected_linechart_set[j];
+
+		    		if (cur_linechart_name.indexOf(mdsgraph_view.HAZIUM_ATTR_NAME)>=0)
 		    		{
-		    			console.warn("undefined cur_dim")
+
 		    		}
-		    		temp_data.push(cur_dim);
+		    		else
+		    		{
+		    			var cur_dim = cur_ori_data[cur_linechart_name];
+			    		if (typeof(cur_dim)=="undefined")
+			    		{
+			    			console.warn("undefined cur_dim")
+			    		}
+			    		temp_data.push(cur_dim);
+		    		}
+
+		    		
 		    	}
 		    	data_array.push(temp_data);
 		    }
+		    
 
-		    var mds_dot_layout = MDS.byData(data_array);
+		    console.log(data_array)
+		    var mds_dot_layout = [];
+		    if (data_array.length!=0)
+		    {
+		    	mds_dot_layout =  MDS.byData(data_array);
+		    }
+		   
 		    
 		    
 			var binded_data = [];
