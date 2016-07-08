@@ -1224,11 +1224,11 @@
 }, {
 	"name": "Wkrm/Stairs",
 	"floor": 2,
-	"doornum": 26901,
+	"doornum": 2690,
 	"xlength": 8,
 	"ylength": 20,
 	"proxZone": "4",
-	"x": "142",
+	"x": "150",
 	"y": "46",
 	"positionSet": []
 }, {
