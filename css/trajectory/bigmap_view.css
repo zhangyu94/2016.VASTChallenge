@@ -1,6 +1,9 @@
 .room{
 	opacity: 1;
 }
+.room-num-text{
+    font-size: 1px;
+}
 .single-room{
 	stroke: black;
 	stroke-width: 0.5;
@@ -8,8 +11,7 @@
 }
 circle[class~=mouseover-highlight], rect[class~=mouseover-highlight]{
     fill: steelblue;
-    stroke: steelblue;
-    stroke-width: 2;
+    opacity: 0.5;
     -webkit-border-radius: 8;
     -moz-border-radius: 8;
 }
@@ -27,6 +29,16 @@ rect[class~=click-highlight]{
 	animation-duration:1s;
   	animation-timing-function:linear;
   	animation-iteration-count:infinite;
+}
+.node-link-line{
+    stroke: black;
+    stroke-width: 0.5;
+    opacity: 0.5;
+}
+.same-id-link{
+    stroke: red;
+    stroke-width: 0.5;
+    opacity: 0.5;
 }
 @keyframes highlight-animation {
     0% {}

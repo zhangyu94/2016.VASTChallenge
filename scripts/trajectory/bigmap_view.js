@@ -39,7 +39,6 @@ var bigmap_view = {
 				var selected_floor_number = 1;
 			}
 			this.DISPLAYED_FLOOR_NUMBER = selected_floor_number;
-			console.log(selected_floor_number)
 			this.render(divID, selected_floor_number);	
 			/*
 			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
@@ -66,8 +65,6 @@ var bigmap_view = {
 
 	    var roomData = DATA_CENTER.derived_data['room.json'];
 	    var singleroomData = DATA_CENTER.derived_data['singleroom.json'];
-	    console.log(singleroomData);
-
 	    var xScale = d3.scale.linear()
 			.range([0, width])
 			.domain([0, 190]);
@@ -118,7 +115,7 @@ var bigmap_view = {
 	    	.classed('mouseover-highlight', false);
 	    })
 	    .on('click', function(d,i){
-	    	var zoneClass = 'zone-' + d.proxZone;
+	    	var zoneClass = 'single-room-zone-' + d.proxZone;
 	    	if(!d3.select(this).classed('click-highlight')){
 	    		d3.selectAll('.' + zoneClass)
 	    		.classed('click-highlight', true);
@@ -127,7 +124,6 @@ var bigmap_view = {
 	    		.classed('click-highlight', false);
 	    	}
 	    	var zoneNodeClass = 'zone-node-' + d.proxZone;
-	    	console.log(zoneNodeClass);
 	    	d3.selectAll('.' + zoneNodeClass)
 	    	.classed('click-highlight', true);
 	    });
@@ -174,7 +170,7 @@ var bigmap_view = {
 
 		singleroomG.append('rect')
 		.attr('class', function(d,i){
-			return 'single-room ' + 'zone-'+d.proxZone;
+			return 'single-room ' + 'single-room-zone-'+d.proxZone + ' zone-' + d.proxZone;
 		})
 		.attr('id', function(d,i){
 			return 'room-' + d.doornum;
@@ -207,7 +203,7 @@ var bigmap_view = {
 	    	.classed('mouseover-highlight', false);
 	    })
 	    .on('click', function(d,i){
-	    	var zoneClass = 'zone-' + d.proxZone;
+	    	var zoneClass = 'single-room-zone-' + d.proxZone;
 	    	if(d3.select(this).classed('click-highlight')){
 		    	d3.selectAll('.' + zoneClass)
 		    	.classed('click-highlight', false);	    		
@@ -216,7 +212,6 @@ var bigmap_view = {
 		    	.classed('click-highlight', true);	  
 	    	}
 	    	var zoneNodeClass = 'zone-node-' + d.proxZone;
-	    	console.log(zoneNodeClass);
 	    	d3.selectAll('.' + zoneNodeClass)
 	    	.classed('click-highlight', true);
 	    });
@@ -244,7 +239,7 @@ var bigmap_view = {
 		    return [value];
 		});
 		var personInZone = DATA_CENTER.derived_data["personInZone"];
-
+		var DURATION = 2000;
 		//var floorNum = DATA_CENTER.global_variable.selected_floor;
 		var floorNum = this.DISPLAYED_FLOOR_NUMBER;
 
@@ -289,17 +284,22 @@ var bigmap_view = {
 		nodeSelection.enter()
 		.append('circle')
 		.attr('class',function(d,i){
-			return 'person-label ' + 'zone-node-' + d.zoneNum; 
+			return 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum; 
 		})
 		.attr('r', pointSize)
 		.attr('cx', function(d,i){
 			var zoneId = +d.zoneNum;
 			var nodeX = +self.randomXLocation(floorNum, zoneId);
-			return xScale(nodeX);
+			var scaleNodeX = xScale(nodeX);
+			d.formerZoneId = zoneId;
+			d.formerScaleNodeX = scaleNodeX;
+			return scaleNodeX;
 		})
 		.attr('cy', function(d,i){
 			var zoneId = +d.zoneNum;
 			var nodeY = self.randomYLocation(floorNum, zoneId);
+			var scaleNodeY = yScale(nodeY);
+			d.formerScaleNodeY = scaleNodeY;
 			return yScale(nodeY);
 		})
 		.on('click',function(d,i){
@@ -320,20 +320,47 @@ var bigmap_view = {
 			.classed('mouseover-highlight', false);
 		});
 		//改变node节点
-		nodeSelection.transition()
+		nodeSelection
+		.transition()
 		.duration(DURATION)
 		.attr('cx', function(d,i){
 			var zoneId = +d.zoneNum;
 			var nodeX = self.randomXLocation(floorNum, zoneId);
-			return xScale(nodeX);
+			var scaleNodeX = xScale(nodeX);
+			d.afterScaleNodeX = scaleNodeX;
+			d.afterZoneId = zoneId;
+			return scaleNodeX;
 		})
 		.attr('cy', function(d,i){
 			var zoneId = +d.zoneNum;
 			var nodeY = self.randomYLocation(floorNum, zoneId);
-			return yScale(nodeY);
+			var scaleNodeY = yScale(nodeY);
+			d.afterScaleNodeY = scaleNodeY;
+			var linkClassName = 'begin-' + d.formerZoneId + '-end-' + d.afterZoneId;
+			console.log(linkClassName);
+			svg.append('line')
+				.attr('class', function(d,i){
+					return 'node-link-line ' + linkClassName;
+				})
+				.attr('x1', d.formerScaleNodeX)
+				.attr('y1', d.formerScaleNodeY)
+				.attr('x2', d.afterScaleNodeX)
+				.attr('y2', d.afterScaleNodeY)
+				.transition()
+				.duration(2000)
+				.remove();
+			d.formerScaleNodeX = d.afterScaleNodeX;
+			d.formerScaleNodeY = d.afterScaleNodeY;
+			return scaleNodeY;
+		})
+		.each(function(d,i){
 		})
 		.attr('class', function(d,i){
-			return 'person-label ' + 'zone-node-' + d.zoneNum; 
+			if(d3.select(this).classed('click-highlight')){
+				return 'click-highlight person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum; 
+			}else{
+				return 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum; 
+			}
 		})
 		.attr('stroke-width', 1)
 		.attr('stroke', 'black')
@@ -390,18 +417,16 @@ var bigmap_view = {
 		var robotData = DATA_CENTER.original_data['proxMobileOut-MC2.csv']; 
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
-	    var DURATION = 1000;
-	    var threshold_show = 100000;
+	    var threshold_show = 60000;//5 mins的时间间隔
+	    var DURATION = 2000;
 	   	var xScale = d3.scale.linear()
 			.range([0, width])
 			.domain([0, 190]);
 		var yScale = d3.scale.linear()
 			.range([0, height])
 			.domain([0, 111]);
-		
-		//var floorNum = DATA_CENTER.global_variable.selected_floor;
-		var floorNum = this.DISPLAYED_FLOOR_NUMBER;
 
+		var floorNum = this.DISPLAYED_FLOOR_NUMBER;
 
 		var svg = d3.select("#floor-svg");
 		for(var i = 0; i < robotData.length;i++){
@@ -410,27 +435,55 @@ var bigmap_view = {
 		var renderNodeArray = [];
 		var j = 0;
 		for(var i = 0;i < robotData.length;i++){
-			//if(globalTime > robotData[i].robotTime && globalTime < (robotData[i].robotTime + threshold_show) ){//
-			renderNodeArray[i] = new Object();
-			renderNodeArray[i].x = +robotData[i][" x"].replace(/\s+/g,"");
-			renderNodeArray[i].floor = robotData[i][" floor"].replace(/\s+/g,"");
-			renderNodeArray[i].y = +robotData[i][" y"].replace(/\s+/g,"");
-			renderNodeArray[i].proxId = robotData[i][" prox-id"].replace(/\s+/g,"");
-			//globalTime大于robotTime才会显示出来，否则不会显示出该节点
-			renderNodeArray[i].time = +robotData[i].robotTime;
-			//j++;
-			//}
+			var floorNum = robotData[i][" floor"].replace(/\s+/g,"");
+			if((globalTime > (robotData[i].robotTime))&&(globalTime < (robotData[i].robotTime + threshold_show))
+				&&(floorNum == 2)){
+				renderNodeArray[j] = new Object();
+				renderNodeArray[j].x = +robotData[i][" x"].replace(/\s+/g,"");
+				renderNodeArray[j].floor = robotData[i][" floor"].replace(/\s+/g,"");
+				renderNodeArray[j].y = +robotData[i][" y"].replace(/\s+/g,"");
+				renderNodeArray[j].proxId = robotData[i][" prox-id"].replace(/\s+/g,"");
+				//globalTime大于robotTime才会显示出来，否则不会显示出该节点
+				renderNodeArray[j].time = +robotData[i].robotTime;
+				j++;
+			}
 		}
 		var transparencyScale = d3.scale.linear()
 			.range([1, 0])
 			.domain([0, threshold_show]);
 		var robotNodeSelection = svg.selectAll('.robot-label')
-			.data(renderNodeArray.filter(function(d,i){
-				return d.floor == floorNum;
-			}), function(d,i){
+			.data(renderNodeArray, function(d,i){
 				return d.proxId;
 			});
-
+		robotNodeSelection.each(function(d,i){
+			console.log('find same robot node');
+			var self = d;
+			var nodeProxId = d.proxId;
+			var nodeProxIdClass = 'node-id-' + nodeProxId;
+			var zoneNodeSelection = d3.selectAll('.' + nodeProxIdClass);
+			if(zoneNodeSelection != undefined){
+				if(zoneNodeSelection[0] != undefined){
+					if(zoneNodeSelection[0].length > 0){
+							console.log(zoneNodeSelection);
+							svg.append('line')
+							.attr('class','same-id-link')
+							.attr('x1', function(d,i){
+								return zoneNodeSelection.attr('cx');
+							})
+							.attr('y1', function(d,i){
+								return zoneNodeSelection.attr('cy');
+							})
+							.attr('x2', function(d,i){
+								return xScale(self.x);
+							})
+							.attr('y2', function(d,i){
+								return yScale(self.y);
+							});
+						}
+					}
+				}
+			console.log(zoneNodeSelection);
+		});
 		var robotNodeG = robotNodeSelection.enter()
 			.append('g')
 			.attr('x', function(d,i){
@@ -439,7 +492,6 @@ var bigmap_view = {
 			.attr('y', function(d,i){
 				return yScale(d.y);
 			});
-
 		robotNodeG.append('circle')
 			.attr('class','robot-label')
 			.attr('r',pointSize)
@@ -447,31 +499,25 @@ var bigmap_view = {
 				return xScale(d.x);
 			})
 			.attr('cy', function(d,i){
-				return xScale(d.y);
+				return yScale(d.y);
 			})
 			.style("opacity", function(d,i){
 				var transparency = 0;
-				if(globalTime > d.time && globalTime < (d.time + threshold_show)){
-					var timeGap = globalTime - d.time;
-					transparency = transparencyScale(timeGap);
-				}
+				var timeGap = Math.abs(globalTime - d.time);
+				transparency = transparencyScale(timeGap);
+				console.log(transparency);
 				return transparency;
-			});
-		robotNodeG.append('text')
-			.text(function(d,i){
-				return d.timestamp;
 			});
 		robotNodeSelection.transition()
 			.duration(DURATION)
 			.style("opacity", function(d,i){
 				var transparency = 0;
-				if(globalTime > d.time && globalTime < (d.time + threshold_show)){
-					var timeGap = globalTime - d.time;
-					transparency = transparencyScale(timeGap);
-				}
+				var timeGap = Math.abs(globalTime - d.time);
+				transparency = transparencyScale(timeGap);
 				return transparency;
 			});
 		//删除node节点
 		robotNodeSelection.exit().remove();
+
 	}
 }
