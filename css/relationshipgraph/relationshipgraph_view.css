@@ -1,5 +1,4 @@
 .link-relation {
-  stroke: grey;
 }
 
 .link-relation:hover {
@@ -8,9 +7,14 @@
 }
 
 .node-relation {
-  fill: #000;
-  stroke: #fff;
-  stroke-width: 1.5px;
+  stroke: grey;
+  stroke-width: 1px;
+}
+
+.node-relation:hover {
+  cursor: pointer;
+  stroke: #000;
+  stroke-width: 2.5px;
 }
 
 .d3-tip-relation {
