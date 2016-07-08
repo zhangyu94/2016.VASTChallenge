@@ -269,13 +269,48 @@ var bigmap_view = {
 			.range([0, height])
 			.domain([0, 111]);
 		//d3.selectAll("#"+divID).selectAll("*").remove();
-		var svg = d3.select("#floor-svg");
+		var svg = d3.select('#' + divID).select("#floor-svg");
 		//增加node节点
 		var nodeSelection = svg.selectAll('.person-label')
 		.data(personInZone.filter(function(d){
 			return d.zoneNum != -1 && d.zoneNum != null && d.zoneNum != d.formerZoneNum;
 		}), function(d,i){
 			return d.personName;
+		});
+		nodeSelection.each(function(d,i){
+			console.log(d);
+		});
+		nodeSelection.each(function(d,i){
+			console.log('find same robot node');
+			var self = d;
+			var nodeProxId = d.proxId;
+			var nodeProxIdClass = 'node-id-' + nodeProxId;
+			var zoneNodeSelection = d3.selectAll('.' + nodeProxIdClass);
+			if(zoneNodeSelection != undefined){
+				if(zoneNodeSelection[0] != undefined){
+					if(zoneNodeSelection[0].length > 0){
+							console.log(zoneNodeSelection);
+							svg.append('line')
+							.attr('class','same-id-link')
+							.attr('x1', function(d,i){
+								return zoneNodeSelection.attr('cx');
+							})
+							.attr('y1', function(d,i){
+								return zoneNodeSelection.attr('cy');
+							})
+							.attr('x2', function(d,i){
+								return xScale(self.x);
+							})
+							.attr('y2', function(d,i){
+								return yScale(self.y);
+							})
+							.transition()
+							.duration(1000)
+							.remove();
+						}
+					}
+				}
+			console.log(zoneNodeSelection);
 		});
 		nodeSelection.enter()
 		.append('circle')
@@ -410,7 +445,8 @@ var bigmap_view = {
 	//传递控制全局的时间变量，绘制机器人进行移动的视图
 	updateRobotView: function(divID, globalTime){
 		var pointSize = 4;
-		var robotData = DATA_CENTER.original_data['proxMobileOut-MC2.csv']; 
+		var robotData = DATA_CENTER.derived_data['proxMobileOut-MC2-WithProxId.json'];
+		console.log(robotData); 
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
 	    var threshold_show = 60000;//5 mins的时间间隔
@@ -421,10 +457,8 @@ var bigmap_view = {
 		var yScale = d3.scale.linear()
 			.range([0, height])
 			.domain([0, 111]);
-
 		var floorNum = this.DISPLAYED_FLOOR_NUMBER;
-
-		var svg = d3.select("#floor-svg");
+		var svg = d3.select('#' + divID).select("#floor-svg");
 		for(var i = 0; i < robotData.length;i++){
 			robotData[i]['robotTime'] = new Date(robotData[i]['timestamp']).getTime();
 		}
@@ -439,6 +473,12 @@ var bigmap_view = {
 				renderNodeArray[j].floor = robotData[i][" floor"].replace(/\s+/g,"");
 				renderNodeArray[j].y = +robotData[i][" y"].replace(/\s+/g,"");
 				renderNodeArray[j].proxId = robotData[i][" prox-id"].replace(/\s+/g,"");
+				if(robotData[i]['proxZone']!=undefined){
+					renderNodeArray[j].proxZone = +robotData[i]['proxZone'].replace(/\s+/g,"");
+				}else{
+					renderNodeArray[j].proxZone = 0;
+				}
+
 				//globalTime大于robotTime才会显示出来，否则不会显示出该节点
 				renderNodeArray[j].time = +robotData[i].robotTime;
 				j++;
@@ -454,27 +494,78 @@ var bigmap_view = {
 		robotNodeSelection.each(function(d,i){
 			console.log('find same robot node');
 			var self = d;
+			var nodeZoneId = +d.proxZone;
 			var nodeProxId = d.proxId;
+			var nodeZoneX = d.x;
+			var nodeZoneY = d.y;
+			console.log(d);
+			//robot检测到的员工所在的位置
+			console.log(nodeZoneId);
 			var nodeProxIdClass = 'node-id-' + nodeProxId;
 			var zoneNodeSelection = d3.selectAll('.' + nodeProxIdClass);
 			if(zoneNodeSelection != undefined){
 				if(zoneNodeSelection[0] != undefined){
 					if(zoneNodeSelection[0].length > 0){
 							console.log(zoneNodeSelection);
-							svg.append('line')
-							.attr('class','same-id-link')
-							.attr('x1', function(d,i){
-								return zoneNodeSelection.attr('cx');
-							})
-							.attr('y1', function(d,i){
-								return zoneNodeSelection.attr('cy');
-							})
-							.attr('x2', function(d,i){
-								return xScale(self.x);
-							})
-							.attr('y2', function(d,i){
-								return yScale(self.y);
-							});
+							var proxNodeClass = zoneNodeSelection.attr('class');
+							var zoneIdArray = proxNodeClass.split(' ');
+							var zoneIdArrayLength = zoneIdArray.length;
+							//按照ProxCard检测到的员工所在的zone
+							var zoneId = +zoneIdArray[zoneIdArrayLength - 1].split('-')[2];
+							console.log(zoneId +',' + nodeZoneId);
+							if(zoneId == nodeZoneId){
+								//检测到的区域一致,没有异常
+								d3.selectAll('.' + nodeProxIdClass)
+								.transition()
+								.duration(2000)
+								.attr('cx', function(d,i){
+									return xScale(self.x);
+								})
+								.attr('cy', function(d,i){
+									return yScale(self.y);
+								});
+								svg.append('line')
+								.attr('class',function(d,i){
+									//检测到的区域不一致，存在异常
+									return 'same-id-link';
+								})
+								.attr('x1', function(d,i){
+									return zoneNodeSelection.attr('cx');
+								})
+								.attr('y1', function(d,i){
+									return zoneNodeSelection.attr('cy');
+								})
+								.attr('x2', function(d,i){
+									return xScale(self.x);
+								})
+								.attr('y2', function(d,i){
+									return yScale(self.y);
+								})
+								.transition()
+								.duration(1000)
+								.remove();
+							}else{
+								svg.append('line')
+								.attr('class',function(d,i){
+									//检测到的区域不一致，存在异常
+									return 'not-same-id-link';
+								})
+								.attr('x1', function(d,i){
+									return zoneNodeSelection.attr('cx');
+								})
+								.attr('y1', function(d,i){
+									return zoneNodeSelection.attr('cy');
+								})
+								.attr('x2', function(d,i){
+									return xScale(self.x);
+								})
+								.attr('y2', function(d,i){
+									return yScale(self.y);
+								})
+								.transition()
+								.duration(1000)
+								.remove();
+							}	
 						}
 					}
 				}
@@ -512,6 +603,17 @@ var bigmap_view = {
 				transparency = transparencyScale(timeGap);
 				return transparency;
 			});
+		$('.robot-label').each(function() {
+		    $(this).tipsy({
+		        gravity: "s",
+		        html:true,
+		        title:function(){
+		        	var d = this.__data__;
+		            var content = 'Person:' + d.proxId + ",Z" +d.proxZone + ',F' + d.floor;
+		            return content;
+		        },
+		    });
+		});
 		//删除node节点
 		robotNodeSelection.exit().remove();
 

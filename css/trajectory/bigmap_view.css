@@ -2,7 +2,7 @@
 	opacity: 1;
 }
 .room-num-text{
-    font-size: 1px;
+    font-size: 4px;
 }
 .single-room{
 	stroke: black;
@@ -32,11 +32,16 @@ rect[class~=click-highlight]{
 }
 .node-link-line{
     stroke: black;
-    stroke-width: 0.5;
+    stroke-width: 1;
+    opacity: 0.5;
+}
+.not-same-id-link{
+    stroke: red;
+    stroke-width: 1;
     opacity: 0.5;
 }
 .same-id-link{
-    stroke: red;
+    stroke: black;
     stroke-width: 0.5;
     opacity: 0.5;
 }
