@@ -20,11 +20,12 @@ var relationshipgraph_view = {
         if ( message == "set:selected_linechart_set" )
         {
             var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-            console.log(selected_linechart_set)
-            this.render(this.relationshipgraph_view_DIV_ID,selected_linechart_set)
+            var selected_filter_timerange = DATA_CENTER.global_variable.selected_filter_timerange;
+            console.log(selected_filter_timerange)
+            this.render(this.relationshipgraph_view_DIV_ID,selected_linechart_set, selected_filter_timerange)
         }
 	},
-	render:function(divID, selectedAttr)
+	render:function(divID, selectedAttr, timerange)
 	{
 		console.log(selectedAttr);
 		d3.select("#"+divID).selectAll("*").remove();
@@ -52,7 +53,7 @@ var relationshipgraph_view = {
 // 	    var ST = parseDate(Time[0]), ET = parseDate(Time[1]);
 
 	     ori_data_array.forEach(function(d,i){ 
-	     	console.log(d['Date/Time'])
+	     	//console.log(d['Date/Time'])
 //	        d['Date/Time'] = parseDate(d['Date/Time']);
 //	        if(d['Date/Time'] >= ST && d['Date/Time'] <= ET)
 	          selectedData.push(d);     
@@ -147,7 +148,7 @@ var relationshipgraph_view = {
 	       //linkText = linkText.data(force.links(), function(d) { return d.source.id + "-" + d.target.id; });
 
 	       link.enter().insert("line", ".node")
-	       	.attr("class", "link")
+	       	.attr("class", "link-relation")
 	       	.attr("stroke-width",function(d){return d.weight})
 	       	.on('mouseover', tip.show)
         	.on('mouseout', tip.hide); 
@@ -167,7 +168,7 @@ var relationshipgraph_view = {
 	       node = node.data(force.nodes(), function(d) { return d.id;});
 	   
 	        node_g = node.enter().append('g')
-	           .attr("class","node")
+	           .attr("class","node-relation")
 	           .call(force.drag); 
 
 	        node_g.append("circle")
@@ -190,7 +191,7 @@ var relationshipgraph_view = {
 	           .style('font-size',9)
 	           .attr('fill',"grey")
 	           .attr('stroke-width',0)
-	           .text(function(d){return d.id});
+	           .text(function(d){return DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name(d.id)});
 
 	        node.exit().remove();
 

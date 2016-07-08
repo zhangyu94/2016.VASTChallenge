@@ -1,16 +1,13 @@
-body {
-  font: 13px sans-serif ;
-}
-.link {
+.link-relation {
   stroke: grey;
 }
 
-.link:hover {
+.link-relation:hover {
 	cursor: pointer;
 	stroke-width:3px;
 }
 
-.node {
+.node-relation {
   fill: #000;
   stroke: #fff;
   stroke-width: 1.5px;
