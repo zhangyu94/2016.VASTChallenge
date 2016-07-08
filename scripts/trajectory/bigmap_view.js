@@ -52,7 +52,8 @@ var bigmap_view = {
 	render:function(divID, floorNum)
 	{
 		var self = this;
-		var colorArray = ['#cccccc', '#f1e2cc', '#fff2ae', '#e6f5c9', '#f4cae4', '#cbd5e8', '#fdcdac', '#b3e2cd'];
+		var colorArray = ['#EEEEEE', '#F3F4EE', '#FFF4CF', '#F8F7EB', '#F6ECF6', '#EDF7FA', '#FFdECE', '#D5F4EF'];
+		//var colorArray = ['#cccccc', '#f1e2cc', '#fff2ae', '#e6f5c9', '#f4cae4', '#cbd5e8', '#fdcdac', '#b3e2cd'];
 		d3.selectAll("#"+divID).selectAll("*").remove();
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
