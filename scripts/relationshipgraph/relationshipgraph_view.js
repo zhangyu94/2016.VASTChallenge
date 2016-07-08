@@ -1,15 +1,11 @@
 var relationshipgraph_view = {
 	relationshipgraph_view_DIV_ID : "HVAC-relationshipgraph",
 
-//DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name
-
 	obsUpdate:function(message, data)
 	{
 		if (message == "display:relationshipgraph_view")
         {
             $("#"+this.relationshipgraph_view_DIV_ID).css("display","block");
-            var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-            this.render(this.relationshipgraph_view_DIV_ID,selected_linechart_set);
         }
 
         if (message == "hide:relationshipgraph_view")
@@ -17,24 +13,24 @@ var relationshipgraph_view = {
             $("#"+this.relationshipgraph_view_DIV_ID).css("display","none");
         }
 
-        if ( message == "set:selected_linechart_set" )
+        if ( message == "set:selected_linechart_set" || message == "set:selected_filter_timerange")
         {
             var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
             var selected_filter_timerange = DATA_CENTER.global_variable.selected_filter_timerange;
-            console.log(selected_filter_timerange)
-            this.render(this.relationshipgraph_view_DIV_ID,selected_linechart_set, selected_filter_timerange)
+            //console.log(selected_filter_timerange)
+            this.render(this.relationshipgraph_view_DIV_ID,selected_linechart_set, selected_filter_timerange);
         }
 	},
+
 	render:function(divID, selectedAttr, timerange)
 	{
-		console.log(selectedAttr);
+		console.log(timerange);
 		d3.select("#"+divID).selectAll("*").remove();
 
-		var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"];
+		var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"].concat();
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
 
-		var Time = ["2016/5/31 0:00", "2016/6/8 16:20"];
 	    var selectedData = [];
 	    var parseDate = d3.time.format("%Y/%m/%d %H:%M").parse;
 
@@ -47,17 +43,19 @@ var relationshipgraph_view = {
 	    var nodes = [],links = [];
 
 	    var scale = d3.scale.linear()
-	      .domain([0,1])
+	      .domain([-1,1])
 	      .range([500,50]);
 
-// 	    var ST = parseDate(Time[0]), ET = parseDate(Time[1]);
+	    if(timerange == undefined)
+	    	selectedData = ori_data_array;
+	    else
+	    {
+		    ori_data_array.forEach(function(d,i){ 
+		       if(parseDate(d['Date/Time']).getTime() >= timerange.min && parseDate(d['Date/Time']).getTime() <= timerange.max)
+		          selectedData.push(d);     
+		    });	    	
+	    }
 
-	     ori_data_array.forEach(function(d,i){ 
-	     	//console.log(d['Date/Time'])
-//	        d['Date/Time'] = parseDate(d['Date/Time']);
-//	        if(d['Date/Time'] >= ST && d['Date/Time'] <= ET)
-	          selectedData.push(d);     
-	     });
 	     //画力导向图
 	     var force = d3.layout.force()
 	         .nodes(nodes)
@@ -94,7 +92,7 @@ var relationshipgraph_view = {
 	              var len = x_list.length;
 	              var sum_x = 0, sum_y = 0, sum_up = 0, sum_down_x = 0, sum_down_y = 0;
 
-	              for(var k=0;k<5;k++)
+	              for(var k=0;k<len;k++)
 	              {
 	                 sum_x += x_list[k];
 	                 sum_y += y_list[k];
@@ -110,57 +108,34 @@ var relationshipgraph_view = {
 	              }
 
 	              var result = sum_up/(Math.sqrt(sum_down_x)*Math.sqrt(sum_down_y));
-	              console.log(result)
-	              if(result <=1 && result >=0)
+	             // console.log(result)
+	              if(result <=1 && result >=-1)
 	                links.push({source: nodes[i], target: nodes[j], weight: result});
 	           }
-	        //corre_list();
-
-	     function corre_list() {
-	        list = links.concat();//复制数组
-	        list.sort(compare("weight"));//按照相关度排序
-	        var list_div = d3.select("#CorrelationList").selectAll('div')
-	            .data(list)
-	            .enter()
-	            .append('div')
-	            .attr("class","list_div")
-	            .html(function(d){return "<span style='color:steelblue'>"+d.source.id + "</span> " + d.target.id + " <span style='color:#880000'>" + d.weight.toFixed(3) + "</span>";});
-	     }
-
-	      function compare(propertyName) { 
-	        return function (object1, object2) { 
-	            var value1 = object1[propertyName]; 
-	            var value2 = object2[propertyName]; 
-	            if (value2 < value1) { 
-	              return -1; 
-	            } 
-	          else if (value2 > value1) { 
-	            return 1; 
-	          } 
-	          else { 
-	            return 0; 
-	          } 
-	        } 
-	      } 
-
 
 	       link = link.data(force.links(), function(d) { return d.source.id + "-" + d.target.id; });
-	       //linkText = linkText.data(force.links(), function(d) { return d.source.id + "-" + d.target.id; });
+	       linkText = linkText.data(force.links(), function(d) { return d.source.id + "-" + d.target.id; });
 
 	       link.enter().insert("line", ".node")
 	       	.attr("class", "link-relation")
-	       	.attr("stroke-width",function(d){return d.weight})
+	       	.attr("stroke","silver")
+	       	.attr("stroke-width",1.5)
+	       	.style("stroke-dasharray", function(d){
+	       		if(d.weight < 0)
+	       			return ("3, 3");
+	       		else
+	       			return ("0, 0");
+	       	})
 	       	.on('mouseover', tip.show)
         	.on('mouseout', tip.hide); 
 
-	      // linkText.enter().append("text")
-	      //    .attr("class", "link-label")
-	      //    .attr("text-anchor", "middle")
-	      //    .style('stroke-width',.1)
-	      //    .style('font-size','12px')
-	      //    .style('fill','grey')
-	      //    .attr('dy','-.6em')
-	      //    .text(function(d) { return d.weight.toFixed(3); });
+	      linkText.enter().append("text")
+	         .attr("class", "link-label")
+	         .attr("text-anchor", "middle")
+	         .style('font-size','10px')
+	         .style('fill','none')
+	         .attr('dy','-.6em')
+	         .text(function(d) { return d.weight.toFixed(3); });
 
 	     link.exit().remove();
 	     //linkText.exit().remove();
@@ -169,10 +144,11 @@ var relationshipgraph_view = {
 	   
 	        node_g = node.enter().append('g')
 	           .attr("class","node-relation")
-	           .call(force.drag); 
+	           .call(force.drag)
+	           .on('click', connectedNodes); //Added code 
 
 	        node_g.append("circle")
-	           .attr("r",6)
+	           .attr("r",5)
 	           .attr("fill",function(d){
 	           		if(d.id[1] == '_')
 	           		{
@@ -182,9 +158,7 @@ var relationshipgraph_view = {
 	           				return "blue";
 	           		}
 	           		return "purple";
-	           })
-	           .attr("stroke","grey")
-	           .attr("stroke-width",1);
+	           });
 
 	        node_g.append("text")
 	           .attr("transform", "translate(8,3)")
@@ -196,11 +170,51 @@ var relationshipgraph_view = {
 	        node.exit().remove();
 
 	        force.start();
-	        for(var i=50;i>0;--i)
-	        {
+	        for(var i=80;i>0;--i)
 	        	force.tick();
-	        }
 	        force.stop();
+
+	     //Toggle stores whether the highlighting is on
+			var toggle = 0;
+			//Create an array logging what is connected to what
+			var linkedByIndex = {};
+			for (var i = 0; i < nodes.length; i++) {
+			    linkedByIndex[nodes[i].id + "," + nodes[i].id] = 1;
+			};
+			links.forEach(function (d) {
+			    linkedByIndex[d.source.id + "," + d.target.id] = 1;
+			});
+
+			console.log(linkedByIndex)
+			//This function looks up whether a pair are neighbours
+			function neighboring(a, b) {
+			    return linkedByIndex[a.id + "," + b.id];
+			}
+			function connectedNodes() {
+			    if (toggle == 0) {
+			        //Reduce the opacity of all but the neighbouring nodes
+			        d = d3.select(this).node().__data__;
+			        node.style("opacity", function (o) {
+			        	//console.log(d)
+			        	//console.log(o)
+			            return neighboring(d, o) | neighboring(o, d) ? 1 : 0.1;
+			        });
+			        link.style("opacity", function (o) {
+			            return d.id==o.source.id | d.id==o.target.id ? 1 : 0.1;
+			        });
+			        linkText.style("fill",function (o) {
+			            return d.id==o.source.id | d.id==o.target.id ? "grey" : "none";
+			        });
+			        //Reduce the op
+			        toggle = 1;
+			    } else {
+			        //Put them back to opacity=1
+			        node.style("opacity", 1);
+			        link.style("opacity", 1);
+			        linkText.style("fill", "none");
+			        toggle = 0;
+			    }
+			}
 
 	     function tick() {
 	        node_g.attr('transform', function(d){
@@ -212,10 +226,10 @@ var relationshipgraph_view = {
 	           .attr("x2", function(d) { return d.target.x; })
 	           .attr("y2", function(d) { return d.target.y; });
 
-	       // linkText.attr("transform", function(d) { //calcul de l'angle du label
-	       //   var angle = Math.atan((d.source.y - d.target.y) / (d.source.x - d.target.x)) * 180 / Math.PI;
-	       //   return 'translate(' + [((d.source.x + d.target.x) / 2), ((d.source.y + d.target.y) / 2)] + ')rotate(' + angle + ')';
-	       // });
+	       linkText.attr("transform", function(d) { //calcul de l'angle du label
+	         var angle = Math.atan((d.source.y - d.target.y) / (d.source.x - d.target.x)) * 180 / Math.PI;
+	         return 'translate(' + [((d.source.x + d.target.x) / 2), ((d.source.y + d.target.y) / 2)] + ')rotate(' + angle + ')';
+	       });
 	     }
 	}
 }
