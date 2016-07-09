@@ -94,11 +94,18 @@ var linechart_render_view = {
                 var mouseover_time = DATA_CENTER.timeline_variable.mouseover_time;
                 var chart = $("#"+cur_linecharts_id).highcharts();    // Highcharts构造函数
                 
-                chart.xAxis[0].removePlotLine('mouseover-tick'); //把id为time-tick的标示线删除
-                if (typeof(mouseover_time)!=undefined)
+                if (typeof(chart)=="undefined")
                 {
-                    this._plot_tickline(chart,0,"mouseover-tick",mouseover_time,"#55BB55","solid");
-                }  
+                    console.warn("undefined chart",cur_attr_name)
+                }
+                else
+                {
+                    chart.xAxis[0].removePlotLine('mouseover-tick'); //把id为time-tick的标示线删除
+                    if (typeof(mouseover_time)!="undefined")
+                    {
+                        this._plot_tickline(chart,0,"mouseover-tick",mouseover_time,"#55BB55","solid");
+                    }  
+                }
             }
         }
         
@@ -120,7 +127,6 @@ var linechart_render_view = {
             var index = 0;
             for (;index<divide_attr_list.length;++index)
             {
-                console.log(divide_attr_list[index].name,attr)
                 if (divide_attr_list[index].name == attr)
                 {
                     divide_attr_list[index].linechart_set[cur_linechart_name] = true;
@@ -197,11 +203,24 @@ var linechart_render_view = {
                             var ysetAxis_attr_name = [attr];
                             var xysetAxis_data = linechart_render_view._get_xysetAxis_data(ysetAxis_attr_name);
                             var chart = $(this).highcharts().addSeries({
-                                name: linechart_render_view._compress_full_attr_name(attr),
+                                name: attr,
                                 data: xysetAxis_data[0],
                                 marker:{
                                     enabled:false,
                                     radius:1,
+                                },
+                                events:{
+                                    mouseOver:function(){
+                                        var name = this.name;
+                                        DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+                                            ._highlight_communication_mouseover_linebtn(name);
+                                    },
+                                    mouseOut:function(){
+                                        var name = this.name;
+                                        DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+                                            ._highlight_communication_mouseout_linebtn();
+                                    }
+
                                 },
                                 zones:[
                                 {
@@ -257,10 +276,14 @@ var linechart_render_view = {
                 .on("click",function(d,i){
                 })
                 .on("mouseover",function(d,i){
+                    DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view
+                        ._highlight_communication_mouseover_attrbtn(d.name);
                     //DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                     //    ._highlight_communication_mouseover_linebtn(d);
                 })
                 .on("mouseout",function(d,i){
+                    DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view
+                        ._highlight_communication_mouseout_attrbtn();
                     //DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                     //    ._highlight_communication_mouseout_linebtn();
                 })
@@ -358,14 +381,12 @@ var linechart_render_view = {
                     var attr_name_set = d.linechart_set;
 
                     var ysetAxis_attr_name = [];
-                    var ysetAxis_compress_attr_name = [];
                     for (attr in attr_name_set)
                     {
                         ysetAxis_attr_name.push(attr);
-                        ysetAxis_compress_attr_name.push(linechart_render_view._compress_full_attr_name(attr));
                     }
                     var xysetAxis_data = linechart_render_view._get_xysetAxis_data(ysetAxis_attr_name);
-                    var chart = linechart_render_view._plot_linechart(divID,xysetAxis_data,ysetAxis_compress_attr_name,ysetAxis_attr_name);
+                    var chart = linechart_render_view._plot_linechart(divID,xysetAxis_data,ysetAxis_attr_name);
                 });
 
         var exit = update.exit();
@@ -411,21 +432,31 @@ var linechart_render_view = {
 
 
 
-	_plot_linechart:function(divID,xysetAxis_data,ysetAxis_label_name,ysetAxis_original_name)
+	_plot_linechart:function(divID,xysetAxis_data,ysetAxis_original_name)
 	{
         var series_data = [];
         for (var i=0;i<xysetAxis_data.length;++i)
         {
             var attr_name = ysetAxis_original_name[i];
-            var average = HVAC_ATTR_OLD_AVERAGE_SIGMA[attr_name].average;
-            var sigma = HVAC_ATTR_OLD_AVERAGE_SIGMA[attr_name].sigma;
 
-            var name = ysetAxis_label_name[i];
+            var average_sigma = HVAC_ATTR_OLD_AVERAGE_SIGMA[attr_name];
+            if (typeof(average_sigma)=="undefined")
+            {
+                var average = 0;
+                var sigma = 0;
+            }
+            else
+            {
+                var average = average_sigma.average;
+                var sigma = average_sigma.sigma;
+            }
+
+
             var data = xysetAxis_data[i];
 
             data.push
             series_data.push({
-                name: name,
+                name: attr_name,
                 data: data,
                 id: attr_name,
                 marker:{
@@ -434,10 +465,14 @@ var linechart_render_view = {
                 },
                 events:{
                     mouseOver:function(){
-                        console.log(this,this.name)
+                        var name = this.name;
+                        DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+                            ._highlight_communication_mouseover_linebtn(name);
                     },
                     mouseOut:function(){
-                        console.log(this,this.name)
+                        var name = this.name;
+                        DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+                            ._highlight_communication_mouseout_linebtn();
                     }
 
                 },
@@ -516,8 +551,7 @@ var linechart_render_view = {
                 }
                 
             },           
-            yAxis: {
-                
+            yAxis: {      
                 labels:{
                     enabled:false
                 },
@@ -529,10 +563,11 @@ var linechart_render_view = {
 
             tooltip:{
                 useHTML: true,
-                headerFormat: '',//'<small>{point.key}</small><table>',
-                pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' +
-                    '<td style="text-align: right"><b>{point.y}</b></td></tr>',
-                footerFormat:'',// '</table>',
+                headerFormat: '',
+                pointFormatter: function() {
+                    return linechart_render_view._compress_full_attr_name(this.series.name) +":" + this.y;
+                },    
+                footerFormat:'',
                 
                 borderWidth:1,
                 style:{
@@ -620,14 +655,6 @@ var linechart_render_view = {
         }
 
     },
-
-    /*
-    //输入一个用_compress_full_attr_name压缩过的名字，返回原始未压缩的名字
-    _uncompress_full_attr_name:function(compressed_name)
-    {
-
-    },
-    */
 
     //将原始数据中一个具体的带着地点和属性信息的字符串压缩成合适的新字符串
     _compress_full_attr_name:function(full_attr_name)
