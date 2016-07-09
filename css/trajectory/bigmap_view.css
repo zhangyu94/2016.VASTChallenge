@@ -9,6 +9,17 @@
 	stroke-width: 0.2;
     opacity: 1;
 }
+.certain-stroke{
+    stroke: green;
+}
+.uncertain-stroke{
+    stroke:black;
+}
+.robot-node{
+    stroke: blue;
+    fill: blue;
+    stroke-width: 2px;
+}
 circle[class~=mouseover-highlight], rect[class~=mouseover-highlight]{
     fill: #3366ff;
     opacity: 1;
