@@ -46,6 +46,9 @@ var timeline_view = {
 	        if (typeof(current_display_time)!=undefined)
 	        {
 	        	this._plot_tickline(chart,0,"time-tick",current_display_time,"#FF0000","solids");
+
+	        	var index = this._binary_search(chart.series[0].data,"x",current_display_time);
+				chart.tooltip.refresh(chart.series[0].data[index]);
 			}
 		}
 

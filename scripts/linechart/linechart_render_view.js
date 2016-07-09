@@ -74,11 +74,17 @@ var linechart_render_view = {
                 var current_display_time = DATA_CENTER.global_variable.current_display_time;
                 var chart = $("#"+cur_linecharts_id).highcharts();    // Highcharts构造函数
                 
-                chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
-                if (typeof(current_display_time)!=undefined)
+                if (typeof(chart)=="undefined")
                 {
-                    this._plot_tickline(chart,0,"time-tick",current_display_time,"#FF0000","shortdot");
-                }  
+                    console.warn("undefined chart",cur_attr_name)
+                }
+                {
+                    chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
+                    if (typeof(current_display_time)!=undefined)
+                    {
+                        this._plot_tickline(chart,0,"time-tick",current_display_time,"#FF0000","shortdot");
+                    }  
+                }
             }
         }
 
@@ -197,8 +203,17 @@ var linechart_render_view = {
 
                         if (!flag_find)
                         {
-                            var average = HVAC_ATTR_OLD_AVERAGE_SIGMA[attr].average;
-                            var sigma = HVAC_ATTR_OLD_AVERAGE_SIGMA[attr].sigma;
+                            var average_sigma = HVAC_ATTR_OLD_AVERAGE_SIGMA[attr];
+                            if (typeof(average_sigma)=="undefined")
+                            {
+                                var average = 0;
+                                var sigma = 0;
+                            }
+                            else
+                            {
+                                var average = average_sigma.average;
+                                var sigma = average_sigma.sigma;
+                            }
 
                             var ysetAxis_attr_name = [attr];
                             var xysetAxis_data = linechart_render_view._get_xysetAxis_data(ysetAxis_attr_name);
@@ -211,11 +226,13 @@ var linechart_render_view = {
                                 },
                                 events:{
                                     mouseOver:function(){
+                                        console.log("over",this.name)
                                         var name = this.name;
                                         DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                                             ._highlight_communication_mouseover_linebtn(name);
                                     },
                                     mouseOut:function(){
+                                        console.log("out",this.name)
                                         var name = this.name;
                                         DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                                             ._highlight_communication_mouseout_linebtn();
@@ -276,16 +293,12 @@ var linechart_render_view = {
                 .on("click",function(d,i){
                 })
                 .on("mouseover",function(d,i){
-                    DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view
-                        ._highlight_communication_mouseover_attrbtn(d.name);
-                    //DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-                    //    ._highlight_communication_mouseover_linebtn(d);
+                    DATA_CENTER.VIEW_COLLECTION.linechart_render_view
+                        ._highlight_communication_mouseover_attrlinechartspan(d.name)
                 })
                 .on("mouseout",function(d,i){
-                    DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view
-                        ._highlight_communication_mouseout_attrbtn();
-                    //DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-                    //    ._highlight_communication_mouseout_linebtn();
+                    DATA_CENTER.VIEW_COLLECTION.linechart_render_view
+                        ._highlight_communication_mouseover_attrlinechartspan()
                 })
 
         //小按钮们
@@ -307,8 +320,6 @@ var linechart_render_view = {
                 html:true,
                 title:function(){
                     var d = this.__data__;
-
-                    console.log(d);
                     var compressed_attr_name = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
                     return compressed_attr_name;
                 },
@@ -465,11 +476,13 @@ var linechart_render_view = {
                 },
                 events:{
                     mouseOver:function(){
+                        console.log("over",this.name)
                         var name = this.name;
                         DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                             ._highlight_communication_mouseover_linebtn(name);
                     },
                     mouseOut:function(){
+                        console.log("out",this.name)
                         var name = this.name;
                         DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                             ._highlight_communication_mouseout_linebtn();
@@ -678,5 +691,18 @@ var linechart_render_view = {
         return attr;
     },
 
+    _highlight_communication_mouseover_attrlinechartspan:function(attr_name)
+    {
+        //1.高亮attr
+        var highlight_attr_set = [attr_name];
+        DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
 
+    },
+
+    _highlight_communication_mouseout_attrlinechartspan:function()
+    {
+        //1.取消高亮attr
+        DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
+
+    },
 }

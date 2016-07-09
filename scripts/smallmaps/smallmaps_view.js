@@ -46,6 +46,7 @@ var smallmaps_view = {
 	        			var flag = false;
 	        			flag = flag | (DATA_CENTER.linechart_variable.highlight_floor_set.indexOf(d.name) >= 0);
 	        			flag = flag | (DATA_CENTER.linechart_variable.highlight_building_set.indexOf(d.name) >= 0);
+	        			console.log(d.name,flag)
 	        			return !flag;
 	        		})
         	}
