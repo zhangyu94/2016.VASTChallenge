@@ -42,7 +42,10 @@ var DATA_CENTER = {
 		//		value:...
 		//	}...
 		//	attr:...(被认为是异常的属性,可以是某个sensor属性,可以是某个人的轨迹)
-		//	value:...(字符串或数字,对于轨迹数据value标记这个event被认为异常的原因,对于sensor数据value标记了这个event在准则下的异常度)
+		//	event:{
+		//		type:...(标记这个event被认为异常的原因,即异常的类型,如"impossible route","extreme value")
+		//		value:...(字符串或数字,标记了异常数据的取值,可以用来标记这个event在准则下的异常度)
+		//	}
 		//}
 
 		floors_zone_set: [],
