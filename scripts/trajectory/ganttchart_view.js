@@ -1,6 +1,6 @@
 var ganttchart_view = {
 	ganttchart_view_DIV_ID : "trajectory-ganttchart",
-	
+
 
 	root:null,
 	width:null,
@@ -11,15 +11,15 @@ var ganttchart_view = {
 	obsUpdate:function(message, data)
 	{
 		if (message == "display:ganttchart_view")
-        {
-            $("#"+this.ganttchart_view_DIV_ID).css("display","block");
-            this.render(this.ganttchart_view_DIV_ID);
-        }
+		{
+		    $("#"+this.ganttchart_view_DIV_ID).css("display","block");
+		    this.render(this.ganttchart_view_DIV_ID);
+		}
 
-        if (message == "hide:ganttchart_view")
-        {
-            $("#"+this.ganttchart_view_DIV_ID).css("display","none");
-        }
+		if (message == "hide:ganttchart_view")
+		{
+		    $("#"+this.ganttchart_view_DIV_ID).css("display","none");
+		}
 
 	},
 	render:function(divID)
@@ -208,6 +208,8 @@ var ganttchart_view = {
 					allRecords.push(record);
 				}
 			}
+
+
 			// console.log(allRecords);
 
 			svg.selectAll("ganttBar")
@@ -266,6 +268,77 @@ var ganttchart_view = {
 				else
 					shortRecords[i - 1].shortLength = shortRecords[i - 1].cntShort + 1;
 			}
+
+			var shortRecordSet =[];
+			for(var i=0;i<shortRecords.length;) {
+				var aShortSet =[];
+				var length = shortRecords[i].shortLength;
+				for(var j=0;j<length;j++) {
+					aShortSet.push(shortRecords[i]);
+					i++;
+				}
+
+
+				var aSet = {}
+				var firstIdx  = _.sortedIndex(allRecords, {timestamp: aShortSet[0].timestamp},"timestamp");
+				// console.log(firstIdx);
+				var preRecord = null;
+				if(firstIdx > 0) {
+					var preRecord = allRecords[firstIdx -1];
+					if(preRecord.day != aShortSet[0].day)
+						preRecord = null;
+				}
+
+				var lastRecord = aShortSet[aShortSet.length - 1];
+				var lastIdx  = _.sortedIndex(allRecords, {timestamp: lastRecord.timestamp},"timestamp");
+				var nextRecord = null;
+				if(lastIdx < allRecords.length - 1) {
+					var nextRecord = allRecords[lastIdx +1];
+					if(nextRecord.day != lastRecord.day)
+						nextRecord = null;
+				}
+				aSet['records'] = aShortSet;
+				aSet['nextRecord'] = nextRecord;
+				aSet['preRecord'] = preRecord;
+				var fakeDuration, fakeStartTime, fakeEndTime;
+				if(preRecord != null && nextRecord !=null) {
+					if(preRecord.duration < nextRecord.duration)
+						fakeDuration = preRecord.duration;
+					else
+						fakeDuration = nextRecord.duration;
+
+				}
+				else if(preRecord != null) {
+					fakeDuration = preRecord.duration;
+				}
+				else {
+					fakeDuration = nextRecord.duration;
+				}
+				aSet['fakeStartTime'] =  aShortSet[0].timestamp - fakeDuration*1000;
+				aSet['fakeEndTime'] =  aShortSet[aShortSet.length - 1].endtime + fakeDuration*1000;
+
+				shortRecordSet.push(aSet);
+			}
+
+			console.log(shortRecordSet);
+
+			var shortSetG = svg.selectAll(".shortSet")
+			.data(shortRecordSet).enter()
+			.append("g").attr("class", "shortSet");
+
+			shortSetG.append("rect")
+			.attr("x", function(d) { return x(Timeutil.getTimeInOneDay(d.timestamp)); })
+			      .attr("height", y2(1) * 0.6)
+			      .attr("y", function(d,i) { return y2( Timeutil.getDayIndex(d.day)) + y2(1) * 0.2; })
+			      .attr("width", function(d) { return x(d.duration*1000); })
+			      .attr("fill", function(d){
+			      	// console.log(self);
+			      	var fz = "f" + d.floor + "z" + d.zone;
+			      	// console.log(d);
+			      	return self.zoneColorScale(fz);
+			      })
+
+
 			// console.log(shortRecords);
 
 			// shortRecords[shortRecords.length-1].cntOffset = ;

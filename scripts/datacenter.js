@@ -33,7 +33,7 @@ var DATA_CENTER = {
 	//view之间通信需要利用的全局变量
 	global_variable : {
 		floors_zone_set: [],
-		personInZone: [], 
+		personInZone: [],
 		selected_attr_set:[],
 		selected_linechart_set:[],
 		selected_HVACzone_set:[],
@@ -61,7 +61,7 @@ var DATA_CENTER = {
 		current_display_time:undefined,//timeline当前播放到的时间
 
 		selected_card_set:[],
-		selected_person_set:[],		
+		selected_person_set:[],
 	},
 
 	//set_global_variable设置全局变量并调用SUBJECT的notify
@@ -359,10 +359,38 @@ var DATA_CENTER = {
 		},
 	},
 
-	
-	//计算派生数据填入DATA_CENTER.derived_data
-	cal_derive_data : function(){
 
+	//计算派生数据填入DATA_CENTER.derived_data
+	cal_person_traj: function() {
+		var proxOut = DATA_CENTER.original_data["proxOut-MC2.csv"];
+		console.log(proxOut);
+		DATA_CENTER.derived_data['person'] = {};
+		var person = DATA_CENTER.derived_data['person'];
+		for(var i=0;i<proxOut.length;i++) {
+			var pID = proxOut[i][' prox-id'];
+			pID = pID.trim();
+			if(! (pID in person)) {
+				// console.log(pID);
+				person[pID] = {"fix":[],"mobile":[]};
+			}
+			person[pID]['fix'].push(proxOut[i]);
+		}
+		// console.log(DATA_CENTER.derived_data['person']);
+		var proxMobileOut = DATA_CENTER.original_data["proxMobileOut-MC2.csv"];
+		for(var i=0;i<proxMobileOut.length;i++) {
+			var pID = proxOut[i][' prox-id'];
+			pID = pID.trim();
+			if(! (pID in person)) {
+				// console.log(pID);
+				person[pID] = {"fix":[],"mobile":[]};
+			}
+			person[pID]['mobile'].push(proxOut[i]);
+		}
+		// console.log(DATA_CENTER.derived_data['person']);
+
+	},
+	cal_derive_data : function(){
+		this.cal_person_traj();
 	},
 	initialize_loaddata:function(callback_function){
 		var path = "dataset/original/";
@@ -452,7 +480,7 @@ var DATA_CENTER = {
 										cur_element[attr] =+ cur_element[attr];
 									}
 								}
-							}							
+							}
 
 							d3.csv(path+file_name[5],function(data5){//mobile out data
 								console.log(data5);
@@ -467,7 +495,7 @@ var DATA_CENTER = {
 								d3.csv(path+file_name[6],function(data6){
 									d3.json(derived_path+d_file_name[0], function(data7) {//persondata
 										//增加personData的相关数据
-										var personData = data7; 
+										var personData = data7;
 										var personInZone = new Array();
 										var personArray = $.map(personData, function(value, index) {
 											return [value];
@@ -516,7 +544,7 @@ var DATA_CENTER = {
 													callback_function();
 												})
 											})
-										})	
+										})
 									})
 								})
 							})
