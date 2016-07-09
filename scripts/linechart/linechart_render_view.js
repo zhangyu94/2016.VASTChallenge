@@ -531,6 +531,12 @@ var linechart_render_view = {
                     }
                 },
                 events:{
+                    click:function(e){
+                        var clicked_time = e.xAxis[0].value;
+                        var index = timeline_view._binary_search(chart.series[0].data,"x",clicked_time);
+                        var aligned_time = chart.series[0].data[index].x;
+                        DATA_CENTER.set_global_variable("current_display_time",aligned_time);
+                    },
                     selection:function(e){
                         console.log(e)
                     }

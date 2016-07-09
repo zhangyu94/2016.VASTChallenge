@@ -57,13 +57,22 @@ var trajmonitor_view = {
 	    var w=width-pmargin.left-pmargin.right
 	    var h=spaceHeight-pmargin.top-pmargin.bottom
 	    var xscale=d3.time.scale().domain([startTime,endTime]).range([0,w])
+
 	    var rectHeight=(spaceHeight-pmargin.top-pmargin.bottom)/2
 	    var zoneColorScale = d3.scale.category10()
+
 	    $('#'+divID).append("<div id='axisDiv' style='border-bottom:1px solid #ccc;'></div>")
 	    var xAxis = d3.svg.axis()
 			       .scale(xscale)
 			       .orient("bottom")
-			       
+		var ticks=xscale.ticks(10)
+
+		var ticksLoc=[]
+		ticks.forEach(function(d) {
+			ticksLoc.push(xscale(d))
+		})
+
+		//console.log(ticksLoc)
 	    var axisSvg=d3.select('#'+'axisDiv').append('svg')
 	    			  .attr('width',width)
 	    			  .attr('height',spaceHeight)
@@ -75,7 +84,7 @@ var trajmonitor_view = {
 		$('#'+divID).append("<div id='pDiv' style='position:absolute;border-bottom:1px solid #ccc;top:5%'></div>")
 		//$('#'+'pDiv').css('overflow','auto')
 	    for(var p in person_array){
-	    	$('#'+'pDiv').append("<div class='monitor_bar' id='"+person_array[p].name+"' style='border-bottom:1px solid #ccc'></div>")
+	    	$('#'+'pDiv').append("<div class='monitor_bar' id='"+person_array[p].name+"' style='float:left;border-bottom:1px solid #ccc'></div>")
             var pdiv=$('#'+person_array[p].name)
 
 	    	var psvg=d3.select('#'+person_array[p].name).append('svg')
@@ -83,7 +92,16 @@ var trajmonitor_view = {
 	    				 .attr('height',spaceHeight)
 	    				 .append('g')
 	    				 .attr('transform',"translate("+pmargin.left+","+pmargin.top+")")
-
+	    	for(var i in ticksLoc){
+	    		psvg.append('line')
+	    			.attr('x1',ticksLoc[i])
+	    			.attr('y1',0)
+	    			.attr('x2',ticksLoc[i])
+	    			.attr('y2',spaceHeight*2)
+	    			.attr('stroke','#ccc')
+	    			.attr('stroke-width',1)
+	    			.attr('stroke-dasharray','1,2')
+	    	}
 	    	var draw_person_array=person_array[p]['fixRecords'].filter(function(d) {
 	    		if(d.timestamp<endTime&&d.endtime>startTime)
 	    			return true
