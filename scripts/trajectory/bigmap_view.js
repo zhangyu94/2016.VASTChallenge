@@ -290,7 +290,7 @@ var bigmap_view = {
 				if(zoneNodeSelection[0] != undefined){
 					if(zoneNodeSelection[0].length > 0){
 							console.log(zoneNodeSelection);
-							svg.append('line')
+							/*svg.append('line')
 							.attr('class','same-id-link')
 							.attr('x1', function(d,i){
 								return zoneNodeSelection.attr('cx');
@@ -306,7 +306,7 @@ var bigmap_view = {
 							})
 							.transition()
 							.duration(1000)
-							.remove();
+							.remove();*/
 						}
 					}
 				}
@@ -369,7 +369,7 @@ var bigmap_view = {
 			d.afterScaleNodeY = scaleNodeY;
 			var linkClassName = 'begin-' + d.formerZoneId + '-end-' + d.afterZoneId;
 			console.log(linkClassName);
-			svg.append('line')
+			/*svg.append('line')
 				.attr('class', function(d,i){
 					return 'node-link-line ' + linkClassName;
 				})
@@ -379,7 +379,7 @@ var bigmap_view = {
 				.attr('y2', d.afterScaleNodeY)
 				.transition()
 				.duration(2000)
-				.remove();
+				.remove();*/
 			d.formerScaleNodeX = d.afterScaleNodeX;
 			d.formerScaleNodeY = d.afterScaleNodeY;
 			return scaleNodeY;
@@ -445,7 +445,8 @@ var bigmap_view = {
 	//传递控制全局的时间变量，绘制机器人进行移动的视图
 	updateRobotView: function(divID, globalTime){
 		var pointSize = 4;
-		var robotData = DATA_CENTER.derived_data['proxMobileOut-MC2-WithProxId.json'];
+		var robotData = DATA_CENTER.original_data['proxMobileOut-MC2.csv'];
+		var singleroomData = DATA_CENTER.derived_data['singleroom.json'];
 		console.log(robotData); 
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
@@ -465,20 +466,27 @@ var bigmap_view = {
 		var renderNodeArray = [];
 		var j = 0;
 		for(var i = 0;i < robotData.length;i++){
-			var floorNum = robotData[i][" floor"].replace(/\s+/g,"");
+			var floorNumRobot = robotData[i][" floor"].replace(/\s+/g,"");
 			if((globalTime > (robotData[i].robotTime))&&(globalTime < (robotData[i].robotTime + threshold_show))
-				&&(floorNum == 2)){
+				&&(floorNumRobot == floorNum)){
 				renderNodeArray[j] = new Object();
-				renderNodeArray[j].x = +robotData[i][" x"].replace(/\s+/g,"");
-				renderNodeArray[j].floor = robotData[i][" floor"].replace(/\s+/g,"");
-				renderNodeArray[j].y = +robotData[i][" y"].replace(/\s+/g,"");
+				var xLoc = renderNodeArray[j].x = +robotData[i][" x"].replace(/\s+/g,"");
+				renderNodeArray[j].floor = floorNumRobot;
+				var yLoc = renderNodeArray[j].y = +robotData[i][" y"].replace(/\s+/g,"");
 				renderNodeArray[j].proxId = robotData[i][" prox-id"].replace(/\s+/g,"");
-				if(robotData[i]['proxZone']!=undefined){
-					renderNodeArray[j].proxZone = +robotData[i]['proxZone'].replace(/\s+/g,"");
-				}else{
-					renderNodeArray[j].proxZone = 0;
+				renderNodeArray[j].proxZone = 0;
+				for(var k = 0;k < singleroomData.length;k++){
+					var room = singleroomData[k];
+					var roomX = +room.x;
+					var roomY = +room.y;
+					var lengthX = +room.xLength;
+					var lengthY = +room.yLength;
+					var roomFloor = +room.floor;
+					if((xLoc >= roomX) && (xLoc <= (roomX + lengthX)) && (yLoc >= roomY) && (yLoc <= (roomY + lengthY))){
+						renderNodeArray[j].proxZone = room.proxZone;
+						break;
+					}
 				}
-
 				//globalTime大于robotTime才会显示出来，否则不会显示出该节点
 				renderNodeArray[j].time = +robotData[i].robotTime;
 				j++;

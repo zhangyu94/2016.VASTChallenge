@@ -58,7 +58,7 @@ var DATA_CENTER = {
 			max:undefined
 		},
 
-		current_display_time:undefined,//timeline当前播放到的时间
+		current_display_time:1464656940000,//timeline当前播放到的时间
 
 		selected_card_set:[],
 		selected_person_set:[],
@@ -517,8 +517,7 @@ var DATA_CENTER = {
 		var d_file_name = [
 			"person.json",
 			"room.json",
-			"singleroom.json",
-			"proxMobileOut-MC2-WithProxId.json",
+			"singleroom.json"
 		];
 		var that = this;
 
@@ -638,7 +637,6 @@ var DATA_CENTER = {
 												}
 											}
 											d3.json(derived_path + d_file_name[2], function(data9){
-												d3.json(derived_path + d_file_name[3], function(data10){
 													DATA_CENTER.original_data[file_name[0]] = HVAC_data;
 													DATA_CENTER.original_data[file_name[1]] = hazium_data1;
 													DATA_CENTER.original_data[file_name[2]] = hazium_data2;
@@ -649,11 +647,9 @@ var DATA_CENTER = {
 													DATA_CENTER.derived_data[d_file_name[0]] = data7;
 													DATA_CENTER.derived_data[d_file_name[1]] = data8;
 													DATA_CENTER.derived_data[d_file_name[2]] = data9;
-													DATA_CENTER.derived_data[d_file_name[3]] = data10;
 													DATA_CENTER.cal_derive_data();
 													that.initStream();
 													callback_function();
-												})
 											})
 										})
 									})
