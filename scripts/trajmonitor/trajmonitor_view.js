@@ -73,13 +73,13 @@ var trajmonitor_view = {
 			       .attr("class", "x axis")
 			       .call(xAxis);
 		$('#'+divID).append("<div id='pDiv' style='position:absolute;border-bottom:1px solid #ccc;top:5%'></div>")
-		$('#'+'pDiv').css('overflow','auto')
+		//$('#'+'pDiv').css('overflow','auto')
 	    for(var p in person_array){
 	    	$('#'+'pDiv').append("<div class='monitor_bar' id='"+person_array[p].name+"' style='border-bottom:1px solid #ccc'></div>")
             var pdiv=$('#'+person_array[p].name)
 
 	    	var psvg=d3.select('#'+person_array[p].name).append('svg')
-	    				 .attr('width',width)
+	    				 .attr('width',width-20)
 	    				 .attr('height',spaceHeight)
 	    				 .append('g')
 	    				 .attr('transform',"translate("+pmargin.left+","+pmargin.top+")")
@@ -90,7 +90,7 @@ var trajmonitor_view = {
 	    	})
 	    	psvg.append('text')
 	    		.text(person_array[p].name)
-	    		.attr('y',spaceHeight-pmargin.bottom-pmargin.top)
+	    		.attr('y',spaceHeight-pmargin.bottom-pmargin.top-2)
 	    		.attr('x',-pmargin.left+6)
 
 	    	psvg.selectAll('rect')
@@ -99,7 +99,7 @@ var trajmonitor_view = {
 	    		.append('rect')
 	    		.attr('class','pBar')
 	    		.attr('y',function(d) {
-	    			return (3-(+d.floor))*rectHeight/2
+	    			return (3-(+d.floor))*rectHeight/2+3;
 	    		})
 	    		.attr('x',function(d) {
 	    			return xscale(d.timestamp)
