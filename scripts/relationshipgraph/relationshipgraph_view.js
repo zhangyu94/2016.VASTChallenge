@@ -11,7 +11,7 @@ var relationshipgraph_view = {
             var selected_linechart_set = Object.keys(ori_data_array[0]);
             selected_linechart_set.shift();
             selected_linechart_set = selected_linechart_set.slice(-80);
-            //console.log(selected_linechart_set)
+            console.log(selected_linechart_set)
             var selected_filter_timerange = undefined;
             //console.log(selected_filter_timerange)
             this.render(this.relationshipgraph_view_DIV_ID,selected_linechart_set, selected_filter_timerange);        
@@ -53,11 +53,11 @@ var relationshipgraph_view = {
 
 	    var scale_negative = d3.scale.linear()
 	      .domain([-1,0])
-	      .range([30,300]);
+	      .range([30,400]);
 
 	    var scale_positive = d3.scale.linear()
 	      .domain([0,1])
-	      .range([300,30]);
+	      .range([400,30]);
 
 	    if(timerange == undefined)
 	    	selectedData = ori_data_array;
@@ -179,17 +179,17 @@ var relationshipgraph_view = {
 		       	.on('mouseover', tip.show)
 	        	.on('mouseout', tip.hide);
 
-	        // node_g.append("text")
-	        //    .attr("transform", "translate(8,3)")
-	        //    .style('font-size',9)
-	        //    .attr('fill',"grey")
-	        //    .attr('stroke-width',0)
-	        //    .text(function(d){return DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name(d.id)});
+	        node_g.append("text")
+	           .attr("transform", "translate(8,3)")
+	           .style('font-size',9)
+	           .attr('fill',"grey")
+	           .attr('stroke-width',0)
+	           .text(function(d){return DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name(d.id)});
 
 	        node.exit().remove();
 
 	        force.start();
-	        for(var i=80;i>0;--i)
+	        for(var i=80*80;i>0;--i)
 	        	force.tick();
 	        force.stop();
 
