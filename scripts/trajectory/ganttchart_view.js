@@ -32,6 +32,7 @@ var ganttchart_view = {
 		this.width  = $("#"+divID).width();
 		this.height  = $("#"+divID).height();
 		this.personData = DATA_CENTER.derived_data["person.json"];
+		console.log(this.personData);
 		// console.log(width);
 		this.make_IDList("trajectory-ganntchart-idlist");
 		this.make_hist("trajectory-ganntchart-hist");
@@ -322,23 +323,23 @@ var ganttchart_view = {
 				shortRecordSet.push(aSet);
 			}
 
-			console.log(shortRecordSet);
+			// console.log(shortRecordSet);
 
-			var shortSetG = svg.selectAll(".shortSet")
-			.data(shortRecordSet).enter()
-			.append("g").attr("class", "shortSet");
+			// var shortSetG = svg.selectAll(".shortSet")
+			// .data(shortRecordSet).enter()
+			// .append("g").attr("class", "shortSet");
 
-			shortSetG.append("rect")
-			.attr("x", function(d) { return x(Timeutil.getTimeInOneDay(d.timestamp)); })
-			      .attr("height", y2(1) * 0.6)
-			      .attr("y", function(d,i) { return y2( Timeutil.getDayIndex(d.day)) + y2(1) * 0.2; })
-			      .attr("width", function(d) { return x(d.duration*1000); })
-			      .attr("fill", function(d){
-			      	// console.log(self);
-			      	var fz = "f" + d.floor + "z" + d.zone;
-			      	// console.log(d);
-			      	return self.zoneColorScale(fz);
-			      })
+			// shortSetG.append("rect")
+			// .attr("x", function(d) { return x(Timeutil.getTimeInOneDay(d.timestamp)); })
+			//       .attr("height", y2(1) * 0.6)
+			//       .attr("y", function(d,i) { return y2( Timeutil.getDayIndex(d.day)) + y2(1) * 0.2; })
+			//       .attr("width", function(d) { return x(d.duration*1000); })
+			//       .attr("fill", function(d){
+			//       	// console.log(self);
+			//       	var fz = "f" + d.floor + "z" + d.zone;
+			//       	// console.log(d);
+			//       	return self.zoneColorScale(fz);
+			//       })
 
 
 			// console.log(shortRecords);
