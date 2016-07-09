@@ -58,7 +58,7 @@ var DATA_CENTER = {
 			max:undefined
 		},
 
-		current_display_time:undefined,//timeline当前播放到的时间
+		current_display_time:1464656940000,//timeline当前播放到的时间
 
 		selected_card_set:[],
 		selected_person_set:[],
@@ -518,7 +518,7 @@ var DATA_CENTER = {
 			"person.json",
 			"room.json",
 			"singleroom.json",
-			"proxMobileOut-MC2-WithProxId.json",
+			"person2room.csv"
 		];
 		var that = this;
 
@@ -638,7 +638,7 @@ var DATA_CENTER = {
 												}
 											}
 											d3.json(derived_path + d_file_name[2], function(data9){
-												d3.json(derived_path + d_file_name[3], function(data10){
+												d3.csv(derived_path + d_file_name[3], function(data10){
 													DATA_CENTER.original_data[file_name[0]] = HVAC_data;
 													DATA_CENTER.original_data[file_name[1]] = hazium_data1;
 													DATA_CENTER.original_data[file_name[2]] = hazium_data2;

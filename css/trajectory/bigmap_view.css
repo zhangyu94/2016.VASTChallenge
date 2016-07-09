@@ -6,12 +6,23 @@
 }
 .single-room{
 	stroke: black;
-	stroke-width: 0.5;
-	opacity: 1;
+	stroke-width: 0.2;
+    opacity: 1;
+}
+.certain-stroke{
+    stroke: green;
+}
+.uncertain-stroke{
+    stroke:black;
+}
+.robot-node{
+    stroke: blue;
+    fill: blue;
+    stroke-width: 2px;
 }
 circle[class~=mouseover-highlight], rect[class~=mouseover-highlight]{
-    fill: steelblue;
-    opacity: 0.5;
+    fill: #3366ff;
+    opacity: 1;
     -webkit-border-radius: 8;
     -moz-border-radius: 8;
 }
@@ -23,12 +34,12 @@ circle[class~=click-highlight]{
     -moz-border-radius: 8;
 }
 rect[class~=click-highlight]{
-	stroke: steelblue;
-	stroke-width: 3;
-	animation-name: highlight-animation;
-	animation-duration:1s;
-  	animation-timing-function:linear;
-  	animation-iteration-count:infinite;
+	fill: #3366ff;
+	//stroke-width: 3;
+	//animation-name: highlight-animation;
+	//animation-duration:1s;
+  	//animation-timing-function:linear;
+  	//animation-iteration-count:infinite;
 }
 .node-link-line{
     stroke: black;
