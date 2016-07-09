@@ -199,7 +199,7 @@ var HVACgraph_attrbtn_view = {
 
 		var enter = update.enter();
 		var enter_span = enter.insert("span")
-				.style("width",rect_width+"px")
+				//.style("width",rect_width+"px")
 				.attr("class",function(d,i){
 					var attr_type_class =  HVACgraph_attrbtn_view._cal_attr_type(d) + "-HVACattrbtn-span";
 					return "HVACattrbtn-span" + " " +attr_type_class;

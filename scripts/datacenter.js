@@ -33,6 +33,18 @@ var DATA_CENTER = {
 
 	//view之间通信需要利用的全局变量
 	global_variable : {
+		warning_list: [],
+		//warning_list数据结构:
+		//{
+		//	time:...(一个时间点,存成数字)
+		//	place:{
+		//		type:...(标记这个place是一个HVACzone或者Proxzone或者具体的robot检测到的点)
+		//		value:...
+		//	}...
+		//	attr:...(被认为是异常的属性,可以是某个sensor属性,可以是某个人的轨迹)
+		//	value:...(字符串或数字,对于轨迹数据value标记这个event被认为异常的原因,对于sensor数据value标记了这个event在准则下的异常度)
+		//}
+
 		floors_zone_set: [],
 		personInZone: [],
 		selected_attr_set:[],
@@ -204,12 +216,12 @@ var DATA_CENTER = {
 			},
 			"VAV_SYS Outdoor Air Flow Fraction":{
 				abbreviation:"outdoor air percent",
-				lv2_abbreviation:"outdr air pct",
+				lv2_abbreviation:"otdr air pct",
 				type:["air"],
 			},
 			"VAV_SYS Outdoor Air Mass Flow Rate":{
 				abbreviation:"outdoor air rate",
-				lv2_abbreviation:"outdr air temp",
+				lv2_abbreviation:"otdr air temp",
 				type:["air"],
 			},
 			"COOL Schedule Value":{
@@ -224,7 +236,7 @@ var DATA_CENTER = {
 			},
 			"Drybulb Temperature":{
 				abbreviation:"outdoor temperature",
-				lv2_abbreviation:"outdr temp",
+				lv2_abbreviation:"otdr temp",
 				type:["temperature"],
 			},
 			"Wind Direction":{
@@ -343,8 +355,8 @@ var DATA_CENTER = {
 				type:["electricity"],
 			},
 			"HVAC Electric Demand Power":{
-				abbreviation:"HVAC power",
-				lv2_abbreviation:"HVAC pwr",
+				abbreviation:"hvac power",
+				lv2_abbreviation:"hvac pwr",
 				type:["electricity"],
 			},
 			"Hazium Concentration":{
