@@ -1,10 +1,11 @@
 .HVACattrbtn-span{
-    padding: 1px;
-    margin: 3px !important;
+    padding: 0px;
+    margin: 1px !important;
     border: solid 2px #111;
     display:inline-block;
     border-radius: 3px;
     cursor: pointer;
+    font-size: 10px;
 }
 
 .HVACzone_oridinary_attr-HVACattrbtn-span{

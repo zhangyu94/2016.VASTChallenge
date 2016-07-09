@@ -585,7 +585,7 @@ var linechart_render_view = {
 
     _map_pureattr_name_to_abbreviation:function(pureattr_name)
     {
-        var attr = DATA_CENTER.GLOBAL_STATIC.attribute_description[pureattr_name].abbreviation;
+        var attr = DATA_CENTER.GLOBAL_STATIC.attribute_description[pureattr_name].lv2_abbreviation;
         if ( typeof(attr) =="undefined" )
         {
             console.warn("invalid attr",pureattr_name);

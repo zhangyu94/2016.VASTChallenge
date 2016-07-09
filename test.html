@@ -43,7 +43,10 @@
 <script src="libs/mds.js"></script>
 
 <body>
-   <div id='ganttview' style="width: 100%;height: 100%"></div>
+   <div id='ganttview' style="position: absolute;width: 100%; overflow: auto">
+   		<p>dfdfdf</p>
+   		<p>dfdfdf</p>
+   </div>
    <script>
    		
    		d3.json('dataset/derived/person.json',function(error,people_records) {
@@ -64,14 +67,14 @@
 
    			var width=$('#ganttview').width()
    			var height=$('#ganttview').height()
-   			console.log(width)
-   			console.log(height)
-   			height=800
+   		
+   			
    			var svg=d3.select('#ganttview').append('svg').attr('width',width).attr('height',height)
 
-   			var yscale=d3.scale.linear().range([0,height]).domain([0,people_names])
+   			var yscale=d3.scale.linear().range([0,height*4]).domain([0,people_names.length])
    			var xscale=d3.scale.linear().domain([new Date('2016-06-13 00:00:00'),new Date('2016-06-13 23:59:59')])
    										.range([0,width])
+
    			var single_gannt=svg.selectAll('.single_gannt')
    								.data(people_names)
    								.enter()

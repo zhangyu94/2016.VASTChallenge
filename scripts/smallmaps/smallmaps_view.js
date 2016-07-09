@@ -4,7 +4,7 @@ var smallmaps_view = {
 
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 	HVAC_ZONE_DOT_RADIUS :4.5,
-	RADARCHART_GLYPH_RADIUS :20,
+	RADARCHART_GLYPH_RADIUS :30,
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"radarchart_glyph-div",
 	
@@ -99,7 +99,8 @@ var smallmaps_view = {
 		var building_div_all_width = div_width*0.1;
 		var building_div_content_width = building_div_all_width - 2*all_dir_padding;
 		var building_div_content_height = div_height - 2*all_dir_padding;
-		var building_div_left_padding = div_width - building_div_all_width + all_dir_padding ;
+		//var building_div_left_padding = div_width - building_div_all_width + all_dir_padding ;
+		var building_div_left_padding = all_dir_padding ;
 
 		var building_div = div.append("div").attr("id","building_map_div").style("position","absolute")
 	    					.style("top",all_dir_padding + 'px')
@@ -163,7 +164,8 @@ var smallmaps_view = {
 		var floor_div_all_width = div_width*0.1;
 		var floor_div_content_width = floor_div_all_width - 2*all_dir_padding;
 		var floor_div_content_height = (div_height - 4*all_dir_padding)/3;
-		var floor_div_left_padding = div_width - building_div_all_width - floor_div_all_width + 2*all_dir_padding;
+		//var floor_div_left_padding = div_width - building_div_all_width - floor_div_all_width + 2*all_dir_padding;
+		var floor_div_left_padding = building_div_all_width// + 2*all_dir_padding;
 
 		var floor_span = div.selectAll("span")
 			.data([
@@ -257,12 +259,13 @@ var smallmaps_view = {
 	    var content_width = width - 2*all_dir_padding;
 	    var top_padding = all_dir_padding;
 	    var height = (div_height - 4*all_dir_padding)/3;
+	    var left_padding = building_div_all_width + floor_div_all_width - all_dir_padding;
 
 	    var F3_map_graph_div = div.append("div")
 	    					.attr("id","F3_map_graph_div")
 	    					.style("top",all_dir_padding + 'px')
 	    					.style("height",height + 'px')
-	    					.style("left",all_dir_padding + 'px')
+	    					.style("left",left_padding + 'px')
 	    					.style("width",width + 'px')
 	    					.style("position","absolute")
 
@@ -270,7 +273,7 @@ var smallmaps_view = {
 	    					.attr("id","F2_map_graph_div")
 	    					.style("top",(all_dir_padding+height+all_dir_padding) + 'px')
 	    					.style("height",height + 'px')
-	    					.style("left",all_dir_padding + 'px')
+	    					.style("left",left_padding + 'px')
 	    					.style("width",width + 'px')
 	    					.style("position","absolute")
 
@@ -278,7 +281,7 @@ var smallmaps_view = {
 	    					.attr("id","F1_map_graph_div")
 	    					.style("top",(all_dir_padding+height+all_dir_padding+height+all_dir_padding) + 'px')
 	    					.style("height",height + 'px')
-	    					.style("left",all_dir_padding + 'px')
+	    					.style("left",left_padding + 'px')
 	    					.style("width",width + 'px')
 	    					.style("position","absolute")
 
@@ -512,8 +515,8 @@ var smallmaps_view = {
 		function _render_radarchart(data,place_name,raw_timestamp,center_x,center_y)
 		{
 			var radius = DATA_CENTER.VIEW_COLLECTION.smallmaps_view.RADARCHART_GLYPH_RADIUS;
-			var width = 4*radius;
-			var height = 4*radius;
+			var width = 3*radius;
+			var height = 3*radius;
 
 			var innerRadius = smallmaps_view.HVAC_ZONE_DOT_RADIUS;
 			var degree = 360/data.length;
@@ -583,6 +586,7 @@ var smallmaps_view = {
 			      	})
 			      	.attr("d", arc)
 			      	.each(function(d,i){
+			      		
 			      		$(this).tipsy({
 							gravity: "s",
 							html:true,
@@ -600,6 +604,7 @@ var smallmaps_view = {
 							},
 							trigger: 'manual',
 						});
+						/*
 			      		var normalized_value = 0.;
 				  		if (typeof(d.data.value)!= "undefined")
 				  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
@@ -607,6 +612,7 @@ var smallmaps_view = {
 				  		{
 				  			$(this).tipsy("show");
 				  		}
+				  		*/
 			      	})
 			//a.2) update的内层path的enter部分      	
 			update_div_g_enterpath
@@ -630,15 +636,18 @@ var smallmaps_view = {
 			      		return 1;
 			      	})
 					.on("mouseover",function(d,i){
+						
 						$(this).tipsy()
 	                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
 	                        ._highlight_communication_mouseover_linebtn(d.data.name);
+	                        
 	                })
 	                .on("mouseout",function(d,i){
 	                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
 	                        ._highlight_communication_mouseout_linebtn();
 	                })
 			      	.each(function(d,i){
+			      		
 			      		$(this).tipsy({
 							gravity: "s",
 							html:true,
@@ -656,6 +665,7 @@ var smallmaps_view = {
 							},
 							trigger: 'manual',
 						});
+						/*
 			      		var normalized_value = 0.;
 				  		if (typeof(d.data.value)!= "undefined")
 				  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
@@ -663,6 +673,7 @@ var smallmaps_view = {
 				  		{
 				  			$(this).tipsy("show");
 				  		}
+				  		*/
 			      	})
 			//a.3) update的内层path的exit部分          	
 			update_div_g_exitpath.remove()
@@ -718,15 +729,18 @@ var smallmaps_view = {
 			      		return 1;
 			      	})
 					.on("mouseover",function(d,i){
+						
 						$(this).tipsy()
 	                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
 	                        ._highlight_communication_mouseover_linebtn(d.data.name);
+	                        
 	                })
 	                .on("mouseout",function(d,i){
 	                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
 	                        ._highlight_communication_mouseout_linebtn();
 	                })
 			      	.each(function(d,i){
+			      		
 			      		$(this).tipsy({
 							gravity: "s",
 							html:true,
@@ -744,6 +758,7 @@ var smallmaps_view = {
 							},
 							trigger: 'manual',
 						});
+						/*
 			      		var normalized_value = 0.;
 				  		if (typeof(d.data.value)!= "undefined")
 				  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
@@ -751,6 +766,7 @@ var smallmaps_view = {
 				  		{
 				  			$(this).tipsy("show");
 				  		}
+				  		*/
 			      	})
 			/*
 			//b. enter的外层path的处理模板(只需要考虑path的enter部分,因为div是新enter的,path不可能存在update和exit部分)	         	

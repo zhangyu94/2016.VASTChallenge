@@ -3,6 +3,7 @@ var mdsgraph_view = {
 
 	obsUpdate:function(message, data)
 	{
+		/*
 		if (message == "display:mdsgraph_view")
         {
             $("#"+this.mdsgraph_view_DIV_ID).css("display","block");
@@ -50,6 +51,7 @@ var mdsgraph_view = {
         			.classed("selected_filter_timerange-hided-mdsgraph_circle",false);
         	}
         }
+        */
 	},
 	render:function(divID)
 	{
