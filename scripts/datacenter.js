@@ -385,6 +385,13 @@ var DATA_CENTER = {
 
 			person[pID]['fixRecords'].push(records);
 		}
+		person[pID]['fixRecords'].sort(function(a, b){
+				var keyA = a.timestamp;
+				var keyB = b.timestamp;
+				if(keyA < keyB) return -1;
+				if(keyA > keyB) return 1;
+				return 0;
+		});
 		// console.log(DATA_CENTER.derived_data['person']);
 		var proxMobileOut = DATA_CENTER.original_data["proxMobileOut-MC2.csv"];
 		for(var i=0;i<proxMobileOut.length;i++) {
@@ -406,6 +413,15 @@ var DATA_CENTER = {
 
 			person[pID]['mobileRecords'].push(records);
 		}
+
+		person[pID]['mobileRecords'].sort(function(a, b){
+			var keyA = a.timestamp;
+			var keyB = b.timestamp;
+			if(keyA < keyB) return -1;
+			if(keyA > keyB) return 1;
+			return 0;
+		});
+
 		// console.log(DATA_CENTER.derived_data['person']);
 	},
 	update_traj_endtime:function() {
@@ -481,7 +497,7 @@ var DATA_CENTER = {
 		}
 
 	},
-	cal_derive_data : function(){
+	cal_derive_data: function(){
 		this.cal_person_traj();
 		this.update_traj_endtime();
 	},
