@@ -53,6 +53,9 @@ function main(){
 			"hide:ganttchart_view",
 			"hide:histogram_view",
 
+			"display:trajmonitor_view",
+			"hide:trajmonitor_view",
+
 			"display:timeline_view",
 			"hide:timeline_view",
 			
@@ -138,7 +141,7 @@ function main(){
 		{		
 			var displayed_view = {
 				"HVACgraph_attrbtn_view":undefined,
-				"linechart_linebtn_view":undefined,
+				//"linechart_linebtn_view":undefined,
 				"linechart_render_view":undefined,
 
 				"smallmaps_view":undefined,
@@ -150,7 +153,7 @@ function main(){
 		{
 			var displayed_view = {
 				"HVACgraph_attrbtn_view":undefined,
-				"linechart_linebtn_view":undefined,
+				//"linechart_linebtn_view":undefined,
 				"mdsgraph_view":undefined,
 
 				"smallmaps_view":undefined,
@@ -162,10 +165,19 @@ function main(){
 		{
 			var displayed_view = {
 				"HVACgraph_attrbtn_view":undefined,
-				"linechart_linebtn_view":undefined,
+				//"linechart_linebtn_view":undefined,
 				"relationshipgraph_view":undefined,
 
 				"smallmaps_view":undefined,
+				"timeline_view":undefined,	
+			};
+			_hide_and_display_view(displayed_view);
+		}
+		else if (view_collection_name == "trajmonitorview")
+		{
+			var displayed_view = {
+				"trajmonitor_view":undefined,
+
 				"timeline_view":undefined,	
 			};
 			_hide_and_display_view(displayed_view);

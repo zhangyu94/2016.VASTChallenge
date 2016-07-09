@@ -3,7 +3,9 @@ var HVACgraph_attrbtn_view = {
 	DIV_CLASS_OF_SMALLSPANS:"HVACattrbtn-span-div_of_smallspans",
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 
+	SMALL_SPAN_WIDTH : 4,
 	rendered_attrbtn_set : [],
+
 
 	obsUpdate:function(message, data)
 	{
@@ -184,8 +186,9 @@ var HVACgraph_attrbtn_view = {
 		var update_div = update.select("div");
 		var update_div_span = update_div.select("span")
                 .text(function(d,i){
-                	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[new_attrbtn_list[i]].abbreviation;
-                	var buttonLabel = compressed_string.substring(0,rect_width/13);
+                	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[new_attrbtn_list[i]].lv2_abbreviation;
+                	//var buttonLabel = compressed_string.substring(0,rect_width/13);
+                	var buttonLabel = compressed_string;
                     return buttonLabel;
                 });
         
@@ -229,7 +232,7 @@ var HVACgraph_attrbtn_view = {
 					d3.select("body").selectAll("."+ compressed_attr_name + "-HVACattrbtn-span-smallspans").remove();
 					if (d3.select(this).classed("click_selected-HVACattrbtn-span"))
 					{
-						var piece_width = 8;
+						var piece_width = HVACgraph_attrbtn_view.SMALL_SPAN_WIDTH;
 						var height = $(this).height();
 						var left = $(this).offset().left;
 						var top = $(this).offset().top-height;
@@ -322,8 +325,9 @@ var HVACgraph_attrbtn_view = {
                     return buttonValue;
                 })
                 .text(function(d,i){
-                	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[new_attrbtn_list[i]].abbreviation;
-                	var buttonLabel = compressed_string.substring(0,rect_width/13);
+                	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[new_attrbtn_list[i]].lv2_abbreviation;
+                	//var buttonLabel = compressed_string.substring(0,rect_width/13);
+                	var buttonLabel = compressed_string;
                     return buttonLabel;
                 })
 
@@ -346,7 +350,7 @@ var HVACgraph_attrbtn_view = {
 			d3.select("body").selectAll("."+ compressed_attr_name + "-HVACattrbtn-span-smallspans").remove();
 			if (d3.select(this).classed("click_selected-HVACattrbtn-span"))
 			{
-				var piece_width = 8;
+				var piece_width = HVACgraph_attrbtn_view.SMALL_SPAN_WIDTH;
 				var height = $(this).height();
 				var left = $(this).offset().left;
 				var top = $(this).offset().top-height;
@@ -362,7 +366,7 @@ var HVACgraph_attrbtn_view = {
 		    	html:true,
 		    	title:function(){
 		    		var d = this.__data__;
-		    		var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d].abbreviation;
+		    		var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d].lv2_abbreviation;
 		    		var content = 	"attr: " + "<span style='color:red'>" + compressed_string + "</span>";
 		    		return content;
 		    	},
@@ -437,7 +441,7 @@ var HVACgraph_attrbtn_view = {
 					.style("border","solid 1px #111")
 					.style("cursor","pointer")
 					.style("display","inline-block")
-					.style("margin","1px")
+					.style("margin","0.5px")
 					.on("mouseover",function(d,i){
 
 						_highlight_communication(attr_name);

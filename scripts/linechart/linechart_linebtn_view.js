@@ -6,6 +6,7 @@ var linechart_linebtn_view = {
 
 	obsUpdate:function(message, data)
 	{
+		/*
 		if (message == "display:linechart_linebtn_view")
 		{
 			$("#"+this.linechart_linebtn_view_DIV_ID).css("display","block");
@@ -71,6 +72,7 @@ var linechart_linebtn_view = {
 	        		.classed("mouseover_hided-HVAClinechartbtn-span",false)
         	}
         }
+        */
 
 	},
 

@@ -93,7 +93,7 @@ body {
 }
 #linechartview-collection > .linechartContainer > #HVACgraph-attr-btn{
 	position:absolute;
-	height:7%;
+	height:15%;
 	width:100%;
 	float: left;
 	border: solid #ccc 1px;
@@ -102,6 +102,7 @@ body {
 	/*overflow-y:scroll;内容多时提供滚轮*/
 	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
 }
+/*
 #linechartview-collection > .linechartContainer > #linechart-line-btn{
 	position:absolute;
 	top:7%;
@@ -111,13 +112,14 @@ body {
 	border: solid #ccc 1px;
 	border-radius: 5px;
 	background-color: #f8f8f8;
-	overflow-y:scroll;/*内容多时提供滚轮*/
-	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
+	overflow-y:scroll;
+	pointer-events:auto;
 }
+*/
 #linechartview-collection > .linechartContainer > #linechart-renderplace{
 	position:absolute;
-	top:14%;
-	height:86%;
+	top:15%;
+	height:85%;
 	width:100%;
 	float: left;
 	border: solid #ccc 1px;
@@ -126,20 +128,22 @@ body {
 	overflow-y:scroll;/*内容多时提供滚轮*/
 	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
 }
+/*
 #linechartview-collection > .linechartContainer > #HVAC-mdsgraph{
 	position:absolute;
-	top:14%;
-	height:86%;
+	top:15%;
+	height:85%;
 	width:100%;
 	float: left;
 	border: solid #ccc 1px;
 	border-radius: 5px;
-	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
+	pointer-events:auto;
 }
+*/
 #linechartview-collection > .linechartContainer > #HVAC-relationshipgraph{
 	position:absolute;
-	top:14%;
-	height:86%;
+	top:15%;
+	height:85%;
 	width:100%;
 	float: left;
 	border: solid #ccc 1px;
@@ -215,6 +219,33 @@ body {
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
 #timelineview-collection > .timelineContainer > #timeline-renderplace{
+	position:absolute;
+	height:100%;
+	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
+}
+
+/*trajmonitor视图*/
+#trajmonitor-collection {
+	position:absolute;
+	top:9%;
+	height:80%;
+	width:99%;
+	float: left;
+	pointer-events:none;/*大框是始终存在的，不能点的*/
+}
+#trajmonitor-collection > .trajmonitorContainer {
+	position:absolute;
+	height:100%;
+	width:100%;
+	float: left;
+	pointer-events:none;/*大框是始终存在的，不能点的*/
+}
+#trajmonitor-collection > .trajmonitorContainer > #trajmonitor-renderplace{
 	position:absolute;
 	height:100%;
 	width:100%;

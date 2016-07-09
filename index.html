@@ -23,6 +23,8 @@
 	<link rel="stylesheet" href="css/mdsgraph/mdsgraph_view.css">
 	<!--5. relationshipgraph相关的css-->
 	<link rel="stylesheet" href="css/relationshipgraph/relationshipgraph_view.css">
+	<!--6. trajmonitor相关的css-->
+	<link rel="stylesheet" href="css/trajmonitor/trajmonitor_view.css">
 	<style>
 
 
@@ -69,6 +71,8 @@
 <script src="scripts/relationshipgraph/relationshipgraph_view.js"></script>
 <!--6. timeline相关的view-->
 <script src="scripts/timeline/timeline_view.js"></script>
+<!--7. trajmonitor相关的view-->
+<script src="scripts/trajmonitor/trajmonitor_view.js"></script>
 
 <!--datacenter-->
 <script src="scripts/datacenter.js"></script>
@@ -91,7 +95,6 @@
 					<select name="displayinterval-btn" id="displayinterval-btn">
 					    <option>20ms</option>
 					    <option>100ms</option>
-					    <option>500ms</option>
 					    <option selected="selected">1000ms</option>
 	    			</select>
 				</ul>
@@ -102,9 +105,7 @@
 					    <option>X 15</option>
 					    <option>X 60</option>
 					    <option>X 300</option>
-					    <option selected="selected">X 3600</option>
-					    <option>X 18000</option>
-					    <option>X 86400</option>
+					    <option selected="selected">X 3000</option>
 	    			</select>
 				</ul>
 			</div>
@@ -112,9 +113,10 @@
 			<div class="panelContainer">
 				<ul class="pagination">
 					<li class="" id="linechartviewli"><a id="linechartview">linechart</a></li>
-					<li class="" id="mdsgraphviewli"><a id="mdsgraphview">mdsgraph</a></li>
+					<!--<li class="" id="mdsgraphviewli"><a id="mdsgraphview">mdsgraph</a></li>-->
 					<li class="" id="relationshipgraphviewli"><a id="relationshipgraphview">relationshipgraph</a></li>
 					<li class="" id="trajectoryviewli"><a id="trajectoryview">trajectory</a></li>
+					<li class="" id="trajmonitorviewli"><a id="trajmonitorview">trajmonitor</a></li>
 				</ul>
 			</div>
 
@@ -140,8 +142,10 @@
 			</div>
 			<div id="linechart-renderplace">
 			</div>
+		
 			<div id="HVAC-mdsgraph">
 			</div>
+		
 			<div id="HVAC-relationshipgraph">
 			</div>
 		</div>
@@ -163,6 +167,14 @@
 	<div class="view-collection" id="timelineview-collection">
 		<div class="timelineContainer">
 			<div id="timeline-renderplace">
+			</div>
+		</div>
+	</div>
+
+	<!--5. trajmonitor视图相关的-->
+	<div class="view-collection" id="trajmonitor-collection">
+		<div class="trajmonitorContainer">
+			<div id="trajmonitor-renderplace">
 			</div>
 		</div>
 	</div>
