@@ -371,9 +371,19 @@ var DATA_CENTER = {
 			pID = pID.trim();
 			if(! (pID in person)) {
 				// console.log(pID);
-				person[pID] = {"fix":[],"mobile":[]};
+				person[pID] = {"fixRecords":[],"mobileRecords":[]};
 			}
-			person[pID]['fix'].push(proxOut[i]);
+
+			var records = {};
+			var t = new Date(proxOut[i]['timestamp']);
+			records['prox-id'] = pID;
+			records['floor'] = proxOut[i][' floor'].trim();
+			records['timestamp'] = t;
+			records['zone'] = proxOut[i][' zone'].trim();
+			records['type'] = proxOut[i][' type'].trim();
+			records['day'] = t.getFullYear() + "-" + (t.getMonth() + 1) + '-' +(t.getDate());
+
+			person[pID]['fixRecords'].push(records);
 		}
 		// console.log(DATA_CENTER.derived_data['person']);
 		var proxMobileOut = DATA_CENTER.original_data["proxMobileOut-MC2.csv"];
@@ -382,9 +392,19 @@ var DATA_CENTER = {
 			pID = pID.trim();
 			if(! (pID in person)) {
 				// console.log(pID);
-				person[pID] = {"fix":[],"mobile":[]};
+				person[pID] = {"fixRecords":[],"mobileRecords":[]};
 			}
-			person[pID]['mobile'].push(proxOut[i]);
+						var records = {};
+
+			var t = new Date(proxOut[i]['timestamp']);
+			records['prox-id'] = pID;
+			records['floor'] = proxOut[i][' floor'].trim();
+			records['timestamp'] = t;
+			records['zone'] = proxOut[i][' zone'].trim();
+			records['type'] = proxOut[i][' type'].trim();
+			records['day'] = t.getFullYear() + "-" + (t.getMonth() + 1) +'-' +(t.getDate());
+
+			person[pID]['mobileRecords'].push(records);
 		}
 		// console.log(DATA_CENTER.derived_data['person']);
 
