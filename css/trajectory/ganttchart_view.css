@@ -74,6 +74,10 @@ stroke: none;
 shape-rendering: crispEdges;  /* Round any decimal pixels so it'll render nicely */
 }
 
+.axis text {
+    font-size: 10px !important;
+}
+
 .border-rect{
     fill:none;
     stroke: black;
