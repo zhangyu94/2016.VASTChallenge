@@ -3,34 +3,35 @@
 	stroke-width: 2;
 }
 .floor-smallmaps-rect{
-    fill: #6070FF;
+    fill: #8090FF;
 }
 .building-smallmaps-rect{
-    fill: #AA50FF;
+    fill: #CA70FF;
 }
 
 .click_selected-smallmaps-rect{
-	fill: #FF7060;
+
 }
 .mouseover_hided-smallmaps-rect{
-	opacity: 0.5;
+	opacity: 0.2;
 }
 
 
 .smallmaps-HVACzone-circle{
 	stroke: #111;
 	stroke-width: 2;
+
 }
 .ordinary-smallmaps-HVACzone-circle{
-    fill: #74c476;
+    fill: #94E496;
 }
 .hazium-smallmaps-HVACzone-circle{
-    fill: green;
+    fill: #64D4C6;
 }
 
 .click_selected-smallmaps-HVACzone-circle{
-	fill: #FF7060;
+
 }
 .mouseover_hided-smallmaps-HVACzone-circle{
-	opacity: 0.5;
+	opacity: 0.3;
 }

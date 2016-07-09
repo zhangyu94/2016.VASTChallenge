@@ -9,23 +9,22 @@
 }
 
 .HVACzone_oridinary_attr-HVACattrbtn-span{
-    background: #74c476;
+    background: #94E496;
 }
 .HVACzone_hazium-HVACattrbtn-span{
-    background: green;
+    background: #64D4C6;
 }
 .building_attr-HVACattrbtn-span{
-    background: #AA50FF;
+    background: #CA70FF;
 }
 .floor_attr-HVACattrbtn-span{
-    background: #6070FF;
+    background: #8090FF;
 }
 
 .click_selected-HVACattrbtn-span{
-    background: #FF7060;
 }
 .mouseover_hided-HVACattrbtn-span{
-    opacity: 0.5;
+    opacity: 0.2;
 }
 
 

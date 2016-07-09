@@ -121,12 +121,16 @@ var smallmaps_view = {
 				var index = selected_building_set.indexOf(d.name);
 				if (index >=0 )
 				{
+					var new_color = d3.rgb(d3.select(this).style("fill")).brighter(1);
+					d3.select(this).style("fill",new_color)
 					d3.select(this).classed("click_selected-smallmaps-rect",false);
 					selected_building_set.splice(index,1);
 					DATA_CENTER.set_global_variable("selected_building_set",selected_building_set);
 				}
 				else
 				{
+					var new_color = d3.rgb(d3.select(this).style("fill")).darker(1);
+					d3.select(this).style("fill",new_color)
 					d3.select(this).classed("click_selected-smallmaps-rect",true);			
 					DATA_CENTER.set_global_variable("selected_building_set",selected_building_set.concat(d.name));
 
@@ -226,12 +230,16 @@ var smallmaps_view = {
 					var index = selected_floor_set.indexOf(d.name);
 					if (index >=0 )
 					{
+						var new_color = d3.rgb(d3.select(this).style("fill")).brighter(1);
+						d3.select(this).style("fill",new_color)
 						d3.select(this).classed("click_selected-smallmaps-rect",false);
 						selected_floor_set.splice(index,1);
 						DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set);
 					}
 					else
 					{
+						var new_color = d3.rgb(d3.select(this).style("fill")).darker(1);
+						d3.select(this).style("fill",new_color)
 						d3.select(this).classed("click_selected-smallmaps-rect",true);
 						DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
 					}
@@ -451,12 +459,16 @@ var smallmaps_view = {
 									
 						if (index >=0 )
 						{
+							var new_color = d3.rgb(d3.select(this).style("fill")).brighter(1);
+							d3.select(this).style("fill",new_color)
 							d3.select(this).classed("click_selected-smallmaps-HVACzone-circle",false);
 							selected_HVACzone_set.splice(index,1);
 							DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set);
 						}
 						else
 						{
+							var new_color = d3.rgb(d3.select(this).style("fill")).darker(1);
+							d3.select(this).style("fill",new_color)
 							d3.select(this).classed("click_selected-smallmaps-HVACzone-circle",true);
 							DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set.concat(d.name));
 						}

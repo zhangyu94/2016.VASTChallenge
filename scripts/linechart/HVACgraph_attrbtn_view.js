@@ -219,6 +219,8 @@ var HVACgraph_attrbtn_view = {
 					var index = selected_attr_set.indexOf(attr_name);
 					if (index >=0 )
 					{
+						var new_color = d3.rgb(d3.select(this).style("background-color")).brighter(1);
+						d3.select(this).style("background-color",new_color)
 						d3.select(this).classed("click_selected-HVACattrbtn-span",false);
 
 						selected_attr_set.splice(index,1);
@@ -226,6 +228,8 @@ var HVACgraph_attrbtn_view = {
 					}
 					else
 					{
+						var new_color = d3.rgb(d3.select(this).style("background-color")).darker(1)
+						d3.select(this).style("background-color",new_color)
 						d3.select(this).classed("click_selected-HVACattrbtn-span",true);
 
 						DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set.concat(attr_name));
