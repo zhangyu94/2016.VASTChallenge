@@ -193,8 +193,9 @@ var linechart_render_view = {
                         var flag_find = false;
                         for (var j=0;j<existing_series.length;++j)
                         {
-                            var cur_name = existing_series[j].name;//cur_name是chart的压缩过的名字
-                            if (cur_name == linechart_render_view._compress_full_attr_name(attr))
+                            var cur_name = existing_series[j].name;//cur_name是chart的名字,也是未压缩的
+
+                            if (cur_name == attr)
                             {
                                 flag_find = true;
                                 break;
@@ -263,7 +264,7 @@ var linechart_render_view = {
                         for (var attr in attr_name_set)
                         {
                             var cur_name = existing_series[j].name;
-                            if (cur_name == linechart_render_view._compress_full_attr_name(attr))
+                            if (cur_name == attr)
                             {
                                 flag_find = true;
                                 break;
@@ -274,9 +275,6 @@ var linechart_render_view = {
                             $(this).highcharts().series[j].remove();
                         }
                     }
-
-
-
                 })
 
 
@@ -304,6 +302,10 @@ var linechart_render_view = {
         //小按钮们
         //1). 带着名字的大框
         var enter_spans_btnspan = enter_spans.append("span")
+                .style("background-color",function(d,i){
+                    var color = HVACgraph_attrbtn_view._get_attr_color(d.name);
+                    return color;
+                })
                 .attr("class","HVAClinechart-btntitle-span")
                 .attr("id",function(d,i){
                     //id中不能带空格，否则后面选不中
@@ -319,9 +321,25 @@ var linechart_render_view = {
                 gravity: "s",
                 html:true,
                 title:function(){
+                    /*
                     var d = this.__data__;
+
                     var compressed_attr_name = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
                     return compressed_attr_name;
+                    */
+                    var d = this.__data__;
+
+                    var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
+                    var content =   "<span>" + compressed_string + "</span>";
+                    content += "</br>" +"type: ";
+                    var attr_type = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].type;
+                    for (var i=0;i<attr_type.length;++i)
+                    {
+                        var cur_type = attr_type[i];
+                        content += "<span style='color:" + DATA_CENTER.GLOBAL_STATIC.attribute_type_color_mapping[cur_type] +
+                                        "'>" + cur_type +"</span> ";
+                    }
+                    return content;
                 },
             });
         });
@@ -476,13 +494,11 @@ var linechart_render_view = {
                 },
                 events:{
                     mouseOver:function(){
-                        console.log("over",this.name)
                         var name = this.name;
                         DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                             ._highlight_communication_mouseover_linebtn(name);
                     },
                     mouseOut:function(){
-                        console.log("out",this.name)
                         var name = this.name;
                         DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                             ._highlight_communication_mouseout_linebtn();

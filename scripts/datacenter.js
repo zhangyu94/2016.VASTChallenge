@@ -175,7 +175,7 @@ var DATA_CENTER = {
 			"BATH_EXHAUST:Fan Power":{
 				abbreviation:"bath fan power",
 				lv2_abbreviation:"bathfan pwr",
-				type:["air","electricity"],
+				type:["electricity","air"],
 			},
 			"VAV_SYS AIR LOOP INLET Mass Flow Rate":{
 				abbreviation:"return air rate",
@@ -185,7 +185,7 @@ var DATA_CENTER = {
 			"VAV_SYS AIR LOOP INLET Temperature":{
 				abbreviation:"return air temperature",
 				lv2_abbreviation:"rtn air temp",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"VAV Availability Manager Night Cycle Control Status":{
 				abbreviation:"control status",
@@ -195,12 +195,12 @@ var DATA_CENTER = {
 			"VAV_SYS COOLING COIL Power":{
 				abbreviation:"cooling power",
 				lv2_abbreviation:"cool pwr",
-				type:["electricity","temperature"],
+				type:["temperature","electricity"],
 			},
 			"VAV_SYS HEATING COIL Power":{
 				abbreviation:"heating power",
 				lv2_abbreviation:"heat pwr",
-				type:["electricity","temperature"],
+				type:["temperature","electricity"],
 			},
 			"VAV_SYS SUPPLY FAN OUTLET Mass Flow Rate":{
 				abbreviation:"output air rate",
@@ -210,12 +210,12 @@ var DATA_CENTER = {
 			"VAV_SYS SUPPLY FAN OUTLET Temperature":{
 				abbreviation:"output air temperature",
 				lv2_abbreviation:"Ot air temp",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"VAV_SYS SUPPLY FAN:Fan Power":{
 				abbreviation:"fan power",
 				lv2_abbreviation:"fan pwr",
-				type:["air","electricity"],
+				type:["electricity","air"],
 			},
 			"VAV_SYS Outdoor Air Flow Fraction":{
 				abbreviation:"outdoor air percent",
@@ -230,7 +230,7 @@ var DATA_CENTER = {
 			"COOL Schedule Value":{
 				abbreviation:"air cool setpoint",
 				lv2_abbreviation:"air cool pnt",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"DELI-FAN Power":{
 				abbreviation:"deli fan power",
@@ -255,7 +255,7 @@ var DATA_CENTER = {
 			"HEAT Schedule Value":{
 				abbreviation:"air heat setpoint",
 				lv2_abbreviation:"air heat pnt",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"Pump Power":{
 				abbreviation:"pump power",
@@ -265,22 +265,22 @@ var DATA_CENTER = {
 			"Water Heater Setpoint":{
 				abbreviation:"water heater setpoint",
 				lv2_abbreviation:"wtr heat pnt",
-				type:["water","temperature"],
+				type:["temperature","water"],
 			},
 			"Water Heater Gas Rate":{
 				abbreviation:"water heater power",
 				lv2_abbreviation:"wtr heat pwr",
-				type:["water","temperature","electricity"],
+				type:["temperature","electricity","water"],
 			},
 			"Water Heater Tank Temperature":{
 				abbreviation:"water heater temperature",
 				lv2_abbreviation:"wtr heat temp",
-				type:["water","temperature"],
+				type:["temperature","water"],
 			},
 			"Loop Temp Schedule":{
 				abbreviation:"water loop setpoint",
 				lv2_abbreviation:"wtr loop pnt",
-				type:["water","temperature"],
+				type:["temperature","water"],
 			},
 			"Supply Side Inlet Mass Flow Rate":{
 				abbreviation:"input water rate",
@@ -290,17 +290,17 @@ var DATA_CENTER = {
 			"Supply Side Inlet Temperature":{
 				abbreviation:"input water temperature",
 				lv2_abbreviation:"In wtr temp",
-				type:["water","temperature"],
+				type:["temperature","water"],
 			},
 			"Supply Side Outlet Temperature":{
 				abbreviation:"output water temperature",
 				lv2_abbreviation:"Ot wtr temp",
-				type:["water","temperature"],
+				type:["temperature","water"],
 			},
 			"REHEAT COIL Power":{
 				abbreviation:"air reheat power",
 				lv2_abbreviation:"air heat pwr",
-				type:["air","temperature","electricity"],
+				type:["temperature","electricity","air"],
 			},
 			"RETURN OUTLET CO2 Concentration":{
 				abbreviation:"return CO2 concentration",
@@ -315,7 +315,7 @@ var DATA_CENTER = {
 			"SUPPLY INLET Temperature":{
 				abbreviation:"input air temperature",
 				lv2_abbreviation:"In air temp",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"VAV REHEAT Damper Position":{
 				abbreviation:"input air damper",
@@ -340,17 +340,17 @@ var DATA_CENTER = {
 			"Thermostat Temp":{
 				abbreviation:"air temperature",
 				lv2_abbreviation:"air temp",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"Thermostat Cooling Setpoint":{
 				abbreviation:"air cool threshold",
 				lv2_abbreviation:"air cool pnt",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"Thermostat Heating Setpoint":{
 				abbreviation:"air heat threshold",
 				lv2_abbreviation:"air heat pnt",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"Total Electric Demand Power":{
 				abbreviation:"total power",
@@ -368,6 +368,22 @@ var DATA_CENTER = {
 				type:["hazium"],
 			},
 		},
+		attribute_type_color_mapping : {
+			"hazium" : "#86F6E8",
+			"temperature" : "#FF9080",
+			"electricity" : "#FFFF70",
+			"air" : "#FFFFFF",
+			"water" : "#70B0FF",
+			"others" : "#D0A0E0",
+		},
+		attribute_type_priority : [
+			"hazium",
+			"temperature",
+			"electricity",
+			"air",
+			"water",
+			"others",
+		],
 		floor_name_number_mapping : {
 			"F_1":1,
 			"F_2":2,

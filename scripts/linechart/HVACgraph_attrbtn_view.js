@@ -195,21 +195,23 @@ var HVACgraph_attrbtn_view = {
                     return buttonLabel;
                 });
         
-			
+		
+
+		
 
 		var enter = update.enter();
 		var enter_span = enter.insert("span")
 				//.style("width",rect_width+"px")
+				.style("background-color",function(d,i){
+					var color = HVACgraph_attrbtn_view._get_attr_color(d);
+					return color;
+				})
 				.attr("class",function(d,i){
 					var attr_type_class =  HVACgraph_attrbtn_view._cal_attr_type(d) + "-HVACattrbtn-span";
 					return "HVACattrbtn-span" + " " +attr_type_class;
 				})
 				.attr("id",function(d,i){
 					return "HVACattrbtn-span-" + linechart_render_view._compress_string(d);
-				})
-				.attr("value",function(d,i){
-					var buttonValue = new_attrbtn_list[i];
-					return buttonValue;
 				})
 				.on("click",function(d,i){
 					var attr_name = d;
@@ -266,10 +268,6 @@ var HVACgraph_attrbtn_view = {
                 .attr("style","position:relative");
         var enter_span_div_span = enter_span_div.append("span")
                 .attr("class","object_title_span")
-                .attr("value",function(d,i){
-                    var buttonValue = new_attrbtn_list[i];
-                    return buttonValue;
-                })
                 .text(function(d,i){
                 	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[new_attrbtn_list[i]].lv2_abbreviation;
                 	//var buttonLabel = compressed_string.substring(0,rect_width/13);
@@ -313,8 +311,17 @@ var HVACgraph_attrbtn_view = {
 		    	html:true,
 		    	title:function(){
 		    		var d = this.__data__;
+
 		    		var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d].lv2_abbreviation;
-		    		var content = 	"attr: " + "<span style='color:red'>" + compressed_string + "</span>";
+		    		var content = 	"<span>" + compressed_string + "</span>";
+		    		content += "</br>" +"type: ";
+		    		var attr_type = DATA_CENTER.GLOBAL_STATIC.attribute_description[d].type;
+		    		for (var i=0;i<attr_type.length;++i)
+		    		{
+		    			var cur_type = attr_type[i];
+		    			content += "<span style='color:" + DATA_CENTER.GLOBAL_STATIC.attribute_type_color_mapping[cur_type] +
+		    							"'>" + cur_type +"</span> ";
+		    		}
 		    		return content;
 		    	},
 		    });
@@ -550,4 +557,22 @@ var HVACgraph_attrbtn_view = {
 		//3.取消高亮linechart
 		DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
 	},
+
+	_get_attr_color:function(general_attr_name)
+	{
+		var attr_type = DATA_CENTER.GLOBAL_STATIC.attribute_description[general_attr_name].type;
+		var color = "#000000";
+
+		var attribute_type_priority = DATA_CENTER.GLOBAL_STATIC.attribute_type_priority
+		for (var i=0;i<attribute_type_priority.length;++i)
+		{
+			var cur_type = attribute_type_priority[i];
+			if (attr_type.indexOf(cur_type)>=0)
+			{
+				color = DATA_CENTER.GLOBAL_STATIC.attribute_type_color_mapping[cur_type];
+				break;
+			}
+		}
+		return color;
+	}
 }
