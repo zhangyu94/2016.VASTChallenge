@@ -1,6 +1,8 @@
 var trajmonitor_view = {
 	trajmonitor_view_DIV_ID : "trajmonitor-renderplace",
     
+    startTime : undefined,
+    endTime : undefined,
 
 	obsUpdate:function(message, data)
 	{
@@ -19,9 +21,12 @@ var trajmonitor_view = {
             $("#"+this.trajmonitor_view_DIV_ID).css("display","none");
         }
         if (message == "set:selected_filter_timerange"){
-        	var timeRange=DATA_CENTER.global_variable.selected_filter_timerange
+        	var timeRange=data
+
         	this.startTime=new Date(timeRange.min)
         	this.endTime=new Date(timeRange.max)
+        	//console.log(new Date(timeRange.min))
+        	//console.log(new Date(timeRange.max))
         	this.render(this.trajmonitor_view_DIV_ID)
         }
 	},
@@ -41,8 +46,8 @@ var trajmonitor_view = {
 	    
 	    //console.log(person_array)
 		
-		console.log(this.startTime)
-		console.log(this.endTime)
+		//console.log(this.startTime)
+		//console.log(this.endTime)
 		var startTime=this.startTime
 		var endTime=this.endTime
 	    $('#'+divID).css('overflow','auto')

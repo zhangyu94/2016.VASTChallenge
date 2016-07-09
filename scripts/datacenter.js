@@ -423,7 +423,7 @@ var DATA_CENTER = {
 			}
 			fixR[fixR.length-1].endtime = fixR[fixR.length-1].timestamp;
 		}
-		console.log(DATA_CENTER.derived_data['person']);
+		//console.log(DATA_CENTER.derived_data['person']);
 	},
 	update_traj_endtime_signle: function(pID) {
 		var person = DATA_CENTER.derived_data['person'];

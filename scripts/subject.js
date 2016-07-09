@@ -21,6 +21,7 @@ var SUBJECT = {
         //console.log("Subject: " + message + ' post!' );
 
         for (var i = 0; i < this.observers.length; i++) {
+          //  console.log(data)
             if (this.observers[i].obsUpdate)
                 this.observers[i].obsUpdate(message, data);
         }

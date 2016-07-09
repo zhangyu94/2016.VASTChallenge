@@ -229,7 +229,7 @@ var timeline_view = {
 
 	    var start_time = xyAxis_data[0][0];
         var end_time = xyAxis_data[xyAxis_data.length-1][0];
-       // console.log(start_time)
+       //console.log(start_time)
         //console.log(end_time)
         DATA_CENTER.set_global_variable("selected_filter_timerange",{min:start_time,max:end_time})
         //console.log(DATA_CENTER.global_variable.selected_filter_timerange)
@@ -372,7 +372,8 @@ var timeline_view = {
 	_plot_linechart:function(divID,xyAxis_data)
 	{
         d3.select("#"+divID).selectAll("*").remove();
-
+        var start_time
+        var end_time
        	var div = $("#"+divID);
        	Highcharts.setOptions({ global: { useUTC: false } });//使用本地时间
         div.highcharts({
@@ -403,19 +404,30 @@ var timeline_view = {
                 	},
                 	
                     selection:function(e){
+                    	
+
                     	if (typeof(e.resetSelection)!="undefined")
                     	{
                     		if (e.resetSelection == true)//如果是按了reset键
                     		{
-                    			var start_time = e.target.xAxis[0].dataMin;
-                        		var end_time = e.target.xAxis[0].dataMax;
+                    			start_time = e.target.xAxis[0].dataMin;
+                        		end_time = e.target.xAxis[0].dataMax;
                     		}
+                    		else
+                    		{
+                    			start_time = e.xAxis[0].min;
+                        	    end_time = e.xAxis[0].max;
+                    	    }
+
+                    
                     	}
                     	else
                     	{
-                    		var start_time = chart.xAxis[0].min;
-                        	var end_time = chart.xAxis[0].max;
+                    		start_time = e.xAxis[0].min;
+                        	end_time = e.xAxis[0].max;
                     	}
+                   		//console.log(new Date(start_time))
+                   		//console.log(new Date(end_time))
                         DATA_CENTER.set_global_variable("selected_filter_timerange",{min:start_time,max:end_time})
                     },
                 },
