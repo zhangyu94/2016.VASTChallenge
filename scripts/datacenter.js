@@ -448,6 +448,7 @@ var DATA_CENTER = {
 			"singleroom.json",
 			"proxMobileOut-MC2-WithProxId.json",
 		];
+		var that = this;
 
 		d3.csv(path+file_name[0],function(HVAC_data){
 			//把传感器读数全部存成数字
@@ -578,6 +579,7 @@ var DATA_CENTER = {
 													DATA_CENTER.derived_data[d_file_name[2]] = data9;
 													DATA_CENTER.derived_data[d_file_name[3]] = data10;
 													DATA_CENTER.cal_derive_data();
+													that.initStream();
 													callback_function();
 												})
 											})
@@ -591,7 +593,43 @@ var DATA_CENTER = {
 			})
 		})
 
-	}
+	},
+	initStream: function(){
+                var v_stream = new WebSocket('ws://192.168.10.9:8888');
+                this.v_stream = v_stream;
+                v_stream.onopen = function(e){
+                    v_stream.send(JSON.stringify({state: "start", data: null}));
+                };
+                v_stream.onclose = function(e){
+                    console.log("Connection closed!");
+                }
+                v_stream.onmessage = function (e){
+                    var t_d = JSON.parse(e.data);
+                    switch(t_d.state){
+                        case "stream":
+                            console.log(t_d.state, t_d.data);
+                        break;
+                        case "history":
+                            console.log(t_d.state, t_d.data);
+                        break;
+                        case "control":
+                            console.log(t_d.state, t_d.data);
+                        break;
+                        case "chooseID":
+                            var tt_d = t_d.data;
+                            console.log(tt_d.msg, tt_d.streamIds, tt_d.timeleft);
+                            //v_stream.send(JSON.stringify({state: "chooseID", data: tt_d.streamIds[0]}));
+                        break;
+                        case "error":
+                            console.log(t_d.state, t_d.data);
+                        break;
+                        default:
+                            console.log(t_d.state, t_d.data);
+                        break;
+                    }
+                };
+            },
+
 
 
 

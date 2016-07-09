@@ -11,7 +11,7 @@ var linechart_render_view = {
 
     //为折线图的大框设置最小尺寸，避免过小看不清楚
     MINIMUM_LINECHART_RECT_HEIGHT : 27,
-    EXPECTED_LINECHART_NUM: 15,
+    EXPECTED_LINECHART_NUM: 5,
 
 
 	obsUpdate:function(message, data)
@@ -81,6 +81,7 @@ var linechart_render_view = {
             }
         }
 
+        /*
         if (message == "set:mouseover_time")
         {
             var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
@@ -98,20 +99,56 @@ var linechart_render_view = {
                 }  
             }
         }
+        */
 
 	},
+
+
+    //将一组linechart的名字列表转换成[{name:...,linechart_set:[...]}]的形式
+    //name是属性的名字，linechart_set存储了linechart_list中所有属于这个属性的linechart名字
+    _divide_linechart_list:function(linechart_list)
+    {
+        var divide_attr_list = [];
+        for (var i=0;i<linechart_list.length;++i)
+        {
+            var cur_linechart_name = linechart_list[i];
+            var position_attr = DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view._parse_position_attr(cur_linechart_name);
+            var attr = position_attr.attr;
+
+            var index = 0;
+            for (;index<divide_attr_list.length;++index)
+            {
+                console.log(divide_attr_list[index].name,attr)
+                if (divide_attr_list[index].name == attr)
+                {
+                    divide_attr_list[index].linechart_set[cur_linechart_name] = true;
+
+                    break;
+                }
+            }
+            if (index == divide_attr_list.length)
+            {
+                divide_attr_list.push({
+                    name: attr,
+                    linechart_set: [],
+                });
+                divide_attr_list[divide_attr_list.length-1].linechart_set[cur_linechart_name] = true;
+            }
+        }
+        return divide_attr_list;
+    },
+
+
     update_render:function(divID,new_linechart_list)
     {
+        var divide_attr_list = this._divide_linechart_list(new_linechart_list);
+
         var width  = $("#"+divID).width();
         var height  = $("#"+divID).height();
         var rect_width = width-20;
 
         var rect_height = height/this.EXPECTED_LINECHART_NUM-2;
-        //var rect_height = height/new_linechart_list.length-4;
-        //if (rect_height < this.MINIMUM_LINECHART_RECT_HEIGHT)//避免尺寸过小看不清楚
-        //{
-        //    rect_height = this.MINIMUM_LINECHART_RECT_HEIGHT;
-        //}
+        
 
         var btn_width = rect_width*0.14;
 
@@ -120,26 +157,73 @@ var linechart_render_view = {
 
         var update = d3.select("#"+divID)
             .selectAll(".HVAClinechart-span")
-            .data(new_linechart_list,function(d){return d;});
+            //.data(new_linechart_list,function(d){return d;});
+            .data(divide_attr_list,function(d){return d.name;});
+
 
         update.attr("style",function(d,i){
                 return "height:"+rect_height+"px;" + "width:"+rect_width+"px;"
             })
 
         var update_btnspan = update.select(".HVAClinechart-btntitle-span");
-
         var update_linechartspan = update.select(".HVAClinechart-linechart-span")
                 .style("height",linechart_height+"px");
-
         var update_linechartspan_div = update_linechartspan.select("div")
                 .style("height",linechart_height+"px")
-                //.each(function(d,i){
-                //    var divID = this.id;
-                //    //找到绑定好的highchart
-                //    var chart = $("#"+divID).highcharts();
-                //    chart.reflow();//适应新的div尺寸
-                //});
+                .each(function(d,i){
 
+                    var attr_name_set = d.linechart_set;
+                    var existing_series = $(this).highcharts().series;
+
+                    //1. 增加选中的新序列
+                    for (var attr in attr_name_set)
+                    {             
+                        var flag_find = false;
+                        for (var j=0;j<existing_series.length;++j)
+                        {
+                            var cur_name = existing_series[j].name;
+                            if (cur_name == linechart_render_view._compress_full_attr_name(attr))
+                            {
+                                flag_find = true;
+                                break;
+                            }
+                        }
+
+                        if (!flag_find)
+                        {
+                            var ysetAxis_attr_name = [attr];
+                            var xysetAxis_data = linechart_render_view._get_xysetAxis_data(ysetAxis_attr_name);
+                            console.log("Reach",cur_name,xysetAxis_data)
+                            var chart = $(this).highcharts().addSeries({
+                                name: linechart_render_view._compress_full_attr_name(attr),
+                                data: xysetAxis_data[0],
+                            },false)
+                            chart.redraw();
+                        }
+                    }
+
+                    //2. 删除不再选中的老序列
+                    for (var j=0;j<existing_series.length;++j)
+                    {             
+                        var flag_find = false;
+                        for (var attr in attr_name_set)
+                        {
+                            var cur_name = existing_series[j].name;
+                            if (cur_name == linechart_render_view._compress_full_attr_name(attr))
+                            {
+                                flag_find = true;
+                                break;
+                            }
+                        }
+                        if (!flag_find)
+                        {
+                            $(this).highcharts().series[j].remove();
+                        }
+                    }
+
+
+
+                })
 
 
         var enter = update.enter();
@@ -147,25 +231,21 @@ var linechart_render_view = {
         var enter_spans = enter.insert("span")
                 .attr("class","HVAClinechart-span")
                 .attr("id",function(d,i){
-                    return "HVAClinechart-span-"+linechart_render_view._compress_string(d);
-                })
-                .attr("value",function(d,i){
-                    var buttonValue = new_linechart_list[i];
-                    return buttonValue;
+                    //return "HVAClinechart-span-"+linechart_render_view._compress_string(d);
+                    return "HVAClinechart-span-"+linechart_render_view._compress_string(d.name);
                 })
                 .attr("style",function(d,i){
                     return "height:"+rect_height+"px;" + "width:"+rect_width+"px;"
                 })
                 .on("click",function(d,i){
-                    //console.log(d,i)
                 })
                 .on("mouseover",function(d,i){
-                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-                        ._highlight_communication_mouseover_linebtn(d);
+                    //DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+                    //    ._highlight_communication_mouseover_linebtn(d);
                 })
                 .on("mouseout",function(d,i){
-                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-                        ._highlight_communication_mouseout_linebtn();
+                    //DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+                    //    ._highlight_communication_mouseout_linebtn();
                 })
 
         //小按钮们
@@ -174,35 +254,37 @@ var linechart_render_view = {
                 .attr("class","HVAClinechart-btntitle-span")
                 .attr("id",function(d,i){
                     //id中不能带空格，否则后面选不中
-                    return "HVAClinechart-btntitle-span-"+linechart_render_view._compress_string(d);
-                })
-                .attr("value",function(d,i){
-                    var buttonValue = new_linechart_list[i];
-                    return buttonValue;
+                    //return "HVAClinechart-btntitle-span-"+linechart_render_view._compress_string(d);
+                    return "HVAClinechart-btntitle-span-"+linechart_render_view._compress_string(d.name);
                 })
                 .style("width",btn_width+"px")
                 .text(function(d,i){
-                    var attr = d;
-                    var compressed_name = DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name(attr);
-                    var buttonLabel = compressed_name.substring(0,btn_width/9.5);
+                    //var attr = d;
+                    //var compressed_name = DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name(attr);
+                    //var buttonLabel = compressed_name.substring(0,btn_width/9.5);
+
+                    var buttonLabel = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
                     return buttonLabel;
                 });
         $('.HVAClinechart-btntitle-span').each(function() {
             $(this).tipsy({
                 gravity: "s",
                 html:true,
-                //delayIn: 500,
                 title:function(){
                     var d = this.__data__;
 
-                    var place_attr = linechart_linebtn_view._parse_position_attr(d);
-                    var attr = place_attr.attr;
-                    var place = place_attr.place;
-                    var place_type = place_attr.place_type;
+                    console.log(d);
+                    //var place_attr = linechart_linebtn_view._parse_position_attr(d);
+                    //var attr = place_attr.attr;
+                    //var compressed_attr_name = DATA_CENTER.GLOBAL_STATIC.attribute_description[attr].lv2_abbreviation;
+                    //var place = place_attr.place;
+                    //var place_type = place_attr.place_type;
+                    //var content =   "attr: " + "<span style='color:red'>" + compressed_attr_name + "</span>" + "</br>"+
+                    //                "place: " + "<span style='color:red'>" + place + "</span>" + "</br>";
+                    //return content;
 
-                    var content =   "attr: " + "<span style='color:red'>" + attr + "</span>" + "</br>"+
-                                    "place: " + "<span style='color:red'>" + place + "</span>" + "</br>";
-                    return content;
+                    var compressed_attr_name = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
+                    return compressed_attr_name;
                 },
             });
         });
@@ -212,15 +294,15 @@ var linechart_render_view = {
                 .attr("class","HVAClinechart-btn-mark-span")
                 .attr("id",function(d,i){
                     //id中不能带空格，否则后面选不中
-                    return "HVAClinechart-btn-mark-span-"+linechart_render_view._compress_string(d);
-                })
-                .attr("value",function(d,i){
-                    var buttonValue = new_linechart_list[i];
-                    return buttonValue;
+                    //return "HVAClinechart-btn-mark-span-"+linechart_render_view._compress_string(d);
+                    return "HVAClinechart-btn-mark-span-"+linechart_render_view._compress_string(d.name);
                 })
                 .text("m")    
                 .on("click",function(d,i){
-                    var related_linechart_div_id = "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d)
+                    //var related_linechart_div_id = "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d)
+                    var related_linechart_div_id = "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d.name)
+                    
+
                     var chart = $("#"+related_linechart_div_id).highcharts();
 
                     var added_timerange = {
@@ -234,15 +316,14 @@ var linechart_render_view = {
                 .attr("class","HVAClinechart-btn-top-span")
                 .attr("id",function(d,i){
                     //id中不能带空格，否则后面选不中
-                    return "HVAClinechart-btn-top-span-"+linechart_render_view._compress_string(d);
-                })
-                .attr("value",function(d,i){
-                    var buttonValue = new_linechart_list[i];
-                    return buttonValue;
+                    //return "HVAClinechart-btn-top-span-"+linechart_render_view._compress_string(d);
+                    return "HVAClinechart-btn-top-span-"+linechart_render_view._compress_string(d.name);
                 })
                 .text("up")
                 .on("click",function(d,i){
-                    var child_id = "HVAClinechart-span-"+linechart_render_view._compress_string(d);
+                    //var child_id = "HVAClinechart-span-"+linechart_render_view._compress_string(d);
+                    var child_id = "HVAClinechart-span-"+linechart_render_view._compress_string(d.name);
+
                     var father_id = linechart_render_view.linechart_render_view_DIV_ID;
                     linechart_render_view._move_to(child_id,father_id,"top");//点击以后走到最上面
                 })
@@ -251,15 +332,14 @@ var linechart_render_view = {
                 .attr("class","HVAClinechart-btn-bottom-span")
                 .attr("id",function(d,i){
                     //id中不能带空格，否则后面选不中
-                    return "HVAClinechart-btn-bottom-span-"+linechart_render_view._compress_string(d);
-                })
-                .attr("value",function(d,i){
-                    var buttonValue = new_linechart_list[i];
-                    return buttonValue;
+                    //return "HVAClinechart-btn-bottom-span-"+linechart_render_view._compress_string(d);
+                    return "HVAClinechart-btn-bottom-span-"+linechart_render_view._compress_string(d.name);
                 })
                 .text("dn")    
                 .on("click",function(d,i){
-                    var child_id = "HVAClinechart-span-"+linechart_render_view._compress_string(d);
+                    //var child_id = "HVAClinechart-span-"+linechart_render_view._compress_string(d);
+                    var child_id = "HVAClinechart-span-"+linechart_render_view._compress_string(d.name);
+
                     var father_id = linechart_render_view.linechart_render_view_DIV_ID;
                     linechart_render_view._move_to(child_id,father_id,"bottom");//点击以后走到最下面
                 })
@@ -268,15 +348,15 @@ var linechart_render_view = {
                 .attr("class","HVAClinechart-btn-normalize-span")
                 .attr("id",function(d,i){
                     //id中不能带空格，否则后面选不中
-                    return "HVAClinechart-btn-normalize-span-"+linechart_render_view._compress_string(d);
-                })
-                .attr("value",function(d,i){
-                    var buttonValue = new_linechart_list[i];
-                    return buttonValue;
+                    //return "HVAClinechart-btn-normalize-span-"+linechart_render_view._compress_string(d);
+                    return "HVAClinechart-btn-normalize-span-"+linechart_render_view._compress_string(d.name);
                 })
                 .text("n")    
                 .on("click",function(d,i){
-                    var related_linechart_div_id = "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d)
+                    //var related_linechart_div_id = "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d)
+                    var related_linechart_div_id = "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d.name)
+                    
+
                     var chart = $("#"+related_linechart_div_id).highcharts();
 
                     var normalize_data=[];
@@ -336,11 +416,8 @@ var linechart_render_view = {
         var enter_spans_linechartspan = enter_spans.append("span")
                 .attr("class","HVAClinechart-linechart-span")
                 .attr("id",function(d,i){
-                    return "HVAClinechart-linechart-span-"+linechart_render_view._compress_string(d);
-                })
-                .attr("value",function(d,i){
-                    var buttonValue = new_linechart_list[i];
-                    return buttonValue;
+                    //return "HVAClinechart-linechart-span-"+linechart_render_view._compress_string(d);
+                    return "HVAClinechart-linechart-span-"+linechart_render_view._compress_string(d.name);
                 })
                 .style("width",linechart_width+"px")
                 .style("height",linechart_height+"px")
@@ -350,16 +427,35 @@ var linechart_render_view = {
                 .style("width",linechart_width+"px")
                 .style("height",linechart_height+"px")
                 .attr("id",function(d,i){
-                    return "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d);
+                    //return "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d);
+                    return "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d.name);
                 })
                 .each(function(d,i){
+                    //var divID = this.id;
+                    //var yAxis_attr_name = d;
+                    //var xysetAxis_data = linechart_render_view._get_xysetAxis_data([yAxis_attr_name,"DELI-FAN Power"]);
+                    //
+                    //console.log(xysetAxis_data)
+                    //
+                    //var compressed_name = DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name(yAxis_attr_name);
+                    ////调用完以后，highchart就绑定到这个div上了
+                    //var chart = linechart_render_view._plot_linechart(divID,xysetAxis_data,[compressed_name,"deli fan pwr"]);
+                    
                     var divID = this.id;
-                    var yAxis_attr_name = d;
-                    var xyAxis_data = linechart_render_view._get_xyAxis_data(yAxis_attr_name);
+                    var attr_name_set = d.linechart_set;
 
-                    var compressed_name = DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name(yAxis_attr_name);
-                    //调用完以后，highchart就绑定到这个div上了
-                    var chart = linechart_render_view._plot_linechart(divID,xyAxis_data,compressed_name);
+                    var ysetAxis_attr_name = [];
+                    var ysetAxis_compress_attr_name = [];
+                    for (attr in attr_name_set)
+                    {
+                        ysetAxis_attr_name.push(attr);
+                        ysetAxis_compress_attr_name.push(linechart_render_view._compress_full_attr_name(attr));
+                    }
+                    var xysetAxis_data = linechart_render_view._get_xysetAxis_data(ysetAxis_attr_name);
+
+                    var chart = linechart_render_view._plot_linechart(divID,xysetAxis_data,ysetAxis_compress_attr_name);
+
+
                 });
 
 
@@ -368,40 +464,61 @@ var linechart_render_view = {
         exit.remove();
     },
 
-    _get_xyAxis_data:function(yAxis_attr_name)
+    _get_xysetAxis_data:function(yAxis_attr_name_set)
     {
         //使用的全局变量
-        var data;
-        if (yAxis_attr_name in this.HAZIUM_DATA_FILENAME_MAPPING)
+        var data_set = [];
+        for (i=0;i<yAxis_attr_name_set.length;++i)
         {
-            data = DATA_CENTER.original_data[this.HAZIUM_DATA_FILENAME_MAPPING[yAxis_attr_name]];
-        }
-        else
-        {
-            data = DATA_CENTER.original_data["bldg-MC2.csv"];
+            var cur_yAxis_attr_name = yAxis_attr_name_set[i];
+            if (cur_yAxis_attr_name in this.HAZIUM_DATA_FILENAME_MAPPING)
+            {
+                data_set[i] = DATA_CENTER.original_data[this.HAZIUM_DATA_FILENAME_MAPPING[yAxis_attr_name_set[i]]];
+            }
+            else
+            {
+                data_set[i] = DATA_CENTER.original_data["bldg-MC2.csv"];
+            }
         }
         //end 全局变量
 
         var xAxis_attr_name = "Date/Time";
-        var xyAxis_data = [];
-        for (var i=0;i<data.length;++i)
+        var xysetAxis_data = [];
+
+        for (var i=0;i<yAxis_attr_name_set.length;++i)
         {
-            var y_value = data[i][yAxis_attr_name];
+            xysetAxis_data[i] = [];
+            for (var j=0;j<data_set[i].length;++j)
+            {
+                var y_value = data_set[i][j][yAxis_attr_name_set[i]];
 
-            var x_value = new Date(data[i][xAxis_attr_name]);
-            var x_value = x_value.getTime();
+                var x_value = new Date(data_set[i][j][xAxis_attr_name]);
+                var x_value = x_value.getTime();
 
-            var temp = [x_value,y_value];
-            xyAxis_data.push(temp)
-        }             
-        return xyAxis_data;
+                var temp = [x_value,y_value];
+                xysetAxis_data[i].push(temp)
+            }             
+        }
+
+        return xysetAxis_data;
     },
 
-	_plot_linechart:function(divID,xyAxis_data,yAxis_attr_name)
+
+
+	_plot_linechart:function(divID,xysetAxis_data,ysetAxis_attr_name)
 	{
+        var series_data = [];
+        for (var i=0;i<xysetAxis_data.length;++i)
+        {
+            var name = ysetAxis_attr_name[i];
+            var data = xysetAxis_data[i];
+            series_data.push({
+                name: name,
+                data: data,
+            })
+        }
+
         d3.select("#"+divID).selectAll("*").remove();
-		//var width  = $("#"+divID).width();
-        //var height  = $("#"+divID).height();
         
         var div = $("#"+divID);
         Highcharts.setOptions({ global: { useUTC: false } });//使用本地时间
@@ -458,8 +575,7 @@ var linechart_render_view = {
                     year:"%Y"
                 }
                 
-            },
-            
+            },           
             yAxis: {
                 
                 labels:{
@@ -486,11 +602,11 @@ var linechart_render_view = {
 
             },
             
-            series: [{
-                name: yAxis_attr_name,//.substring(0,7),
-                data: xyAxis_data,
-            }]
+            series: series_data,
         });
+
+
+
 
         var chart = div.highcharts()
 
@@ -554,18 +670,22 @@ var linechart_render_view = {
                 $(this).tipsy({
                     gravity: "s",
                     html:true,
-                    //delayIn: 500,
                     title:function(){
                         var d = this.__data__;
 
-                        var place_attr = linechart_linebtn_view._parse_position_attr(d);
-                        var attr = place_attr.attr;
-                        var place = place_attr.place;
-                        var place_type = place_attr.place_type;
+                        //var place_attr = linechart_linebtn_view._parse_position_attr(d);
+                        //var attr = place_attr.attr;
+                        //var compressed_attr_name = DATA_CENTER.GLOBAL_STATIC.attribute_description[attr].lv2_abbreviation;
+                        //var place = place_attr.place;
+                        //var place_type = place_attr.place_type;
+                        //
+                        //var content =   "attr: " + "<span style='color:red'>" + compressed_attr_name + "</span>" + "</br>"+
+                        //                "place: " + "<span style='color:red'>" + place + "</span>" + "</br>";
+                        //return content;
+                        
 
-                        var content =   "attr: " + "<span style='color:red'>" + attr + "</span>" + "</br>"+
-                                        "place: " + "<span style='color:red'>" + place + "</span>" + "</br>";
-                        return content;
+                        var compressed_attr_name = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
+                        return compressed_attr_name;
                     },
                 });
             });
