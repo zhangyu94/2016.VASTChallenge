@@ -41,6 +41,7 @@ var linechart_render_view = {
             this.update_render(this.linechart_render_view_DIV_ID,selected_linechart_set)
         }
 
+
         if ( message == "set:highlight_linechart_set" )
         {
             var highlight_linechart_set = DATA_CENTER.linechart_variable.highlight_linechart_set;

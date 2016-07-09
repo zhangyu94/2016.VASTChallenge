@@ -3,6 +3,7 @@ var HVACgraph_attrbtn_view = {
 	DIV_CLASS_OF_SMALLSPANS:"HVACattrbtn-span-div_of_smallspans",
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 
+
 	SMALL_SPAN_WIDTH : 4,
 	rendered_attrbtn_set : [],
 
@@ -177,18 +178,20 @@ var HVACgraph_attrbtn_view = {
 	{
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
-	    var rect_width = width/new_attrbtn_list.length;
+	    var rect_width = width/16.5;//width/new_attrbtn_list.length;
 	    var rect_height = height;
 
 		var update = d3.select("#"+divID)
 			.selectAll(".HVACattrbtn-span")
-			.data(new_attrbtn_list,function(d){return d;});
+			.data(new_attrbtn_list,function(d){return d;})
+			//.style("width",rect_width)
 		var update_div = update.select("div");
 		var update_div_span = update_div.select("span")
                 .text(function(d,i){
                 	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[new_attrbtn_list[i]].lv2_abbreviation;
                 	//var buttonLabel = compressed_string.substring(0,rect_width/13);
                 	var buttonLabel = compressed_string;
+                	buttonLabel = buttonLabel.substring(0,9);
                     return buttonLabel;
                 });
         
@@ -196,6 +199,7 @@ var HVACgraph_attrbtn_view = {
 
 		var enter = update.enter();
 		var enter_span = enter.insert("span")
+				.style("width",rect_width+"px")
 				.attr("class",function(d,i){
 					var attr_type_class =  HVACgraph_attrbtn_view._cal_attr_type(d) + "-HVACattrbtn-span";
 					return "HVACattrbtn-span" + " " +attr_type_class;
@@ -226,6 +230,11 @@ var HVACgraph_attrbtn_view = {
 
 						DATA_CENTER.set_global_variable("selected_attr_set",selected_attr_set.concat(attr_name));
 					}
+
+
+					DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view._update_selected_linechart();
+
+
 					//end of set
 
 					var compressed_attr_name = linechart_render_view._compress_string(attr_name);
@@ -239,6 +248,9 @@ var HVACgraph_attrbtn_view = {
 
 						HVACgraph_attrbtn_view._update_render_smallspans(attr_name,left,top,piece_width,height);
 					}
+
+
+
 				})
 				.on("mouseover",function(d,i){
 
@@ -328,6 +340,7 @@ var HVACgraph_attrbtn_view = {
                 	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[new_attrbtn_list[i]].lv2_abbreviation;
                 	//var buttonLabel = compressed_string.substring(0,rect_width/13);
                 	var buttonLabel = compressed_string;
+                	buttonLabel = compressed_string.substring(0,9);
                     return buttonLabel;
                 })
 
@@ -520,5 +533,17 @@ var HVACgraph_attrbtn_view = {
 		    	},
 		    });
 		});
+	},
+
+	_update_selected_linechart:function()
+	{
+		var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
+		var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
+		var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
+		var selected_building_set = DATA_CENTER.global_variable.selected_building_set;
+
+		var selected_linechart_set = DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
+			._cal_attrbtnset(selected_attr_set,selected_HVACzone_set,selected_floor_set,selected_building_set);
+		DATA_CENTER.set_global_variable("selected_linechart_set",selected_linechart_set);
 	}
 }
