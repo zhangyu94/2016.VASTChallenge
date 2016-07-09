@@ -407,10 +407,27 @@ var DATA_CENTER = {
 			person[pID]['mobileRecords'].push(records);
 		}
 		// console.log(DATA_CENTER.derived_data['person']);
-
+	},
+	update_traj_endtime:function() {
+		var person = DATA_CENTER.derived_data['person'];
+		var pIDs = Object.keys(person);
+		for(var i=0;i<pIDs.length;i++) {
+			var pID = pIDs[i];
+			var fixR = person[pID]['fixRecords'];
+			for(var j=0;j<fixR.length-1;j++) {
+				if(fixR[j+1].day == fixR[j].day) {
+					fixR[j].endtime = fixR[j+1].timestamp;
+				}
+				else
+					fixR[j].endtime = fixR[j].timestamp;
+			}
+			fixR[fixR.length-1].endtime = fixR[fixR.length-1].timestamp;
+		}
+		console.log(DATA_CENTER.derived_data['person']);
 	},
 	cal_derive_data : function(){
 		this.cal_person_traj();
+		this.update_traj_endtime();
 	},
 	initialize_loaddata:function(callback_function){
 		var path = "dataset/original/";
