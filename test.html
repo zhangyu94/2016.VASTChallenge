@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>VAST Challenge</title>
+	
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/tipsy.css">
+	<link rel="stylesheet" href="css/jquery-ui.css">
+
+	<link rel="stylesheet" href="css/index.css"><!--所有的view的视图整体框架的layout-->
+
+	<!--1. smallmaps相关的css-->
+	<link rel="stylesheet" href="css/smallmaps/smallmaps_view.css">
+	<!--2. linechart相关的view的css-->
+	<link rel="stylesheet" href="css/linechart/HVACgraph_attrbtn_view.css">
+	<link rel="stylesheet" href="css/linechart/linechart_linebtn_view.css">
+	<link rel="stylesheet" href="css/linechart/linechart_render_view.css">
+	<!--3. trajectory相关的view的css-->
+	<link rel="stylesheet" href="css/trajectory/bigmap_view.css">
+	<link rel="stylesheet" href="css/trajectory/ganttchart_view.css">
+	<link rel="stylesheet" href="css/trajectory/histogram_view.css">
+	<!--4. mdsgraph相关的css-->
+	<link rel="stylesheet" href="css/mdsgraph/mdsgraph_view.css">
+	<!--5. relationshipgraph相关的css-->
+	<link rel="stylesheet" href="css/relationshipgraph/relationshipgraph_view.css">
+	<style>
+
+
+	</style>
+</head>
+
+<script src="libs/d3.v3.min.js"></script>
+<script src="libs/lasso.min.js"></script>
+<script src="libs/d3.tip.js"></script>
+<script src="libs/jquery.js"></script>
+<script src="libs/jquery-ui.min.js"></script>
+<!--<script src="libs/bootstrap.min.js"></script>-->
+<script src="libs/tooltip.js"></script>
+<script src="libs/highstock.js"></script>
+<script src="libs/underscore.js"></script>
+<script src="libs/jquery.tipsy.js"></script>
+<script src="libs/numeric.js"></script>
+<script src="libs/mds.js"></script>
+
+<body>
+   <div id='ganttview' style="width: 100%;height: 100%"></div>
+   <script>
+   		
+   		d3.json('dataset/derived/person.json',function(error,people_records) {
+   			// body...
+   			//console.log(people_records)
+   			var day="2016-06-13"
+   			var people_names=Object.keys(people_records)
+   			var oneday_records={}
+   			for(var i in people_names){
+   				oneday_records[people_names[i]]=[]
+   				var rlist=people_records[people_names[i]].fixRecords
+   				for(var j in rlist){
+   					if(rlist[j].day==day)
+   						oneday_records[people_names[i]]=rlist[j]
+   				}
+   			}
+   			//console.log(oneday_records)
+
+   			var width=$('#ganttview').width()
+   			var height=$('#ganttview').height()
+   			console.log(width)
+   			console.log(height)
+   			height=800
+   			var svg=d3.select('#ganttview').append('svg').attr('width',width).attr('height',height)
+
+   			var yscale=d3.scale.linear().range([0,height]).domain([0,people_names])
+   			var xscale=d3.scale.linear().domain([new Date('2016-06-13 00:00:00'),new Date('2016-06-13 23:59:59')])
+   										.range([0,width])
+   			var single_gannt=svg.selectAll('.single_gannt')
+   								.data(people_names)
+   								.enter()
+   								.append('g')
+   								.attr('transform',function (d,i) {
+   									return 'translate(0,'+yscale(i)+')'
+   								})
+   								.attr('class','single_gannt')
+   								.append('circle')
+   								.attr('cx',5)
+   								.attr('cy',5)
+   								.attr('r',3)
+
+
+
+
+
+   		})
+   		function draw(){
+   			console.log('ss')
+   		}
+
+   </script>
+</body>
