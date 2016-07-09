@@ -10,8 +10,8 @@ var ganttchart_view = {
 	zoneColorScale:null,
 	obsUpdate:function(message, data)
 	{
-		console.log('dataFormat')
-		console.log(data)
+		//console.log('dataFormat')
+		//console.log(data)
 		if (message == "display:ganttchart_view")
 		{
 		    $("#"+this.ganttchart_view_DIV_ID).css("display","block");
