@@ -33,7 +33,7 @@ var DATA_CENTER = {
 	//view之间通信需要利用的全局变量
 	global_variable : {
 		floors_zone_set: [],
-		personInZone: [], 
+		personInZone: [],
 		selected_attr_set:[],
 		selected_linechart_set:[],
 		selected_HVACzone_set:[],
@@ -61,7 +61,7 @@ var DATA_CENTER = {
 		current_display_time:undefined,//timeline当前播放到的时间
 
 		selected_card_set:[],
-		selected_person_set:[],		
+		selected_person_set:[],
 	},
 
 	//set_global_variable设置全局变量并调用SUBJECT的notify
@@ -105,48 +105,48 @@ var DATA_CENTER = {
 	//全局静态变量
 	GLOBAL_STATIC : {
 		building_HVACattr_set :[
-			"Drybulb Temperature",
-			"Water Heater Tank Temperature",
-			"Water Heater Gas Rate",
 			"Supply Side Inlet Mass Flow Rate",
 			"Supply Side Inlet Temperature",
+			"Water Heater Tank Temperature",
 			"Supply Side Outlet Temperature",
-			"HVAC Electric Demand Power",
-			"Total Electric Demand Power",
 			"Loop Temp Schedule",
 			"Water Heater Setpoint",
+			"Water Heater Gas Rate",
+			"HVAC Electric Demand Power",
 			"DELI-FAN Power",
 			"Pump Power",
+			"Total Electric Demand Power",
+			"Drybulb Temperature",
 			"COOL Schedule Value",//原始数据中从来没出现过这个属性
 			"Wind Direction",//原始数据中从来没出现过这个属性
 			"Wind Speed",//原始数据中从来没出现过这个属性
 			"HEAT Schedule Value",//原始数据中从来没出现过这个属性
 		],
 		floor_HVACattr_set :[
-			"BATH_EXHAUST:Fan Power",
 			"VAV_SYS AIR LOOP INLET Mass Flow Rate",
 			"VAV_SYS AIR LOOP INLET Temperature",
-			"VAV Availability Manager Night Cycle Control Status",
-			"VAV_SYS COOLING COIL Power",
 			"VAV_SYS HEATING COIL Power",
+			"VAV_SYS COOLING COIL Power",
 			"VAV_SYS SUPPLY FAN OUTLET Mass Flow Rate",
 			"VAV_SYS SUPPLY FAN OUTLET Temperature",
-			"VAV_SYS SUPPLY FAN:Fan Power",
-			"VAV_SYS Outdoor Air Flow Fraction",
 			"VAV_SYS Outdoor Air Mass Flow Rate",
+			"VAV_SYS Outdoor Air Flow Fraction",
+			"VAV_SYS SUPPLY FAN:Fan Power",
+			"BATH_EXHAUST:Fan Power",
+			"VAV Availability Manager Night Cycle Control Status",
 		],
 		HVACzone_HVACattr_set :[
-			"REHEAT COIL Power",
-			"RETURN OUTLET CO2 Concentration",
 			"SUPPLY INLET Mass Flow Rate",
 			"SUPPLY INLET Temperature",
-			"VAV REHEAT Damper Position",//原始数据中,F3_Z9的这个属性名打错了
-			"Equipment Power",
-			"Lights Power",
-			"Mechanical Ventilation Mass Flow Rate",//原始数据中,实际上只有F1_Z1有这个属性
+			"REHEAT COIL Power",
 			"Thermostat Temp",
 			"Thermostat Cooling Setpoint",
 			"Thermostat Heating Setpoint",
+			"Lights Power",
+			"Equipment Power",
+			"Mechanical Ventilation Mass Flow Rate",//原始数据中,实际上只有F1_Z1有这个属性
+			"VAV REHEAT Damper Position",//原始数据中,F3_Z9的这个属性名打错了
+			"RETURN OUTLET CO2 Concentration",
 			"Hazium Concentration",//特殊属性，只有4个有Haziumsensor的zone有
 		],
 		HVACzone_with_Haziumsenor_set :[
@@ -213,7 +213,7 @@ var DATA_CENTER = {
 			},
 			"COOL Schedule Value":{
 				abbreviation:"air cool setpoint",
-				lv2_abbreviation:"air cool point",
+				lv2_abbreviation:"air cool pnt",
 				type:["air","temperature"],
 			},
 			"DELI-FAN Power":{
@@ -238,7 +238,7 @@ var DATA_CENTER = {
 			},
 			"HEAT Schedule Value":{
 				abbreviation:"air heat setpoint",
-				lv2_abbreviation:"air heat point",
+				lv2_abbreviation:"air heat pnt",
 				type:["air","temperature"],
 			},
 			"Pump Power":{
@@ -248,37 +248,37 @@ var DATA_CENTER = {
 			},
 			"Water Heater Setpoint":{
 				abbreviation:"water heater setpoint",
-				lv2_abbreviation:"water heat point",
+				lv2_abbreviation:"wtr heat pnt",
 				type:["water","temperature"],
 			},
 			"Water Heater Gas Rate":{
 				abbreviation:"water heater power",
-				lv2_abbreviation:"water heat pwr",
+				lv2_abbreviation:"wtr heat pwr",
 				type:["water","temperature","electricity"],
 			},
 			"Water Heater Tank Temperature":{
 				abbreviation:"water heater temperature",
-				lv2_abbreviation:"water heat temp",
+				lv2_abbreviation:"wtr heat temp",
 				type:["water","temperature"],
 			},
 			"Loop Temp Schedule":{
 				abbreviation:"water loop setpoint",
-				lv2_abbreviation:"water loop point",
+				lv2_abbreviation:"wtr loop pnt",
 				type:["water","temperature"],
 			},
 			"Supply Side Inlet Mass Flow Rate":{
 				abbreviation:"input water rate",
-				lv2_abbreviation:"In water rate",
+				lv2_abbreviation:"In wtr rate",
 				type:["water"],
 			},
 			"Supply Side Inlet Temperature":{
 				abbreviation:"input water temperature",
-				lv2_abbreviation:"In water temp",
+				lv2_abbreviation:"In wtr temp",
 				type:["water","temperature"],
 			},
 			"Supply Side Outlet Temperature":{
 				abbreviation:"output water temperature",
-				lv2_abbreviation:"Ot water temp",
+				lv2_abbreviation:"Ot wtr temp",
 				type:["water","temperature"],
 			},
 			"REHEAT COIL Power":{
@@ -328,12 +328,12 @@ var DATA_CENTER = {
 			},
 			"Thermostat Cooling Setpoint":{
 				abbreviation:"air cool threshold",
-				lv2_abbreviation:"air cool point",
+				lv2_abbreviation:"air cool pnt",
 				type:["air","temperature"],
 			},
 			"Thermostat Heating Setpoint":{
 				abbreviation:"air heat threshold",
-				lv2_abbreviation:"air heat point",
+				lv2_abbreviation:"air heat pnt",
 				type:["air","temperature"],
 			},
 			"Total Electric Demand Power":{
@@ -359,10 +359,38 @@ var DATA_CENTER = {
 		},
 	},
 
-	
-	//计算派生数据填入DATA_CENTER.derived_data
-	cal_derive_data : function(){
 
+	//计算派生数据填入DATA_CENTER.derived_data
+	cal_person_traj: function() {
+		var proxOut = DATA_CENTER.original_data["proxOut-MC2.csv"];
+		console.log(proxOut);
+		DATA_CENTER.derived_data['person'] = {};
+		var person = DATA_CENTER.derived_data['person'];
+		for(var i=0;i<proxOut.length;i++) {
+			var pID = proxOut[i][' prox-id'];
+			pID = pID.trim();
+			if(! (pID in person)) {
+				// console.log(pID);
+				person[pID] = {"fix":[],"mobile":[]};
+			}
+			person[pID]['fix'].push(proxOut[i]);
+		}
+		// console.log(DATA_CENTER.derived_data['person']);
+		var proxMobileOut = DATA_CENTER.original_data["proxMobileOut-MC2.csv"];
+		for(var i=0;i<proxMobileOut.length;i++) {
+			var pID = proxOut[i][' prox-id'];
+			pID = pID.trim();
+			if(! (pID in person)) {
+				// console.log(pID);
+				person[pID] = {"fix":[],"mobile":[]};
+			}
+			person[pID]['mobile'].push(proxOut[i]);
+		}
+		// console.log(DATA_CENTER.derived_data['person']);
+
+	},
+	cal_derive_data : function(){
+		this.cal_person_traj();
 	},
 	initialize_loaddata:function(callback_function){
 		var path = "dataset/original/";
@@ -452,7 +480,7 @@ var DATA_CENTER = {
 										cur_element[attr] =+ cur_element[attr];
 									}
 								}
-							}							
+							}
 
 							d3.csv(path+file_name[5],function(data5){//mobile out data
 								console.log(data5);
@@ -467,7 +495,7 @@ var DATA_CENTER = {
 								d3.csv(path+file_name[6],function(data6){
 									d3.json(derived_path+d_file_name[0], function(data7) {//persondata
 										//增加personData的相关数据
-										var personData = data7; 
+										var personData = data7;
 										var personInZone = new Array();
 										var personArray = $.map(personData, function(value, index) {
 											return [value];
@@ -516,7 +544,7 @@ var DATA_CENTER = {
 													callback_function();
 												})
 											})
-										})	
+										})
 									})
 								})
 							})
