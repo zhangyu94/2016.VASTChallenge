@@ -363,7 +363,7 @@ var DATA_CENTER = {
 	//计算派生数据填入DATA_CENTER.derived_data
 	cal_person_traj: function() {
 		var proxOut = DATA_CENTER.original_data["proxOut-MC2.csv"];
-		console.log(proxOut);
+		// console.log(proxOut);
 		DATA_CENTER.derived_data['person'] = {};
 		var person = DATA_CENTER.derived_data['person'];
 		for(var i=0;i<proxOut.length;i++) {
@@ -423,7 +423,63 @@ var DATA_CENTER = {
 			}
 			fixR[fixR.length-1].endtime = fixR[fixR.length-1].timestamp;
 		}
-		console.log(DATA_CENTER.derived_data['person']);
+		//console.log(DATA_CENTER.derived_data['person']);
+	},
+	update_traj_endtime_signle: function(pID) {
+		var person = DATA_CENTER.derived_data['person'];
+		var fixR = person[pID]['fixRecords'];
+		for(var j=0;j<fixR.length-1;j++) {
+			if(fixR[j+1].day == fixR[j].day) {
+				fixR[j].endtime = fixR[j+1].timestamp;
+			}
+			else
+				fixR[j].endtime = fixR[j].timestamp;
+		}
+		fixR[fixR.length-1].endtime = fixR[fixR.length-1].timestamp;
+	},
+	add_traj_fix_data:function(data, warning = false) {
+		var person = DATA_CENTER.derived_data['person'];
+		for(var i=0;i<data.length;i++) {
+			var aRecord =data[i];
+			var t = new Date(aRecord['datetime']);
+			aRecord['timestamp'] = t;
+
+			aRecord['day'] = t.getFullYear() + "-" + (t.getMonth() + 1) +'-' +(t.getDate());
+
+			var pID = aRecord['proxCard'];
+			if(! (pID in person)) {
+				// console.log(pID);
+				person[pID] = {"fixRecords":[],"mobileRecords":[]};
+				if(warning) {
+					console.log("New prox ID: " + pID);
+				}
+			}
+			person[pID]['fixRecords'].push(aRecord);
+			this.update_traj_endtime_signle(pID);
+			console.log(person[pID]);
+
+		}
+	},
+	add_traj_mobile_data:function(data, warning = false) {
+		var person = DATA_CENTER.derived_data['person'];
+		for(var i=0;i<data.length;i++) {
+			var aRecord =data[i];
+			var t = new Date(aRecord['datetime']);
+			aRecord['timestamp'] = t;
+
+			aRecord['day'] = t.getFullYear() + "-" + (t.getMonth() + 1) +'-' +(t.getDate());
+			aRecord['timestamp'] = t;
+			var pID = aRecord['proxCard'];
+			if(! (pID in person)) {
+				// console.log(pID);
+				person[pID] = {"fixRecords":[],"mobileRecords":[]};
+				if(warning) {
+					console.log("New prox ID: " + pID);
+				}
+			}
+			person[pID]['mobileRecords'].push(aRecord);
+		}
+
 	},
 	cal_derive_data : function(){
 		this.cal_person_traj();
@@ -521,7 +577,7 @@ var DATA_CENTER = {
 							}
 
 							d3.csv(path+file_name[5],function(data5){//mobile out data
-								console.log(data5);
+								// console.log(data5);
 								person_robot_detection_array = DATA_CENTER.global_variable.person_robot_detection_array;
 								for(var i = 0;i < data5.length;i++){
 									var proxId = data5[i][' prox-id'].replace(/\s+/g,"");;
@@ -529,7 +585,7 @@ var DATA_CENTER = {
 										person_robot_detection_array.push(proxId);
 									}
 								}
-								console.log(person_robot_detection_array);
+								// console.log(person_robot_detection_array);
 								d3.csv(path+file_name[6],function(data6){
 									d3.json(derived_path+d_file_name[0], function(data7) {//persondata
 										//增加personData的相关数据
@@ -547,7 +603,7 @@ var DATA_CENTER = {
 										DATA_CENTER.derived_data["personInZone"] = personInZone;
 										d3.json(derived_path+d_file_name[1], function(data8) {//room.json data
 											//room数据处理得到每个楼层的各个zone有哪些区域
-											console.log(data8);
+											// console.log(data8);
 											var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
 											var floorNum = 3;
 											var proxZoneNumArray = [8, 7, 6];
@@ -595,6 +651,7 @@ var DATA_CENTER = {
 
 	},
 	initStream: function(){
+	    var that = this;
                 var v_stream = new WebSocket('ws://192.168.10.9:8888');
                 this.v_stream = v_stream;
                 v_stream.onopen = function(e){
@@ -607,9 +664,28 @@ var DATA_CENTER = {
                     var t_d = JSON.parse(e.data);
                     switch(t_d.state){
                         case "stream":
+                                    if(t_d.data['type'] == 'fixedprox'){
+                                    	that.add_traj_fix_data(t_d.data['data']);
+                        	}
+                        	else if(t_d.data['type'] == 'mobileprox') {
+                                    	that.add_traj_mobile_data(t_d.data['data']);
+                        	}
+                        	else if(t_d.data['type'] == 'HVAC') {
+
+                        	}
                             console.log(t_d.state, t_d.data);
                         break;
                         case "history":
+                        	if(t_d.data['type'] == 'fixedprox'){
+                                    	that.add_traj_fix_data(t_d.data['data']);
+                        	}
+                        	else if(t_d.data['type'] == 'mobileprox') {
+                                    	that.add_traj_mobile_data(t_d.data['data']);
+                        	}
+                        	else if(t_d.data['type'] == 'HVAC') {
+
+                        	}
+
                             console.log(t_d.state, t_d.data);
                         break;
                         case "control":
