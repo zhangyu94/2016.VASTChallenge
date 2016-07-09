@@ -80,7 +80,7 @@ body {
 	left:21%;
 	top:9%;
 	height:80%;
-	width:78.5%;
+	width:63.5%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
@@ -157,7 +157,7 @@ body {
 	left:21%;
 	top:9%;
 	height:80%;
-	width:78.5%;
+	width:63.5%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
@@ -219,6 +219,34 @@ body {
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
 #timelineview-collection > .timelineContainer > #timeline-renderplace{
+	position:absolute;
+	height:100%;
+	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
+}
+
+/*eventlist视图*/
+#eventlistview-collection {
+	position:absolute;
+	top:9%;
+	left:85%;
+	height:80%;
+	width:15%;
+	float: left;
+	pointer-events:none;/*大框是始终存在的，不能点的*/
+}
+#eventlistview-collection > .eventlistContainer {
+	position:absolute;
+	height:100%;
+	width:100%;
+	float: left;
+	pointer-events:none;/*大框是始终存在的，不能点的*/
+}
+#eventlistview-collection > .eventlistContainer > #eventlist-renderplace{
 	position:absolute;
 	height:100%;
 	width:100%;

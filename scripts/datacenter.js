@@ -19,6 +19,7 @@ var DATA_CENTER = {
 
 		"trajmonitor_view":trajmonitor_view,
 
+		"eventlist_view":eventlist_view,
 		"smallmaps_view":smallmaps_view,
 		"timeline_view":timeline_view,
 	},
