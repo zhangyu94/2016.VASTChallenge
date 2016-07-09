@@ -32,6 +32,7 @@ var ganttchart_view = {
 		this.width  = $("#"+divID).width();
 		this.height  = $("#"+divID).height();
 		this.personData = DATA_CENTER.derived_data["person.json"];
+		this.person = DATA_CENTER.derived_data["person"];
 		console.log(this.personData);
 		// console.log(width);
 		this.make_IDList("trajectory-ganntchart-idlist");
@@ -107,6 +108,8 @@ var ganttchart_view = {
 			    .scale(x)
 			    .orient("bottom");
 
+
+
 			var yAxis = d3.svg.axis()
 			    .scale(y)
 			    .orient("left")
@@ -147,7 +150,8 @@ var ganttchart_view = {
 		var self = this;
 		var id = this.selectPID;
 		if(id != null) {
-			var chartData = this.personData[id]['fixRecords'];
+			var chartData = this.person[id]['fixRecords'];
+			// console.log(chartData);
 			// console.log(chartData);
 			var  margin = { top: 10, right: 40, bottom: 20, left: 40 };
 			d3.select("#trajectory-ganntchart-main-body").selectAll("*").remove();
@@ -180,7 +184,7 @@ var ganttchart_view = {
 
 			var displayDatas = DATES.map(function(d) {return d.substr(6);});
 			var yTicks =[];
-			for(var i=0;i<14;i++) {
+			for(var i=0;i<17;i++) {
 				yTicks.push(i + 0.5);
 			}
 			var yAxis = d3.svg.axis()
@@ -201,16 +205,16 @@ var ganttchart_view = {
 			      .call(xAxis);
 
 			// console.log(chartData);
-			var allRecords = [];
-			for(var i =0;i<chartData.length;i++) {
-				var oneDayRecords = chartData[i]['records'];
-				var day = chartData[i]['day'];
-				for(var j=0;j<oneDayRecords.length;j++) {
-					var record = oneDayRecords[j];
-					record['day'] = day;
-					allRecords.push(record);
-				}
-			}
+			var allRecords = chartData;
+			// for(var i =0;i<chartData.length;i++) {
+			// 	var oneDayRecords = chartData[i]['records'];
+			// 	var day = chartData[i]['day'];
+			// 	for(var j=0;j<oneDayRecords.length;j++) {
+			// 		var record = oneDayRecords[j];
+			// 		record['day'] = day;
+			// 		allRecords.push(record);
+			// 	}
+			// }
 
 
 			// console.log(allRecords);
@@ -218,10 +222,10 @@ var ganttchart_view = {
 			svg.selectAll("ganttBar")
 			      .data(allRecords)
 			    .enter().append("rect")
-			      .attr("x", function(d) { return x(Timeutil.getTimeInOneDay(d.timestamp)); })
+			      .attr("x", function(d) { return x(Timeutil.getTimeInOneDay(d.timestamp.getTime())); })
 			      .attr("height", y2(1) * 0.6)
 			      .attr("y", function(d,i) { return y2( Timeutil.getDayIndex(d.day)) + y2(1) * 0.2; })
-			      .attr("width", function(d) { return x(d.duration*1000); })
+			      .attr("width", function(d) { return x(d.endtime.getTime() - d.timestamp.getTime()); })
 			      .attr("fill", function(d){
 			      	// console.log(self);
 			      	var fz = "f" + d.floor + "z" + d.zone;
@@ -244,7 +248,7 @@ var ganttchart_view = {
 		                });
 		            });
 //short records
-			var shortRecords = allRecords.filter(function(d) {return d.duration < 5 *60;});
+			var shortRecords = allRecords.filter(function(d) {return (d.endtime.getTime() - d.timestamp.getTime() )< 5 *60*1000;});
 			shortRecords.sort(function(a, b){
 				var keyA = a.timestamp;
 				var keyB = b.timestamp;
