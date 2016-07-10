@@ -54,7 +54,9 @@ function main(){
 			"hide:histogram_view",
 
 			"display:trajmonitor_view",
+			"display:HVACmonitor_view",
 			"hide:trajmonitor_view",
+			"hide:HVACmonitor_view",
 
 			"display:eventlist_view",
 			"hide:eventlist_view",
@@ -178,11 +180,13 @@ function main(){
 			};
 			_hide_and_display_view(displayed_view);
 		}
-		else if (view_collection_name == "trajmonitorview")
+		else if (view_collection_name == "monitorview")
 		{
 			var displayed_view = {
+				"HVACmonitor_view":undefined,
 				"trajmonitor_view":undefined,
 
+				"smallmaps_view":undefined,
 				"timeline_view":undefined,	
 			};
 			_hide_and_display_view(displayed_view);

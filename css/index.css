@@ -259,26 +259,38 @@ body {
 	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
 }
 
-/*trajmonitor视图*/
-#trajmonitor-collection {
+/*monitor视图*/
+#monitor-collection {
 	position:absolute;
+	left:16%;
 	top:9%;
 	height:80%;
-	width:99%;
+	width:84%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
-#trajmonitor-collection > .trajmonitorContainer {
+#monitor-collection > .monitorContainer {
 	position:absolute;
 	height:100%;
 	width:100%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
-#trajmonitor-collection > .trajmonitorContainer > #trajmonitor-renderplace{
+#monitor-collection > .monitorContainer > #HVACmonitor-renderplace{
 	position:absolute;
 	height:100%;
-	width:100%;
+	width:25%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
+}
+#monitor-collection > .monitorContainer > #trajmonitor-renderplace{
+	position:absolute;
+	left:25%;
+	height:100%;
+	width:75%;
 	float: left;
 	border: solid #ccc 1px;
 	border-radius: 5px;

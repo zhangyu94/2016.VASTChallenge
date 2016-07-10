@@ -41,7 +41,7 @@ var linechart_render_view = {
             this.update_render(this.linechart_render_view_DIV_ID,selected_linechart_set)
         }
 
-
+/*
         if ( message == "set:highlight_linechart_set" )
         {
             var highlight_linechart_set = DATA_CENTER.linechart_variable.highlight_linechart_set;
@@ -62,6 +62,7 @@ var linechart_render_view = {
                     .classed("mouseover_hided-HVAClinechart-btntitle-span",false)
             }
         }
+*/
 
         if (message == "set:current_display_time")
         {
@@ -115,6 +116,47 @@ var linechart_render_view = {
             }
         }
         
+
+        if ( message == "set:highlight_attr_set" )
+        {
+            var highlight_attr_set = DATA_CENTER.linechart_variable.highlight_attr_set;
+            if (highlight_attr_set.length >=1 )
+            {
+                d3.selectAll(".HVAClinechart-btntitle-span")
+                    .classed("mouseover_hided-HVAClinechart-btntitle-span",function(d,i){
+                        var attr = d.name;
+                        if (highlight_attr_set.indexOf(attr) >= 0)
+                        {
+                            return false;
+                        }
+                        return true;
+                    })
+            }
+            else
+            {
+                d3.selectAll(".HVAClinechart-btntitle-span")
+                    .classed("mouseover_hided-HVAClinechart-btntitle-span",false)
+            }
+        }
+
+        if ( message == "set:highlight_linechart_set" )
+        {
+            var highlight_linechart_set = DATA_CENTER.linechart_variable.highlight_linechart_set;
+            if (highlight_linechart_set.length >=1 )
+            {
+                
+            }
+            else
+            {
+                
+            }
+        }
+
+
+
+
+
+
 
 	},
 
@@ -294,7 +336,7 @@ var linechart_render_view = {
                 })
                 .on("mouseout",function(d,i){
                     DATA_CENTER.VIEW_COLLECTION.linechart_render_view
-                        ._highlight_communication_mouseover_attrlinechartspan()
+                        ._highlight_communication_mouseout_attrlinechartspan()
                 })
 
         //小按钮们
@@ -716,13 +758,13 @@ var linechart_render_view = {
         //1.高亮attr
         var highlight_attr_set = [attr_name];
         DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
-
     },
 
     _highlight_communication_mouseout_attrlinechartspan:function()
     {
         //1.取消高亮attr
-        DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
+        var highlight_attr_set = [];
+        DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
 
     },
 }

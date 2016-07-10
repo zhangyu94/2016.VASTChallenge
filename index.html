@@ -23,10 +23,12 @@
 	<link rel="stylesheet" href="css/mdsgraph/mdsgraph_view.css">
 	<!--5. relationshipgraph相关的css-->
 	<link rel="stylesheet" href="css/relationshipgraph/relationshipgraph_view.css">
-	<!--6. trajmonitor相关的css-->
-	<link rel="stylesheet" href="css/trajmonitor/trajmonitor_view.css">
+	<!--6. monitor相关的css-->
+	<link rel="stylesheet" href="css/monitor/trajmonitor_view.css">
+	<link rel="stylesheet" href="css/monitor/HVACmonitor_view.css">
 	<!--7. eventlist相关的css-->
 	<link rel="stylesheet" href="css/eventlist/eventlist_view.css">
+	
 	<style>
 
 
@@ -72,8 +74,9 @@
 <script src="scripts/relationshipgraph/relationshipgraph_view.js"></script>
 <!--6. timeline相关的view-->
 <script src="scripts/timeline/timeline_view.js"></script>
-<!--7. trajmonitor相关的view-->
-<script src="scripts/trajmonitor/trajmonitor_view.js"></script>
+<!--7. monitor相关的view-->
+<script src="scripts/monitor/trajmonitor_view.js"></script>
+<script src="scripts/monitor/HVACmonitor_view.js"></script>
 <!--8. eventlist相关的view-->
 <script src="scripts/eventlist/eventlist_view.js"></script>
 
@@ -96,8 +99,8 @@
 				<ul class="pagination displayinterval-btn">
 	    			<label for="displayinterval-btn"></label>
 					<select name="displayinterval-btn" id="displayinterval-btn">
-					    <option>20ms</option>
 					    <option>100ms</option>
+					    <option>300ms</option>
 					    <option selected="selected">1000ms</option>
 	    			</select>
 				</ul>
@@ -107,7 +110,7 @@
 					    <option>X 1</option>
 					    <option>X 15</option>
 					    <option>X 60</option>
-					    <option>X 300</option>
+					    <option>X 1000</option>
 					    <option selected="selected">X 3000</option>
 	    			</select>
 				</ul>
@@ -119,7 +122,7 @@
 					<!--<li class="" id="mdsgraphviewli"><a id="mdsgraphview">mdsgraph</a></li>-->
 					<li class="" id="relationshipgraphviewli"><a id="relationshipgraphview">relationshipgraph</a></li>
 					<li class="" id="trajectoryviewli"><a id="trajectoryview">trajectory</a></li>
-					<li class="" id="trajmonitorviewli"><a id="trajmonitorview">trajmonitor</a></li>
+					<li class="" id="monitorviewli"><a id="monitorview">monitor</a></li>
 				</ul>
 			</div>
 
@@ -182,9 +185,11 @@
 		</div>
 	</div>
 
-	<!--6. trajmonitor视图相关的-->
-	<div class="view-collection" id="trajmonitor-collection">
-		<div class="trajmonitorContainer">
+	<!--6. monitor视图相关的-->
+	<div class="view-collection" id="monitor-collection">
+		<div class="monitorContainer">
+			<div id="HVACmonitor-renderplace">
+			</div>
 			<div id="trajmonitor-renderplace">
 			</div>
 		</div>
