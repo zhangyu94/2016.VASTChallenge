@@ -4,7 +4,7 @@ var smallmaps_view = {
 
 	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 	HVAC_ZONE_DOT_RADIUS :4.5,
-	RADARCHART_GLYPH_RADIUS :30,
+	RADARCHART_GLYPH_RADIUS :20,
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"radarchart_glyph-div",
 	
@@ -547,8 +547,8 @@ var smallmaps_view = {
 		function _render_radarchart(data,place_name,raw_timestamp,center_x,center_y)
 		{
 			var radius = DATA_CENTER.VIEW_COLLECTION.smallmaps_view.RADARCHART_GLYPH_RADIUS;
-			var width = 3*radius;
-			var height = 3*radius;
+			var width = 4.5*radius;
+			var height = 4.5*radius;
 
 			var innerRadius = smallmaps_view.HVAC_ZONE_DOT_RADIUS;
 			var degree = 360/data.length;
@@ -562,7 +562,10 @@ var smallmaps_view = {
 			  		var normalized_value = 0;
 			  		if (typeof(d.data.value)!= "undefined")
 			  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
-			  		return (radius - innerRadius) * (normalized_value / HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD) + innerRadius;
+			  		var rate = normalized_value / HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD;
+			  		if (rate > width / (2*radius))//避免扇形爆出svg范围
+			  			rate = width / (2*radius)
+			  		return (radius - innerRadius) * rate + innerRadius;
 			  	});
 			var outlineArc = d3.svg.arc()
 			        .innerRadius(innerRadius)

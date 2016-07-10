@@ -227,13 +227,11 @@ var linechart_render_view = {
                                 },
                                 events:{
                                     mouseOver:function(){
-                                        console.log("over",this.name)
                                         var name = this.name;
                                         DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                                             ._highlight_communication_mouseover_linebtn(name);
                                     },
                                     mouseOut:function(){
-                                        console.log("out",this.name)
                                         var name = this.name;
                                         DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                                             ._highlight_communication_mouseout_linebtn();

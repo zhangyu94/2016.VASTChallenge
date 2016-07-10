@@ -369,9 +369,9 @@ var DATA_CENTER = {
 			},
 		},
 		attribute_type_color_mapping : {
-			"hazium" : "#86F6E8",
+			"hazium" : "#76E6D8",
 			"temperature" : "#FF9080",
-			"electricity" : "#FFFF70",
+			"electricity" : "#F0F070",
 			"air" : "#FFFFFF",
 			"water" : "#70B0FF",
 			"others" : "#D0A0E0",
