@@ -104,31 +104,6 @@ var HVACgraph_attrbtn_view = {
 		
 	},
 
-	//输入一个属性的名字，返回这个属性的类别
-	//可能的返回值是HVACzone_oridinary_attr，HVACzone_hazium，floor_attr，building_attr
-	_cal_attr_type:function(attr_name)
-	{
-		//引用的全局变量
-		var HVACzone_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set;
-		var floor_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.floor_HVACattr_set;
-		var building_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.building_HVACattr_set;
-
-		if (HVACzone_HVACattr_set.indexOf(attr_name) >=0)
-		{
-			if (attr_name != DATA_CENTER.GLOBAL_STATIC.HAZIUM_ATTR_NAME)
-				return "HVACzone_oridinary_attr";
-			else
-				return "HVACzone_hazium";
-		}
-		else if (floor_HVACattr_set.indexOf(attr_name) >=0)
-			return "floor_attr";
-		else if (building_HVACattr_set.indexOf(attr_name) >=0)
-			return "building_attr";
-		else
-			console.log("_cal_attr_type invalid attr name")
-
-	},
-
 	//输入被选中的三类实体集合，返回需要画的按钮
 	//return一个attrbtn_set
 	_cal_attrbtnset:function(selected_HVACzone_set,selected_floor_set,selected_building_set)
@@ -180,6 +155,30 @@ var HVACgraph_attrbtn_view = {
 		}
 
 		return new_rendered_attrbtn_set;
+	},
+
+	//输入一个属性的名字，返回这个属性的类别
+	//可能的返回值是HVACzone_oridinary_attr，HVACzone_hazium，floor_attr，building_attr
+	_cal_attr_type:function(attr_name)
+	{
+		//引用的全局变量
+		var HVACzone_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set;
+		var floor_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.floor_HVACattr_set;
+		var building_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.building_HVACattr_set;
+
+		if (HVACzone_HVACattr_set.indexOf(attr_name) >=0)
+		{
+			if (attr_name != DATA_CENTER.GLOBAL_STATIC.HAZIUM_ATTR_NAME)
+				return "HVACzone_oridinary_attr";
+			else
+				return "HVACzone_hazium";
+		}
+		else if (floor_HVACattr_set.indexOf(attr_name) >=0)
+			return "floor_attr";
+		else if (building_HVACattr_set.indexOf(attr_name) >=0)
+			return "building_attr";
+		else
+			console.warn("_cal_attr_type invalid attr name")
 	},
 
 	_sort_generalattr_by_priority:function(attr_list)

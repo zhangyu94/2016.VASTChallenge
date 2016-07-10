@@ -5,13 +5,14 @@ var smallmaps_view = {
 	HVAC_ZONE_DOT_RADIUS :4.5,
 	RADARCHART_GLYPH_RADIUS :20,
 
-	DIV_CLASS_OF_RADARCHART_GLYPH:"radarchart_glyph-div",
+	DIV_CLASS_OF_RADARCHART_GLYPH:"smallmaps-radarchart_glyph-div",
 	
 	obsUpdate:function(message, data)
 	{
 		if (message == "display:smallmaps_view")
 		{
 			$("#"+this.smallmaps_view_DIV_ID).css("display","block");
+			DATA_CENTER.VIEW_COLLECTION.smallmaps_view._display_radarchart(this.DIV_CLASS_OF_RADARCHART_GLYPH)
 			if (this.FIRST_CALLED)
 			{
 				this.render(this.smallmaps_view_DIV_ID);
@@ -22,6 +23,7 @@ var smallmaps_view = {
 		if (message == "hide:smallmaps_view")
 		{
 			$("#"+this.smallmaps_view_DIV_ID).css("display","none");
+			DATA_CENTER.VIEW_COLLECTION.smallmaps_view._hide_radarchart(this.DIV_CLASS_OF_RADARCHART_GLYPH)
 		}
 
 
@@ -542,18 +544,16 @@ var smallmaps_view = {
 			}
 		}
 		
-		smallmaps_view._render_radarchart(dataset,place_name,raw_timestamp,center_x,center_y)
-		
-
+		smallmaps_view._render_radarchart(dataset,place_name,raw_timestamp,smallmaps_view.DIV_CLASS_OF_RADARCHART_GLYPH,center_x,center_y,
+			DATA_CENTER.VIEW_COLLECTION.smallmaps_view.RADARCHART_GLYPH_RADIUS,smallmaps_view.HVAC_ZONE_DOT_RADIUS);
 	},
 
-	_render_radarchart:function(data,place_name,raw_timestamp,center_x,center_y)
+	//data的数据格式是一个数组，数组中每个元素的样子是{name:...,value:...}
+	_render_radarchart:function(data,glyph_name,raw_timestamp,class_label,center_x,center_y,radius,innerRadius)
 	{
-		var radius = DATA_CENTER.VIEW_COLLECTION.smallmaps_view.RADARCHART_GLYPH_RADIUS;
+		console.log(data)
 		var width = 4.5*radius;
 		var height = 4.5*radius;
-
-		var innerRadius = smallmaps_view.HVAC_ZONE_DOT_RADIUS;
 		var degree = 360/data.length;
 
 		var pie = d3.layout.pie()
@@ -569,15 +569,15 @@ var smallmaps_view = {
 			  	if (rate > width / (2*radius))//避免扇形爆出svg范围
 			  		rate = width / (2*radius)
 			  	return (radius - innerRadius) * rate + innerRadius;
-			  });
+			});
 		var outlineArc = d3.svg.arc()
 			    .innerRadius(innerRadius)
 			    .outerRadius(radius);
 
 		//1. 先完成div的处理模板
 		var update_div = d3.select("body")//放在body上append使得他能显示出来
-					.selectAll("#"+smallmaps_view.DIV_CLASS_OF_RADARCHART_GLYPH+"-"+place_name)
-					.data([place_name])
+					.selectAll("#"+class_label+"-"+glyph_name)
+					.data([glyph_name])
 		var enter_div = update_div.enter();		
 		var exit_div = update_div.exit();				
 		//1) div的update部分
@@ -588,8 +588,8 @@ var smallmaps_view = {
 			.style("height",height + 'px')
 		//2) div的enter部分
 		enter_div = enter_div.append("div")
-				.attr("id",smallmaps_view.DIV_CLASS_OF_RADARCHART_GLYPH+"-"+place_name)
-				.attr("class",smallmaps_view.DIV_CLASS_OF_RADARCHART_GLYPH)
+				.attr("id",class_label+"-"+glyph_name)
+				.attr("class",class_label)
 				.style("position","absolute")
 				.style("top",center_y-height/2 + 'px')
 				.style("left",center_x-width/2 + 'px')
@@ -675,7 +675,6 @@ var smallmaps_view = {
 					$(this).tipsy()
 	                DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
 	                	._highlight_communication_mouseover_linebtn(d.data.name);
-	                       
 	            })
 	            .on("mouseout",function(d,i){
 	                DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
@@ -711,27 +710,6 @@ var smallmaps_view = {
 		      	})
 		//a.3) update的内层path的exit部分          	
 		update_div_g_exitpath.remove()
-		/*
-		//b. update的外层path的处理模板
-		var update_div_g_updateouterpath = update_div_g.selectAll(".outlineArc")
-		      	.data(pie(data))
-		var update_div_g_enterouterppath = update_div_g_updateouterpath.enter();
-		var update_div_g_exitouterppath = update_div_g_updateouterpath.exit();
-		//b.1) update的外层path的update部分
-		update_div_g_updateouterpath
-			.attr("d", outlineArc)
-		//b.2) update的外层path的enter部分	
-		update_div_g_enterouterppath
-			.append("path")
-	    		.attr("class", "outlineArc")
-		      	.attr("fill", "none")
-		      	.attr("stroke", "gray")
-		      	.attr("stroke-width",0.5)
-		      	.attr("d", outlineArc)
-		      	.attr("opacity", 1)
-		//b.3) update的外层path的exit部分	     	
-		update_div_g_exitouterppath.remove()
-		*/
 			
 		//3. 再完成enter的div中的所有内层path和外层path的处理模板
 		var enter_div_g = enter_div	
@@ -763,18 +741,15 @@ var smallmaps_view = {
 		      		return 1;
 		      	})
 				.on("mouseover",function(d,i){
-					
-					$(this).tipsy()
+					$(this).tipsy();
                     DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                         ._highlight_communication_mouseover_linebtn(d.data.name);
-                        
                 })
                 .on("mouseout",function(d,i){
                     DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                         ._highlight_communication_mouseout_linebtn();
                 })
 		      	.each(function(d,i){
-		      		
 		      		$(this).tipsy({
 						gravity: "s",
 						html:true,
@@ -802,19 +777,18 @@ var smallmaps_view = {
 			  		}
 			  		*/
 		      	})
-		/*
-		//b. enter的外层path的处理模板(只需要考虑path的enter部分,因为div是新enter的,path不可能存在update和exit部分)	         	
-	  	var enter_div_g_enterouterPath = enter_div_g.selectAll(".outlineArc")
-	      		.data(pie(data))
-	    	.enter().append("path")
-	    		.attr("class", "outlineArc")
-		      	.attr("fill", "none")
-		      	.attr("stroke", "gray")
-		      	.attr("stroke-width",0.5)
-		      	.attr("d", outlineArc)
-		      	.attr("opacity", 1)
-		*/
 	},
+
+	_hide_radarchart:function(class_label)
+	{
+		d3.selectAll("."+class_label).style("display","none")
+	},
+
+	_display_radarchart:function(class_label)
+	{
+		d3.selectAll("."+class_label).style("display","block")
+	},
+
 
 
 	//二分查找，返回小于等于键值target_value的最大的键值对应的数据
