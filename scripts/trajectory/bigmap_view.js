@@ -255,6 +255,8 @@ var bigmap_view = {
 		var personArray = $.map(personData, function(value, index) {
 		    return [value];
 		});
+		var processHeight = 3;
+		var processWidth = 16;
 		personArray.sort(function(person1, person2){
 			if(person1.fixRecords[0]['prox-id'] > person2.fixRecords[0]['prox-id']){
 				return 1
@@ -338,7 +340,7 @@ var bigmap_view = {
 					d.exitSelfOfficeButReasonable = true;
 				}
 			}else if(floorNum == 3){
-				if(zoneNum == 4 || zoneNum == 5){
+				if(zoneNum == 1 || zoneNum == 2 || zoneNum == 4 || zoneNum == 5){
 					d.exitSelfOfficeButReasonable = true;
 				}
 			}
@@ -371,7 +373,6 @@ var bigmap_view = {
 		.attr('id', function(d,i){
 			return 'circle-' + d.personName;
 		})
-		.attr('r', pointSize)
 		.attr('cx', function(d,i){
 			return d.currentNodeX;
 		})
@@ -379,12 +380,51 @@ var bigmap_view = {
 			return d.currentNodeY;
 		})
 		.attr('fill', function(d,i){
-			if(d.exitSelfOffice){
-				return 'black';
-			}else{
+			//单独检测异常的情况
+			if(d.abnormal){
 				return 'red';
 			}
+			if(d.isAccurateLoc){
+				return 'black';
+			}else if(d.exitSelfOffice){
+				return 'white';
+			}else if(d.exitSelfOfficeButReasonable){
+				return '#6c6c6c';
+			}else if(!d.exitSelfOfficeButReasonable){
+				return 'yellow';
+			}
 		})
+		.attr('r', function(d,i){
+			//单独检测异常的情况
+			if(d.abnormal){
+				return 3;
+			}
+			if(d.isAccurateLoc){
+				return 3;
+			}else if(d.exitSelfOffice){
+				return 3;
+			}else if(d.exitSelfOfficeButReasonable){
+				return 3;
+			}else if(!d.exitSelfOfficeButReasonable){
+				return 3;
+			}
+		})
+		.attr('stroke', function(d,i){
+			//单独检测异常的情况
+			if(d.abnormal){
+				return 'red';
+			}
+			if(d.isAccurateLoc){
+				return 'black';
+			}else if(d.exitSelfOffice){
+				return 'black';
+			}else if(d.exitSelfOfficeButReasonable){
+				return '#6c6c6c';
+			}else if(!d.exitSelfOfficeButReasonable){
+				return 'yellow';
+			}
+		})
+		.attr('stroke-width', 2)
 		.on('click',function(d,i){
 			if(d3.select(this).classed('click-highlight')){
 				d3.select(this)
@@ -405,8 +445,8 @@ var bigmap_view = {
 		.on('mouseout', function(d,i){
 			d3.select(this)
 			.classed('mouseover-highlight', false);
-		});
-		nodeSelectionText = nodeSelectionG.append('text', function(d,i){
+		}); 
+		var nodeSelectionText = nodeSelectionG.append('text', function(d,i){
 			return d.personName;
 		})
 		.attr('class', 'node-text')
@@ -423,6 +463,28 @@ var bigmap_view = {
 		.text(function(d,i){
 			return d.personName;
 		});
+		var nodeSelectionProcess = nodeSelectionG.append('rect')
+		.attr('class', 'node-process')
+		.attr('id', function(d,i){
+			return 'process-' + d.personName;
+		})
+		.attr('x', function(d,i){
+			return d.currentNodeX - 8;
+		})
+		.attr('y', function(d,i){
+			return d.currentNodeY + 5;
+		})
+		.attr('visibility', 'visible')
+		.attr('height', processHeight)
+		.attr('width', processWidth);
+
+		nodeSelectionProcess.attr('width', function(d,i){
+			var timestamp = +d.timestamp;
+			var endtime = +d.endtime;
+			var width = processWidth/(endtime - timestamp) * (globalTime - timestamp);
+			return width;
+		})
+		.attr('height', processHeight);
 		//改变node节点
 		nodeSelectionCircle.transition()
 		.duration(DURATION)
@@ -449,10 +511,46 @@ var bigmap_view = {
 			return scaleNodeY;
 		})
 		.attr('fill', function(d,i){
-			if(d.exitSelfOffice){
-				return 'black';
-			}else{
+			if(d.abnormal){
 				return 'red';
+			}
+			if(d.isAccurateLoc){
+				return 'black';
+			}else if(d.exitSelfOffice){
+				return 'white';
+			}else if(d.exitSelfOfficeButReasonable){
+				return '#6c6c6c';
+			}else if(!d.exitSelfOfficeButReasonable){
+				return 'yellow';
+			}
+		})
+		.attr('r', function(d,i){
+			//单独检测异常的情况
+			if(d.abnormal){
+				return 3;
+			}
+			if(d.isAccurateLoc){
+				return 3;
+			}else if(d.exitSelfOffice){
+				return 3;
+			}else if(d.exitSelfOfficeButReasonable){
+				return 3;
+			}else if(!d.exitSelfOfficeButReasonable){
+				return 3;
+			}
+		})
+		.attr('stroke', function(d,i){
+			if(d.abnormal){
+				return 'red';
+			}
+			if(d.isAccurateLoc){
+				return 'black';
+			}else if(d.exitSelfOffice){
+				return 'black';
+			}else if(d.exitSelfOfficeButReasonable){
+				return '#6c6c6c';
+			}else if(!d.exitSelfOfficeButReasonable){
+				return 'yellow';
 			}
 		})
 		.attr('class', function(d,i){
@@ -462,13 +560,13 @@ var bigmap_view = {
 				return 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum; 
 			}
 		})
-		.attr('stroke-width', 1)
-		.attr('stroke', 'black')
 		.each('end', function(d,i){
-			var scaleNodeX = d3.select(this).attr('cx');
-			var scaleNodeY = d3.select(this).attr('cy');
+			var scaleNodeX = +d3.select(this).attr('cx');
+			var scaleNodeY = +d3.select(this).attr('cy');
 			d3.select('#text-' + d.personName).attr('x', scaleNodeX);
 			d3.select('#text-' + d.personName).attr('y', scaleNodeY);
+			d3.select('#process-' + d.personName).attr('x', scaleNodeX - 8);
+			d3.select('#process-' + d.personName).attr('y', scaleNodeY + 5);
 		});
 		$('.person-label').each(function() {
 		    $(this).tipsy({
@@ -481,7 +579,18 @@ var bigmap_view = {
 		        },
 		    });
 		});
+		//删除文字
 		var nodeTextRemove = svg.selectAll('.node-text')
+		.data(personInZone.filter(function(d){
+			//return d.zoneNum != -1 && d.zoneNum != null;
+			return d.floorNum != -1;
+		}), function(d,i){
+			return d.personName;
+		})
+		.exit()
+		.remove();
+		//删除进度条
+		var nodeProcessRemove = svg.selectAll('.node-process')
 		.data(personInZone.filter(function(d){
 			//return d.zoneNum != -1 && d.zoneNum != null;
 			return d.floorNum != -1;
@@ -501,6 +610,11 @@ var bigmap_view = {
 		.exit()
 		.remove();
 	},
+	//综合来看节点的类型主要分为以下几类，按照准确性的从高到低进行排序，
+	//1. 能够被机器人检测到，这种类型的节点的准确性最高
+	//2. 能够在这个区域中找到自己的房间，那么这个员工很有可能出现在自己的房间里面
+	//3. 在这个区域中没有找到自己的房间，但是在这个区域内有公共的区域，因此这个员工也很有可能出现在区域中的公共房间中
+	//4. 在这个区域中没有自己的房间，同时也没有公共的区域，因此可以作为异常的情况
 	randomXLocationFromZone: function(d, floorNum, zoneNum, personName, timestamp, endtime){
 		var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
 		var indexZoneNum = zoneNum - 1;
@@ -520,6 +634,12 @@ var bigmap_view = {
 		var returnX = 0, returnY = 0;
 		//
 		var robotData = DATA_CENTER.original_data['proxMobileOut-MC2.csv'];
+		var formerProxZoneNum = +d.formerZoneNum;
+		var currentProxZoneNum = +d.zoneNum;
+		// 当前的节点与prox card检测到的结果相比是否是异常
+		d.abnormal = false;
+		// 当前的节点所在的位置是不是精确的，是不是被机器人曾经检测到
+		d.isAccurateLoc = false;
 		for(var i = 0;i < robotData.length;i++){
 			var robotTimeEnd = +robotData[i].robotTime;
 			var robotTimeBegin = +robotData[i].robotTime - 60000;//一分钟之前的时间
@@ -529,12 +649,26 @@ var bigmap_view = {
 			var robotProxId = robotData[i].proxId;
 			if((robotTimeEnd > timestamp) && (robotTimeEnd < endtime) 
 				&& (floorNum == robotFloorNum) && (personName == robotProxId)){
+				var robotProxZoneNum = robotData[i].proxZone;
+				if(robotProxZoneNum == currentProxZoneNum){
+					//robot检测到的区间与当前的时间范围内由prox检测到的区间一致
+					d.abnormal = false;
+				}
+				//检测情况不一致也是可以说明这是合理的，因为又可能在1min的另一的时间内被检测到
+				//如果可能在一分钟的开始还没有进入到到这个prox-zone，则说明是不合理的
+				//说明1min有可能跨越两个时间区间
+				else if(robotTimeBegin < timestamp && robotProxZoneNum == formerProxZoneNum){
+					d.abnormal = false;
+				}else{
+					//如果在一分钟前的时间的prox-zone与prox card检测到的区域也不一致，则说明是不合理的
+					d.abnormal = true;
+					console.log('-----------------abnormal-------------------');
+				}
 				d.isAccurateLoc = true;
 				d.returnX = robotX;
 				d.returnY = robotY;
 				return;
 			}
-
 		}
 		//---------------------------------------------
 		for(var k = 0;k < length;k++){
@@ -683,7 +817,6 @@ var bigmap_view = {
 	updateRobotView: function(divID, globalTime){
 		var pointSize = 4;
 		var robotData = DATA_CENTER.original_data['proxMobileOut-MC2.csv'];
-		console.log(robotData);
 		var singleroomData = DATA_CENTER.derived_data['singleroom.json'];
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
