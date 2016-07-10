@@ -506,8 +506,6 @@ var DATA_CENTER = {
 			}
 			person[pID]['fixRecords'].push(aRecord);
 			this.update_traj_endtime_signle(pID);
-			console.log(person[pID]);
-
 		}
 	},
 	add_traj_mobile_data:function(data, warning = false) {
@@ -630,7 +628,13 @@ var DATA_CENTER = {
 								// console.log(data5);
 								person_robot_detection_array = DATA_CENTER.global_variable.person_robot_detection_array;
 								for(var i = 0;i < data5.length;i++){
-									var proxId = data5[i][' prox-id'].replace(/\s+/g,"");;
+									var proxId = data5[i][' prox-id'].replace(/\s+/g,"");
+									data5[i].proxId = proxId;
+									var timestamp = data5[i].timestamp;
+									data5[i].robotTime = new Date(timestamp).getTime();
+									data5[i].floorNum = +data5[i][' floor'].replace(/\s+/g,"");
+									data5[i].x = +data5[i][' x'].replace(/\s+/g,"");
+									data5[i].y = +data5[i][' y'].replace(/\s+/g,"");
 									if(person_robot_detection_array.indexOf(proxId) == -1){
 										person_robot_detection_array.push(proxId);
 									}
@@ -650,6 +654,15 @@ var DATA_CENTER = {
 											personInZone[i].formerZoneNum = -1;
 											personInZone[i].zoneNum = -1;
 										}
+										personInZone.sort(function(person1,person2){
+											if(person1.personName > person2.personName){
+												return 1;
+											}else if(person1.personName < person2.personName){
+												return -1;
+											}else{
+												return 0;
+											}
+										});
 										DATA_CENTER.derived_data["personInZone"] = personInZone;
 										d3.json(derived_path+d_file_name[1], function(data8) {//room.json data
 											//room数据处理得到每个楼层的各个zone有哪些区域
@@ -672,6 +685,27 @@ var DATA_CENTER = {
 												}
 											}
 											d3.json(derived_path + d_file_name[2], function(data9){
+												var singleroomData = data9;
+												var robotDetectionData = data5;
+												for(var j = 0;j < robotDetectionData.length;j++){
+													var xLoc = robotDetectionData[j].x;
+													var yLoc = robotDetectionData[j].y;
+													var floorNumRobot = robotDetectionData[j].floorNum;
+													for(var k = 0;k < singleroomData.length;k++){
+														var room = singleroomData[k];
+														var roomX = +room.x;
+														var roomY = +room.y;
+														var lengthX = +room.xlength;
+									        			var lengthY = +room.ylength;
+									        			var roomFloor = +room.floor;
+									        			if((xLoc >= roomX) && (xLoc <= roomX + lengthX) && (yLoc >= roomY) && (yLoc <= roomY + lengthY) 
+									        				&& (roomFloor == floorNumRobot)){
+									        				robotDetectionData[j].proxZone = +room.proxZone;
+									        				break;
+									        			}
+													}
+												}
+												console.log(robotDetectionData);
 												d3.csv(derived_path + d_file_name[3], function(data10){
 													DATA_CENTER.original_data[file_name[0]] = HVAC_data;
 													DATA_CENTER.original_data[file_name[1]] = hazium_data1;

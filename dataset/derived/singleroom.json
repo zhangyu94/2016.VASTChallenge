@@ -136,7 +136,7 @@
 	"x": "141",
 	"y": "46"
 }, {
-	"name": "Elevators and stairs",
+	"name": "Elev&stair",
 	"floor": 1,
 	"xlength": 16,
 	"ylength": 20,
@@ -944,7 +944,7 @@
 	"x": "134",
 	"y": "80"
 },{
-	"name": "Wkrm/Stairs",
+	"name": "Wkrm/Stair",
 	"floor": 2,
 	"doornum": 2690,
 	"xlength": 26,
@@ -1012,7 +1012,7 @@
 	"x": "37",
 	"y": "66"
 }, {
-	"name": "Elevators and stairs",
+	"name": "Elev&stair",
 	"floor": 2,
 	"xlength": 16,
 	"ylength": 20,
@@ -1459,7 +1459,7 @@
 	"x": "141",
 	"y": "46"
 }, {
-	"name": "Future Expansion",
+	"name": "FutureExpansion",
 	"floor": 3,
 	"xlength": 56,
 	"ylength": 111,
@@ -1468,7 +1468,7 @@
 	"x": "134",
 	"y": "0"
 }, {
-	"name": "Elevators and stairs",
+	"name": "Elev&stair",
 	"floor": 3,
 	"xlength": 16,
 	"ylength": 20,
