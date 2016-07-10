@@ -14,10 +14,10 @@ var SUBJECT = {
         }
 
 
-        if (message.indexOf("highlight") < 0 )
-        {
-            console.log("Subject: " + message + ' post!' );
-        }
+        //if (message.indexOf("highlight") < 0 )
+        //{
+        //    console.log("Subject: " + message + ' post!' );
+        //}
         //console.log("Subject: " + message + ' post!' );
 
         for (var i = 0; i < this.observers.length; i++) {

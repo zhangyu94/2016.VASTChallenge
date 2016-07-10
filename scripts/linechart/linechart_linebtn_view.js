@@ -330,7 +330,7 @@ var linechart_linebtn_view = {
 		{
 			DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[place]);
 		}
-		console.log(place)
+
 	},
 
 	_highlight_communication_mouseout_linebtn:function()

@@ -1,6 +1,6 @@
 .smallmaps-rect{
 	stroke: #111;
-	stroke-width: 2;
+	stroke-width: 0.5;
 }
 .floor-smallmaps-rect{
     fill: #8090FF;
@@ -19,7 +19,7 @@
 
 .smallmaps-HVACzone-circle{
 	stroke: #111;
-	stroke-width: 2;
+	stroke-width: 0.5;
 
 }
 .ordinary-smallmaps-HVACzone-circle{

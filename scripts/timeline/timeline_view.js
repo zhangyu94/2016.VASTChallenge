@@ -479,12 +479,11 @@ var timeline_view = {
             },
 
             tooltip: {
-            	xDateFormat: '%H:%M',
+            	xDateFormat: '%H:%M:%S',
 	            pointFormatter: function() {
 	            	//直接去掉值的显示
 				    return ''
 				},
-				
 			},
             
             series: [{

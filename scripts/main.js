@@ -56,6 +56,9 @@ function main(){
 			"display:trajmonitor_view",
 			"hide:trajmonitor_view",
 
+			"display:eventlist_view",
+			"hide:eventlist_view",
+
 			"display:timeline_view",
 			"hide:timeline_view",
 			
@@ -132,6 +135,7 @@ function main(){
 				"bigmap_view":undefined,
 				"histogram_view":undefined,
 
+				"eventlist_view":undefined,
 				"smallmaps_view":undefined,
 				"timeline_view":undefined,
 			};
@@ -141,19 +145,19 @@ function main(){
 		{		
 			var displayed_view = {
 				"HVACgraph_attrbtn_view":undefined,
-				//"linechart_linebtn_view":undefined,
 				"linechart_render_view":undefined,
 
+				"eventlist_view":undefined,
 				"smallmaps_view":undefined,
 				"timeline_view":undefined,	
 			};
 			_hide_and_display_view(displayed_view);
 		}
+		/*
 		else if (view_collection_name == "mdsgraphview")
 		{
 			var displayed_view = {
 				"HVACgraph_attrbtn_view":undefined,
-				//"linechart_linebtn_view":undefined,
 				"mdsgraph_view":undefined,
 
 				"smallmaps_view":undefined,
@@ -161,13 +165,14 @@ function main(){
 			};
 			_hide_and_display_view(displayed_view);
 		}
+		*/
 		else if (view_collection_name == "relationshipgraphview")
 		{
 			var displayed_view = {
 				"HVACgraph_attrbtn_view":undefined,
-				//"linechart_linebtn_view":undefined,
 				"relationshipgraph_view":undefined,
 
+				"eventlist_view":undefined,
 				"smallmaps_view":undefined,
 				"timeline_view":undefined,	
 			};
