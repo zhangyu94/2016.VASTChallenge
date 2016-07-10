@@ -32,7 +32,7 @@ var trajmonitor_view = {
 	},
 	render:function(divID)
 	{
-
+		console.log(roomsExchange(3,'proxZone_to_energyZone'))
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
@@ -107,7 +107,7 @@ var trajmonitor_view = {
 	    			return true
 	    	})
 	    	psvg.append('text')
-	    		.text(person_array[p].name)
+	    		.text(+p+1+' '+person_array[p].name)
 	    		.attr('y',spaceHeight-pmargin.bottom-pmargin.top-2)
 	    		.attr('x',-pmargin.left+6)
 
