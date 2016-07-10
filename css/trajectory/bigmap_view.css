@@ -9,6 +9,12 @@
 	stroke-width: 0.2;
     opacity: 1;
 }
+
+.doornum-text, .room-name-text, .node-text{
+    font-size: 3px;
+    z-index: 5;
+}
+
 .certain-stroke{
     stroke: green;
 }
@@ -20,8 +26,11 @@
     fill: blue;
     stroke-width: 2px;
 }
+.node-text{
+    display: hidden;
+}
 circle[class~=mouseover-highlight], rect[class~=mouseover-highlight]{
-    fill: #3366ff;
+    fill: #769af6;
     opacity: 1;
     -webkit-border-radius: 8;
     -moz-border-radius: 8;
@@ -34,7 +43,7 @@ circle[class~=click-highlight]{
     -moz-border-radius: 8;
 }
 rect[class~=click-highlight]{
-	fill: #3366ff;
+	fill: #769af6;
 	//stroke-width: 3;
 	//animation-name: highlight-animation;
 	//animation-duration:1s;

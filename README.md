@@ -1,4 +1,4 @@
-# VASTChallenge2016
+﻿# VASTChallenge2016
 1. 现在有两个视图，linechart和trajectory
 每个视图中的一个小视图写在scripts文件夹中对应文件夹里面对应的js；小视图的css是css文件夹中对应文件夹里对应的css
 
@@ -16,3 +16,11 @@
 7. 点击linechart按钮进行渲染的地方是main.js中的function display_linechart_view()里面
 点击trajectory按钮进行渲染的地方是main.js中的function display_trajectory_view()里面
 
+直接往
+DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set或
+DATA_CENTER.GLOBAL_STATIC.floor_HVACattr_set或
+DATA_CENTER.GLOBAL_STATIC.building_HVACattr_set里面push一个新的属性值就能在linechart里面画出新的
+目前需要通过点击随便一个具有这个属性的对象来触发这个新属性的显示
+
+直接往DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set里面push一个新的zone就能在linechart里面画出新的
+目前需要通过点击随便一个view的对象来触发这个新属性的显示

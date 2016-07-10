@@ -49,9 +49,10 @@ body {
 /*小map视图*/
 #smallmapsview-collection {
 	position:absolute;
+	left:0%;
 	top:9%;
 	height:80%;
-	width:20%;
+	width:16%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
@@ -77,10 +78,10 @@ body {
 /*linechart视图*/
 #linechartview-collection {
 	position:absolute;
-	left:21%;
+	left:16%;
 	top:9%;
 	height:80%;
-	width:78.5%;
+	width:70%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
@@ -154,10 +155,10 @@ body {
 /*trajectory视图*/
 #trajectoryview-collection {
 	position:absolute;
-	left:21%;
+	left:16%;
 	top:9%;
 	height:80%;
-	width:78.5%;
+	width:70%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
@@ -205,9 +206,10 @@ body {
 /*timeline视图*/
 #timelineview-collection {
 	position:absolute;
+	left:0%;
 	top:90%;
 	height:10%;
-	width:99%;
+	width:100%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
@@ -229,26 +231,66 @@ body {
 	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
 }
 
-/*trajmonitor视图*/
-#trajmonitor-collection {
+/*eventlist视图*/
+#eventlistview-collection {
 	position:absolute;
 	top:9%;
+	left:86%;
 	height:80%;
-	width:99%;
+	width:14%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
-#trajmonitor-collection > .trajmonitorContainer {
+#eventlistview-collection > .eventlistContainer {
 	position:absolute;
 	height:100%;
 	width:100%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
-#trajmonitor-collection > .trajmonitorContainer > #trajmonitor-renderplace{
+#eventlistview-collection > .eventlistContainer > #eventlist-renderplace{
 	position:absolute;
 	height:100%;
 	width:100%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
+}
+
+/*monitor视图*/
+#monitor-collection {
+	position:absolute;
+	left:16%;
+	top:9%;
+	height:80%;
+	width:84%;
+	float: left;
+	pointer-events:none;/*大框是始终存在的，不能点的*/
+}
+#monitor-collection > .monitorContainer {
+	position:absolute;
+	height:100%;
+	width:100%;
+	float: left;
+	pointer-events:none;/*大框是始终存在的，不能点的*/
+}
+#monitor-collection > .monitorContainer > #HVACmonitor-renderplace{
+	position:absolute;
+	height:100%;
+	width:25%;
+	float: left;
+	border: solid #ccc 1px;
+	border-radius: 5px;
+	background-color: #f8f8f8;
+	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
+}
+#monitor-collection > .monitorContainer > #trajmonitor-renderplace{
+	position:absolute;
+	left:25%;
+	height:100%;
+	width:75%;
 	float: left;
 	border: solid #ccc 1px;
 	border-radius: 5px;

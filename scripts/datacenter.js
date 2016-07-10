@@ -18,7 +18,9 @@ var DATA_CENTER = {
 		"histogram_view":histogram_view,
 
 		"trajmonitor_view":trajmonitor_view,
+		"HVACmonitor_view":HVACmonitor_view,
 
+		"eventlist_view":eventlist_view,
 		"smallmaps_view":smallmaps_view,
 		"timeline_view":timeline_view,
 	},
@@ -32,6 +34,21 @@ var DATA_CENTER = {
 
 	//view之间通信需要利用的全局变量
 	global_variable : {
+		warning_list: [],
+		//warning_list数据结构:
+		//{
+		//	time:...(一个时间点,存成数字)
+		//	place:{
+		//		type:...(标记这个place是一个HVACzone或者Proxzone或者具体的robot检测到的点)
+		//		value:...
+		//	}...
+		//	attr:...(被认为是异常的属性,可以是某个sensor属性,可以是某个人的轨迹)
+		//	event:{
+		//		type:...(标记这个event被认为异常的原因,即异常的类型,如"impossible route","extreme value")
+		//		value:...(字符串或数字,标记了异常数据的取值,可以用来标记这个event在准则下的异常度)
+		//	}
+		//}
+
 		floors_zone_set: [],
 		personInZone: [],
 		selected_attr_set:[],
@@ -104,6 +121,7 @@ var DATA_CENTER = {
 
 	//全局静态变量
 	GLOBAL_STATIC : {
+		HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 		building_HVACattr_set :[
 			"Supply Side Inlet Mass Flow Rate",
 			"Supply Side Inlet Temperature",
@@ -159,7 +177,7 @@ var DATA_CENTER = {
 			"BATH_EXHAUST:Fan Power":{
 				abbreviation:"bath fan power",
 				lv2_abbreviation:"bathfan pwr",
-				type:["air","electricity"],
+				type:["electricity","air"],
 			},
 			"VAV_SYS AIR LOOP INLET Mass Flow Rate":{
 				abbreviation:"return air rate",
@@ -169,7 +187,7 @@ var DATA_CENTER = {
 			"VAV_SYS AIR LOOP INLET Temperature":{
 				abbreviation:"return air temperature",
 				lv2_abbreviation:"rtn air temp",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"VAV Availability Manager Night Cycle Control Status":{
 				abbreviation:"control status",
@@ -179,12 +197,12 @@ var DATA_CENTER = {
 			"VAV_SYS COOLING COIL Power":{
 				abbreviation:"cooling power",
 				lv2_abbreviation:"cool pwr",
-				type:["electricity","temperature"],
+				type:["temperature","electricity"],
 			},
 			"VAV_SYS HEATING COIL Power":{
 				abbreviation:"heating power",
 				lv2_abbreviation:"heat pwr",
-				type:["electricity","temperature"],
+				type:["temperature","electricity"],
 			},
 			"VAV_SYS SUPPLY FAN OUTLET Mass Flow Rate":{
 				abbreviation:"output air rate",
@@ -194,27 +212,27 @@ var DATA_CENTER = {
 			"VAV_SYS SUPPLY FAN OUTLET Temperature":{
 				abbreviation:"output air temperature",
 				lv2_abbreviation:"Ot air temp",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"VAV_SYS SUPPLY FAN:Fan Power":{
 				abbreviation:"fan power",
 				lv2_abbreviation:"fan pwr",
-				type:["air","electricity"],
+				type:["electricity","air"],
 			},
 			"VAV_SYS Outdoor Air Flow Fraction":{
 				abbreviation:"outdoor air percent",
-				lv2_abbreviation:"outdr air pct",
+				lv2_abbreviation:"otdr air pct",
 				type:["air"],
 			},
 			"VAV_SYS Outdoor Air Mass Flow Rate":{
 				abbreviation:"outdoor air rate",
-				lv2_abbreviation:"outdr air temp",
+				lv2_abbreviation:"otdr air temp",
 				type:["air"],
 			},
 			"COOL Schedule Value":{
 				abbreviation:"air cool setpoint",
 				lv2_abbreviation:"air cool pnt",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"DELI-FAN Power":{
 				abbreviation:"deli fan power",
@@ -223,7 +241,7 @@ var DATA_CENTER = {
 			},
 			"Drybulb Temperature":{
 				abbreviation:"outdoor temperature",
-				lv2_abbreviation:"outdr temp",
+				lv2_abbreviation:"otdr temp",
 				type:["temperature"],
 			},
 			"Wind Direction":{
@@ -239,7 +257,7 @@ var DATA_CENTER = {
 			"HEAT Schedule Value":{
 				abbreviation:"air heat setpoint",
 				lv2_abbreviation:"air heat pnt",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"Pump Power":{
 				abbreviation:"pump power",
@@ -249,22 +267,22 @@ var DATA_CENTER = {
 			"Water Heater Setpoint":{
 				abbreviation:"water heater setpoint",
 				lv2_abbreviation:"wtr heat pnt",
-				type:["water","temperature"],
+				type:["temperature","water"],
 			},
 			"Water Heater Gas Rate":{
 				abbreviation:"water heater power",
 				lv2_abbreviation:"wtr heat pwr",
-				type:["water","temperature","electricity"],
+				type:["temperature","electricity","water"],
 			},
 			"Water Heater Tank Temperature":{
 				abbreviation:"water heater temperature",
 				lv2_abbreviation:"wtr heat temp",
-				type:["water","temperature"],
+				type:["temperature","water"],
 			},
 			"Loop Temp Schedule":{
 				abbreviation:"water loop setpoint",
 				lv2_abbreviation:"wtr loop pnt",
-				type:["water","temperature"],
+				type:["temperature","water"],
 			},
 			"Supply Side Inlet Mass Flow Rate":{
 				abbreviation:"input water rate",
@@ -274,17 +292,17 @@ var DATA_CENTER = {
 			"Supply Side Inlet Temperature":{
 				abbreviation:"input water temperature",
 				lv2_abbreviation:"In wtr temp",
-				type:["water","temperature"],
+				type:["temperature","water"],
 			},
 			"Supply Side Outlet Temperature":{
 				abbreviation:"output water temperature",
 				lv2_abbreviation:"Ot wtr temp",
-				type:["water","temperature"],
+				type:["temperature","water"],
 			},
 			"REHEAT COIL Power":{
 				abbreviation:"air reheat power",
 				lv2_abbreviation:"air heat pwr",
-				type:["air","temperature","electricity"],
+				type:["temperature","electricity","air"],
 			},
 			"RETURN OUTLET CO2 Concentration":{
 				abbreviation:"return CO2 concentration",
@@ -299,7 +317,7 @@ var DATA_CENTER = {
 			"SUPPLY INLET Temperature":{
 				abbreviation:"input air temperature",
 				lv2_abbreviation:"In air temp",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"VAV REHEAT Damper Position":{
 				abbreviation:"input air damper",
@@ -324,17 +342,17 @@ var DATA_CENTER = {
 			"Thermostat Temp":{
 				abbreviation:"air temperature",
 				lv2_abbreviation:"air temp",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"Thermostat Cooling Setpoint":{
 				abbreviation:"air cool threshold",
 				lv2_abbreviation:"air cool pnt",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"Thermostat Heating Setpoint":{
 				abbreviation:"air heat threshold",
 				lv2_abbreviation:"air heat pnt",
-				type:["air","temperature"],
+				type:["temperature","air"],
 			},
 			"Total Electric Demand Power":{
 				abbreviation:"total power",
@@ -342,8 +360,8 @@ var DATA_CENTER = {
 				type:["electricity"],
 			},
 			"HVAC Electric Demand Power":{
-				abbreviation:"HVAC power",
-				lv2_abbreviation:"HVAC pwr",
+				abbreviation:"hvac power",
+				lv2_abbreviation:"hvac pwr",
 				type:["electricity"],
 			},
 			"Hazium Concentration":{
@@ -352,6 +370,22 @@ var DATA_CENTER = {
 				type:["hazium"],
 			},
 		},
+		attribute_type_color_mapping : {
+			"hazium" : "#76E6D8",
+			"temperature" : "#FF9080",
+			"electricity" : "#F0F070",
+			"air" : "#FFFFFF",
+			"water" : "#70B0FF",
+			"others" : "#D0A0E0",
+		},
+		attribute_type_priority : [
+			"hazium",
+			"temperature",
+			"electricity",
+			"air",
+			"water",
+			"others",
+		],
 		floor_name_number_mapping : {
 			"F_1":1,
 			"F_2":2,
@@ -472,8 +506,6 @@ var DATA_CENTER = {
 			}
 			person[pID]['fixRecords'].push(aRecord);
 			this.update_traj_endtime_signle(pID);
-			console.log(person[pID]);
-
 		}
 	},
 	add_traj_mobile_data:function(data, warning = false) {
@@ -596,7 +628,13 @@ var DATA_CENTER = {
 								// console.log(data5);
 								person_robot_detection_array = DATA_CENTER.global_variable.person_robot_detection_array;
 								for(var i = 0;i < data5.length;i++){
-									var proxId = data5[i][' prox-id'].replace(/\s+/g,"");;
+									var proxId = data5[i][' prox-id'].replace(/\s+/g,"");
+									data5[i].proxId = proxId;
+									var timestamp = data5[i].timestamp;
+									data5[i].robotTime = new Date(timestamp).getTime();
+									data5[i].floorNum = +data5[i][' floor'].replace(/\s+/g,"");
+									data5[i].x = +data5[i][' x'].replace(/\s+/g,"");
+									data5[i].y = +data5[i][' y'].replace(/\s+/g,"");
 									if(person_robot_detection_array.indexOf(proxId) == -1){
 										person_robot_detection_array.push(proxId);
 									}
@@ -616,6 +654,15 @@ var DATA_CENTER = {
 											personInZone[i].formerZoneNum = -1;
 											personInZone[i].zoneNum = -1;
 										}
+										personInZone.sort(function(person1,person2){
+											if(person1.personName > person2.personName){
+												return 1;
+											}else if(person1.personName < person2.personName){
+												return -1;
+											}else{
+												return 0;
+											}
+										});
 										DATA_CENTER.derived_data["personInZone"] = personInZone;
 										d3.json(derived_path+d_file_name[1], function(data8) {//room.json data
 											//room数据处理得到每个楼层的各个zone有哪些区域
@@ -638,6 +685,27 @@ var DATA_CENTER = {
 												}
 											}
 											d3.json(derived_path + d_file_name[2], function(data9){
+												var singleroomData = data9;
+												var robotDetectionData = data5;
+												for(var j = 0;j < robotDetectionData.length;j++){
+													var xLoc = robotDetectionData[j].x;
+													var yLoc = robotDetectionData[j].y;
+													var floorNumRobot = robotDetectionData[j].floorNum;
+													for(var k = 0;k < singleroomData.length;k++){
+														var room = singleroomData[k];
+														var roomX = +room.x;
+														var roomY = +room.y;
+														var lengthX = +room.xlength;
+									        			var lengthY = +room.ylength;
+									        			var roomFloor = +room.floor;
+									        			if((xLoc >= roomX) && (xLoc <= roomX + lengthX) && (yLoc >= roomY) && (yLoc <= roomY + lengthY) 
+									        				&& (roomFloor == floorNumRobot)){
+									        				robotDetectionData[j].proxZone = +room.proxZone;
+									        				break;
+									        			}
+													}
+												}
+												console.log(robotDetectionData);
 												d3.csv(derived_path + d_file_name[3], function(data10){
 													DATA_CENTER.original_data[file_name[0]] = HVAC_data;
 													DATA_CENTER.original_data[file_name[1]] = hazium_data1;

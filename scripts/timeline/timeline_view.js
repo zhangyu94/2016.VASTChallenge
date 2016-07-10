@@ -400,6 +400,7 @@ var timeline_view = {
                 panKey: 'shift',
                 events:{
                 	click:function(e){
+                		console.log(e)
                 		var clicked_time = e.xAxis[0].value;
                 		var index = timeline_view._binary_search(chart.series[0].data,"x",clicked_time);
                 		var aligned_time = chart.series[0].data[index].x;
@@ -479,12 +480,11 @@ var timeline_view = {
             },
 
             tooltip: {
-            	xDateFormat: '%H:%M',
+            	xDateFormat: '%H:%M:%S',
 	            pointFormatter: function() {
 	            	//直接去掉值的显示
 				    return ''
 				},
-				
 			},
             
             series: [{
