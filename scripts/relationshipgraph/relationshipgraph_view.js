@@ -10,8 +10,8 @@ var relationshipgraph_view = {
 
             var selected_linechart_set = Object.keys(ori_data_array[0]);
             selected_linechart_set.shift();
-            selected_linechart_set = selected_linechart_set.slice(-80);
-            console.log(selected_linechart_set)
+            selected_linechart_set = selected_linechart_set.slice(-100);
+            //console.log(selected_linechart_set)
             var selected_filter_timerange = undefined;
             //console.log(selected_filter_timerange)
             this.render(this.relationshipgraph_view_DIV_ID,selected_linechart_set, selected_filter_timerange);        
@@ -53,11 +53,11 @@ var relationshipgraph_view = {
 
 	    var scale_negative = d3.scale.linear()
 	      .domain([-1,0])
-	      .range([30,400]);
+	      .range([20,300]);
 
 	    var scale_positive = d3.scale.linear()
 	      .domain([0,1])
-	      .range([400,30]);
+	      .range([300,20]);
 
 	    if(timerange == undefined)
 	    	selectedData = ori_data_array;
@@ -97,38 +97,87 @@ var relationshipgraph_view = {
 	        selectedAttr.forEach(function(a){
 	           nodes.push({id: a});
 	        });
+
+	        var A_array = [], total_array = [];
+
+	        selectedAttr.forEach(function(EachAttr){
+	        	A_array = [];
+		        selectedData.forEach(function(item){
+		        	A_array.push(item[EachAttr]);	        	
+		        }); 
+	        	total_array.push(A_array);		               	
+	        })
+	
+	        var correlationMatrix = MDS.correlationMatrix(total_array);
+	        console.log(correlationMatrix);
+	        var arr_len = correlationMatrix.length;
+
+	        var init_links = [];
+	        for(var i=0;i<arr_len-1;i++)
+	        	for(var j=i+1;j<arr_len;j++)
+	        	{
+	        		if(correlationMatrix[i][j] != 0)
+	        			init_links.push({source: nodes[i], target: nodes[j], weight: correlationMatrix[i][j]});
+	        	}
+
+	        init_links.sort(compare("weight"));//按照相关度排序
+
+	        for(var k=0;k<3000;k++)
+	        {
+	        	links.push(init_links[k]);
+	        }
+
+		      function compare(propertyName) { 
+		        return function (object1, object2) { 
+		            var value1 = object1[propertyName]; 
+		            var value2 = object2[propertyName]; 
+		            if (value2 < value1) { 
+		              return -1; 
+		            } 
+		          else if (value2 > value1) { 
+		            return 1; 
+		          } 
+		          else { 
+		            return 0; 
+		          } 
+		        } 
+		      } 
+
+	        console.log(init_links);
+
 	        //计算相关系数
-	        for(var i=0;i<nodes.length-1;i++)
-	           for(var j=i+1;j<nodes.length;j++)
-	           {
-	              var x_list = [], y_list = [];
-	              selectedData.forEach(function(s){
-	                 x_list.push(Number(s[nodes[i].id]));
-	                 y_list.push(Number(s[nodes[j].id]));
-	              })
+	        // for(var i=0;i<nodes.length-1;i++)
+	        //    for(var j=i+1;j<nodes.length;j++)
+	        //    {
+	        //       var x_list = [], y_list = [];
+	        //       selectedData.forEach(function(s){
+	        //          x_list.push(Number(s[nodes[i].id]));
+	        //          y_list.push(Number(s[nodes[j].id]));
+	        //       })
 	              
-	              var len = x_list.length;
-	              var sum_x = 0, sum_y = 0, sum_up = 0, sum_down_x = 0, sum_down_y = 0;
+	        //       var len = x_list.length;
+	        //       var sum_x = 0, sum_y = 0, sum_up = 0, sum_down_x = 0, sum_down_y = 0;
 
-	              for(var k=0;k<len;k++)
-	              {
-	                 sum_x += x_list[k];
-	                 sum_y += y_list[k];
-	              }
+	        //       for(var k=0;k<len;k++)
+	        //       {
+	        //          sum_x += x_list[k];
+	        //          sum_y += y_list[k];
+	        //       }
 
-	              var mean_x = sum_x/len, mean_y = sum_y/len;
+	        //       var mean_x = sum_x/len, mean_y = sum_y/len;
 
-	              for(var k=0;k<len;k++)
-	              {
-	                 sum_up += (x_list[k]-mean_x)*(y_list[k]-mean_y);
-	                 sum_down_x += Math.pow(x_list[k]-mean_x,2);
-	                 sum_down_y += Math.pow(y_list[k]-mean_y,2);
-	              }
+	        //       for(var k=0;k<len;k++)
+	        //       {
+	        //          sum_up += (x_list[k]-mean_x)*(y_list[k]-mean_y);
+	        //          sum_down_x += Math.pow(x_list[k]-mean_x,2);
+	        //          sum_down_y += Math.pow(y_list[k]-mean_y,2);
+	        //       }
 
-	              var result = sum_up/(Math.sqrt(sum_down_x)*Math.sqrt(sum_down_y));
- 	              if(result <=1 && result >=-1)
-	                links.push({source: nodes[i], target: nodes[j], weight: result});
-	           }
+	        //       var result = sum_up/(Math.sqrt(sum_down_x)*Math.sqrt(sum_down_y));
+	        //       console.log(result)
+ 	       //       if(result <=1 && result >=-1)
+	        //         links.push({source: nodes[i], target: nodes[j], weight: result});
+	        //   }
 
 	       link = link.data(force.links(), function(d) { return d.source.id + "-" + d.target.id; });
 	       linkText = linkText.data(force.links(), function(d) { return d.source.id + "-" + d.target.id; });
@@ -137,7 +186,7 @@ var relationshipgraph_view = {
 	       	.attr("class", "link-relation")
 	       	.attr("stroke","silver")
 	       	.attr("stroke-width",1.5)
-	       	.attr("opacity",.05)
+	       	.attr("opacity",.2)
 	       	.style("stroke-dasharray", function(d){
 	       		if(d.weight < 0)
 	       			return ("3, 3");
@@ -222,7 +271,7 @@ var relationshipgraph_view = {
 
 			function showAllnodes() {
 		        node.style("opacity", 1);
-		        link.style("opacity", .05);
+		        link.style("opacity", .2);
 		        linkText.style("fill", "none");
 			}
 
