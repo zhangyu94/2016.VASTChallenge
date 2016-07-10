@@ -2,7 +2,6 @@ var linechart_linebtn_view = {
 	linechart_linebtn_view_DIV_ID : "linechart-line-btn",
 
 	rendered_linechartbtn_set : [],
-	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 
 	obsUpdate:function(message, data)
 	{
@@ -93,7 +92,7 @@ var linechart_linebtn_view = {
 				var cur_attr = HVACzone_HVACattr_set[j];
 				if (selected_attr_set.indexOf(cur_attr) >= 0)
 				{
-					if (cur_attr != this.HAZIUM_ATTR_NAME)
+					if (cur_attr != DATA_CENTER.GLOBAL_STATIC.HAZIUM_ATTR_NAME)
 					{
 						var cur_linechart = cur_selected_HVACzone + " " + cur_attr;//形如F_2_Z_3 VAV REHEAT Damper Position
 						new_rendered_linechartbtn_set.push(cur_linechart)

@@ -121,6 +121,7 @@ var DATA_CENTER = {
 
 	//全局静态变量
 	GLOBAL_STATIC : {
+		HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 		building_HVACattr_set :[
 			"Supply Side Inlet Mass Flow Rate",
 			"Supply Side Inlet Temperature",

@@ -41,28 +41,6 @@ var linechart_render_view = {
             this.update_render(this.linechart_render_view_DIV_ID,selected_linechart_set)
         }
 
-/*
-        if ( message == "set:highlight_linechart_set" )
-        {
-            var highlight_linechart_set = DATA_CENTER.linechart_variable.highlight_linechart_set;
-            if (highlight_linechart_set.length >=1 )
-            {
-                d3.selectAll(".HVAClinechart-btntitle-span")
-                    .classed("mouseover_hided-HVAClinechart-btntitle-span",function(d,i){
-                        if (DATA_CENTER.linechart_variable.highlight_linechart_set.indexOf(d) >= 0)
-                        {
-                            return false;
-                        }
-                        return true;
-                    })
-            }
-            else
-            {
-                d3.selectAll(".HVAClinechart-btntitle-span")
-                    .classed("mouseover_hided-HVAClinechart-btntitle-span",false)
-            }
-        }
-*/
 
         if (message == "set:current_display_time")
         {
@@ -361,12 +339,6 @@ var linechart_render_view = {
                 gravity: "s",
                 html:true,
                 title:function(){
-                    /*
-                    var d = this.__data__;
-
-                    var compressed_attr_name = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
-                    return compressed_attr_name;
-                    */
                     var d = this.__data__;
 
                     var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;

@@ -1,7 +1,6 @@
 var HVACgraph_attrbtn_view = {
 	HVACgraph_attrbtn_view_DIV_ID : "HVACgraph-attr-btn",
 	DIV_CLASS_OF_SMALLSPANS:"HVACattrbtn-span-div_of_smallspans",
-	HAZIUM_ATTR_NAME : "Hazium Concentration",//记录hazium的那个属性的名字
 
 	FIRST_CALLED : true,
 	STATIC_BTN : false,//true,
@@ -116,27 +115,17 @@ var HVACgraph_attrbtn_view = {
 
 		if (HVACzone_HVACattr_set.indexOf(attr_name) >=0)
 		{
-			if (attr_name != this.HAZIUM_ATTR_NAME)
-			{
+			if (attr_name != DATA_CENTER.GLOBAL_STATIC.HAZIUM_ATTR_NAME)
 				return "HVACzone_oridinary_attr";
-			}
 			else
-			{
 				return "HVACzone_hazium";
-			}
 		}
 		else if (floor_HVACattr_set.indexOf(attr_name) >=0)
-		{
 			return "floor_attr";
-		}
 		else if (building_HVACattr_set.indexOf(attr_name) >=0)
-		{
 			return "building_attr";
-		}
 		else
-		{
 			console.log("_cal_attr_type invalid attr name")
-		}
 
 	},
 
@@ -163,17 +152,10 @@ var HVACgraph_attrbtn_view = {
 			var HVACzone_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set;
 			for (var j=0;j<HVACzone_HVACattr_set.length;++j)
 			{
-				if (HVACzone_HVACattr_set[j] != this.HAZIUM_ATTR_NAME)
-				{
+				if (HVACzone_HVACattr_set[j] != DATA_CENTER.GLOBAL_STATIC.HAZIUM_ATTR_NAME)
 					new_rendered_attrbtn_set.push(HVACzone_HVACattr_set[j]);
-				}
-				else
-				{
-					if (flag_need_Hazium_Concentration)
-					{
-						new_rendered_attrbtn_set.push(HVACzone_HVACattr_set[j]);
-					}
-				}
+				else if (flag_need_Hazium_Concentration)
+					new_rendered_attrbtn_set.push(HVACzone_HVACattr_set[j]);
 			}
 		}
 

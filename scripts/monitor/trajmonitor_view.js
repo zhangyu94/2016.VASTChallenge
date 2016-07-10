@@ -32,7 +32,7 @@ var trajmonitor_view = {
 	},
 	render:function(divID)
 	{
-		console.log(roomsExchange(3,'proxZone_to_energyZone'))
+		//console.log(roomsExchange(3,'proxZone_to_energyZone'))
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();

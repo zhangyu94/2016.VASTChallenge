@@ -14,3 +14,13 @@
 3. VAV Availability Manager Night Cycle Control Status，只有1楼和3楼有
 4. COOL Schedule Value，Wind Direction，Wind Speed，HEAT Schedule Value,这四个楼的属性在数据中从来没出现过
 5. 5个有关HVAC的文件的时间戳都是4033个，但是他们的时间不是完全对应的
+
+
+改streamingdata需要换的有
+1. timeline_view.js
+2. smallmaps_view.js
+3. linechart_render_view.js
+4. linechart_linebtn_view.js
+5. HVACgraph_attrbtn_view.js
+6. datacenter.js
+其中所有涉及"bldg-MC2.csv"和4个HVAC文件名的地方都需要改
