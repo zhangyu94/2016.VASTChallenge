@@ -199,18 +199,11 @@ var smallmaps_view = {
 				.style("position","absolute")
 				.style("top",function(d,i){
 					if (d.name =="F_3")
-					{
 						return all_dir_padding + 'px'
-					}			
 					else if (d.name =="F_2")
-					{
 						return (all_dir_padding+floor_div_content_height+all_dir_padding) + 'px'
-					}
 					else if (d.name =="F_1")
-					{
 						return (all_dir_padding+floor_div_content_height+all_dir_padding+floor_div_content_height+all_dir_padding) + 'px'
-					}
-
 				})
 				.style("height",floor_div_content_height + 'px')
 		    	.style("left",floor_div_left_padding + 'px')
@@ -246,8 +239,6 @@ var smallmaps_view = {
 					}
 
 					DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view._update_selected_linechart();
-
-
 				})     
 				.on("mouseover",function(d,i){
 
@@ -272,6 +263,12 @@ var smallmaps_view = {
 						DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
 				    }
 
+				})
+				.each(function(d,i){
+					var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
+					var index = selected_floor_set.indexOf(d.name);
+					if (index >=0 )
+						$(this).click();
 				})
 		var floor_text = floor_span_g.append("text")
 							.attr("dx", "0em").attr("dy", "1.2em")//.style("text-anchor", "middle")

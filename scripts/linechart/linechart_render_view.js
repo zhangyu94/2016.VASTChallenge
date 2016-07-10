@@ -331,30 +331,13 @@ var linechart_render_view = {
                 })
                 .style("width",btn_width+"px")
                 .text(function(d,i){
+                    if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name])=="undefined")
+                        return d.name;
                     var buttonLabel = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
                     return buttonLabel;
                 });
-        $('.HVAClinechart-btntitle-span').each(function() {
-            $(this).tipsy({
-                gravity: "s",
-                html:true,
-                title:function(){
-                    var d = this.__data__;
 
-                    var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
-                    var content =   "<span>" + compressed_string + "</span>";
-                    content += "</br>" +"type: ";
-                    var attr_type = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].type;
-                    for (var i=0;i<attr_type.length;++i)
-                    {
-                        var cur_type = attr_type[i];
-                        content += "<span style='color:" + DATA_CENTER.GLOBAL_STATIC.attribute_type_color_mapping[cur_type] +
-                                        "'>" + cur_type +"</span> ";
-                    }
-                    return content;
-                },
-            });
-        });
+        DATA_CENTER.VIEW_COLLECTION.linechart_render_view._bind_attrbtn_tip("HVAClinechart-btntitle-span")
 
         //2). 点击以后mark到timeline上
         var enter_spans_btnspan_markspan = enter_spans_btnspan.append("span") 
@@ -432,6 +415,34 @@ var linechart_render_view = {
 
         var exit = update.exit();
         exit.remove();
+    },
+
+    _bind_attrbtn_tip:function(class_label)
+    {
+        $('.'+class_label).each(function() {
+            $(this).tipsy({
+                gravity: "s",
+                html:true,
+                title:function(){
+                    var d = this.__data__;
+
+                    if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name])=="undefined")
+                        return d.name;
+
+                    var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
+                    var content =   "<span>" + compressed_string + "</span>";
+                    content += "</br>" +"type: ";
+                    var attr_type = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].type;
+                    for (var i=0;i<attr_type.length;++i)
+                    {
+                        var cur_type = attr_type[i];
+                        content += "<span style='color:" + DATA_CENTER.GLOBAL_STATIC.attribute_type_color_mapping[cur_type] +
+                                        "'>" + cur_type +"</span> ";
+                    }
+                    return content;
+                },
+            });
+        });
     },
 
     _get_xysetAxis_data:function(yAxis_attr_name_set)
