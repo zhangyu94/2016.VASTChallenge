@@ -529,7 +529,9 @@ var linechart_render_view = {
                 },
                 {
                     color: "red",
-                }]
+                }],
+
+                lineWidth: 0.5,
 
             })
         }

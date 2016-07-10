@@ -338,7 +338,7 @@ var smallmaps_view = {
 		    	.style("position","absolute")
 		    	.style("pointer-events","none")
 
-		    DATA_CENTER.VIEW_COLLECTION.bigmap_view.render(background_div_id,floor_num)
+		    DATA_CENTER.VIEW_COLLECTION.bigmap_view.render(background_div_id,floor_num,false)
 
 		    _render_graph(graph_div_id,graph)
 		    function _render_graph(divID,graph)

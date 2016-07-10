@@ -9,10 +9,12 @@
 	stroke-width: 0.2;
     opacity: 1;
 }
-text{
+
+.doornum-text, .room-name-text, .node-text{
     font-size: 3px;
     z-index: 5;
 }
+
 .certain-stroke{
     stroke: green;
 }

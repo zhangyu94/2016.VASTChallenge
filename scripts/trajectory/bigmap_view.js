@@ -8,7 +8,7 @@ var bigmap_view = {
 		if (message == "display:bigmap_view")
         {
             $("#"+this.bigmap_view_DIV_ID).css("display","block");
-            this.render(this.bigmap_view_DIV_ID);
+            this.render(this.bigmap_view_DIV_ID,true);
         }
         if (message == "hide:bigmap_view")
         {
@@ -36,17 +36,17 @@ var bigmap_view = {
 				var selected_floor_number = 1;
 			}
 			this.DISPLAYED_FLOOR_NUMBER = selected_floor_number;
-			this.render(divID, selected_floor_number);	
+			this.render(divID, selected_floor_number,true);	
 			/*
 			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
 			var selected_floor = DATA_CENTER.global_variable.selected_floor;
 			var set_length = selected_floor_set.length;
-			this.render(divID, selected_floor);	
+			this.render(divID, selected_floor,true);	
 			*/
 			//this.updateView(divID, 1464685493000);
 		}
 	},
-	render:function(divID, floorNum)
+	render:function(divID, floorNum, display_text)
 	{
 		var self = this;
 		var colorArray = ['#EEEEEE', '#F3E4EE', '#FFF4CF', '#F8F7EB', '#F6ECF6', '#EDF7FA', '#FFEEEE', '#D5F4EF'];
@@ -196,42 +196,48 @@ var bigmap_view = {
 	    		.classed('click-highlight', true); 
 	    	}
 	    });
-		singleroomG.append('text')
-	    .attr('class', 'doornum-text')
-	    .attr('x', function(d,i){
-	    	var roomX = +d.x;
-	    	return xScale(roomX + 1);
-	    })
-	    .attr('y', function(d,i){
-	    	var roomY = +d.y;
-	    	return yScale(roomY + 3);
-	    })
-	    .text(function(d,i){
-	    	var text = "";
-	    	if(d.doornum != undefined){
-	    		text = d.doornum;
-	    	}
-	    	return text; 
-	    });
-	    singleroomG.append('text')
-	    .attr('class', 'room-name-text')
-	    .attr('x', function(d,i){
-	    	var roomX = +d.x;
-	    	var roomLengthX = +d.xlength;
-	    	return xScale(roomX);
-	    })
-	    .attr('y', function(d,i){
-	    	var roomY = +d.y;
-	    	var roomLengthY = +d.ylength;
-	    	return yScale(roomY + roomLengthY / 2);
-	    })
-	    .text(function(d,i){
-	    	var text = "";
-	    	if(d.name != undefined && d.name != 'Office'){
-	    		text = d.name;
-	    	}
-	    	return text;
-	    });
+	    
+	    console.log("display",display_text)
+	    if (display_text || (typeof(display_text)=="undefined"))
+	    {
+			singleroomG.append('text')
+		    .attr('class', 'doornum-text')
+		    .attr('x', function(d,i){
+		    	var roomX = +d.x;
+		    	return xScale(roomX + 1);
+		    })
+		    .attr('y', function(d,i){
+		    	var roomY = +d.y;
+		    	return yScale(roomY + 3);
+		    })
+		    .text(function(d,i){
+		    	var text = "";
+		    	if(d.doornum != undefined){
+		    		text = d.doornum;
+		    	}
+		    	return text; 
+		    });
+		    singleroomG.append('text')
+		    .attr('class', 'room-name-text')
+		    .attr('x', function(d,i){
+		    	var roomX = +d.x;
+		    	var roomLengthX = +d.xlength;
+		    	return xScale(roomX);
+		    })
+		    .attr('y', function(d,i){
+		    	var roomY = +d.y;
+		    	var roomLengthY = +d.ylength;
+		    	return yScale(roomY + roomLengthY / 2);
+		    })
+		    .text(function(d,i){
+		    	var text = "";
+		    	if(d.name != undefined && d.name != 'Office'){
+		    		text = d.name;
+		    	}
+		    	return text;
+		    });
+		}
+
 	}, 
 	//去掉房间的label
 	removeRoomLabel:function(){
