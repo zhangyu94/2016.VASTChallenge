@@ -184,7 +184,7 @@ function main(){
 		{
 			var displayed_view = {
 				"HVACmonitor_view":undefined,
-				//"trajmonitor_view":undefined,
+				"trajmonitor_view":undefined,
 
 				"smallmaps_view":undefined,
 				"timeline_view":undefined,	
