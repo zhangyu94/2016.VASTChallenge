@@ -14,20 +14,27 @@ body {
 	left:30%;
 	top:40%;
 	height:50%;
-	width:20%;
+	width:30%;
 }
 .globalvariableContainer > .displayinterval-btn{
 	position:absolute;
 	bottom:0%;
 	margin:0px;
-	width:40%;
+	width:25%;
 }
 .globalvariableContainer > .displayrate-btn{
 	position:absolute;
-	left:50%;
+	left:30%;
 	bottom:0%;
 	margin:0px;
-	width:40%;
+	width:25%;
+}
+.globalvariableContainer > .displaybefore-btn{
+	position:absolute;
+	left:60%;
+	bottom:0%;
+	margin:0px;
+	width:25%;
 }
 
 
@@ -259,7 +266,7 @@ body {
 	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
 }
 
-/*monitor视图*/
+/*monidisplayrate-btn*/
 #monitor-collection {
 	position:absolute;
 	left:16%;
@@ -267,7 +274,7 @@ body {
 	height:80%;
 	width:84%;
 	float: left;
-	pointer-events:none;/*大框是始终存在的，不能点的*/
+	pointer-events:none;
 }
 #monitor-collection > .monitorContainer {
 	position:absolute;

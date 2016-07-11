@@ -265,10 +265,12 @@ var bigmap_view = {
 			}
 		});
 		var personInZone = DATA_CENTER.derived_data["personInZone"];
+	//	console.log(personInZone.length)
+	//	console.log(personArray.length)
 		var DURATION = 2000;
 		var floorNum = this.DISPLAYED_FLOOR_NUMBER;
 
-		for(var i = 0;i < personArray.length;i++){
+		for(var i = 0;i < personInZone.length;i++){
             var routeRocrds10Days = personArray[i].fixRecords;
             personInZone[i].floorNum = -1;
             for(var j = 0;j < routeRocrds10Days.length;j++){
@@ -297,7 +299,7 @@ var bigmap_view = {
 		var yScale = d3.scale.linear()
 			.range([0, height])
 			.domain([0, 111]);
-		console.log(personInZone);
+		//console.log(personInZone);
 		//d3.selectAll("#"+divID).selectAll("*").remove();
 		var svg = d3.select('#' + divID).select("#floor-svg");
 		//增加node节点

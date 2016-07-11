@@ -11,7 +11,7 @@ var timeline_view = {
 	ROBOT_MORNING_WORKTIME_END:"10:02",
 	ROBOT_AFTERNOON_WORKTIME_START:"14:00",
 	ROBOT_AFTERNOON_WORKTIME_END:"15:00",
-
+	SELECTED_TIMEPOINT : true,
 	intervalid_handle:undefined,//用于保存setInterval
 	timeline_div_id : "timeline_div",
 	obsUpdate:function(message, data)
@@ -40,14 +40,16 @@ var timeline_view = {
 
 		if (message == "set:current_display_time")
 		{
-			console.log("set:current_display_time")
+			//console.log("set:current_display_time")
 	        var current_display_time = DATA_CENTER.global_variable.current_display_time;
 	        var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
 	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
+	        chart.xAxis[0].removePlotBand('time-tick')
 	        if (typeof(current_display_time)!=undefined)
 	        {
 	        	this._plot_tickline(chart,0,"time-tick",current_display_time,"#FF0000","solids");
-
+	        	//console.log(current_display_time)
+	        	trajmonitor_view.obsUpdate('stream:trajmonitor_view',+current_display_time)
 	        	var index = this._binary_search(chart.series[0].data,"x",current_display_time);
 				chart.tooltip.refresh(chart.series[0].data[index]);
 			}
@@ -121,10 +123,49 @@ var timeline_view = {
             chart.redraw();
          	
         }
+        if (message == "set:stream_play"){
+        	DATA_CENTER.set_global_variable("current_display_time",DATA_CENTER.global_variable.stream_start.getTime());
+        	var current_display_time = DATA_CENTER.global_variable.current_display_time;
+	        var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
+	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
+	        var new_data=[]
+	        var start = new Date(DATA_CENTER.global_variable.stream_start).getTime()
+	        var end = new Date(DATA_CENTER.global_variable.stream_end).getTime()
+	        var cnt = 10000
+	        var interval= (end-start)/cnt 
+	        for(var i =0 ;i<cnt;i++){
+	        	new_data.push([i*interval+start,0])
+	        }
+	       
+	        chart.xAxis[0].removePlotBand('time-tick')
+	        chart.series[0].remove(false);
+            chart.addSeries({
+            	color: '#7cb5ec',
+            	marker:{
+            		enabled:false,
+            		symbol:"circle",
+            		radius:1,
+            	},
+                name: "timeline",
+                data: new_data,
+            },false)
+            chart.redraw();
+	        if (typeof(current_display_time)!=undefined)
+	        {
+	        	this._plot_tickline(chart,0,"time-tick",current_display_time,"#FF0000","solids");
+	        	//console.log(current_display_time)
+	        	//if(current_display_time%60000==1)
+	        		trajmonitor_view.obsUpdate('stream:trajmonitor_view',+current_display_time)
+	        	var index = this._binary_search(chart.series[0].data,"x",current_display_time);
+				chart.tooltip.refresh(chart.series[0].data[index]);
+			}        	
+        }
 
 
 	},
+    _timeline_stream:function(){
 
+    },
 	_add_marking_plotband:function(min,max)
 	{
 		var id = "marking-PlotBand"+min+max;//有相同的id的人是一起删除的
@@ -233,7 +274,7 @@ var timeline_view = {
 
 	    var start_time = xyAxis_data[0][0];
         var end_time = xyAxis_data[xyAxis_data.length-1][0];
-       //console.log(start_time)
+        console.log(start_time)
         //console.log(end_time)
         DATA_CENTER.set_global_variable("selected_filter_timerange",{min:start_time,max:end_time})
         //console.log(DATA_CENTER.global_variable.selected_filter_timerange)
@@ -278,9 +319,10 @@ var timeline_view = {
 	    })
 	    .click(function() {
 	    	var options;
-
+	    	
 	      	if ( ! DATA_CENTER.timeline_variable.isplaying )//之前是非播放状态。下面要转到播放状态
 	      	{
+	      		timeline_view.SELECTED_TIMEPOINT=false
 	      		DATA_CENTER.set_timeline_variable("isplaying",true);
 	        	options = {
 		          	label: "pause",
@@ -296,7 +338,7 @@ var timeline_view = {
 	        	if (typeof(timeline_view.DISPLAY_INTERVAL) == "undefined")
 	        		timeline_view.DISPLAY_INTERVAL = DATA_CENTER.timeline_variable.display_interval;
 	        	
-	        	timeline_view.intervalid_handle = setInterval(function() {
+	        	timeline_view.intervalid_handle = setInterval(	function() {
 	        		var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
 	        		if (typeof(DATA_CENTER.global_variable.current_display_time) == "undefined" )
 						console.warn("undefined display time");
@@ -305,7 +347,7 @@ var timeline_view = {
 	        			timeline_view.DISPLAY_RATE = DATA_CENTER.timeline_variable.display_rate;
 
 	        		var current_display_time = timeline_view.DISPLAY_RATE*timeline_view.DISPLAY_INTERVAL + DATA_CENTER.global_variable.current_display_time;
-
+                   // console.log(current_display_time)
 	        		if (current_display_time <= chart.xAxis[0].max)
 	        			DATA_CENTER.set_global_variable("current_display_time",current_display_time);
 	        		else
@@ -313,6 +355,7 @@ var timeline_view = {
 				}, timeline_view.DISPLAY_INTERVAL);
 	      	} 
 	      	else {
+	      		timeline_view.SELECTED_TIMEPOINT=true
 	      		DATA_CENTER.set_timeline_variable("isplaying",false);
 	        	options = {
 	          		label: "play",
@@ -329,7 +372,7 @@ var timeline_view = {
 		$("#stopbtn_div").button({
 	      	text: false,
 	      	icons: {
-	        	primary: "ui-icon-stop"
+	        	primary: "ui-icon-grip-solid-horizontal"
 	      	}
 	    })
 	    .click(function() {
@@ -345,7 +388,8 @@ var timeline_view = {
 	    	}
 	    	var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
 	    	window.clearInterval(timeline_view.intervalid_handle);
-	    	DATA_CENTER.set_global_variable("current_display_time",undefined);
+
+	    	DATA_CENTER.set_timeline_variable("stream_play",true);
 	    	DATA_CENTER.set_timeline_variable("isplaying",false);
 	    })
 
@@ -401,7 +445,7 @@ var timeline_view = {
                 panKey: 'shift',
                 events:{
                 	click:function(e){
-                		console.log(e)
+                		//console.log(e)
                 		var clicked_time = e.xAxis[0].value;
                 		var index = timeline_view._binary_search(chart.series[0].data,"x",clicked_time);
                 		var aligned_time = chart.series[0].data[index].x;
@@ -410,30 +454,31 @@ var timeline_view = {
                 	
                     selection:function(e){
                     	
+                 			
+	                    	if (typeof(e.resetSelection)!="undefined")
+	                    	{
+	                    		if (e.resetSelection == true)//如果是按了reset键
+	                    		{
+	                    			start_time = e.target.xAxis[0].dataMin;
+	                        		end_time = e.target.xAxis[0].dataMax;
+	                    		}
+	                    		else
+	                    		{
+	                    			start_time = e.xAxis[0].min;
+	                        	    end_time = e.xAxis[0].max;
+	                    	    }
 
-                    	if (typeof(e.resetSelection)!="undefined")
-                    	{
-                    		if (e.resetSelection == true)//如果是按了reset键
-                    		{
-                    			start_time = e.target.xAxis[0].dataMin;
-                        		end_time = e.target.xAxis[0].dataMax;
-                    		}
-                    		else
-                    		{
-                    			start_time = e.xAxis[0].min;
-                        	    end_time = e.xAxis[0].max;
-                    	    }
-
-                    
-                    	}
-                    	else
-                    	{
-                    		start_time = e.xAxis[0].min;
-                        	end_time = e.xAxis[0].max;
-                    	}
-                   		//console.log(new Date(start_time))
-                   		//console.log(new Date(end_time))
-                        DATA_CENTER.set_global_variable("selected_filter_timerange",{min:start_time,max:end_time})
+	                    
+	                    	}
+	                    	else
+	                    	{
+	                    		start_time = e.xAxis[0].min;
+	                        	end_time = e.xAxis[0].max;
+	                    	}
+	                   		//console.log(new Date(start_time))
+	                 
+	                        DATA_CENTER.set_global_variable("selected_filter_timerange",{min:start_time,max:end_time})
+	                   
                     },
                 },
                 resetZoomButton:{
@@ -564,6 +609,7 @@ var timeline_view = {
 	    		var cur_date = DATES[i];
 	    		day_start_time = (new Date(cur_date)).setHours(0);
 	    		timeline_view._plot_tickline(chart,0,"day-starttime-tick",day_start_time,'#80a0F0',"shortdot");
+	    		chart.xAxis[0].removePlotBand('day-starttime-tick');
 	    	}
 	    	
 	    }
@@ -583,7 +629,22 @@ var timeline_view = {
 			id: tick_id,               //标示线的id，在删除该标示线的时候需要该id标示
 			dashStyle:dashStyle,
 			zIndex:4,//值越大，显示的优先级越高
-		});		
+		});	
+		var from = new Date(DATA_CENTER.global_variable.current_display_time-trajmonitor_view.display_before)
+		var to = new Date(DATA_CENTER.global_variable.current_display_time)
+		if(tick_id == 'time-tick'){
+			chart.xAxis[0].addPlotBand({  
+				         //在x轴上增加
+				from: from,
+				to:to,
+				color: '#ccc',
+				id: tick_id,
+				zIndex:4,//值越大，显示的优先级越高
+			});	
+		}
+		//console.log(trajmonitor_view.display_before)
+		//console.log(new Date(DATA_CENTER.global_variable.current_display_time-trajmonitor_view.display_before))
+		//console.log(new Date(DATA_CENTER.global_variable.current_display_time))
 	},
 
 
