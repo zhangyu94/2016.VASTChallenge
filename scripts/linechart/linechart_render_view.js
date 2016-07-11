@@ -231,11 +231,12 @@ var linechart_render_view = {
 
                             var ysetAxis_attr_name = [attr];
                             var xysetAxis_data = linechart_render_view._get_xysetAxis_data(ysetAxis_attr_name);
+                            console.log(xysetAxis_data[0])
                             var chart = $(this).highcharts().addSeries({
                                 name: attr,
                                 data: xysetAxis_data[0],
                                 marker:{
-                                    enabled:false,
+                                    //enabled:false,
                                     radius:1,
                                 },
                                 events:{
@@ -251,6 +252,7 @@ var linechart_render_view = {
                                     }
 
                                 },
+                                
                                 zones:[
                                 {
                                     value: average-sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
@@ -262,7 +264,10 @@ var linechart_render_view = {
                                 },
                                 {
                                     color: "red",
-                                }]
+                                }
+                                
+                                ]
+                                
                             })
 
                         }
@@ -421,9 +426,12 @@ var linechart_render_view = {
 
                     if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name])=="undefined")
                         return d.name;
+                    var attr_zone_type = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view
+                                            ._cal_attr_type(d.name);
 
                     var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
                     var content =   "<span>" + compressed_string + "</span>";
+                    content += "</br>" + "<span>(" +  attr_zone_type + ")</span>";
                     content += "</br>" +"type: ";
                     var attr_type = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].type;
                     for (var i=0;i<attr_type.length;++i)
@@ -460,10 +468,28 @@ var linechart_render_view = {
                 var x_value = new Date(data_set[i][j][xAxis_attr_name]);
                 var x_value = x_value.getTime();
 
+                /*
+                var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(x_value,yAxis_attr_name_set[i],y_value);
+                var color = '#7cb5ec'
+                if  (normalized_value > HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD)
+                {
+                    color = "#FF0000"
+                    console.warn("warning")
+                }
+                */
                 var temp = [x_value,y_value];
+                /*
+                var temp = {
+                    x:x_value,
+                    y:y_value,
+                    color:color,
+                };
+                */
+
                 xysetAxis_data[i].push(temp)
             }             
         }
+        console.log(xysetAxis_data)
         return xysetAxis_data;
     },
 
@@ -497,7 +523,7 @@ var linechart_render_view = {
                 data: data,
                 id: attr_name,
                 marker:{
-                    enabled:false,
+                    //enabled:false,
                     radius:1,
                 },
                 events:{
@@ -513,7 +539,7 @@ var linechart_render_view = {
                     }
 
                 },
-
+                
                 zones:[
                 {
                     value: average-sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
@@ -526,6 +552,7 @@ var linechart_render_view = {
                 {
                     color: "red",
                 }],
+                
 
                 lineWidth: 0.5,
 
@@ -533,7 +560,7 @@ var linechart_render_view = {
         }
 
         d3.select("#"+divID).selectAll("*").remove();
-        
+        console.log(series_data)
         var div = $("#"+divID);
         Highcharts.setOptions({ global: { useUTC: false } });//使用本地时间
         div.highcharts({
@@ -542,10 +569,8 @@ var linechart_render_view = {
                 spacingLeft:0,
                 spacingTop:0,
                 spacingBottom:0,//压缩掉下侧的空白
-                //width:width,
-                //height:height,
                 renderTo: divID,// 图表加载的位置
-                type: 'line',//'column',
+                type: 'line',
                 zoomType: 'x',
                 panning: true,
                 panKey: 'shift',
@@ -556,6 +581,7 @@ var linechart_render_view = {
                         y:-5,
                     }
                 },
+
                 events:{
                     click:function(e){
                         var clicked_time = e.xAxis[0].value;
@@ -565,6 +591,17 @@ var linechart_render_view = {
                     },
                     selection:function(e){
                         console.log(e)
+                    }
+                }
+            },
+            plotOptions:{
+                line:{
+                    turboThreshold:100000,
+                },
+                series:{
+                    marker:{
+                        enabled:true,
+                        radius:10,
                     }
                 }
             },
@@ -683,21 +720,8 @@ var linechart_render_view = {
             console.warn("invalid place",place)
         }
 
-        reset_tipsy();
-        function reset_tipsy(){
-            d3.selectAll(".tipsy").remove();
-            $('.HVAClinechart-btntitle-span').each(function() {
-                $(this).tipsy({
-                    gravity: "s",
-                    html:true,
-                    title:function(){
-                        var d = this.__data__;
-                        var compressed_attr_name = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
-                        return compressed_attr_name;
-                    },
-                });
-            });
-        }
+        d3.selectAll(".tipsy").remove();
+        linechart_render_view._bind_attrbtn_tip("HVAClinechart-btntitle-span")
 
     },
 

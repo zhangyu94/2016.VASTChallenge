@@ -375,9 +375,11 @@ var HVACgraph_attrbtn_view = {
 
 		    		if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[d])=="undefined")
                 		return d;
-
+                	var attr_zone_type = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view
+											._cal_attr_type(d);
 		    		var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d].lv2_abbreviation;
 		    		var content = 	"<span>" + compressed_string + "</span>";
+		    		content += "</br>" + "<span>(" +  attr_zone_type + ")</span>";
 		    		content += "</br>" +"type: ";
 		    		var attr_type = DATA_CENTER.GLOBAL_STATIC.attribute_description[d].type;
 		    		for (var i=0;i<attr_type.length;++i)

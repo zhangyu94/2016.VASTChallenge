@@ -50,6 +50,7 @@ function main(){
 			"display:histogram_view",
 			"hide:bigmap_view",
 			"hide:ganttchart_view",
+			"display:histogram_view",
 			"hide:histogram_view",
 
 			"display:trajmonitor_view",
@@ -160,12 +161,12 @@ function main(){
 		else if (view_collection_name == "linechartview")
 		{		
 			var displayed_view = {
-				// "HVACgraph_attrbtn_view":undefined,
-				// "linechart_render_view":undefined,
+				"HVACgraph_attrbtn_view":undefined,
+				"linechart_render_view":undefined,
 
-				// "eventlist_view":undefined,
-				// "smallmaps_view":undefined,
-				// "timeline_view":undefined,	
+				"eventlist_view":undefined,
+				"smallmaps_view":undefined,
+				"timeline_view":undefined,	
 			};
 			_hide_and_display_view(displayed_view);
 		}
