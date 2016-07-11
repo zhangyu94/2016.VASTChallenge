@@ -32,8 +32,8 @@ var DATA_CENTER = {
 
 	//view之间通信需要利用的全局变量
 	global_variable : {
-		stream_start: new Date('2016 06 11'),
-		stream_end: new Date('2016 06 13'),
+
+
 		warning_list: [],
 		//warning_list数据结构:
 		//{
@@ -78,6 +78,7 @@ var DATA_CENTER = {
 		current_display_time:1464656940000,//timeline当前播放到的时间
 
 		selected_card_set:[],
+		selected_card: undefined,
 		selected_person_set:[],
 	},
 
@@ -89,11 +90,16 @@ var DATA_CENTER = {
 	},
 
 	timeline_variable : {
+		stream_start: new Date('2016 06 08'),
+		stream_end: new Date('2016 06 13'),
+		stream_window_width: 2*3600*1000,
+		isstreaming: false,
 		stream_display : false,
 		display_interval:1000,//播放更新间隔
-		display_before: 2,
-		display_rate:3600,//播放倍率
+		display_before: 10*60*1000,
+		display_rate:3000,//播放倍率
 		isplaying:false,//标记是否正在播放
+		isstreaming:false,
 		mouseover_time:undefined,//当前mouseover的地方
 	},
 
@@ -169,7 +175,7 @@ var DATA_CENTER = {
 			"RETURN OUTLET CO2 Concentration",
 			"Hazium Concentration",//特殊属性，只有4个有Haziumsensor的zone有
 		],
-		
+
 		//HVACzone_with_Haziumsenor_set已经改为由datacenter的函数动态计算
 
 		attribute_description : {
@@ -396,7 +402,68 @@ var DATA_CENTER = {
 			"F_1_Z_1","F_1_Z_2","F_1_Z_3","F_1_Z_4","F_1_Z_5","F_1_Z_6","F_1_Z_7","F_1_Z_8A","F_1_Z_8B",
 			"F_2_Z_1","F_2_Z_2","F_2_Z_3","F_2_Z_4","F_2_Z_5","F_2_Z_6","F_2_Z_7","F_2_Z_8","F_2_Z_9","F_2_Z_10","F_2_Z_11","F_2_Z_12A","F_2_Z_12B","F_2_Z_12C","F_2_Z_13","F_2_Z_14","F_2_Z_15","F_2_Z_16",
 			"F_3_Z_1","F_3_Z_2","F_3_Z_3","F_3_Z_4","F_3_Z_5","F_3_Z_6","F_3_Z_7","F_3_Z_8","F_3_Z_9","F_3_Z_10","F_3_Z_11A","F_3_Z_11B","F_3_Z_11C","F_3_Z_12",
-		]
+		],
+		zone_Color_Array:['#EEEEEE', '#F3E4EE', '#FFF4CF', '#F8F7EB', '#F6ECF6', '#EDF7FA', '#FFEEEE', '#D5F4EF'],
+		certainty_color_array:[
+			{
+				name: 'accurate',
+				color: '#08519c'
+			},
+			{
+				name: 'in office',
+				color: '#4292c6'
+			},
+			{
+				name: 'in public',
+				color: '#9ecae1'
+			}
+		],
+		alert_color_array:[
+			{
+				name: 'warning',
+				color: '#feb24c'
+			},
+			{
+				name: 'error',
+				color: '#e31a1c'
+			}
+		],
+		work_color_array:[
+			{
+				work:'Administration',
+				color: '#1f78b4'
+			},
+			{
+				work: 'Engineering',
+				color: '#d95f02'
+			},
+			{
+				work: 'Executive',
+				color: '#7570b3'
+			},
+			{
+				work: 'Facilities',
+				color: '#e7298a'
+			},
+			{
+				work: 'HR',
+				color: '#66a61e'
+			},
+			{
+				work: 'Information Technology',
+				color: '#e6ab02'
+			},
+			{
+				work: 'Security',
+				color: '#a6761d'
+			},
+			{
+				work: 'Not Known',
+				color: '#b3b3b3'
+			}
+		],
+		proxId2work: undefined,
+		work2color: undefined
 	},
 
 
@@ -412,7 +479,7 @@ var DATA_CENTER = {
 			pID = pID.trim();
 			if(! (pID in person)) {
 				// console.log(pID);
-				person[pID] = {"fixRecords":[],"mobileRecords":[]};
+				person[pID] = {"fixRecords":[],"mobileRecords":[],'duration':{}};
 			}
 
 			var records = {};
@@ -426,13 +493,7 @@ var DATA_CENTER = {
 
 			person[pID]['fixRecords'].push(records);
 		}
-		person[pID]['fixRecords'].sort(function(a, b){
-				var keyA = a.timestamp;
-				var keyB = b.timestamp;
-				if(keyA < keyB) return -1;
-				if(keyA > keyB) return 1;
-				return 0;
-		});
+
 		// console.log(DATA_CENTER.derived_data['person']);
 		var proxMobileOut = DATA_CENTER.original_data["proxMobileOut-MC2.csv"];
 		for(var i=0;i<proxMobileOut.length;i++) {
@@ -455,14 +516,6 @@ var DATA_CENTER = {
 			person[pID]['mobileRecords'].push(records);
 		}
 
-		person[pID]['mobileRecords'].sort(function(a, b){
-			var keyA = a.timestamp;
-			var keyB = b.timestamp;
-			if(keyA < keyB) return -1;
-			if(keyA > keyB) return 1;
-			return 0;
-		});
-
 		// console.log(DATA_CENTER.derived_data['person']);
 	},
 	update_traj_endtime:function() {
@@ -479,6 +532,7 @@ var DATA_CENTER = {
 					fixR[j].endtime = fixR[j].timestamp;
 			}
 			fixR[fixR.length-1].endtime = fixR[fixR.length-1].timestamp;
+
 		}
 		//console.log(DATA_CENTER.derived_data['person']);
 	},
@@ -496,6 +550,7 @@ var DATA_CENTER = {
 	},
 	add_traj_fix_data:function(data, warning = false) {
 		var person = DATA_CENTER.derived_data['person'];
+		var that = this;
 		for(var i=0;i<data.length;i++) {
 			var aRecord =data[i];
 			var t = new Date(aRecord['datetime']);
@@ -506,10 +561,31 @@ var DATA_CENTER = {
 			var pID = aRecord['proxCard'];
 			if(! (pID in person)) {
 				// console.log(pID);
-				person[pID] = {"fixRecords":[],"mobileRecords":[]};
+				person[pID] = {"fixRecords":[],"mobileRecords":[],'duration':{}};
 				if(warning) {
+					var w = {"time": t,
+					"place":"f" + aRecord['floor'] + "z" + aRecord['zone'],
+					"attr":pID,
+					"event" :{
+						"type":"newProxID",
+						"value":null
+						}
+					}
+					that.global_variable['warning_list'].push(w);
 					console.log("New prox ID: " + pID);
 				}
+			}
+			var fz = 'f' + aRecord['floor'] + 'z'+  aRecord['zone'];
+			if(!(fz in person[pID])) {
+				var w = {"time": t,
+				"place":"f" + aRecord['floor'] + "z" + aRecord['zone'],
+				"attr":pID,
+				"event" :{
+					"type":"firstTimeToTheZone",
+					"value":null
+					}
+				}
+				that.global_variable['warning_list'].push(w);
 			}
 			person[pID]['fixRecords'].push(aRecord);
 			this.update_traj_endtime_signle(pID);
@@ -517,24 +593,52 @@ var DATA_CENTER = {
 	},
 	add_traj_mobile_data:function(data, warning = false) {
 		var person = DATA_CENTER.derived_data['person'];
+		console.log(data);
 		for(var i=0;i<data.length;i++) {
 			var aRecord =data[i];
+			var x = aRecord.X;
+			var y = aRecord.y;
+			var floor = aRecord.floorNum;
+			aRecord['zone'] = this.cal_zone_num(x,y,floor);
 			var t = new Date(aRecord['datetime']);
 			aRecord['timestamp'] = t;
-
 			aRecord['day'] = t.getFullYear() + "-" + (t.getMonth() + 1) +'-' +(t.getDate());
 			aRecord['timestamp'] = t;
 			var pID = aRecord['proxCard'];
 			if(! (pID in person)) {
 				// console.log(pID);
-				person[pID] = {"fixRecords":[],"mobileRecords":[]};
+				person[pID] = {"fixRecords":[],"mobileRecords":[],'duration':{}};
 				if(warning) {
+					var w = {"time": t,
+					"place":"f" + aRecord['floor'] + ":"+aRecord['x'] +"," +aRecord['y'],
+					"attr":pID,
+					"event" :{
+						"type":"newProxID",
+						"value":null
+						}
+					}
+					that.global_variable['warning_list'].push(w);
 					console.log("New prox ID: " + pID);
 				}
 			}
 			person[pID]['mobileRecords'].push(aRecord);
 		}
-
+	},
+	cal_zone_num: function(xLoc, yLoc, floorNumRobot){
+		var singleroomData = DATA_CENTER.derived_data["singleroom.json"];
+			for(var k = 0;k < singleroomData.length;k++){
+				var room = singleroomData[k];
+				var roomX = +room.x;
+				var roomY = +room.y;
+				var lengthX = +room.xlength;
+       			var lengthY = +room.ylength;
+       			var roomFloor = +room.floor;
+       			if((xLoc >= roomX) && (xLoc <= roomX + lengthX) && (yLoc >= roomY) && (yLoc <= roomY + lengthY)
+       				&& (roomFloor == floorNumRobot)){
+       				robotDetectionData[j].proxZone = +room.proxZone;
+       				break;
+       			}
+			}
 	},
 	cal_derive_data: function(){
 		this.cal_person_traj();
@@ -578,7 +682,7 @@ var DATA_CENTER = {
 						continue;
 					}
 					zone_set.push(zone_part)
-				
+
 				}
 				return zone_set;
 			}
@@ -620,7 +724,7 @@ var DATA_CENTER = {
 
 			DATA_CENTER.original_data["bldg-MC2.csv"].push(new_element)
 		}
-		
+
 	},
 
 	cal_HVAC_general:function(){
@@ -671,7 +775,7 @@ var DATA_CENTER = {
 					new_element[key] = cur_data[key];
 					continue;
 				}
-				
+
 				var new_key = key;
 				if (key.indexOf("BATH_EXHAUST")>=0)//单独处理F_..._BATH_EXHAUST:Fan Power的情况
 				{
@@ -809,17 +913,29 @@ var DATA_CENTER = {
 														var lengthX = +room.xlength;
 									        			var lengthY = +room.ylength;
 									        			var roomFloor = +room.floor;
-									        			if((xLoc >= roomX) && (xLoc <= roomX + lengthX) && (yLoc >= roomY) && (yLoc <= roomY + lengthY) 
+									        			if((xLoc >= roomX) && (xLoc <= roomX + lengthX) && (yLoc >= roomY) && (yLoc <= roomY + lengthY)
 									        				&& (roomFloor == floorNumRobot)){
 									        				robotDetectionData[j].proxZone = +room.proxZone;
 									        				break;
 									        			}
 													}
 												}
-												console.log(robotDetectionData);
+												//console.log(robotDetectionData);
 												d3.csv(derived_path + d_file_name[3], function(data10){
 
-
+													DATA_CENTER.GLOBAL_STATIC.proxId2work = new Object();
+													for(var i = 0;i < data10.length;i++){
+														var proxId = data10[i]['prox-id'];
+														var department = data10[i]['Department'];
+														DATA_CENTER.GLOBAL_STATIC.proxId2work[proxId] = department;
+													}
+													var work_color_array = DATA_CENTER.GLOBAL_STATIC.work_color_array;
+													DATA_CENTER.GLOBAL_STATIC.work2color = new Object();
+													for(var i = 0;i < work_color_array.length;i++){
+														var workName = work_color_array[i].work;
+														var color = work_color_array[i].color;
+														DATA_CENTER.GLOBAL_STATIC.work2color[workName] = color;
+													}
 													d3.json(path+file_name[7],function(data11){
 														d3.json(path+file_name[8],function(data12){
 															d3.json(path+file_name[9],function(data13){
@@ -867,6 +983,7 @@ var DATA_CENTER = {
                 var v_stream = new WebSocket('ws://192.168.10.9:8888');
                 this.v_stream = v_stream;
                 v_stream.onopen = function(e){
+                	console.log("Web socket open!");
                     v_stream.send(JSON.stringify({state: "start", data: null}));
                 };
                 v_stream.onclose = function(e){
@@ -874,11 +991,11 @@ var DATA_CENTER = {
                 }
                 v_stream.onmessage = function (e){
                     var t_d = JSON.parse(e.data);
-                    
+
                     switch(t_d.state){
                         case "stream":
-                                    if(t_d.data['type'] == 'fixedprox'){
-                                    	that.add_traj_fix_data(t_d.data['data']);
+                            if(t_d.data['type'] == 'fixedprox'){
+                                that.add_traj_fix_data(t_d.data['data']);
                         	}
                         	else if(t_d.data['type'] == 'mobileprox') {
                                     	that.add_traj_mobile_data(t_d.data['data']);
@@ -910,7 +1027,7 @@ var DATA_CENTER = {
                         		 	else{
                         		 		for(var key in tdata){
                         		 			if(key != 'Date/Time'){
-                        		 				DATA_CENTER.stream_data['bldg'][-1][key]=tdata[key]
+                        		 				DATA_CENTER.stream_data['bldg'][len-1][key]=tdata[key]
                         		 			}
                         		 		}
                         		 	}
@@ -920,6 +1037,7 @@ var DATA_CENTER = {
                             //console.log(t_d.state, t_d.data);
                         break;
                         case "history":
+                        	console.log(t_d)
                         	if(t_d.data['type'] == 'fixedprox'){
                                     	that.add_traj_fix_data(t_d.data['data']);
                         	}
@@ -930,7 +1048,7 @@ var DATA_CENTER = {
                         		//console.log(t_d.data)
 
                         	}
-                        	
+
 
                             //console.log(t_d.state, t_d.data);
                         break;

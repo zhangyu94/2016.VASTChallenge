@@ -37,9 +37,6 @@ body {
 	width:25%;
 }
 
-
-
-
 /*选视图按钮*/
 .panelContainer{
 	position:absolute;
@@ -50,8 +47,6 @@ body {
 .panelContainer > .pagination{
 	margin:0px;
 }
-
-
 
 /*小map视图*/
 #smallmapsview-collection {
@@ -179,7 +174,7 @@ body {
 #trajectoryview-collection > .trajectoryContainer > #trajectory-bigmap{
 	position:absolute;
 	height:70%;
-	width:80%;
+	width:85%;
 	float: left;
 	border: solid #ccc 1px;
 	border-radius: 5px;
@@ -197,19 +192,17 @@ body {
 	background-color: #f8f8f8;
 	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
 }
-#trajectoryview-collection > .trajectoryContainer > #trajectory-histogram{
+#trajectoryview-collection > .trajectoryContainer > #trajectory-legend{
 	position:absolute;
-	left:80%;
+	left:85%;
 	height:70%;
-	width:20%;
+	width:15%;
 	float: left;
 	border: solid #ccc 1px;
 	border-radius: 5px;
 	background-color: #f8f8f8;
 	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
 }
-
-
 /*timeline视图*/
 #timelineview-collection {
 	position:absolute;
