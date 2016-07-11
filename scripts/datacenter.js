@@ -80,6 +80,8 @@ var DATA_CENTER = {
 		selected_card_set:[],
 		selected_card: undefined,
 		selected_person_set:[],
+		enable_alert: true,
+		certainty_encode: true
 	},
 
 	//set_global_variable设置全局变量并调用SUBJECT的notify
@@ -424,7 +426,7 @@ var DATA_CENTER = {
 				color: '#feb24c'
 			},
 			{
-				name: 'error',
+				name: 'conflict',
 				color: '#e31a1c'
 			}
 		],
@@ -459,14 +461,12 @@ var DATA_CENTER = {
 			},
 			{
 				work: 'Not Known',
-				color: '#b3b3b3'
+				color: 'black'
 			}
 		],
 		proxId2work: undefined,
 		work2color: undefined
 	},
-
-
 
 	//计算派生数据填入DATA_CENTER.derived_data
 	cal_person_traj: function() {
@@ -976,7 +976,6 @@ var DATA_CENTER = {
 				})
 			})
 		})
-
 	},
 	initStream: function(){
 	    var that = this;
