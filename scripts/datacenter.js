@@ -397,7 +397,68 @@ var DATA_CENTER = {
 			"F_1_Z_1","F_1_Z_2","F_1_Z_3","F_1_Z_4","F_1_Z_5","F_1_Z_6","F_1_Z_7","F_1_Z_8A","F_1_Z_8B",
 			"F_2_Z_1","F_2_Z_2","F_2_Z_3","F_2_Z_4","F_2_Z_5","F_2_Z_6","F_2_Z_7","F_2_Z_8","F_2_Z_9","F_2_Z_10","F_2_Z_11","F_2_Z_12A","F_2_Z_12B","F_2_Z_12C","F_2_Z_13","F_2_Z_14","F_2_Z_15","F_2_Z_16",
 			"F_3_Z_1","F_3_Z_2","F_3_Z_3","F_3_Z_4","F_3_Z_5","F_3_Z_6","F_3_Z_7","F_3_Z_8","F_3_Z_9","F_3_Z_10","F_3_Z_11A","F_3_Z_11B","F_3_Z_11C","F_3_Z_12",
-		]
+		],
+		zone_Color_Array:['#EEEEEE', '#F3E4EE', '#FFF4CF', '#F8F7EB', '#F6ECF6', '#EDF7FA', '#FFEEEE', '#D5F4EF'],
+		certainty_color_array:[
+			{
+				name: 'accurate',
+				color: '#08519c'
+			},
+			{
+				name: 'in office',
+				color: '#4292c6'
+			},
+			{
+				name: 'in public',
+				color: '#9ecae1'
+			}
+		],
+		alert_color_array:[
+			{
+				name: 'warning',
+				color: '#feb24c'
+			},
+			{
+				name: 'error',
+				color: '#e31a1c'
+			}
+		],
+		work_color_array:[
+			{
+				work:'Administration',
+				color: '#1f78b4'
+			},
+			{
+				work: 'Engineering',
+				color: '#d95f02'
+			},
+			{
+				work: 'Executive',
+				color: '#7570b3'
+			},
+			{
+				work: 'Facilities',
+				color: '#e7298a'
+			},
+			{
+				work: 'HR',
+				color: '#66a61e'
+			},
+			{
+				work: 'Information Technology',
+				color: '#e6ab02'
+			},
+			{
+				work: 'Security',
+				color: '#a6761d'
+			},
+			{
+				work: 'Not Known',
+				color: '#b3b3b3'
+			}
+		],
+		proxId2work: undefined,
+		work2color: undefined
 	},
 
 
@@ -838,8 +899,19 @@ var DATA_CENTER = {
 												}
 												console.log(robotDetectionData);
 												d3.csv(derived_path + d_file_name[3], function(data10){
-
-
+													DATA_CENTER.GLOBAL_STATIC.proxId2work = new Object();
+													for(var i = 0;i < data10.length;i++){
+														var proxId = data10[i]['prox-id'];
+														var department = data10[i]['Department'];
+														DATA_CENTER.GLOBAL_STATIC.proxId2work[proxId] = department;
+													}
+													var work_color_array = DATA_CENTER.GLOBAL_STATIC.work_color_array;
+													DATA_CENTER.GLOBAL_STATIC.work2color = new Object();
+													for(var i = 0;i < work_color_array.length;i++){
+														var workName = work_color_array[i].work;
+														var color = work_color_array[i].color;
+														DATA_CENTER.GLOBAL_STATIC.work2color[workName] = color;
+													}
 													d3.json(path+file_name[7],function(data11){
 														d3.json(path+file_name[8],function(data12){
 															d3.json(path+file_name[9],function(data13){
@@ -897,8 +969,8 @@ var DATA_CENTER = {
                     
                     switch(t_d.state){
                         case "stream":
-                                    if(t_d.data['type'] == 'fixedprox'){
-                                    	that.add_traj_fix_data(t_d.data['data']);
+                            if(t_d.data['type'] == 'fixedprox'){
+                                that.add_traj_fix_data(t_d.data['data']);
                         	}
                         	else if(t_d.data['type'] == 'mobileprox') {
                                     	that.add_traj_mobile_data(t_d.data['data']);
@@ -930,7 +1002,7 @@ var DATA_CENTER = {
                         		 	else{
                         		 		for(var key in tdata){
                         		 			if(key != 'Date/Time'){
-                        		 				DATA_CENTER.stream_data['bldg'][-1][key]=tdata[key]
+                        		 				DATA_CENTER.stream_data['bldg'][len-1][key]=tdata[key]
                         		 			}
                         		 		}
                         		 	}
