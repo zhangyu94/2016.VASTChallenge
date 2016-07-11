@@ -40,9 +40,6 @@ function main(){
 			"hide:linechart_linebtn_view",
 			"hide:linechart_render_view",
 
-			"display:mdsgraph_view",
-			"hide:mdsgraph_view",
-
 			"display:relationshipgraph_view",
 			"hide:relationshipgraph_view",
 
@@ -155,19 +152,6 @@ function main(){
 			};
 			_hide_and_display_view(displayed_view);
 		}
-		/*
-		else if (view_collection_name == "mdsgraphview")
-		{
-			var displayed_view = {
-				"HVACgraph_attrbtn_view":undefined,
-				"mdsgraph_view":undefined,
-
-				"smallmaps_view":undefined,
-				"timeline_view":undefined,	
-			};
-			_hide_and_display_view(displayed_view);
-		}
-		*/
 		else if (view_collection_name == "relationshipgraphview")
 		{
 			var displayed_view = {

@@ -274,6 +274,8 @@ var HVACgraph_attrbtn_view = {
 				.on("click",function(d,i){
 					var attr_name = d;
 
+					console.log("reach",attr_name)
+
 					//start of set
 					var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
 					var index = selected_attr_set.indexOf(attr_name);

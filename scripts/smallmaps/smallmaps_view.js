@@ -2,8 +2,8 @@ var smallmaps_view = {
 	FIRST_CALLED : true,
 	smallmaps_view_DIV_ID : "smallmaps-renderplace",
 
-	HVAC_ZONE_DOT_RADIUS :4.5,
-	RADARCHART_GLYPH_RADIUS :20,
+	HVAC_ZONE_DOT_RADIUS :6,
+	RADARCHART_GLYPH_RADIUS :25,
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"smallmaps-radarchart_glyph-div",
 	
@@ -503,8 +503,8 @@ var smallmaps_view = {
 		var dataset = [];
 		if (is_selected && (typeof(raw_timestamp)!="undefined") )
 		{
-			dataset = _cal_dataset(place_name,place_type);
-			function _cal_dataset(place_name,place_type)
+			dataset = _cal_dataset(place_name,place_type,raw_timestamp);
+			function _cal_dataset(place_name,place_type,raw_timestamp)
 			{
 				var detail_attr_set = [];
 				var general_attr_set;
@@ -548,7 +548,6 @@ var smallmaps_view = {
 	//data的数据格式是一个数组，数组中每个元素的样子是{name:...,value:...}
 	_render_radarchart:function(data,glyph_name,raw_timestamp,class_label,center_x,center_y,radius,innerRadius)
 	{
-		console.log(data)
 		var width = 4.5*radius;
 		var height = 4.5*radius;
 		var degree = 360/data.length;
