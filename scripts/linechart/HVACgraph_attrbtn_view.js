@@ -185,6 +185,17 @@ var HVACgraph_attrbtn_view = {
 	{
 		var attribute_type_priority = DATA_CENTER.GLOBAL_STATIC.attribute_type_priority;
 		sorted_array = attr_list.sort(function(a,b){
+			if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[a])=="undefined")
+			{
+				console.warn("new attr met",a)
+				return -1;
+			}
+			else if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[b])=="undefined")
+			{
+				console.warn("new attr met",b)
+				return -1;
+			}
+
 			var attr_type_a = DATA_CENTER.GLOBAL_STATIC.attribute_description[a].type;
 			var attr_type_b = DATA_CENTER.GLOBAL_STATIC.attribute_description[b].type;
 			for (var i=0;i<attribute_type_priority.length;++i)
@@ -234,10 +245,11 @@ var HVACgraph_attrbtn_view = {
 		var update_div = update.select("div");
 		var update_div_span = update_div.select("span")
                 .text(function(d,i){
-                	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[new_attrbtn_list[i]].lv2_abbreviation;
-                	//var buttonLabel = compressed_string.substring(0,rect_width/13);
+                    if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[d])=="undefined")
+                		return d;
+                	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d].lv2_abbreviation;
                 	var buttonLabel = compressed_string;
-                	buttonLabel = buttonLabel.substring(0,9);
+                	buttonLabel = compressed_string.substring(0,9);
                     return buttonLabel;
                 });
         
@@ -286,7 +298,6 @@ var HVACgraph_attrbtn_view = {
 
 					DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view._update_selected_linechart();
 
-
 					//end of set
 
 					var compressed_attr_name = linechart_render_view._compress_string(attr_name);
@@ -315,8 +326,9 @@ var HVACgraph_attrbtn_view = {
         var enter_span_div_span = enter_span_div.append("span")
                 .attr("class","object_title_span")
                 .text(function(d,i){
-                	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[new_attrbtn_list[i]].lv2_abbreviation;
-                	//var buttonLabel = compressed_string.substring(0,rect_width/13);
+                	if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[d])=="undefined")
+                		return d;
+                	var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d].lv2_abbreviation;
                 	var buttonLabel = compressed_string;
                 	buttonLabel = compressed_string.substring(0,9);
                     return buttonLabel;
@@ -349,14 +361,20 @@ var HVACgraph_attrbtn_view = {
 			}
         });
 
+		DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view._bind_attrbtn_tip("HVACattrbtn-span")
+	},
 
-
-		$('.HVACattrbtn-span').each(function() {
+	_bind_attrbtn_tip:function(class_label)
+	{
+		$('.'+class_label).each(function() {
 		    $(this).tipsy({
 		    	gravity: "s",
 		    	html:true,
 		    	title:function(){
 		    		var d = this.__data__;
+
+		    		if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[d])=="undefined")
+                		return d;
 
 		    		var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d].lv2_abbreviation;
 		    		var content = 	"<span>" + compressed_string + "</span>";
@@ -372,7 +390,6 @@ var HVACgraph_attrbtn_view = {
 		    	},
 		    });
 		});
-
 	},
 	
 	hide_all_smallspans:function()
@@ -606,8 +623,10 @@ var HVACgraph_attrbtn_view = {
 
 	_get_attr_color:function(general_attr_name)
 	{
+		if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[general_attr_name])=="undefined")
+			return "#888888";
 		var attr_type = DATA_CENTER.GLOBAL_STATIC.attribute_description[general_attr_name].type;
-		var color = "#000000";
+		var color = "#888888";
 
 		var attribute_type_priority = DATA_CENTER.GLOBAL_STATIC.attribute_type_priority
 		for (var i=0;i<attribute_type_priority.length;++i)

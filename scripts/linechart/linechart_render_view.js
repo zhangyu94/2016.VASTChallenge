@@ -2,13 +2,6 @@ var linechart_render_view = {
     FIRST_CALLED : true,
     linechart_render_view_DIV_ID : "linechart-renderplace",
 
-    HAZIUM_DATA_FILENAME_MAPPING:{
-        "F_1_Z_8A Hazium Concentration":"f1z8a-MC2.csv",
-        "F_2_Z_2 Hazium Concentration":"f2z2-MC2.csv",
-        "F_2_Z_4 Hazium Concentration":"f2z4-MC2.csv",
-        "F_3_Z_1 Hazium Concentration":"f3z1-MC2.csv",
-    },
-
     //为折线图的大框设置最小尺寸，避免过小看不清楚
     MINIMUM_LINECHART_RECT_HEIGHT : 27,
     EXPECTED_LINECHART_NUM: 5,
@@ -260,11 +253,11 @@ var linechart_render_view = {
                                 },
                                 zones:[
                                 {
-                                    value: average-sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                                    value: average-sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                                     color: "red",
                                 },
                                 {
-                                    value: average+sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                                    value: average+sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                                     color: '#7cb5ec',
                                 },
                                 {
@@ -331,30 +324,13 @@ var linechart_render_view = {
                 })
                 .style("width",btn_width+"px")
                 .text(function(d,i){
+                    if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name])=="undefined")
+                        return d.name;
                     var buttonLabel = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
                     return buttonLabel;
                 });
-        $('.HVAClinechart-btntitle-span').each(function() {
-            $(this).tipsy({
-                gravity: "s",
-                html:true,
-                title:function(){
-                    var d = this.__data__;
 
-                    var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
-                    var content =   "<span>" + compressed_string + "</span>";
-                    content += "</br>" +"type: ";
-                    var attr_type = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].type;
-                    for (var i=0;i<attr_type.length;++i)
-                    {
-                        var cur_type = attr_type[i];
-                        content += "<span style='color:" + DATA_CENTER.GLOBAL_STATIC.attribute_type_color_mapping[cur_type] +
-                                        "'>" + cur_type +"</span> ";
-                    }
-                    return content;
-                },
-            });
-        });
+        DATA_CENTER.VIEW_COLLECTION.linechart_render_view._bind_attrbtn_tip("HVAClinechart-btntitle-span")
 
         //2). 点击以后mark到timeline上
         var enter_spans_btnspan_markspan = enter_spans_btnspan.append("span") 
@@ -434,21 +410,41 @@ var linechart_render_view = {
         exit.remove();
     },
 
+    _bind_attrbtn_tip:function(class_label)
+    {
+        $('.'+class_label).each(function() {
+            $(this).tipsy({
+                gravity: "s",
+                html:true,
+                title:function(){
+                    var d = this.__data__;
+
+                    if (typeof(DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name])=="undefined")
+                        return d.name;
+
+                    var compressed_string = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].lv2_abbreviation;
+                    var content =   "<span>" + compressed_string + "</span>";
+                    content += "</br>" +"type: ";
+                    var attr_type = DATA_CENTER.GLOBAL_STATIC.attribute_description[d.name].type;
+                    for (var i=0;i<attr_type.length;++i)
+                    {
+                        var cur_type = attr_type[i];
+                        content += "<span style='color:" + DATA_CENTER.GLOBAL_STATIC.attribute_type_color_mapping[cur_type] +
+                                        "'>" + cur_type +"</span> ";
+                    }
+                    return content;
+                },
+            });
+        });
+    },
+
     _get_xysetAxis_data:function(yAxis_attr_name_set)
     {
         //使用的全局变量
         var data_set = [];
         for (i=0;i<yAxis_attr_name_set.length;++i)
         {
-            var cur_yAxis_attr_name = yAxis_attr_name_set[i];
-            if (cur_yAxis_attr_name in this.HAZIUM_DATA_FILENAME_MAPPING)
-            {
-                data_set[i] = DATA_CENTER.original_data[this.HAZIUM_DATA_FILENAME_MAPPING[yAxis_attr_name_set[i]]];
-            }
-            else
-            {
-                data_set[i] = DATA_CENTER.original_data["bldg-MC2.csv"];
-            }
+            data_set[i] = DATA_CENTER.original_data["bldg-MC2.csv"];
         }
         //end 全局变量
 
@@ -520,11 +516,11 @@ var linechart_render_view = {
 
                 zones:[
                 {
-                    value: average-sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                    value: average-sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                     color: "red",
                 },
                 {
-                    value: average+sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                    value: average+sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                     color: '#7cb5ec',
                 },
                 {

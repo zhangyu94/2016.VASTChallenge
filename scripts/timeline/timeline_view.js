@@ -40,7 +40,10 @@ var timeline_view = {
 
 		if (message == "set:current_display_time")
 		{
+<<<<<<< HEAD
 			//console.log("set:current_display_time")
+=======
+>>>>>>> 4815f850afdd24d97b6f98f680e2e3c0ce641c90
 	        var current_display_time = DATA_CENTER.global_variable.current_display_time;
 	        var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
 	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除

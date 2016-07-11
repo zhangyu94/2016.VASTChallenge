@@ -59,7 +59,7 @@ body {
 	left:0%;
 	top:9%;
 	height:80%;
-	width:16%;
+	width:20%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
@@ -85,10 +85,10 @@ body {
 /*linechart视图*/
 #linechartview-collection {
 	position:absolute;
-	left:16%;
+	left:20%;
 	top:9%;
 	height:80%;
-	width:70%;
+	width:66%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
@@ -162,10 +162,10 @@ body {
 /*trajectory视图*/
 #trajectoryview-collection {
 	position:absolute;
-	left:16%;
+	left:20%;
 	top:9%;
 	height:80%;
-	width:70%;
+	width:66%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
@@ -269,10 +269,10 @@ body {
 /*monidisplayrate-btn*/
 #monitor-collection {
 	position:absolute;
-	left:16%;
+	left:20%;
 	top:9%;
 	height:80%;
-	width:84%;
+	width:80%;
 	float: left;
 	pointer-events:none;
 }
@@ -286,7 +286,7 @@ body {
 #monitor-collection > .monitorContainer > #HVACmonitor-renderplace{
 	position:absolute;
 	height:100%;
-	width:25%;
+	width:20%;
 	float: left;
 	border: solid #ccc 1px;
 	border-radius: 5px;
