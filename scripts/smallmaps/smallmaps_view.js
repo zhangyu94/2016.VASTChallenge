@@ -5,6 +5,8 @@ var smallmaps_view = {
 	HVAC_ZONE_DOT_RADIUS :6,
 	RADARCHART_GLYPH_RADIUS :25,
 
+	
+
 	DIV_CLASS_OF_RADARCHART_GLYPH:"smallmaps-radarchart_glyph-div",
 
 	obsUpdate:function(message, data)
@@ -722,6 +724,7 @@ var smallmaps_view = {
 	 	{
 	 		d3.select("body")
 				.append("div")
+					.attr("class","warning-tip")
 					.style("z-index",4)
 					.style("position","absolute")
 					.style("left",function(){
@@ -736,8 +739,7 @@ var smallmaps_view = {
 					.style("background","white")
 					.style("border","solid 2px #111")
 					.html(function(){
-						//return "233"
-
+						console.log(that_d.data.name)
 						var time = new Date(raw_timestamp)
 					    var time_string = (time.getMonth()+1).toString() + "." + time.getDate().toString() + " " +
 					    				time.getHours().toString() + ":" + time.getMinutes().toString() + ":" + time.getSeconds().toString();
@@ -745,17 +747,17 @@ var smallmaps_view = {
 						var signed_normalized_value = 0;
 					  	if (typeof(that_d.data.value)!= "undefined")
 					  		signed_normalized_value = HVAC_STATISTIC_UTIL.normalize(that_d.data.name,that_d.data.value);
+					    
+					  	var compressed_name = linechart_render_view._compress_full_attr_name(that_d.data.name);
 					    var content = 	"<span style='color:red'>" + time_string  + "</span>"+ "</br>" +
-					    				"<span style='color:red'>" + that_d.data.name  + "</span>" + ": " + "<span>" + that_d.data.value  + "(" + signed_normalized_value.toFixed(1) + ")" + "</span>";
+					    				"<span style='color:red'>" + compressed_name  + "</span>" + ": " + "<span>" + that_d.data.value  + "(" + signed_normalized_value.toFixed(1) + ")" + "</span>";
 					    return content;
 					})
 					.each(function(){
 						var that = this;
-						
 						setTimeout(function(){
 							d3.select(that).remove()
-						},5000)
-
+						},3000)
 					})
 	 	}
 			    

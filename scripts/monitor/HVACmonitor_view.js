@@ -33,6 +33,7 @@ var HVACmonitor_view = {
 
         if (message == "hide:HVACmonitor_view")
         {
+        	d3.selectAll("."+smallmaps_view.WARNING_TIP_CLASS).remove();
             $("#"+this.HVACmonitor_view_DIV_ID).css("display","none");
             DATA_CENTER.VIEW_COLLECTION.smallmaps_view._hide_radarchart(this.DIV_CLASS_OF_RADARCHART_GLYPH)
         }
