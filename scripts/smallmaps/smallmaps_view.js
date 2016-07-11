@@ -191,8 +191,8 @@ var smallmaps_view = {
 				})     
 				.on("mouseover",function(d,i){
 
-					_highlight_communication(d,i);
-				    function _highlight_communication(d,i)
+					_highlight_communication(d);
+				    function _highlight_communication(d)
 				    {
 				      	var floor_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.floor_HVACattr_set;
 						var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset(floor_HVACattr_set,[],[d.name],[])
@@ -204,8 +204,8 @@ var smallmaps_view = {
 				})
 				.on("mouseout",function(d,i){
 
-					_highlight_communication(d,i);
-				    function _highlight_communication(d,i)
+					_highlight_communication();
+				    function _highlight_communication()
 				    {
 				      	DATA_CENTER.set_linechart_variable("highlight_floor_set",[]);
 						DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
@@ -219,6 +219,7 @@ var smallmaps_view = {
 					if (index >=0 )
 						$(this).click();
 				})
+
 		var floor_text = floor_span_g.append("text")
 							.attr("dx", "0em").attr("dy", "1.2em")//.style("text-anchor", "middle")
 						    .text(function(d,i){
@@ -335,7 +336,6 @@ var smallmaps_view = {
 			      		.style("stroke-width", function(d) { return 1; })
 			      		.style("stroke", function(d) { return "#AAAAAA"; })
 			      		.style("pointer-events","auto")
-
 
 			  	var node = floor_svg.selectAll(".smallmaps-HVACzone-circle")
 						.data(graph.nodes)
@@ -562,6 +562,8 @@ var smallmaps_view = {
 			  	var normalized_value = 0;
 			  	if (typeof(d.data.value)!= "undefined")
 			  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+			  		
+			  	//var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,d.data.name,d.data.value)
 			  	
 			  	var rate = normalized_value / HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD;
 			  	if (rate > width / (2*radius))//避免扇形爆出svg范围
