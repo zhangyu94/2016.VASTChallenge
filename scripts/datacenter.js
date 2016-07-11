@@ -9,8 +9,6 @@ var DATA_CENTER = {
 		"linechart_linebtn_view":linechart_linebtn_view,
 		"linechart_render_view":linechart_render_view,
 
-		"mdsgraph_view":mdsgraph_view,
-
 		"relationshipgraph_view":relationshipgraph_view,
 
 		"bigmap_view":bigmap_view,
@@ -167,12 +165,9 @@ var DATA_CENTER = {
 			"RETURN OUTLET CO2 Concentration",
 			"Hazium Concentration",//特殊属性，只有4个有Haziumsensor的zone有
 		],
-		HVACzone_with_Haziumsenor_set :[
-			"F_1_Z_8A",
-			"F_2_Z_2",
-			"F_2_Z_4",
-			"F_3_Z_1"
-		],
+		
+		//HVACzone_with_Haziumsenor_set已经改为由datacenter的函数动态计算
+
 		attribute_description : {
 			"BATH_EXHAUST:Fan Power":{
 				abbreviation:"bath fan power",
@@ -391,7 +386,15 @@ var DATA_CENTER = {
 			"F_2":2,
 			"F_3":3,
 		},
+		building_set :["building"],
+		floor_set:["F_1","F_2","F_3"],
+		HVACzone_set:[
+			"F_1_Z_1","F_1_Z_2","F_1_Z_3","F_1_Z_4","F_1_Z_5","F_1_Z_6","F_1_Z_7","F_1_Z_8A","F_1_Z_8B",
+			"F_2_Z_1","F_2_Z_2","F_2_Z_3","F_2_Z_4","F_2_Z_5","F_2_Z_6","F_2_Z_7","F_2_Z_8","F_2_Z_9","F_2_Z_10","F_2_Z_11","F_2_Z_12A","F_2_Z_12B","F_2_Z_12C","F_2_Z_13","F_2_Z_14","F_2_Z_15","F_2_Z_16",
+			"F_2_Z_1","F_2_Z_2","F_2_Z_3","F_2_Z_4","F_2_Z_5","F_2_Z_6","F_2_Z_7","F_2_Z_8","F_2_Z_9","F_2_Z_10","F_2_Z_11A","F_2_Z_11B","F_2_Z_11C","F_2_Z_12",
+		]
 	},
+
 
 
 	//计算派生数据填入DATA_CENTER.derived_data
@@ -532,17 +535,186 @@ var DATA_CENTER = {
 	cal_derive_data: function(){
 		this.cal_person_traj();
 		this.update_traj_endtime();
+		this.cal_HVAC_general();
+		this.cal_HVAC_Hazium();
+		this.cal_HVAC_floor();
+		this.merge_HVAC_data();
+		this.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set = this.cal_HVACzone_with_Haziumsenor_set();
 	},
+
+	cal_HVACzone_with_Haziumsenor_set:function(){
+		var data = DATA_CENTER.original_data["bldg-MC2.csv"];
+		var merged_zone_set = [];
+		for (var i=0;i<data.length;++i)
+		{
+			var one_frame = data[i];
+			var one_frame_zone_set = cal_Hazium_zone_in_one_frame(one_frame);
+			for (var j=0;j<one_frame_zone_set.length;++j)
+			{
+				if (merged_zone_set.indexOf(one_frame_zone_set[j])<0)
+				{
+					merged_zone_set.push(one_frame_zone_set[j]);
+					console.warn("newly add hazium zone",one_frame_zone_set[j]);
+				}
+			}
+			function cal_Hazium_zone_in_one_frame(one_frame)
+			{
+				var zone_set = [];
+				for (key in one_frame)
+				{
+					if (key.indexOf("Hazium")<0)
+						continue;
+					var keys = key.split(' ');
+					var first_part = keys[0];
+					var zone_part = first_part.replace(":","");
+
+					if (zone_set.indexOf(zone_part)>=0)
+					{
+						console.warn("one Hazium attr appear more than once in one frame",key)
+						continue;
+					}
+					zone_set.push(zone_part)
+				
+				}
+				return zone_set;
+			}
+		}
+		return merged_zone_set;
+	},
+
+	merge_HVAC_data:function(){
+		DATA_CENTER.original_data["bldg-MC2.csv"] = [];
+
+		for (var i=0;i<DATA_CENTER.derived_data["general-MC2.json"].length;++i)
+		{
+			var cur_general = DATA_CENTER.derived_data["general-MC2.json"][i];
+			var cur_hazium1 = DATA_CENTER.derived_data["f1z8a-MC2.json"][i];
+			var cur_hazium2 = DATA_CENTER.derived_data["f2z2-MC2.json"][i];
+			var cur_hazium3 = DATA_CENTER.derived_data["f2z4-MC2.json"][i];
+			var cur_hazium4 = DATA_CENTER.derived_data["f3z1-MC2.json"][i];
+			var cur_floor1 = DATA_CENTER.derived_data["floor1-MC2.json"][i];
+			var cur_floor2 = DATA_CENTER.derived_data["floor2-MC2.json"][i];
+			var cur_floor3 = DATA_CENTER.derived_data["floor3-MC2.json"][i];
+
+			var new_element = {};
+			for (key in cur_general)
+				new_element[key] = cur_general[key];
+			for (key in cur_hazium1)
+				new_element[key] = cur_hazium1[key];
+			for (key in cur_hazium2)
+				new_element[key] = cur_hazium2[key];
+			for (key in cur_hazium3)
+				new_element[key] = cur_hazium3[key];
+			for (key in cur_hazium4)
+				new_element[key] = cur_hazium4[key];
+			for (key in cur_floor1)
+				new_element[key] = cur_floor1[key];
+			for (key in cur_floor2)
+				new_element[key] = cur_floor2[key];
+			for (key in cur_floor3)
+				new_element[key] = cur_floor3[key];
+
+			DATA_CENTER.original_data["bldg-MC2.csv"].push(new_element)
+		}
+		
+	},
+
+	cal_HVAC_general:function(){
+		DATA_CENTER.derived_data["general-MC2.json"] = this._process_single_file("general-MC2.json");
+	},
+
+	cal_HVAC_Hazium:function(){
+		DATA_CENTER.derived_data["f1z8a-MC2.json"] = this._process_single_file("f1z8a-MC2.json");
+		DATA_CENTER.derived_data["f2z2-MC2.json"] = this._process_single_file("f2z2-MC2.json");
+		DATA_CENTER.derived_data["f2z4-MC2.json"] = this._process_single_file("f2z4-MC2.json");
+		DATA_CENTER.derived_data["f3z1-MC2.json"] = this._process_single_file("f3z1-MC2.json");
+	},
+
+	cal_HVAC_floor:function(){
+		DATA_CENTER.derived_data["floor1-MC2.json"] = this._process_single_file("floor1-MC2.json");
+		DATA_CENTER.derived_data["floor2-MC2.json"] = this._process_single_file("floor2-MC2.json");
+		DATA_CENTER.derived_data["floor3-MC2.json"] = this._process_single_file("floor3-MC2.json");
+	},
+
+	_process_single_file:function(filename)
+	{
+		var original_data = DATA_CENTER.original_data[filename];
+		var processed_data = [];
+		for (var i=0;i<original_data.length;++i)
+		{
+			var new_element = unify_HVAC_oneframe_data(original_data[i]);
+			processed_data.push(new_element);
+		}
+		return processed_data;
+
+		function unify_HVAC_oneframe_data(data)
+		{
+			if (typeof (data.message)!="undefined")
+				var cur_data = data.message;
+			else
+				var cur_data = data;
+			var new_element = {};
+			for (key in cur_data)
+			{
+				if (key == "type")
+					continue;
+				if (key == "floor")
+					continue;
+				if (key == "_id")
+					continue;
+				if (key == "Date/Time")
+				{
+					new_element[key] = cur_data[key];
+					continue;
+				}
+				
+				var new_key = key;
+				if (key.indexOf("BATH_EXHAUST")>=0)//单独处理F_..._BATH_EXHAUST:Fan Power的情况
+				{
+					var end = key.indexOf("BATH_EXHAUST");
+					var floor_part = key.substring(0,end-1);
+					var attr_part = key.substring(end,key.length);
+					new_key = floor_part + " " + attr_part;
+				}
+				else if (key.indexOf("_Z_")>=0)//zone的属性
+				{
+					var keys = key.split(' ');
+					var first_part = keys[0];
+					var zone_part = first_part.replace(":","");
+					var attr_part = key.substring(first_part.length+1,key.length);
+					new_key = zone_part + " " + attr_part;
+				}
+				else if (key.indexOf("F_")>=0)//floor的属性
+				{
+					var floor_part = key.substring(0,3)
+					var attr_part = key.substring(4,key.length);
+					new_key = floor_part + " " + attr_part;
+				}
+				if(new_key == 'F_3_Z_9 VAV Damper Position')
+                	new_key = 'F_3_Z_9 VAV REHEAT Damper Position';
+
+                new_element[new_key] =+ cur_data[key];
+			}
+			return new_element;
+		}
+	},
+
+
 	initialize_loaddata:function(callback_function){
 		var path = "dataset/original/";
+
+		//streaming data读到以后直接append到旧的file里面
 		var file_name=[
-			"bldg-MC2.csv",
-			"f1z8a-MC2.csv",
-			"f2z2-MC2.csv",
-			"f2z4-MC2.csv",
-			"f3z1-MC2.csv",
+			"general-MC2.json",
+			"f1z8a-MC2.json",
+			"f2z2-MC2.json",
+			"f2z4-MC2.json",
+			"f3z1-MC2.json",
 			"proxMobileOut-MC2.csv",
-			"proxOut-MC2.csv"
+			"proxOut-MC2.csv",
+			"floor1-MC2.json",
+			"floor2-MC2.json",
+			"floor3-MC2.json",
 		];
 
 		var derived_path = "dataset/derived/";
@@ -550,82 +722,17 @@ var DATA_CENTER = {
 			"person.json",
 			"room.json",
 			"singleroom.json",
-			"person2room.csv"
+			"person2room.csv",
+			"patternChange.json",
 		];
 		var that = this;
 
-		d3.csv(path+file_name[0],function(HVAC_data){
-			//把传感器读数全部存成数字
-			for (var i=0;i<HVAC_data.length;++i)
-			{
-				var cur_element = HVAC_data[i];
-				for (var attr in cur_element)
-				{
-					if (attr != "Date/Time")
-					{
-						cur_element[attr] =+ cur_element[attr];
-					}
-				}
-			}
-
-			d3.csv(path+file_name[1],function(hazium_data1){
-				//把传感器读数全部存成数字
-				for (var i=0;i<hazium_data1.length;++i)
-				{
-					var cur_element = hazium_data1[i];
-					for (var attr in cur_element)
-					{
-						if (attr != "Date/Time")
-						{
-							cur_element[attr] =+ cur_element[attr];
-						}
-					}
-				}
-
-				d3.csv(path+file_name[2],function(hazium_data2){
-					//把传感器读数全部存成数字
-					for (var i=0;i<hazium_data2.length;++i)
-					{
-						var cur_element = hazium_data2[i];
-						for (var attr in cur_element)
-						{
-							if (attr != "Date/Time")
-							{
-								cur_element[attr] =+ cur_element[attr];
-							}
-						}
-					}
-
-					d3.csv(path+file_name[3],function(hazium_data3){
-						//把传感器读数全部存成数字
-						for (var i=0;i<hazium_data3.length;++i)
-						{
-							var cur_element = hazium_data3[i];
-							for (var attr in cur_element)
-							{
-								if (attr != "Date/Time")
-								{
-									cur_element[attr] =+ cur_element[attr];
-								}
-							}
-						}
-
-						d3.csv(path+file_name[4],function(hazium_data4){
-							//把传感器读数全部存成数字
-							for (var i=0;i<hazium_data4.length;++i)
-							{
-								var cur_element = hazium_data4[i];
-								for (var attr in cur_element)
-								{
-									if (attr != "Date/Time")
-									{
-										cur_element[attr] =+ cur_element[attr];
-									}
-								}
-							}
-
+		d3.json(path+file_name[0],function(HVAC_data){
+			d3.json(path+file_name[1],function(hazium_data1){
+				d3.json(path+file_name[2],function(hazium_data2){
+					d3.json(path+file_name[3],function(hazium_data3){
+						d3.json(path+file_name[4],function(hazium_data4){
 							d3.csv(path+file_name[5],function(data5){//mobile out data
-								// console.log(data5);
 								person_robot_detection_array = DATA_CENTER.global_variable.person_robot_detection_array;
 								for(var i = 0;i < data5.length;i++){
 									var proxId = data5[i][' prox-id'].replace(/\s+/g,"");
@@ -707,20 +814,32 @@ var DATA_CENTER = {
 												}
 												console.log(robotDetectionData);
 												d3.csv(derived_path + d_file_name[3], function(data10){
-													DATA_CENTER.original_data[file_name[0]] = HVAC_data;
-													DATA_CENTER.original_data[file_name[1]] = hazium_data1;
-													DATA_CENTER.original_data[file_name[2]] = hazium_data2;
-													DATA_CENTER.original_data[file_name[3]] = hazium_data3;
-													DATA_CENTER.original_data[file_name[4]] = hazium_data4;
-													DATA_CENTER.original_data[file_name[5]] = data5;
-													DATA_CENTER.original_data[file_name[6]] = data6;
-													DATA_CENTER.derived_data[d_file_name[0]] = data7;
-													DATA_CENTER.derived_data[d_file_name[1]] = data8;
-													DATA_CENTER.derived_data[d_file_name[2]] = data9;
-													DATA_CENTER.derived_data[d_file_name[3]] = data10;
-													DATA_CENTER.cal_derive_data();
-													that.initStream();
-													callback_function();
+													d3.json(path+file_name[7],function(data11){
+														d3.json(path+file_name[8],function(data12){
+															d3.json(path+file_name[9],function(data13){
+																d3.json(derived_path+d_file_name[4],function(data14){
+																	DATA_CENTER.original_data[file_name[0]] = HVAC_data;
+																	DATA_CENTER.original_data[file_name[1]] = hazium_data1;
+																	DATA_CENTER.original_data[file_name[2]] = hazium_data2;
+																	DATA_CENTER.original_data[file_name[3]] = hazium_data3;
+																	DATA_CENTER.original_data[file_name[4]] = hazium_data4;
+																	DATA_CENTER.original_data[file_name[5]] = data5;
+																	DATA_CENTER.original_data[file_name[6]] = data6;
+																	DATA_CENTER.derived_data[d_file_name[0]] = data7;
+																	DATA_CENTER.derived_data[d_file_name[1]] = data8;
+																	DATA_CENTER.derived_data[d_file_name[2]] = data9;
+																	DATA_CENTER.derived_data[d_file_name[3]] = data10;
+																	DATA_CENTER.original_data[file_name[7]] = data11;
+																	DATA_CENTER.original_data[file_name[8]] = data12;
+																	DATA_CENTER.original_data[file_name[9]] = data13;
+																	DATA_CENTER.derived_data[d_file_name[4]] = data14;
+																	DATA_CENTER.cal_derive_data();
+																	that.initStream();
+																	callback_function();
+																})
+															})
+														})
+													})
 												})
 											})
 										})

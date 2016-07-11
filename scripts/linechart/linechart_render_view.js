@@ -2,13 +2,6 @@ var linechart_render_view = {
     FIRST_CALLED : true,
     linechart_render_view_DIV_ID : "linechart-renderplace",
 
-    HAZIUM_DATA_FILENAME_MAPPING:{
-        "F_1_Z_8A Hazium Concentration":"f1z8a-MC2.csv",
-        "F_2_Z_2 Hazium Concentration":"f2z2-MC2.csv",
-        "F_2_Z_4 Hazium Concentration":"f2z4-MC2.csv",
-        "F_3_Z_1 Hazium Concentration":"f3z1-MC2.csv",
-    },
-
     //为折线图的大框设置最小尺寸，避免过小看不清楚
     MINIMUM_LINECHART_RECT_HEIGHT : 27,
     EXPECTED_LINECHART_NUM: 5,
@@ -260,11 +253,11 @@ var linechart_render_view = {
                                 },
                                 zones:[
                                 {
-                                    value: average-sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                                    value: average-sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                                     color: "red",
                                 },
                                 {
-                                    value: average+sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                                    value: average+sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                                     color: '#7cb5ec',
                                 },
                                 {
@@ -451,15 +444,7 @@ var linechart_render_view = {
         var data_set = [];
         for (i=0;i<yAxis_attr_name_set.length;++i)
         {
-            var cur_yAxis_attr_name = yAxis_attr_name_set[i];
-            if (cur_yAxis_attr_name in this.HAZIUM_DATA_FILENAME_MAPPING)
-            {
-                data_set[i] = DATA_CENTER.original_data[this.HAZIUM_DATA_FILENAME_MAPPING[yAxis_attr_name_set[i]]];
-            }
-            else
-            {
-                data_set[i] = DATA_CENTER.original_data["bldg-MC2.csv"];
-            }
+            data_set[i] = DATA_CENTER.original_data["bldg-MC2.csv"];
         }
         //end 全局变量
 
@@ -531,11 +516,11 @@ var linechart_render_view = {
 
                 zones:[
                 {
-                    value: average-sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                    value: average-sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                     color: "red",
                 },
                 {
-                    value: average+sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                    value: average+sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                     color: '#7cb5ec',
                 },
                 {

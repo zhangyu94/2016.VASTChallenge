@@ -268,7 +268,7 @@ var bigmap_view = {
 		var DURATION = 2000;
 		var floorNum = this.DISPLAYED_FLOOR_NUMBER;
 
-		for(var i = 0;i < personArray.length;i++){
+		for(var i = 0;i < personInZone.length;i++){
             var routeRocrds10Days = personArray[i].fixRecords;
             personInZone[i].floorNum = -1;
             for(var j = 0;j < routeRocrds10Days.length;j++){

@@ -75,6 +75,25 @@ var linechart_linebtn_view = {
 
 	},
 
+	_combine_place_attr:function(place,place_type,attr)
+	{
+		if (place_type == "HVACzone")
+		{
+			if (attr != DATA_CENTER.GLOBAL_STATIC.HAZIUM_ATTR_NAME)
+				return place + " " + attr;
+			else if (DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set.indexOf(place) >=0 )
+				return place + " " + attr;
+			else
+				return undefined;
+		}
+		if (place_type == "floor")
+			return place + " " + attr;
+		if (place_type == "building")
+			return attr;
+		console.warn("undefined place_type",place,place_type);
+		return undefined;
+	},
+
 	//输入被选中的三类实体集合，返回需要画的按钮
 	//return一个attrbtn_set
 	_cal_attrbtnset:function(selected_attr_set,selected_HVACzone_set,selected_floor_set,selected_building_set)
@@ -92,20 +111,10 @@ var linechart_linebtn_view = {
 				var cur_attr = HVACzone_HVACattr_set[j];
 				if (selected_attr_set.indexOf(cur_attr) >= 0)
 				{
-					if (cur_attr != DATA_CENTER.GLOBAL_STATIC.HAZIUM_ATTR_NAME)
-					{
-						var cur_linechart = cur_selected_HVACzone + " " + cur_attr;//形如F_2_Z_3 VAV REHEAT Damper Position
+					var cur_linechart = linechart_linebtn_view
+										._combine_place_attr(cur_selected_HVACzone,"HVACzone",cur_attr);
+					if (typeof(cur_linechart)!="undefined")
 						new_rendered_linechartbtn_set.push(cur_linechart)
-					}
-					else
-					{
-						var HVACzone_with_Haziumsenor_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set;
-						if (HVACzone_with_Haziumsenor_set.indexOf(cur_selected_HVACzone) >=0 )
-						{
-							var cur_linechart = cur_selected_HVACzone + " " + cur_attr;
-							new_rendered_linechartbtn_set.push(cur_linechart)
-						}
-					}
 				}
 			}
 		}
@@ -121,8 +130,10 @@ var linechart_linebtn_view = {
 				var cur_attr = floor_HVACattr_set[j];
 				if (selected_attr_set.indexOf(cur_attr) >= 0)
 				{
-					var cur_linechart = cur_selected_floor + "_" + cur_attr;//形如F_2_VAV_SYS SUPPLY
-					new_rendered_linechartbtn_set.push(cur_linechart)
+					var cur_linechart = linechart_linebtn_view
+										._combine_place_attr(cur_selected_floor,"floor",cur_attr);
+					if (typeof(cur_linechart)!="undefined")
+						new_rendered_linechartbtn_set.push(cur_linechart)
 				}	
 			}
 		}
@@ -130,14 +141,18 @@ var linechart_linebtn_view = {
 		//计算selected_attr_set * selected_building_set，push进new_rendered_linechartbtn_set
 		for (var i=0;i<selected_building_set.length;++i)
 		{
+			var cur_selected_building = selected_building_set[i]
+
 			var building_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.building_HVACattr_set;
 			for (var j=0;j<building_HVACattr_set.length;++j)
 			{
 				var cur_attr = building_HVACattr_set[j];
 				if (selected_attr_set.indexOf(cur_attr) >= 0)
 				{
-					var cur_linechart = cur_attr;
-					new_rendered_linechartbtn_set.push(cur_linechart)
+					var cur_linechart = linechart_linebtn_view
+										._combine_place_attr(cur_selected_building,"building",cur_attr);
+					if (typeof(cur_linechart)!="undefined")					
+						new_rendered_linechartbtn_set.push(cur_linechart)
 				}	
 			}
 		}
