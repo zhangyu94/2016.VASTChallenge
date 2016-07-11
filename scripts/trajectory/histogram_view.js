@@ -157,7 +157,7 @@ var histogram_view = {
 		.attr('y', function(d,i){
 			return legendLabel2 + legendHeight/2 + 2;
 		})
-		.text('work Legend')
+		.text('department Legend')
 		.on('mouseoover', function(d,i){
 			d3.select('.sum-legend-label-work').classed('mouseover-highlight', true);
 		})
