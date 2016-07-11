@@ -404,11 +404,10 @@ var bigmap_view = {
 			d.formerScaleNodeY = scaleNodeY;
 			return scaleNodeY;
 		});
-
 		var nodeSelectionCircle = nodeSelectionG.append('circle')
 		.attr('class',function(d,i){
 			var original_class = 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum;
-			if(!true){
+			if(DATA_CENTER.global_variable.enable_alert){
 				if(d.abnormal){
 					original_class =  'error-signal ' + original_class;
 				}
@@ -429,7 +428,7 @@ var bigmap_view = {
 		})
 		.attr('fill', function(d,i){
 			//单独检测异常的情况
-			if(true){
+			if(DATA_CENTER.global_variable.certainty_encode){
 				var proxId = d.personName;
 				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
 				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
@@ -596,7 +595,7 @@ var bigmap_view = {
 			if(d3.select(this).classed('click-highlight')){
 				original_class =  'click-highlight ' + original_class;
 			}
-			if(!true){
+			if(DATA_CENTER.global_variable.enable_alert){
 				if(d.abnormal){
 					original_class =  'error-signal ' + original_class;
 				}
@@ -608,7 +607,7 @@ var bigmap_view = {
 		})
 		.attr('fill', function(d,i){
 			//单独检测异常的情况
-			if(true){
+			if(DATA_CENTER.global_variable.certainty_encode){
 				var proxId = d.personName;
 				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
 				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
