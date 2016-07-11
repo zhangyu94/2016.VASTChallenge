@@ -167,7 +167,7 @@ var DATA_CENTER = {
 		],
 		
 		//HVACzone_with_Haziumsenor_set已经改为由datacenter的函数动态计算
-		
+
 		attribute_description : {
 			"BATH_EXHAUST:Fan Power":{
 				abbreviation:"bath fan power",
@@ -615,7 +615,6 @@ var DATA_CENTER = {
 				new_element[key] = cur_floor3[key];
 
 			DATA_CENTER.original_data["bldg-MC2.csv"].push(new_element)
-
 		}
 		
 	},
@@ -661,6 +660,8 @@ var DATA_CENTER = {
 					continue;
 				if (key == "floor")
 					continue;
+				if (key == "_id")
+					continue;
 				if (key == "Date/Time")
 				{
 					new_element[key] = cur_data[key];
@@ -689,19 +690,10 @@ var DATA_CENTER = {
 					var attr_part = key.substring(4,key.length);
 					new_key = floor_part + " " + attr_part;
 				}
+				if(new_key == 'F_3_Z_9 VAV Damper Position')
+                	new_key = 'F_3_Z_9 VAV REHEAT Damper Position';
 
-				/*
-				var keys = key.split(' ')
-                keys[0] = keys[0].replace(':','')
-                var nkey = keys.join(' ')
-                if(nkey == 'F_3_Z_9 VAV Damper Position')
-                	nkey = 'F_3_Z_9 VAV REHEAT Damper Position'
-				*/
                 new_element[new_key] =+ cur_data[key];
-                
-
-
-
 			}
 			return new_element;
 		}

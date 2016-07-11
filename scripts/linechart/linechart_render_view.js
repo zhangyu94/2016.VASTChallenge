@@ -30,7 +30,6 @@ var linechart_render_view = {
 
         if ( message == "set:selected_linechart_set" )
         {
-            console.log("selected_linechart_set in linechart render",DATA_CENTER.global_variable.selected_linechart_set)
             var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
             this.update_render(this.linechart_render_view_DIV_ID,selected_linechart_set)
         }
