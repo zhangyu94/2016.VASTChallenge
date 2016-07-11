@@ -32,7 +32,7 @@ var DATA_CENTER = {
 
 	//view之间通信需要利用的全局变量
 	global_variable : {
-		
+
 
 		warning_list: [],
 		//warning_list数据结构:
@@ -78,7 +78,7 @@ var DATA_CENTER = {
 		current_display_time:1464656940000,//timeline当前播放到的时间
 
 		selected_card_set:[],
-		selected_card: undefined, 
+		selected_card: undefined,
 		selected_person_set:[],
 	},
 
@@ -175,7 +175,7 @@ var DATA_CENTER = {
 			"RETURN OUTLET CO2 Concentration",
 			"Hazium Concentration",//特殊属性，只有4个有Haziumsensor的zone有
 		],
-		
+
 		//HVACzone_with_Haziumsenor_set已经改为由datacenter的函数动态计算
 
 		attribute_description : {
@@ -479,7 +479,7 @@ var DATA_CENTER = {
 			pID = pID.trim();
 			if(! (pID in person)) {
 				// console.log(pID);
-				person[pID] = {"fixRecords":[],"mobileRecords":[]};
+				person[pID] = {"fixRecords":[],"mobileRecords":[],'duration':{}};
 			}
 
 			var records = {};
@@ -493,13 +493,7 @@ var DATA_CENTER = {
 
 			person[pID]['fixRecords'].push(records);
 		}
-		person[pID]['fixRecords'].sort(function(a, b){
-				var keyA = a.timestamp;
-				var keyB = b.timestamp;
-				if(keyA < keyB) return -1;
-				if(keyA > keyB) return 1;
-				return 0;
-		});
+
 		// console.log(DATA_CENTER.derived_data['person']);
 		var proxMobileOut = DATA_CENTER.original_data["proxMobileOut-MC2.csv"];
 		for(var i=0;i<proxMobileOut.length;i++) {
@@ -522,14 +516,6 @@ var DATA_CENTER = {
 			person[pID]['mobileRecords'].push(records);
 		}
 
-		person[pID]['mobileRecords'].sort(function(a, b){
-			var keyA = a.timestamp;
-			var keyB = b.timestamp;
-			if(keyA < keyB) return -1;
-			if(keyA > keyB) return 1;
-			return 0;
-		});
-
 		// console.log(DATA_CENTER.derived_data['person']);
 	},
 	update_traj_endtime:function() {
@@ -546,6 +532,7 @@ var DATA_CENTER = {
 					fixR[j].endtime = fixR[j].timestamp;
 			}
 			fixR[fixR.length-1].endtime = fixR[fixR.length-1].timestamp;
+
 		}
 		//console.log(DATA_CENTER.derived_data['person']);
 	},
@@ -563,6 +550,7 @@ var DATA_CENTER = {
 	},
 	add_traj_fix_data:function(data, warning = false) {
 		var person = DATA_CENTER.derived_data['person'];
+		var that = this;
 		for(var i=0;i<data.length;i++) {
 			var aRecord =data[i];
 			var t = new Date(aRecord['datetime']);
@@ -573,10 +561,31 @@ var DATA_CENTER = {
 			var pID = aRecord['proxCard'];
 			if(! (pID in person)) {
 				// console.log(pID);
-				person[pID] = {"fixRecords":[],"mobileRecords":[]};
+				person[pID] = {"fixRecords":[],"mobileRecords":[],'duration':{}};
 				if(warning) {
+					var w = {"time": t,
+					"place":"f" + aRecord['floor'] + "z" + aRecord['zone'],
+					"attr":pID,
+					"event" :{
+						"type":"newProxID",
+						"value":null
+						}
+					}
+					that.global_variable['warning_list'].push(w);
 					console.log("New prox ID: " + pID);
 				}
+			}
+			var fz = 'f' + aRecord['floor'] + 'z'+  aRecord['zone'];
+			if(!(fz in person[pID])) {
+				var w = {"time": t,
+				"place":"f" + aRecord['floor'] + "z" + aRecord['zone'],
+				"attr":pID,
+				"event" :{
+					"type":"firstTimeToTheZone",
+					"value":null
+					}
+				}
+				that.global_variable['warning_list'].push(w);
 			}
 			person[pID]['fixRecords'].push(aRecord);
 			this.update_traj_endtime_signle(pID);
@@ -598,8 +607,17 @@ var DATA_CENTER = {
 			var pID = aRecord['proxCard'];
 			if(! (pID in person)) {
 				// console.log(pID);
-				person[pID] = {"fixRecords":[],"mobileRecords":[]};
+				person[pID] = {"fixRecords":[],"mobileRecords":[],'duration':{}};
 				if(warning) {
+					var w = {"time": t,
+					"place":"f" + aRecord['floor'] + ":"+aRecord['x'] +"," +aRecord['y'],
+					"attr":pID,
+					"event" :{
+						"type":"newProxID",
+						"value":null
+						}
+					}
+					that.global_variable['warning_list'].push(w);
 					console.log("New prox ID: " + pID);
 				}
 			}
@@ -615,7 +633,7 @@ var DATA_CENTER = {
 				var lengthX = +room.xlength;
        			var lengthY = +room.ylength;
        			var roomFloor = +room.floor;
-       			if((xLoc >= roomX) && (xLoc <= roomX + lengthX) && (yLoc >= roomY) && (yLoc <= roomY + lengthY) 
+       			if((xLoc >= roomX) && (xLoc <= roomX + lengthX) && (yLoc >= roomY) && (yLoc <= roomY + lengthY)
        				&& (roomFloor == floorNumRobot)){
        				robotDetectionData[j].proxZone = +room.proxZone;
        				break;
@@ -664,7 +682,7 @@ var DATA_CENTER = {
 						continue;
 					}
 					zone_set.push(zone_part)
-				
+
 				}
 				return zone_set;
 			}
@@ -706,7 +724,7 @@ var DATA_CENTER = {
 
 			DATA_CENTER.original_data["bldg-MC2.csv"].push(new_element)
 		}
-		
+
 	},
 
 	cal_HVAC_general:function(){
@@ -757,7 +775,7 @@ var DATA_CENTER = {
 					new_element[key] = cur_data[key];
 					continue;
 				}
-				
+
 				var new_key = key;
 				if (key.indexOf("BATH_EXHAUST")>=0)//单独处理F_..._BATH_EXHAUST:Fan Power的情况
 				{
@@ -895,7 +913,7 @@ var DATA_CENTER = {
 														var lengthX = +room.xlength;
 									        			var lengthY = +room.ylength;
 									        			var roomFloor = +room.floor;
-									        			if((xLoc >= roomX) && (xLoc <= roomX + lengthX) && (yLoc >= roomY) && (yLoc <= roomY + lengthY) 
+									        			if((xLoc >= roomX) && (xLoc <= roomX + lengthX) && (yLoc >= roomY) && (yLoc <= roomY + lengthY)
 									        				&& (roomFloor == floorNumRobot)){
 									        				robotDetectionData[j].proxZone = +room.proxZone;
 									        				break;
@@ -904,9 +922,7 @@ var DATA_CENTER = {
 												}
 												//console.log(robotDetectionData);
 												d3.csv(derived_path + d_file_name[3], function(data10){
-<<<<<<< HEAD
 
-=======
 													DATA_CENTER.GLOBAL_STATIC.proxId2work = new Object();
 													for(var i = 0;i < data10.length;i++){
 														var proxId = data10[i]['prox-id'];
@@ -920,7 +936,6 @@ var DATA_CENTER = {
 														var color = work_color_array[i].color;
 														DATA_CENTER.GLOBAL_STATIC.work2color[workName] = color;
 													}
->>>>>>> 3e596a85451fdcd3ae3322858f3d8bb4d51a1d5e
 													d3.json(path+file_name[7],function(data11){
 														d3.json(path+file_name[8],function(data12){
 															d3.json(path+file_name[9],function(data13){
@@ -943,7 +958,7 @@ var DATA_CENTER = {
 																	DATA_CENTER.stream_data['bldg']=[];
 																	DATA_CENTER.stream_data['HVAC']=[];
 																	DATA_CENTER.cal_derive_data();
-																	//that.initStream();
+																	that.initStream();
 																	callback_function();
 																})
 															})
@@ -968,6 +983,7 @@ var DATA_CENTER = {
                 var v_stream = new WebSocket('ws://192.168.10.9:8888');
                 this.v_stream = v_stream;
                 v_stream.onopen = function(e){
+                	console.log("Web socket open!");
                     v_stream.send(JSON.stringify({state: "start", data: null}));
                 };
                 v_stream.onclose = function(e){
@@ -975,7 +991,7 @@ var DATA_CENTER = {
                 }
                 v_stream.onmessage = function (e){
                     var t_d = JSON.parse(e.data);
-                    
+
                     switch(t_d.state){
                         case "stream":
                             if(t_d.data['type'] == 'fixedprox'){
@@ -1032,7 +1048,7 @@ var DATA_CENTER = {
                         		//console.log(t_d.data)
 
                         	}
-                        	
+
 
                             //console.log(t_d.state, t_d.data);
                         break;
