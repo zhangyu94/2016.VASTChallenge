@@ -32,8 +32,8 @@ var DATA_CENTER = {
 
 	//view之间通信需要利用的全局变量
 	global_variable : {
-		stream_start: new Date('2016 06 11'),
-		stream_end: new Date('2016 06 13'),
+		
+
 		warning_list: [],
 		//warning_list数据结构:
 		//{
@@ -89,11 +89,16 @@ var DATA_CENTER = {
 	},
 
 	timeline_variable : {
+		stream_start: new Date('2016 06 08'),
+		stream_end: new Date('2016 06 13'),
+		stream_window_width: 2*3600*1000,
+		isstreaming: false,
 		stream_display : false,
 		display_interval:1000,//播放更新间隔
-		display_before: 2,
-		display_rate:3600,//播放倍率
+		display_before: 10*60*1000,
+		display_rate:3000,//播放倍率
 		isplaying:false,//标记是否正在播放
+		isstreaming:false,
 		mouseover_time:undefined,//当前mouseover的地方
 	},
 
@@ -816,26 +821,9 @@ var DATA_CENTER = {
 									        			}
 													}
 												}
-												console.log(robotDetectionData);
+												//console.log(robotDetectionData);
 												d3.csv(derived_path + d_file_name[3], function(data10){
-<<<<<<< HEAD
-													DATA_CENTER.original_data[file_name[0]] = HVAC_data;
-													DATA_CENTER.original_data[file_name[1]] = hazium_data1;
-													DATA_CENTER.original_data[file_name[2]] = hazium_data2;
-													DATA_CENTER.original_data[file_name[3]] = hazium_data3;
-													DATA_CENTER.original_data[file_name[4]] = hazium_data4;
-													DATA_CENTER.original_data[file_name[5]] = data5;
-													DATA_CENTER.original_data[file_name[6]] = data6;
-													DATA_CENTER.derived_data[d_file_name[0]] = data7;
-													DATA_CENTER.derived_data[d_file_name[1]] = data8;
-													DATA_CENTER.derived_data[d_file_name[2]] = data9;
-													DATA_CENTER.derived_data[d_file_name[3]] = data10;
-													DATA_CENTER.stream_data['bldg']=[];
-													DATA_CENTER.stream_data['HVAC']=[];
-													DATA_CENTER.cal_derive_data();
-													that.initStream();
-													callback_function();
-=======
+
 													d3.json(path+file_name[7],function(data11){
 														d3.json(path+file_name[8],function(data12){
 															d3.json(path+file_name[9],function(data13){
@@ -856,13 +844,13 @@ var DATA_CENTER = {
 																	DATA_CENTER.original_data[file_name[9]] = data13;
 																	DATA_CENTER.derived_data[d_file_name[4]] = data14;
 																	DATA_CENTER.cal_derive_data();
-																	that.initStream();
+																	//that.initStream();
 																	callback_function();
 																})
 															})
 														})
 													})
->>>>>>> 4815f850afdd24d97b6f98f680e2e3c0ce641c90
+
 												})
 											})
 										})
@@ -934,6 +922,7 @@ var DATA_CENTER = {
                             //console.log(t_d.state, t_d.data);
                         break;
                         case "history":
+                        	console.log(t_d)
                         	if(t_d.data['type'] == 'fixedprox'){
                                     	that.add_traj_fix_data(t_d.data['data']);
                         	}

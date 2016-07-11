@@ -3,7 +3,7 @@ var trajmonitor_view = {
     
     startTime : undefined,
     endTime : undefined,
-    display_before : 1*60*1000,
+    display_before : 10*60*1000,
 
 	obsUpdate:function(message, data)
 	{

@@ -548,10 +548,7 @@ var smallmaps_view = {
 	//data的数据格式是一个数组，数组中每个元素的样子是{name:...,value:...}
 	_render_radarchart:function(data,glyph_name,raw_timestamp,class_label,center_x,center_y,radius,innerRadius)
 	{
-<<<<<<< HEAD
-		//console.log(data)
-=======
->>>>>>> 4815f850afdd24d97b6f98f680e2e3c0ce641c90
+
 		var width = 4.5*radius;
 		var height = 4.5*radius;
 		var degree = 360/data.length;
