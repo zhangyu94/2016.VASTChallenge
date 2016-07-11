@@ -39,6 +39,7 @@ var relationshipgraph_view = {
 		var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"].concat();
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
+	    var radius = 6;
 
 	    var selectedData = [];
 	    var parseDate = d3.time.format("%Y/%m/%d %H:%M").parse;
@@ -52,12 +53,12 @@ var relationshipgraph_view = {
 	    var nodes = [],links = [];
 
 	    var scale_negative = d3.scale.linear()
-	      .domain([-1,0])
-	      .range([20,300]);
+	      .domain([-1,-0.7])
+	      .range([20,150]);
 
 	    var scale_positive = d3.scale.linear()
-	      .domain([0,1])
-	      .range([300,20]);
+	      .domain([0.7,1])
+	      .range([150,20]);
 
 	    if(timerange == undefined)
 	    	selectedData = ori_data_array;
@@ -112,38 +113,38 @@ var relationshipgraph_view = {
 	        console.log(correlationMatrix);
 	        var arr_len = correlationMatrix.length;
 
-	        var init_links = [];
+	        //var init_links = [];
 	        for(var i=0;i<arr_len-1;i++)
 	        	for(var j=i+1;j<arr_len;j++)
 	        	{
-	        		if(correlationMatrix[i][j] != 0)
-	        			init_links.push({source: nodes[i], target: nodes[j], weight: correlationMatrix[i][j]});
+	        		if(correlationMatrix[i][j] >= 0.7 || correlationMatrix[i][j] <= -0.7)
+	        			links.push({source: nodes[i], target: nodes[j], weight: correlationMatrix[i][j]});
 	        	}
 
-	        init_links.sort(compare("weight"));//按照相关度排序
+	        // init_links.sort(compare("weight"));//按照相关度排序
 
-	        for(var k=0;k<3000;k++)
-	        {
-	        	links.push(init_links[k]);
-	        }
+	        // for(var k=0;k<1000;k++)
+	        // {
+	        // 	links.push(init_links[k]);
+	        // }
 
-		      function compare(propertyName) { 
-		        return function (object1, object2) { 
-		            var value1 = object1[propertyName]; 
-		            var value2 = object2[propertyName]; 
-		            if (value2 < value1) { 
-		              return -1; 
-		            } 
-		          else if (value2 > value1) { 
-		            return 1; 
-		          } 
-		          else { 
-		            return 0; 
-		          } 
-		        } 
-		      } 
+		      // function compare(propertyName) { 
+		      //   return function (object1, object2) { 
+		      //       var value1 = object1[propertyName]; 
+		      //       var value2 = object2[propertyName]; 
+		      //       if (value2 < value1) { 
+		      //         return -1; 
+		      //       } 
+		      //     else if (value2 > value1) { 
+		      //       return 1; 
+		      //     } 
+		      //     else { 
+		      //       return 0; 
+		      //     } 
+		      //   } 
+		      // } 
 
-	        console.log(init_links);
+	        // console.log(init_links);
 
 	        //计算相关系数
 	        // for(var i=0;i<nodes.length-1;i++)
@@ -277,7 +278,7 @@ var relationshipgraph_view = {
 
 	     function tick() {
 	        node_g.attr('transform', function(d){
-	           return 'translate(' + d.x + ', ' + d.y + ')';
+	           return 'translate(' + Math.max(radius, Math.min(width - radius, d.x)) + ', ' + Math.max(radius, Math.min(height - radius, d.y)) + ')';
 	        });
 
 	       link.attr("x1", function(d) { return d.source.x; })

@@ -1,7 +1,7 @@
 var DATA_CENTER = {
 	original_data : [],//访问时形如DATA_CENTER.original_data["bldg-MC2.csv"]
 	derived_data : [],//访问时形如DATA_CENTER.derived_data["..."]
-
+	stream_data : [],
 
 	//登记所有存在的view
 	VIEW_COLLECTION : {
@@ -32,6 +32,8 @@ var DATA_CENTER = {
 
 	//view之间通信需要利用的全局变量
 	global_variable : {
+		stream_start: new Date('2016 06 11'),
+		stream_end: new Date('2016 06 13'),
 		warning_list: [],
 		//warning_list数据结构:
 		//{
@@ -87,7 +89,9 @@ var DATA_CENTER = {
 	},
 
 	timeline_variable : {
+		stream_display : false,
 		display_interval:1000,//播放更新间隔
+		display_before: 2,
 		display_rate:3600,//播放倍率
 		isplaying:false,//标记是否正在播放
 		mouseover_time:undefined,//当前mouseover的地方
@@ -814,6 +818,24 @@ var DATA_CENTER = {
 												}
 												console.log(robotDetectionData);
 												d3.csv(derived_path + d_file_name[3], function(data10){
+<<<<<<< HEAD
+													DATA_CENTER.original_data[file_name[0]] = HVAC_data;
+													DATA_CENTER.original_data[file_name[1]] = hazium_data1;
+													DATA_CENTER.original_data[file_name[2]] = hazium_data2;
+													DATA_CENTER.original_data[file_name[3]] = hazium_data3;
+													DATA_CENTER.original_data[file_name[4]] = hazium_data4;
+													DATA_CENTER.original_data[file_name[5]] = data5;
+													DATA_CENTER.original_data[file_name[6]] = data6;
+													DATA_CENTER.derived_data[d_file_name[0]] = data7;
+													DATA_CENTER.derived_data[d_file_name[1]] = data8;
+													DATA_CENTER.derived_data[d_file_name[2]] = data9;
+													DATA_CENTER.derived_data[d_file_name[3]] = data10;
+													DATA_CENTER.stream_data['bldg']=[];
+													DATA_CENTER.stream_data['HVAC']=[];
+													DATA_CENTER.cal_derive_data();
+													that.initStream();
+													callback_function();
+=======
 													d3.json(path+file_name[7],function(data11){
 														d3.json(path+file_name[8],function(data12){
 															d3.json(path+file_name[9],function(data13){
@@ -840,6 +862,7 @@ var DATA_CENTER = {
 															})
 														})
 													})
+>>>>>>> 4815f850afdd24d97b6f98f680e2e3c0ce641c90
 												})
 											})
 										})
@@ -865,6 +888,7 @@ var DATA_CENTER = {
                 }
                 v_stream.onmessage = function (e){
                     var t_d = JSON.parse(e.data);
+                    
                     switch(t_d.state){
                         case "stream":
                                     if(t_d.data['type'] == 'fixedprox'){
@@ -874,9 +898,40 @@ var DATA_CENTER = {
                                     	that.add_traj_mobile_data(t_d.data['data']);
                         	}
                         	else if(t_d.data['type'] == 'HVAC') {
+                                 console.log(t_d.data)
+                        	}
+                        	else if(t_d.data['type'] == 'bldg') {
+                        		console.log(t_d.data)
+                        		 var tdata=[]
+                        		 for(var key in t_d.data){
+                        		 	if(key == 'bldg') continue
+                        		 	var keys = key.split(' ')
+                        		 	keys[0] = keys[0].replace(':','')
+                        		 	var nkey = keys.join(' ')
+                        		 	if(nkey == 'F_3_Z_9 VAV Damper Position')
+                        		 		nkey = 'F_3_Z_9 VAV REHEAT Damper Position'
+                        		 	tdata[nkey]=t_d.data[key]
+
+                        		 }
+                        		 if(DATA_CENTER.stream_data['bldg'].length==0){
+                        			 DATA_CENTER.stream_data['bldg'].push(tdata)
+                        		 }
+                        		 else {
+                        		 	var len=DATA_CENTER.stream_data['bldg'].length;
+                        		 	if(DATA_CENTER.stream_data['bldg'][len-1]['Date/Time']!=tdata['Date/Time']){
+                        		 		DATA_CENTER.stream_data.push(tdata)
+                        		 	}
+                        		 	else{
+                        		 		for(var key in tdata){
+                        		 			if(key != 'Date/Time'){
+                        		 				DATA_CENTER.stream_data['bldg'][-1][key]=tdata[key]
+                        		 			}
+                        		 		}
+                        		 	}
+                        		 }
 
                         	}
-                            console.log(t_d.state, t_d.data);
+                            //console.log(t_d.state, t_d.data);
                         break;
                         case "history":
                         	if(t_d.data['type'] == 'fixedprox'){
@@ -886,24 +941,26 @@ var DATA_CENTER = {
                                     	that.add_traj_mobile_data(t_d.data['data']);
                         	}
                         	else if(t_d.data['type'] == 'HVAC') {
+                        		//console.log(t_d.data)
 
                         	}
+                        	
 
-                            console.log(t_d.state, t_d.data);
+                            //console.log(t_d.state, t_d.data);
                         break;
                         case "control":
-                            console.log(t_d.state, t_d.data);
+                            //console.log(t_d.state, t_d.data);
                         break;
                         case "chooseID":
                             var tt_d = t_d.data;
-                            console.log(tt_d.msg, tt_d.streamIds, tt_d.timeleft);
+                           // console.log(tt_d.msg, tt_d.streamIds, tt_d.timeleft);
                             //v_stream.send(JSON.stringify({state: "chooseID", data: tt_d.streamIds[0]}));
                         break;
                         case "error":
-                            console.log(t_d.state, t_d.data);
+                           // console.log(t_d.state, t_d.data);
                         break;
                         default:
-                            console.log(t_d.state, t_d.data);
+                           // console.log(t_d.state, t_d.data);
                         break;
                     }
                 };

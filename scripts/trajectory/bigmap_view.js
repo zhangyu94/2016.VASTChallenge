@@ -265,6 +265,8 @@ var bigmap_view = {
 			}
 		});
 		var personInZone = DATA_CENTER.derived_data["personInZone"];
+	//	console.log(personInZone.length)
+	//	console.log(personArray.length)
 		var DURATION = 2000;
 		var floorNum = this.DISPLAYED_FLOOR_NUMBER;
 
@@ -297,7 +299,7 @@ var bigmap_view = {
 		var yScale = d3.scale.linear()
 			.range([0, height])
 			.domain([0, 111]);
-		console.log(personInZone);
+		//console.log(personInZone);
 		//d3.selectAll("#"+divID).selectAll("*").remove();
 		var svg = d3.select('#' + divID).select("#floor-svg");
 		//增加node节点

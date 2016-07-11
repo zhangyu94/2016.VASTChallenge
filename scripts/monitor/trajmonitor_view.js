@@ -3,6 +3,7 @@ var trajmonitor_view = {
     
     startTime : undefined,
     endTime : undefined,
+    display_before : 1*60*1000,
 
 	obsUpdate:function(message, data)
 	{
@@ -13,7 +14,6 @@ var trajmonitor_view = {
             this.startTime=new Date(timeRange.min)
         	this.endTime=new Date(timeRange.max)
         	this.render(this.trajmonitor_view_DIV_ID)
-            
         }
 
         if (message == "hide:trajmonitor_view")
@@ -23,11 +23,26 @@ var trajmonitor_view = {
         if (message == "set:selected_filter_timerange"){
         	var timeRange=data
 
-        	this.startTime=new Date(timeRange.min)
-        	this.endTime=new Date(timeRange.max)
+        	this.startTime = new Date(timeRange.min)
+        	this.endTime = new Date(timeRange.max)
         	//console.log(new Date(timeRange.min))
         	//console.log(new Date(timeRange.max))
         	this.render(this.trajmonitor_view_DIV_ID)
+        }
+        if (message == "stream:trajmonitor_view"){
+
+        	this.endTime = new Date(data)
+        	this.startTime = new Date(data-this.display_before)
+        	this.render(this.trajmonitor_view_DIV_ID)
+        }
+        if (message == "set:display_before")
+        {
+        	console.log(data)
+        	this.display_before=+data
+        	console.log(this.display_before)
+            this.startTime=new Date(this.endTime-this.display_before)
+        	this.render(this.trajmonitor_view_DIV_ID)
+            
         }
 	},
 	render:function(divID)
@@ -52,7 +67,7 @@ var trajmonitor_view = {
 		var endTime=this.endTime
 	    $('#'+divID).css('overflow','auto')
 	    var spaceHeight=20
-	    var pmargin={left:100,right:50,top:1,bottom:1}
+	    var pmargin={left:120,right:50,top:1,bottom:1}
 
 	    var w=width-pmargin.left-pmargin.right
 	    var h=spaceHeight-pmargin.top-pmargin.bottom
@@ -103,8 +118,10 @@ var trajmonitor_view = {
 	    			.attr('stroke-dasharray','1,2')
 	    	}
 	    	var draw_person_array=person_array[p]['fixRecords'].filter(function(d) {
-	    		if(d.timestamp<endTime&&d.endtime>startTime)
+	    		if(d.timestamp<endTime&&d.endtime>startTime){
+	    			
 	    			return true
+	    		}
 	    	})
 	    	psvg.append('text')
 	    		.text(+p+1+' '+person_array[p].name)
@@ -120,10 +137,20 @@ var trajmonitor_view = {
 	    			return (3-(+d.floor))*rectHeight/2+3;
 	    		})
 	    		.attr('x',function(d) {
-	    			return xscale(d.timestamp)
+	    			if(d.timestamp>startTime){
+	    				return xscale(d.timestamp)
+	    			}
+	    			else{
+	    				return xscale(startTime)
+	    			}
 	    		})
-	    		.attr('width',function(d) 
-	    			{return xscale(d.endtime)-xscale(d.timestamp)
+	    		.attr('width',function(d){
+	    			if(d.endtime<endTime&&d.timestamp>startTime)
+	    				return xscale(d.endtime)-xscale(d.timestamp)
+	    			if(d.endtime>endTime)
+	    				return xscale(endTime)-xscale(d.timestamp)
+	    			if(d.timestamp<startTime)
+	    				return xscale(d.endtime)-xscale(startTime)
 	    		})
 	    		.attr('height',rectHeight)
 	    		.attr('fill',function (d) {
