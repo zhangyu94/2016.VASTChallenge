@@ -253,11 +253,11 @@ var linechart_render_view = {
                                 },
                                 zones:[
                                 {
-                                    value: average-sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                                    value: average-sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                                     color: "red",
                                 },
                                 {
-                                    value: average+sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                                    value: average+sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                                     color: '#7cb5ec',
                                 },
                                 {
@@ -516,11 +516,11 @@ var linechart_render_view = {
 
                 zones:[
                 {
-                    value: average-sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                    value: average-sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                     color: "red",
                 },
                 {
-                    value: average+sigma*HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                    value: average+sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
                     color: '#7cb5ec',
                 },
                 {

@@ -1,5 +1,4 @@
 var HVAC_STATISTIC_UTIL = {
-	ABNORMAL_VALUE_THRESHOLD:4,//归一化以后的异常阈值
 	normalize:function(attr_name,value)
 	{
 		var average = this.get_average(attr_name);
