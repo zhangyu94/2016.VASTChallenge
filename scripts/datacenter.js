@@ -78,6 +78,7 @@ var DATA_CENTER = {
 		current_display_time:1464656940000,//timeline当前播放到的时间
 
 		selected_card_set:[],
+		selected_card: undefined, 
 		selected_person_set:[],
 	},
 
@@ -517,11 +518,15 @@ var DATA_CENTER = {
 	},
 	add_traj_mobile_data:function(data, warning = false) {
 		var person = DATA_CENTER.derived_data['person'];
+		console.log(data);
 		for(var i=0;i<data.length;i++) {
 			var aRecord =data[i];
+			var x = aRecord.X;
+			var y = aRecord.y;
+			var floor = aRecord.floorNum;
+			aRecord['zone'] = this.cal_zone_num(x,y,floor);
 			var t = new Date(aRecord['datetime']);
 			aRecord['timestamp'] = t;
-
 			aRecord['day'] = t.getFullYear() + "-" + (t.getMonth() + 1) +'-' +(t.getDate());
 			aRecord['timestamp'] = t;
 			var pID = aRecord['proxCard'];
@@ -534,7 +539,22 @@ var DATA_CENTER = {
 			}
 			person[pID]['mobileRecords'].push(aRecord);
 		}
-
+	},
+	cal_zone_num: function(xLoc, yLoc, floorNumRobot){
+		var singleroomData = DATA_CENTER.derived_data["singleroom.json"];
+			for(var k = 0;k < singleroomData.length;k++){
+				var room = singleroomData[k];
+				var roomX = +room.x;
+				var roomY = +room.y;
+				var lengthX = +room.xlength;
+       			var lengthY = +room.ylength;
+       			var roomFloor = +room.floor;
+       			if((xLoc >= roomX) && (xLoc <= roomX + lengthX) && (yLoc >= roomY) && (yLoc <= roomY + lengthY) 
+       				&& (roomFloor == floorNumRobot)){
+       				robotDetectionData[j].proxZone = +room.proxZone;
+       				break;
+       			}
+			}
 	},
 	cal_derive_data: function(){
 		this.cal_person_traj();

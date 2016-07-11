@@ -50,6 +50,7 @@ function main(){
 			"display:histogram_view",
 			"hide:bigmap_view",
 			"hide:ganttchart_view",
+			"display:histogram_view",
 			"hide:histogram_view",
 
 			"display:trajmonitor_view",

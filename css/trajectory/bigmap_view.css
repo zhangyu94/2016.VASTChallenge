@@ -10,7 +10,7 @@
     opacity: 1;
 }
 
-.doornum-text, .room-name-text, .node-text{
+.doornum-text, .room-name-text, .node-text, .work-legend-text{
     font-size: 3px;
     z-index: 5;
 }
@@ -65,10 +65,33 @@ rect[class~=click-highlight]{
     stroke-width: 0.5;
     opacity: 0.5;
 }
-@keyframes highlight-animation {
+circle[class~=error-signal]{
+    animation-name: highlight-error-animation;
+    animation-duration:1s;
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+}
+circle[class~=warning-signal]{
+    animation-name: highlight-warning-animation;
+    animation-duration:1s;
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+}
+@keyframes highlight-error-animation {
     0% {}
     50% {
-      stroke-width: 1.3px;
+      stroke: #e31a1c;
+      fill: #e31a1c;
+      stroke-width: 3px;
     }
     100% {}
 }  
+@keyframes highlight-warning-animation{
+    0% {}
+    50% {
+      stroke: #feb24c;
+      fill: #feb24c;
+      stroke-width: 3px;
+    }
+    100% {}
+}
