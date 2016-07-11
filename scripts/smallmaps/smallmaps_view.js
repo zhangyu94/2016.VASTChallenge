@@ -679,7 +679,6 @@ var smallmaps_view = {
 		      		return 1;
 		      	})
 				.on("mouseover",function(d,i){
-					$(this).tipsy();
                     DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                         ._highlight_communication_mouseover_linebtn(d.data.name);
                 })
@@ -688,38 +687,78 @@ var smallmaps_view = {
                         ._highlight_communication_mouseout_linebtn();
                 })
 		      	.each(function(d,i){
+		      		$(this).tipsy({
+						gravity: "s",
+						html:true,
+						title:function(){
+						   	var d = this.__data__;
+
+						   	var time=new Date(raw_timestamp)
+						    var time_string = (time.getMonth()+1).toString() + "." + time.getDate().toString() + " " +
+						    				time.getHours().toString() + ":" + time.getMinutes().toString() + ":" + time.getSeconds().toString();
+
+							var signed_normalized_value = 0;
+						  	if (typeof(d.data.value)!= "undefined")
+						  		signed_normalized_value = HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value);
+						    var content = 	"<span>" + time_string  + "</span>"+ "</br>" +
+						    				d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + signed_normalized_value.toFixed(1) + ")" + "</span>";
+						    return content;
+						},
+					});
 		      		smallmaps_view._bind_warning_tip(d,this,raw_timestamp);
 		      	})
 	},
 
 	_bind_warning_tip:function(d,this_ele,raw_timestamp)
 	{
-		$(this_ele).tipsy({
-			gravity: "s",
-			html:true,
-			title:function(){
-			   	var d = this.__data__;
-			   	var time_string = new Date(raw_timestamp);
-			   	time_string = time_string.toLocaleString();
-			   	
-				var signed_normalized_value = 0;
-			  	if (typeof(d.data.value)!= "undefined")
-			  		signed_normalized_value = HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value);
-			    var content = 	//"<span style='color:red'>" + time_string  + "</span>"+ "</br>" +
-			    				d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + signed_normalized_value.toFixed(1) + ")" + "</span>";
-			    return content;
-			},
-			trigger: 'manual',
-		});
-		/*
-	    	var normalized_value = 0.;
-	 		if (typeof(d.data.value)!= "undefined")
-	 			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
-	 		if (normalized_value >= 3)
-	 		{
-	 			$(this_ele).tipsy("show");
-	 		}
-	 	*/
+		var that_d = d;
+
+		var normalized_value = 0;
+		if (typeof(d.data.value)!= "undefined")
+	 		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+	 	
+		if (normalized_value >= HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD)
+	 	{
+	 		d3.select("body")
+				.append("div")
+					.style("z-index",4)
+					.style("position","absolute")
+					.style("left",function(){
+						return $(this_ele).offset().left+"px";
+					})
+					.style("top",function(){
+						return $(this_ele).offset().top+"px";
+					})
+					.style("display","inline-block")
+					.style("border-radius","3px")
+					.style("font-size","10px")
+					.style("background","white")
+					.style("border","solid 2px #111")
+					.html(function(){
+						//return "233"
+
+						var time = new Date(raw_timestamp)
+					    var time_string = (time.getMonth()+1).toString() + "." + time.getDate().toString() + " " +
+					    				time.getHours().toString() + ":" + time.getMinutes().toString() + ":" + time.getSeconds().toString();
+
+						var signed_normalized_value = 0;
+					  	if (typeof(that_d.data.value)!= "undefined")
+					  		signed_normalized_value = HVAC_STATISTIC_UTIL.normalize(that_d.data.name,that_d.data.value);
+					    var content = 	"<span style='color:red'>" + time_string  + "</span>"+ "</br>" +
+					    				"<span style='color:red'>" + that_d.data.name  + "</span>" + ": " + "<span>" + that_d.data.value  + "(" + signed_normalized_value.toFixed(1) + ")" + "</span>";
+					    return content;
+					})
+					.each(function(){
+						var that = this;
+						
+						setTimeout(function(){
+							d3.select(that).remove()
+						},5000)
+
+					})
+	 	}
+			    
+	 	
 	},
 
 	_hide_radarchart:function(class_label)

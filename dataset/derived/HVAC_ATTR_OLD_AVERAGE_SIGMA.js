@@ -12,7 +12,7 @@ var HVAC_STATISTIC_UTIL = {
 	{
 		if (!(attr_name in HVAC_ATTR_OLD_AVERAGE_SIGMA))
 		{
-			console.warn("invalid attr_name",attr_name)
+			//console.warn("invalid attr_name",attr_name)
 			return 0;
 		}
 		var entry = HVAC_ATTR_OLD_AVERAGE_SIGMA[attr_name];
@@ -25,7 +25,7 @@ var HVAC_STATISTIC_UTIL = {
 	{
 		if (!(attr_name in HVAC_ATTR_OLD_AVERAGE_SIGMA))
 		{
-			console.warn("invalid attr_name",attr_name)
+			//console.warn("invalid attr_name",attr_name)
 			return 0;
 		}
 		var entry = HVAC_ATTR_OLD_AVERAGE_SIGMA[attr_name];
