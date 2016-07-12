@@ -1,29 +1,35 @@
-var roomsExchange=function(index, exchangeWay){
-	var roomData=DATA_CENTER.derived_data['singleroom.json']
-	console.log(roomData)
-	if(exchangeWay=='proxZone_to_energyZone'){
-		var ProxZone=roomData[index].proxZone;
-		var energyZones=[]
-		for(var i in roomData){
-			if(roomData[i].proxZone==ProxZone){
-				if(energyZones.indexOf(roomData[i].energyZone)<0){
-					energyZones.push(roomData[i].energyZone)
-				}
+
+function roomsExchange(){
+	var roomData=DATA_CENTER.derived_data['room.json']
+	var proxZone_to_energyZone=DATA_CENTER.global_variable['proxZone_to_energyZone']
+	var energyZone_to_proxZone=DATA_CENTER.global_variable['energyZone_to_proxZone']
+	//console.log(roomData)
+	for(var i in roomData){
+		if(roomData[i].proxZone==undefined) console.log(roomData[i])
+		var proxZone='F'+'_'+roomData[i].floor+'_Z'+'_'+roomData[i].proxZone
+		var energyZone='F'+'_'+roomData[i].floor+'_Z'+'_'+roomData[i].energyZone
+		if(proxZone in proxZone_to_energyZone){
+			if(proxZone_to_energyZone[proxZone].indexOf(energyZone)<0){
+				proxZone_to_energyZone[proxZone].push(energyZone)
 			}
 		}
-		return energyZones;
-	}
-	if(exchangeWay=='energyZone_to_proxZone'){
-		var EnergyZone=roomData[index].energyZone;
-		var proxZones=[]
-		for(var i in roomData){
-			if(roomData[i].energyZone==EnergyZone){
-				if(proxZones.indexOf(roomData[i].proxZone)<0){
-					proxZones.push(roomData[i].proxZone)
-				}
+		else{
+			proxZone_to_energyZone[proxZone]=[]
+			proxZone_to_energyZone[proxZone].push(energyZone)
+		}
+
+		if(energyZone in energyZone_to_proxZone){
+			if(energyZone_to_proxZone[energyZone].indexOf(proxZone)<0){
+				energyZone_to_proxZone[energyZone].push(proxZone)
 			}
 		}
-		return proxZones
+		else{
+			energyZone_to_proxZone[energyZone]=[]
+			energyZone_to_proxZone[energyZone].push(proxZone)
+		}
+
 	}
+	//console.log(energyZone_to_proxZone)
 }
+
 

@@ -63,6 +63,9 @@ var DATA_CENTER = {
 		selected_timepoint_set:[],
 		person_robot_detection_array:[],
 
+		proxZone_to_energyZone:{},
+		energyZone_to_proxZone:{},
+
 		//linechart中被选中的一段时间通过设置这个全局变量传达到其他view
 		selected_filter_timerange:{
 			min:undefined,
@@ -1083,7 +1086,9 @@ var DATA_CENTER = {
 																	DATA_CENTER.stream_data['HVAC']=[];
 																	DATA_CENTER.cal_derive_data();
 																	that.initStream();
+																	roomsExchange();
 																	callback_function();
+
 																})
 															})
 														})
