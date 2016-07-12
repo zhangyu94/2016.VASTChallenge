@@ -33,7 +33,11 @@ function main(){
 			"set:highlight_building_set",
 			"set:highlight_linechart_set",
 
-			"set:latest_HVAC_fulldate_frame",
+
+
+			"set:latest_HVAC_merged_frame",
+			"push:new_hazium_zone",
+
 
 
 			"display:HVACgraph_attrbtn_view",

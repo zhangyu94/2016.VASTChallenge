@@ -270,11 +270,11 @@ var timeline_view = {
 
 	    var start_time = xyAxis_data[0][0];
         var end_time = xyAxis_data[xyAxis_data.length-1][0];
-        console.log(start_time)
-        console.log(end_time)
+        //console.log(start_time)
+        //console.log(end_time)
         DATA_CENTER.set_global_variable("selected_filter_timerange",{min:start_time,max:end_time})
         //console.log(DATA_CENTER.global_variable.selected_filter_timerange)
-        console.log(xyAxis_data)
+        //console.log(xyAxis_data)
 	    var chart = this._plot_linechart(this.timeline_div_id,xyAxis_data);
 	},
 

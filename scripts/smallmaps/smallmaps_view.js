@@ -75,6 +75,33 @@ var smallmaps_view = {
 
         }
 
+        //if ()
+
+
+
+        if (message == "push:new_hazium_zone")
+        {
+        	var new_hazium_zone = data;
+        	console.log("new_hazium_zone",new_hazium_zone)
+
+        	d3.selectAll(".ordinary-smallmaps-HVACzone-circle")
+        		.classed("hazium-smallmaps-HVACzone-circle",
+        			function(d,i){
+        				if (d.name == new_hazium_zone){
+        					return true;
+        				}
+        				return false;
+        			})
+        		.classed("ordinary-smallmaps-HVACzone-circle",
+        			function(d,i){
+        				if (d.name == new_hazium_zone){
+        					return false;
+        				}
+        				return true;
+        			})
+
+        }
+
 	},
 	render:function(divID)
 	{

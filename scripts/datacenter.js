@@ -30,6 +30,12 @@ var DATA_CENTER = {
 	},
 
 
+	push_new_hazium_zone :function(value)
+	{
+		this.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set.push(value);
+		SUBJECT.notifyObserver("push:new_hazium_zone", value);
+	},
+
 	//view之间通信需要利用的全局变量
 	global_variable : {
 
@@ -62,6 +68,8 @@ var DATA_CENTER = {
 		selected_building_set:[],
 		selected_timepoint_set:[],
 		person_robot_detection_array:[],
+
+		latest_HVAC_merged_frame:undefined,
 
 		//linechart中被选中的一段时间通过设置这个全局变量传达到其他view
 		selected_filter_timerange:{
@@ -652,20 +660,57 @@ var DATA_CENTER = {
 
 	add_HVAC_streaming_data:function(data,label){
 		var processed_data = this.unify_HVAC_oneframe_data(data)
-		console.log(data);
-		if (label == "bldg")
-		{
-			
-			
-		}
-		else if (label == "sensor")
-		{
+		var cur_frame_timestamp = processed_data["Date/Time"];
+		//console.log("new streaming data",processed_data);
 
+		var latest_HVAC_merged_frame = DATA_CENTER.global_variable.latest_HVAC_merged_frame;
+		if (typeof(latest_HVAC_merged_frame)=="undefined")//第一次接受streaming时
+		{
+			DATA_CENTER.global_variable.latest_HVAC_merged_frame = processed_data;
+			return ;
+		}
+
+		var latest_HVAC_merged_frame_timestamp = latest_HVAC_merged_frame["Date/Time"];
+		if (latest_HVAC_merged_frame_timestamp == cur_frame_timestamp)
+		{
+			for (key in processed_data)
+			{
+				latest_HVAC_merged_frame[key] = processed_data[key];
+			}
+			DATA_CENTER.global_variable.latest_HVAC_merged_frame = DATA_CENTER.global_variable.latest_HVAC_merged_frame;
+		}
+		else if (latest_HVAC_merged_frame_timestamp < cur_frame_timestamp)
+		{
+			var verifying_data_frame = DATA_CENTER.original_data["bldg-MC2.csv"][0];
+			for (key in verifying_data_frame)
+			{
+				if (!(key in latest_HVAC_merged_frame))
+				{
+					console.warn("latest stream frame lost key",key);
+					latest_HVAC_merged_frame[key] = 0;
+				}
+			}
+
+			DATA_CENTER.original_data["bldg-MC2.csv"].push(latest_HVAC_merged_frame)
+
+			var Hazium_zone_in_new_frame = this.cal_Hazium_zone_in_one_frame(latest_HVAC_merged_frame);
+			for (var i=0;i<Hazium_zone_in_new_frame.length;++i)
+			{
+				if (DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set.indexOf(Hazium_zone_in_new_frame[i])<0)
+				{
+					console.warn("new Hazium zone in streaming !!");
+					DATA_CENTER.push_new_hazium_zone(Hazium_zone_in_new_frame[i]);
+				}
+			}
+			console.log("reach 705",latest_HVAC_merged_frame_timestamp,cur_frame_timestamp)
+			DATA_CENTER.set_global_variable("latest_HVAC_merged_frame",latest_HVAC_merged_frame);
 		}
 		else
 		{
-			console.warn("invalid label",label)
+			console.warn("error:old frame comes later than new frame")
 		}
+
+
 	},
 
 
@@ -1124,42 +1169,10 @@ var DATA_CENTER = {
                                 that.add_traj_mobile_data(t_d.data['data']);
                         	}
                         	else if(t_d.data['type'] == 'sensor') {
-                                console.log(t_d.data)
-                                that.add_HVAC_streaming_data(t_d.data['data'],"sensor");
+                                that.add_HVAC_streaming_data(t_d.data,"sensor");
                         	}
                         	else if(t_d.data['type'] == 'bldg') {
-                        		console.log(t_d.data)
-                        		that.add_HVAC_streaming_data(t_d.data['data'],"bldg");
-                        		/*
-                        		 var tdata=[]
-                        		 for(var key in t_d.data){
-                        		 	if(key == 'bldg') continue
-                        		 	var keys = key.split(' ')
-                        		 	keys[0] = keys[0].replace(':','')
-                        		 	var nkey = keys.join(' ')
-                        		 	if(nkey == 'F_3_Z_9 VAV Damper Position')
-                        		 		nkey = 'F_3_Z_9 VAV REHEAT Damper Position'
-                        		 	tdata[nkey]=t_d.data[key]
-
-                        		 }
-                        		 if(DATA_CENTER.stream_data['bldg'].length==0){
-                        			 DATA_CENTER.stream_data['bldg'].push(tdata)
-                        		 }
-                        		 else {
-                        		 	var len=DATA_CENTER.stream_data['bldg'].length;
-                        		 	if(DATA_CENTER.stream_data['bldg'][len-1]['Date/Time']!=tdata['Date/Time']){
-                        		 		DATA_CENTER.stream_data.push(tdata)
-                        		 	}
-                        		 	else{
-                        		 		for(var key in tdata){
-                        		 			if(key != 'Date/Time'){
-                        		 				DATA_CENTER.stream_data['bldg'][len-1][key]=tdata[key]
-                        		 			}
-                        		 		}
-                        		 	}
-                        		 }
-                        		 */
-
+                        		that.add_HVAC_streaming_data(t_d.data,"bldg");
                         	}
                         	
                             //console.log(t_d.state, t_d.data);
