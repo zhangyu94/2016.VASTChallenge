@@ -68,14 +68,23 @@ var trajmonitor_view = {
         	this.render(this.trajmonitor_view_DIV_ID)
         
         }
-        /*
-        if (message == "set:highlight_HVACzone_set"){
+        if (message == "set:click_HVACzone_set"){
         	var n_person_array=[]
         	var sps_hvaczone_set= DATA_CENTER.linechart_variable.highlight_HVACzone_set
+        	//console.log(DATA_CENTER.linechart_variable.highlight_HVACzone_set)
+        	
         	if(sps_hvaczone_set.length==0){
         		//this.render(this.trajmonitor_view_DIV_ID)
         	}
+
         	else{
+        		//console.log(sps_hvaczone_set)
+        		this.person_array=[]
+        		var person = DATA_CENTER.derived_data['person']
+        		for(var p in person){
+        			this.person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+        		}
+        		//console.log(this.person_array)
         		var all_sps_proxZone=[]
         		for(var i in sps_hvaczone_set){
         			var energyZone=sps_hvaczone_set[i]
@@ -86,6 +95,7 @@ var trajmonitor_view = {
         				}
         			}
         		}
+
         		for(var p in this.person_array){
         			var tag=false
         			var tmp = {}
@@ -108,15 +118,14 @@ var trajmonitor_view = {
         					tag=true
         				}
         			}
-        			if(tag){
+        			if(tag==true){
         				n_person_array.push(tmp)
         			}
         		}
-
+        		this.person_array=n_person_array
+        		//console.log(n_person_array)
+        		this.render(this.trajmonitor_view_DIV_ID)
         	}
-        	this.person_array=n_person_array
-        	console.log(n_person_array)
-        	this.render(this.trajmonitor_view_DIV_ID)
         
         }
         */
@@ -161,6 +170,8 @@ var trajmonitor_view = {
 
 	    var rectHeight=(spaceHeight-pmargin.top-pmargin.bottom)/2
 	    var zoneColorScale = d3.scale.category10()
+	    var color=d3.scale.ordinal().range(d3.scale.category10().range())
+	    							.domain([1,2,3,4,5,6,7,8,9,10])
 
 	    $('#'+divID).append("<div id='axisDiv' style='border-bottom:1px solid #ccc;'></div>")
 	    var xAxis = d3.svg.axis()
@@ -251,8 +262,9 @@ var trajmonitor_view = {
 	    		.style('fill',function (d) {
 
 			      	// console.log(d);
-			      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0]).brighter(0)
-			      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]).brighter(0);
+			      	return color(+d.zone)
+			      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0])
+			      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]);
 	    		})
 
 	    		// mobile bar
@@ -278,8 +290,9 @@ var trajmonitor_view = {
 		    		.style('fill',function (d) {
 
 				      	// console.log(d);
-				      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0]).brighter(0)
-				      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]).brighter(0);
+				      	return color(+d.zone)
+				      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0])
+				      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]);
 		    		})
 		    		.attr('stroke','black')
 		    		.attr('stoke-width','1px')

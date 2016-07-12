@@ -145,6 +145,7 @@ var smallmaps_view = {
 			.attr("width",building_div_content_width)
 			.on("click",function(d,i){
 				DATA_CENTER.VIEW_COLLECTION.smallmaps_view._small_maps_buildingrect_click(d,this);
+
 			})
 			.on("mouseover",function(d,i){
 
@@ -429,6 +430,8 @@ var smallmaps_view = {
 						tip.hide(d,i)
 					})
 					.on("click",function(d,i){
+						 var highlight_place_set = [d.name];
+							 DATA_CENTER.set_linechart_variable("click_HVACzone_set",highlight_place_set);
 						DATA_CENTER.VIEW_COLLECTION.smallmaps_view._small_maps_circle_click(d,this);
 					})
 
