@@ -5,6 +5,7 @@ var smallmaps_view = {
 	HVAC_ZONE_DOT_RADIUS :6,
 	RADARCHART_GLYPH_RADIUS :25,
 
+	USE_OLD_STATISTIC:false,
 	
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"smallmaps-radarchart_glyph-div",
@@ -596,13 +597,17 @@ var smallmaps_view = {
 		var arc = d3.svg.arc()
 			.innerRadius(innerRadius)
 			.outerRadius(function (d) {
-				/*
-			  	var normalized_value = 0;
-			  	if (typeof(d.data.value)!= "undefined")
-			  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
-				*/
-			  	var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,d.data.name,d.data.value)
-			  	console.log(normalized_value)
+				
+				if (smallmaps_view.USE_OLD_STATISTIC)
+				{
+				  	var normalized_value = 0;
+				  	if (typeof(d.data.value)!= "undefined")
+				  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+				}
+				else
+				{
+			  		var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,d.data.name,d.data.value)
+			  	}
 
 			  	var rate = normalized_value / HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD;
 			  	if (rate > width / (2*radius))//避免扇形爆出svg范围
@@ -651,9 +656,16 @@ var smallmaps_view = {
 		update_div_g_updatepath
 			.transition()
 				.attr("fill", function(d) {
-		      		var normalized_value = 0.;
-			  		if (typeof(d.data.value)!= "undefined")
-			  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+			  		if (smallmaps_view.USE_OLD_STATISTIC)
+					{
+					  	var normalized_value = 0;
+					  	if (typeof(d.data.value)!= "undefined")
+					  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+					}
+					else
+					{
+				  		var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,d.data.name,d.data.value)
+				  	}
 		      		return  smallmaps_view._map_normalized_value_to_color(normalized_value)
 		      	})
 			   	.attr("d", arc)
@@ -664,9 +676,16 @@ var smallmaps_view = {
 		update_div_g_enterpath
 			.append("path")
 				.attr("fill", function(d) {
-		      		var normalized_value = 0.;
-			  		if (typeof(d.data.value)!= "undefined")
-			  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+			  		if (smallmaps_view.USE_OLD_STATISTIC)
+					{
+					  	var normalized_value = 0;
+					  	if (typeof(d.data.value)!= "undefined")
+					  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+					}
+					else
+					{
+				  		var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,d.data.name,d.data.value)
+				  	}
 		      		return  smallmaps_view._map_normalized_value_to_color(normalized_value)
 		      	})
 		      	.attr("class", "solidArc")
@@ -704,9 +723,16 @@ var smallmaps_view = {
 		      	.data(pie(data))
 		    .enter().append("path")
 		      	.attr("fill", function(d) {
-		      		var normalized_value = 0.;
-			  		if (typeof(d.data.value)!= "undefined")
-			  			normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+			  		if (smallmaps_view.USE_OLD_STATISTIC)
+					{
+					  	var normalized_value = 0;
+					  	if (typeof(d.data.value)!= "undefined")
+					  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+					}
+					else
+					{
+				  		var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,d.data.name,d.data.value)
+				  	}
 		      		return  smallmaps_view._map_normalized_value_to_color(normalized_value)
 		      	})
 		      	.attr("class", "solidArc")
@@ -736,9 +762,17 @@ var smallmaps_view = {
 						    var time_string = (time.getMonth()+1).toString() + "." + time.getDate().toString() + " " +
 						    				time.getHours().toString() + ":" + time.getMinutes().toString() + ":" + time.getSeconds().toString();
 
-							var signed_normalized_value = 0;
-						  	if (typeof(d.data.value)!= "undefined")
-						  		signed_normalized_value = HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value);
+						  	if (smallmaps_view.USE_OLD_STATISTIC)
+							{
+							  	var signed_normalized_value = 0;
+							  	if (typeof(d.data.value)!= "undefined")
+							  		signed_normalized_value = HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value);
+							}
+							else
+							{
+						  		var signed_normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,d.data.name,d.data.value)
+						  	}
+
 						    var content = 	"<span>" + time_string  + "</span>"+ "</br>" +
 						    				d.data.name + ": " + "<span style='color:red'>" + d.data.value  + "(" + signed_normalized_value.toFixed(1) + ")" + "</span>";
 						    return content;
@@ -751,13 +785,16 @@ var smallmaps_view = {
 	_bind_warning_tip:function(d,this_ele,raw_timestamp)
 	{
 		var that_d = d;
-		/*
-		var normalized_value = 0;
-		if (typeof(d.data.value)!= "undefined")
-	 		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
-	 	*/
-	 	var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,d.data.name,d.data.value)
-			
+	 	if (smallmaps_view.USE_OLD_STATISTIC)
+		{
+			var normalized_value = 0;
+			if (typeof(d.data.value)!= "undefined")
+				normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(that_d.data.name,that_d.data.value));
+		}
+		else
+		{
+			var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,that_d.data.name,that_d.data.value)
+		}
 	 	
 		if (normalized_value >= HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD)
 	 	{
@@ -782,10 +819,18 @@ var smallmaps_view = {
 					    var time_string = (time.getMonth()+1).toString() + "." + time.getDate().toString() + " " +
 					    				time.getHours().toString() + ":" + time.getMinutes().toString() + ":" + time.getSeconds().toString();
 
-						var signed_normalized_value = 0;
-					  	if (typeof(that_d.data.value)!= "undefined")
-					  		signed_normalized_value = HVAC_STATISTIC_UTIL.normalize(that_d.data.name,that_d.data.value);
-					    
+					    if (smallmaps_view.USE_OLD_STATISTIC)
+						{
+						  	var signed_normalized_value = 0;
+						  	if (typeof(d.data.value)!= "undefined")
+						  		signed_normalized_value = HVAC_STATISTIC_UTIL.normalize(that_d.data.name,that_d.data.value);
+						}
+						else
+						{
+					  		var signed_normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,that_d.data.name,that_d.data.value)
+					  	}
+
+
 					  	var compressed_name = linechart_render_view._compress_full_attr_name(that_d.data.name);
 					    var content = 	"<span style='color:red'>" + time_string  + "</span>"+ "</br>" +
 					    				"<span style='color:red'>" + compressed_name  + "</span>" + ": " + "<span>" + that_d.data.value  + "(" + signed_normalized_value.toFixed(1) + ")" + "</span>";
