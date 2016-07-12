@@ -29,6 +29,7 @@ function main(){
 
 			"set:highlight_attr_set",
 			"set:highlight_HVACzone_set",
+			"set:click_HVACzone_set",
 			"set:highlight_floor_set",
 			"set:highlight_building_set",
 			"set:highlight_linechart_set",
@@ -43,6 +44,7 @@ function main(){
 			"display:HVACgraph_attrbtn_view",
 			"display:smallmaps_view",
 			"display:linechart_linebtn_view",
+
 			"display:linechart_render_view",
 			"hide:HVACgraph_attrbtn_view",
 			"hide:smallmaps_view",
