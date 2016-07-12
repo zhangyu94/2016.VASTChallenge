@@ -6,9 +6,18 @@ var bigmap_view = {
 	obsUpdate:function(message, data)
 	{
 		if (message == "display:bigmap_view")
-        {
+        {	
+        	var selected_floor_number = 1;
+        	var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
+        	if(typeof(selected_floor_set)!=undefined){
+        		var lastIndex = selected_floor_set.length - 1;
+				if (typeof(selected_floor_set[lastIndex])!=undefined)
+				{
+					selected_floor_number = DATA_CENTER.GLOBAL_STATIC.floor_name_number_mapping[selected_floor_set[lastIndex]];
+				}
+        	}
             $("#"+this.bigmap_view_DIV_ID).css("display","block");
-            this.render(this.bigmap_view_DIV_ID,true);
+            this.render(this.bigmap_view_DIV_ID, selected_floor_number, true);
         }
         if (message == "hide:bigmap_view")
         {
@@ -32,9 +41,10 @@ var bigmap_view = {
 			{
 				console.warn("more than 1 selected floor");
 			}
-			if (typeof(selected_floor_set[0])!=undefined)
+			var lastIndex = selected_floor_set.length - 1;
+			if (typeof(selected_floor_set[lastIndex])!=undefined)
 			{
-				var selected_floor_number = DATA_CENTER.GLOBAL_STATIC.floor_name_number_mapping[selected_floor_set[0]];
+				var selected_floor_number = DATA_CENTER.GLOBAL_STATIC.floor_name_number_mapping[selected_floor_set[lastIndex]];
 			}
 			else
 			{
