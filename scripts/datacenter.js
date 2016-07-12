@@ -100,7 +100,7 @@ var DATA_CENTER = {
 	},
 
 	timeline_variable : {
-		stream_start: new Date('2016 06 08'),
+		stream_start: new Date('2016 06 14 00:00:00'),
 		stream_end: new Date('2016 06 13'),
 		stream_window_width: 2*3600*1000,
 		isstreaming: false,
@@ -601,7 +601,7 @@ var DATA_CENTER = {
 	},
 	add_traj_mobile_data:function(data, warning = false) {
 		var person = DATA_CENTER.derived_data['person'];
-		console.log(data);
+		//console.log(data);
 		for(var i=0;i<data.length;i++) {
 			var aRecord =data[i];
 			var x = aRecord.X;

@@ -490,8 +490,9 @@ var timeline_view = {
                 		DATA_CENTER.set_global_variable("current_display_time",aligned_time);
                 	},
 
-                    selection:function(e){
-
+                    selection:function(e){                    	
+                 			
+	                    	if (typeof(e.resetSelectionSelection)!="undefined")
 
 	                    	if (typeof(e.resetSelection)!="undefined")
 	                    	{
