@@ -345,8 +345,8 @@ var DATA_CENTER = {
 				type:["air"],
 			},
 			"Equipment Power":{
-				abbreviation:"total power",
-				lv2_abbreviation:"all pwr",
+				abbreviation:"equipment power",
+				lv2_abbreviation:"equipment pwr",
 				type:["electricity"],
 			},
 			"Lights Power":{
