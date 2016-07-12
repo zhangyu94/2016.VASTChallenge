@@ -408,6 +408,11 @@ var bigmap_view = {
 					original_class =  'warning-signal ' + original_class;
 				}
 			}
+			var proxId = d.personName;
+			var selectedCardSet = DATA_CENTER.global_variable.selected_card_set;
+			if(selectedCardSet.indexOf(proxId) != -1){
+				original_class = 'click-highlight ' + original_class;
+			}
 			return original_class;
 		})
 		.attr('id', function(d,i){
@@ -672,7 +677,9 @@ var bigmap_view = {
 
 		nodeSelectionNotChangeZoneCircle.attr('class', function(d,i){
 			var original_class = 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum; 
-			if(d3.select(this).classed('click-highlight')){
+			var proxId = d.personName;
+			var selectedCardSet = DATA_CENTER.global_variable.selected_card_set;
+			if(d3.select(this).classed('click-highlight') || selectedCardSet.indexOf(proxId) != -1){
 				original_class =  'click-highlight ' + original_class;
 			}
 			if(DATA_CENTER.global_variable.enable_alert){
