@@ -29,6 +29,7 @@ function main(){
 
 			"set:highlight_attr_set",
 			"set:highlight_HVACzone_set",
+			"set:click_HVACzone_set",
 			"set:highlight_floor_set",
 			"set:highlight_building_set",
 			"set:highlight_linechart_set",
@@ -43,6 +44,7 @@ function main(){
 			"display:HVACgraph_attrbtn_view",
 			"display:smallmaps_view",
 			"display:linechart_linebtn_view",
+
 			"display:linechart_render_view",
 			"hide:HVACgraph_attrbtn_view",
 			"hide:smallmaps_view",
@@ -167,15 +169,15 @@ function main(){
 		}
 		else if (view_collection_name == "linechartview")
 		{		
-			// var displayed_view = {
-			// 	"HVACgraph_attrbtn_view":undefined,
-			// 	"linechart_render_view":undefined,
+			var displayed_view = {
+			 	"HVACgraph_attrbtn_view":undefined,
+			 	"linechart_render_view":undefined,
 
-			// 	"eventlist_view":undefined,
-			// 	"smallmaps_view":undefined,
-			// 	"timeline_view":undefined,	
-			// };
-			// _hide_and_display_view(displayed_view);
+			 	"eventlist_view":undefined,
+			 	"smallmaps_view":undefined,
+			 	"timeline_view":undefined,	
+			};
+			_hide_and_display_view(displayed_view);
 		}
 		else if (view_collection_name == "relationshipgraphview")
 		{

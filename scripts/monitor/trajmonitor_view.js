@@ -4,6 +4,7 @@ var trajmonitor_view = {
     startTime : undefined,
     endTime : undefined,
     display_before : 10*60*1000,
+    person_array: [],
 
 	obsUpdate:function(message, data)
 	{
@@ -13,6 +14,10 @@ var trajmonitor_view = {
             var timeRange=DATA_CENTER.global_variable.selected_filter_timerange
             this.startTime=new Date(timeRange.min)
         	this.endTime=new Date(timeRange.max)
+        	var person = DATA_CENTER.derived_data['person']
+        	for(var p in person){
+        		this.person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+        	}
         	this.render(this.trajmonitor_view_DIV_ID)
         }
 
@@ -37,12 +42,91 @@ var trajmonitor_view = {
         }
         if (message == "set:display_before")
         {
-        	console.log(data)
+        	//console.log(data)
         	this.display_before=+data
-        	console.log(this.display_before)
+        	//console.log(this.display_before)
             this.startTime=new Date(this.endTime-this.display_before)
         	this.render(this.trajmonitor_view_DIV_ID)
             
+        }
+        if (message == "set:selected_card_set")
+        {
+        	var n_person_array=[]
+        	var sps_person_id=DATA_CENTER.global_variable.selected_card_set
+        	if(sps_person_id.length==0){
+        		//this.render(this.trajmonitor_view_DIV_ID)
+        	}
+        	else{
+        		for(var p in this.person_array){
+        			if(sps_person_id.indexOf(this.person_array[p].name)>=0){
+        				n_person_array.push(this.person_array[p])
+        			}
+        		}
+        		this.person_array=n_person_array
+        		
+        	}
+        	this.render(this.trajmonitor_view_DIV_ID)
+        
+        }
+        if (message == "set:click_HVACzone_set"){
+        	var n_person_array=[]
+        	var sps_hvaczone_set= DATA_CENTER.linechart_variable.highlight_HVACzone_set
+        	//console.log(DATA_CENTER.linechart_variable.highlight_HVACzone_set)
+        	
+        	if(sps_hvaczone_set.length==0){
+        		//this.render(this.trajmonitor_view_DIV_ID)
+        	}
+
+        	else{
+        		//console.log(sps_hvaczone_set)
+        		this.person_array=[]
+        		var person = DATA_CENTER.derived_data['person']
+        		for(var p in person){
+        			this.person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+        		}
+        		//console.log(this.person_array)
+        		var all_sps_proxZone=[]
+        		for(var i in sps_hvaczone_set){
+        			var energyZone=sps_hvaczone_set[i]
+        			var proxZones= DATA_CENTER.global_variable.energyZone_to_proxZone[energyZone]
+        			for(var j in proxZones){
+        				if(all_sps_proxZone.indexOf(proxZones[j])<0){
+        					all_sps_proxZone.push(proxZones[j])
+        				}
+        			}
+        		}
+
+        		for(var p in this.person_array){
+        			var tag=false
+        			var tmp = {}
+        			var fixRecords=this.person_array[p].fixRecords
+        			var mobileRecords=this.person_array[p].mobileRecords
+        			tmp['name']=this.person_array[p].name
+        			tmp['fixRecords']=[]
+        			tmp['mobileRecords']=[]
+        			for(var i in fixRecords){
+        				var loc='F_'+fixRecords[i].floor+'_'+'Z_'+fixRecords[i].zone
+        				if(all_sps_proxZone.indexOf(loc)>=0){
+        					tmp['fixRecords'].push(fixRecords[i])
+        					tag=true
+        				}
+        			}
+        			for(var i in mobileRecords){
+        				var loc='F_'+mobileRecords[i].floor+'_'+'Z_'+mobileRecords[i].zone
+        				if(all_sps_proxZone.indexOf(loc)>=0){
+        					tmp['mobileRecords'].push(mobileRecords[i])
+        					tag=true
+        				}
+        			}
+        			if(tag==true){
+        				n_person_array.push(tmp)
+        			}
+        		}
+        		this.person_array=n_person_array
+        		//console.log(n_person_array)
+        		this.render(this.trajmonitor_view_DIV_ID)
+        	}
+        
         }
 	},
 	render:function(divID)
@@ -52,18 +136,20 @@ var trajmonitor_view = {
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
+	    var person_array = this.person_array
+	    //console.log(person_array)
 	   // console.log(DATA_CENTER.derived_data['person'])
-	    var person=DATA_CENTER.derived_data['person']
-	    var person_array=[]
-	    var sps_person_id=DATA_CENTER.global_variable.selected_card_set
-	    for(var p in person){
-	    	if(sps_person_id.length==0){
-	    		person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
-	    	}
-	    	else if(sps_person_id.indexOf(p)>=0){
-	    		person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
-	    	}
-	    }
+	    // var person=DATA_CENTER.derived_data['person']
+	    // var person_array=[]
+	    // //var sps_person_id=DATA_CENTER.global_variable.selected_card_set
+	    // for(var p in person){
+	    // 	if(sps_person_id.length==0){
+	    // 		person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+	    // 	}
+	    // 	else if(sps_person_id.indexOf(p)>=0){
+	    // 		person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+	    // 	}
+	    // }
 	    //console.log(person_array)
 	    
 	    //console.log(person_array)
@@ -83,6 +169,8 @@ var trajmonitor_view = {
 
 	    var rectHeight=(spaceHeight-pmargin.top-pmargin.bottom)/2
 	    var zoneColorScale = d3.scale.category10()
+	    var color=d3.scale.ordinal().range(d3.scale.category10().range())
+	    							.domain([1,2,3,4,5,6,7,8,9,10])
 
 	    $('#'+divID).append("<div id='axisDiv' style='border-bottom:1px solid #ccc;'></div>")
 	    var xAxis = d3.svg.axis()
@@ -170,40 +258,44 @@ var trajmonitor_view = {
 	    				return xscale(d.endtime)-xscale(startTime)
 	    		})
 	    		.attr('height',rectHeight)
-	    		.attr('fill',function (d) {
+	    		.style('fill',function (d) {
 
 			      	// console.log(d);
-			      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0]).darker(0)
-			      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]).darker(0);
+			      	return color(+d.zone)
+			      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0])
+			      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]);
 	    		})
 
 	    		// mobile bar
 	    		// console.log(draw_person_array_mobile)
-	    		psvg.selectAll('.pMBar')
-	    		.data(draw_person_array_mobile)
-	    		.enter()
-	    		.append('rect')
-	    		.attr('class','pMBar')
-	    		.attr('y',function(d) {
-	    			return (3-(+d.floor))*rectHeight/2+rectHeight*0.2;
-	    		})
-	    		.attr('x',function(d) {
-	    		
-	    				return xscale(new Date(d.timestamp.getTime()-1000*30))
-	   
-	    		})
-	    		.attr('width',function(d){
-	    			return xscale(new Date(d.timestamp.getTime()+1000*60))-xscale(d.timestamp)
-	    		})
-	    		.attr('height',rectHeight*0.6)
-	    		.style('fill',function (d) {
+	    		if(endTime.getTime()-startTime.getTime()<3600*24*1000){
+		    		psvg.selectAll('.pMBar')
+		    		.data(draw_person_array_mobile)
+		    		.enter()
+		    		.append('rect')
+		    		.attr('class','pMBar')
+		    		.attr('y',function(d) {
+		    			return (3-(+d.floor))*rectHeight/2+rectHeight*0.2;
+		    		})
+		    		.attr('x',function(d) {
+		    		
+		    				return xscale(new Date(d.timestamp.getTime()-1000*30))
+		   
+		    		})
+		    		.attr('width',function(d){
+		    			return xscale(new Date(d.timestamp.getTime()+1000*60))-xscale(d.timestamp)
+		    		})
+		    		.attr('height',rectHeight*0.6)
+		    		.style('fill',function (d) {
 
-			      	// console.log(d);
-			      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0],1).darker(0.6)
-			      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1],1).darker(0.6);
-	    		})
-	    		.attr('stroke','black')
-	    		.attr('stoke-width','1px')
+				      	// console.log(d);
+				      	return color(+d.zone)
+				      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0])
+				      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]);
+		    		})
+		    		.attr('stroke','black')
+		    		.attr('stoke-width','1px')
+		    	}
 	    }
 	    $('.pBar').each(function() {
 		                $(this).tipsy({

@@ -42,6 +42,12 @@ var timeline_view = {
 
 		if (message == "set:current_display_time")
 		{
+
+
+
+
+
+
 	        var current_display_time = DATA_CENTER.global_variable.current_display_time;
 	        var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
 	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
@@ -271,7 +277,9 @@ var timeline_view = {
 	    var start_time = xyAxis_data[0][0];
         var end_time = xyAxis_data[xyAxis_data.length-1][0];
         //console.log(start_time)
-        //console.log(end_time)
+
+       // console.log(end_time)
+
         DATA_CENTER.set_global_variable("selected_filter_timerange",{min:start_time,max:end_time})
         //console.log(DATA_CENTER.global_variable.selected_filter_timerange)
         //console.log(xyAxis_data)
@@ -336,7 +344,7 @@ var timeline_view = {
 	        		timeline_view.DISPLAY_INTERVAL = DATA_CENTER.timeline_variable.display_interval;
 
 	        	if (! DATA_CENTER.timeline_variable.isstreaming){
-	        		console.log('tt');
+	        		//console.log('tt');
 	        		timeline_view.intervalid_handle = setInterval(	function() {
 	        		var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
 	        		if (typeof(DATA_CENTER.global_variable.current_display_time) == "undefined" )
@@ -353,7 +361,8 @@ var timeline_view = {
 	        			$("#stopbtn_div").click();
 
 					}, timeline_view.DISPLAY_INTERVAL);
-	        	}else{
+	        	}
+	        	else{
 
 	           		timeline_view.intervalid_handle = setInterval(	function() {
 	        		var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
@@ -363,7 +372,7 @@ var timeline_view = {
 	        		if (typeof(timeline_view.DISPLAY_RATE)=="undefined")
 	        			timeline_view.DISPLAY_RATE = DATA_CENTER.timeline_variable.display_rate;
 
-	        		var current_display_time = 5*60*1000 + DATA_CENTER.global_variable.current_display_time;
+	        		var current_display_time = 1000*3*60+ DATA_CENTER.global_variable.current_display_time;
                     //console.log(current_display_time)
                     timeline_view._timeline_redraw(current_display_time)
 	        		if (current_display_time <= chart.xAxis[0].max)
@@ -394,10 +403,11 @@ var timeline_view = {
 	      	label: 'stream',
 	      	text : false,
 	      	icons: {
-	        	primary: "ui-icon-grip-solid-horizontal"
+	        	primary: "ui-icon-grip-dotted-horizontal"
 	      	}
 	    })
 	    .click(function() {
+	    	var options
 	    	if (DATA_CENTER.timeline_variable.isplaying)//如果处在播放状态中，先转到暂停，之后再stop
 	    	{
 	    		options = {
@@ -407,13 +417,35 @@ var timeline_view = {
 	          		}
 	        	};
 	        	$( "#playbtn_div" ).button( "option", options );
+	        	window.clearInterval(timeline_view.intervalid_handle);
 	    	}
 	    	//var chart = $("#"+timeline_view.timeline_div_id).highcharts();    // Highcharts构造函数
 	    	//timeline_view.fake_stream_begin_time=new Date()
-	    	window.clearInterval(timeline_view.intervalid_handle);
-	    	DATA_CENTER.timeline_variable.isstreaming=true
-	    	DATA_CENTER.set_timeline_variable("stream_play",true);
-	    	DATA_CENTER.set_timeline_variable("isplaying",false);
+	    
+	    	if(DATA_CENTER.timeline_variable.isstreaming==false){
+	    		options = {
+	          		label: "play",
+	          		icons: {
+	            		primary: "ui-icon-grip-solid-horizontal"
+	          		}
+	        	};
+	        	$( "#stopbtn_div" ).button( "option", options );
+	    		DATA_CENTER.timeline_variable.isstreaming=true
+	    		DATA_CENTER.set_timeline_variable("stream_play",true);
+	    		DATA_CENTER.set_timeline_variable("isplaying",false);
+	    	}
+	    	else{
+	    		options = {
+	          		label: "play",
+	          		icons: {
+	            		primary: "ui-icon-grip-solid-horizontal"
+	          		}
+	        	};
+	        	$( "#stopbtn_div" ).button( "option", options );
+	    		DATA_CENTER.timeline_variable.isstreaming=false
+	    		timeline_view.render(timeline_view.timeline_view_DIV_ID)
+	    	}
+	    	$(this).button('option',options)
 	    })
 
 
@@ -490,11 +522,14 @@ var timeline_view = {
                 		DATA_CENTER.set_global_variable("current_display_time",aligned_time);
                 	},
 
-                    selection:function(e){                    	
-                 			
-	                    	if (typeof(e.resetSelectionSelection)!="undefined")
+
+                    selection:function(e){
+      	
+               
 
 	                    	if (typeof(e.resetSelection)!="undefined")
+
+
 	                    	{
 	                    		if (e.resetSelection == true)//如果是按了reset键
 	                    		{

@@ -69,7 +69,12 @@ var DATA_CENTER = {
 		selected_timepoint_set:[],
 		person_robot_detection_array:[],
 
+
+		proxZone_to_energyZone:{},
+		energyZone_to_proxZone:{},
+
 		latest_HVAC_merged_frame:undefined,
+
 
 		//linechart中被选中的一段时间通过设置这个全局变量传达到其他view
 		selected_filter_timerange:{
@@ -414,6 +419,7 @@ var DATA_CENTER = {
 			"F_3_Z_1","F_3_Z_2","F_3_Z_3","F_3_Z_4","F_3_Z_5","F_3_Z_6","F_3_Z_7","F_3_Z_8","F_3_Z_9","F_3_Z_10","F_3_Z_11A","F_3_Z_11B","F_3_Z_11C","F_3_Z_12",
 		],
 		zone_Color_Array:['#EEEEEE', '#F3E4EE', '#FFF4CF', '#F8F7EB', '#F6ECF6', '#EDF7FA', '#FFEEEE', '#D5F4EF'],
+		//zone_Color_Array:['#55EEEE', '#53E4EE', '#63F4CF', '#68F7EB', '#66ECF6', '#5DF7FA', '#66EEEE', '#45F4EF'],
 		certainty_color_array:[
 			{
 				name: 'accurate',
@@ -664,8 +670,10 @@ var DATA_CENTER = {
 		//console.log("new streaming data",processed_data);
 
 		var latest_HVAC_merged_frame = DATA_CENTER.global_variable.latest_HVAC_merged_frame;
+		
 		if (typeof(latest_HVAC_merged_frame)=="undefined")//第一次接受streaming时
 		{
+			//console.log("reach 669",latest_HVAC_merged_frame_timestamp,cur_frame_timestamp)
 			DATA_CENTER.global_variable.latest_HVAC_merged_frame = processed_data;
 			return ;
 		}
@@ -673,6 +681,7 @@ var DATA_CENTER = {
 		var latest_HVAC_merged_frame_timestamp = latest_HVAC_merged_frame["Date/Time"];
 		if (latest_HVAC_merged_frame_timestamp == cur_frame_timestamp)
 		{
+			//console.log("reach 677",latest_HVAC_merged_frame_timestamp,cur_frame_timestamp)
 			for (key in processed_data)
 			{
 				latest_HVAC_merged_frame[key] = processed_data[key];
@@ -702,15 +711,30 @@ var DATA_CENTER = {
 					DATA_CENTER.push_new_hazium_zone(Hazium_zone_in_new_frame[i]);
 				}
 			}
-			console.log("reach 705",latest_HVAC_merged_frame_timestamp,cur_frame_timestamp)
+			//console.log("reach 707",latest_HVAC_merged_frame_timestamp,cur_frame_timestamp)
 			DATA_CENTER.set_global_variable("latest_HVAC_merged_frame",latest_HVAC_merged_frame);
+
+			DATA_CENTER.global_variable.latest_HVAC_merged_frame = processed_data;
 		}
 		else
 		{
 			console.warn("error:old frame comes later than new frame")
 		}
-
-
+	
+	/*
+		var verifying_data_frame = DATA_CENTER.original_data["bldg-MC2.csv"][0];
+		for (key in verifying_data_frame)
+		{
+			if (!(key in latest_HVAC_merged_frame))
+			{
+				if (latest_HVAC_merged_frame_timestamp < cur_frame_timestamp)
+				{
+					console.warn("latest stream frame lost key",key);
+					latest_HVAC_merged_frame[key] = 0;
+				}
+			}
+		}
+*/
 	},
 
 
@@ -1128,7 +1152,9 @@ var DATA_CENTER = {
 																	DATA_CENTER.stream_data['HVAC']=[];
 																	DATA_CENTER.cal_derive_data();
 																	that.initStream();
+																	roomsExchange();
 																	callback_function();
+
 																})
 															})
 														})
