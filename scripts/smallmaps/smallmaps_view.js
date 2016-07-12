@@ -593,12 +593,13 @@ var smallmaps_view = {
 		var arc = d3.svg.arc()
 			.innerRadius(innerRadius)
 			.outerRadius(function (d) {
-
+				/*
 			  	var normalized_value = 0;
 			  	if (typeof(d.data.value)!= "undefined")
 			  		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
-
-			  	//var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,d.data.name,d.data.value)
+				*/
+			  	var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,d.data.name,d.data.value)
+			  	console.log(normalized_value)
 
 			  	var rate = normalized_value / HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD;
 			  	if (rate > width / (2*radius))//避免扇形爆出svg范围
@@ -747,10 +748,13 @@ var smallmaps_view = {
 	_bind_warning_tip:function(d,this_ele,raw_timestamp)
 	{
 		var that_d = d;
-
+		/*
 		var normalized_value = 0;
 		if (typeof(d.data.value)!= "undefined")
 	 		normalized_value = Math.abs(HVAC_STATISTIC_UTIL.normalize(d.data.name,d.data.value));
+	 	*/
+	 	var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,d.data.name,d.data.value)
+			
 	 	
 		if (normalized_value >= HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD)
 	 	{
@@ -771,7 +775,6 @@ var smallmaps_view = {
 					.style("background","white")
 					.style("border","solid 2px #111")
 					.html(function(){
-						console.log(that_d.data.name)
 						var time = new Date(raw_timestamp)
 					    var time_string = (time.getMonth()+1).toString() + "." + time.getDate().toString() + " " +
 					    				time.getHours().toString() + ":" + time.getMinutes().toString() + ":" + time.getSeconds().toString();

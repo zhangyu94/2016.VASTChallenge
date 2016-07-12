@@ -68,6 +68,7 @@ var trajmonitor_view = {
         	this.render(this.trajmonitor_view_DIV_ID)
         
         }
+        /*
         if (message == "set:highlight_HVACzone_set"){
         	var n_person_array=[]
         	var sps_hvaczone_set= DATA_CENTER.linechart_variable.highlight_HVACzone_set
@@ -118,6 +119,7 @@ var trajmonitor_view = {
         	this.render(this.trajmonitor_view_DIV_ID)
         
         }
+        */
 	},
 	render:function(divID)
 	{
