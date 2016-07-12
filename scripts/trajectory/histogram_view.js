@@ -4,7 +4,7 @@ var histogram_view = {
 
 	obsUpdate:function(message, data)
 	{
-		console.log(message);
+		//console.log(message);
 		if (message == "display:histogram_view")
         {
             $("#"+this.histogram_view_DIV_ID).css("display","block");

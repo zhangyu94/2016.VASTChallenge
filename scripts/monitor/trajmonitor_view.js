@@ -47,6 +47,7 @@ var trajmonitor_view = {
 	},
 	render:function(divID)
 	{
+		//DATA_CENTER.global_variable.selected_card_set[]
 		//console.log(roomsExchange(3,'proxZone_to_energyZone'))
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = $("#"+divID).width();
@@ -54,15 +55,22 @@ var trajmonitor_view = {
 	   // console.log(DATA_CENTER.derived_data['person'])
 	    var person=DATA_CENTER.derived_data['person']
 	    var person_array=[]
+	    var sps_person_id=DATA_CENTER.global_variable.selected_card_set
 	    for(var p in person){
-	    	person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+	    	if(sps_person_id.length==0){
+	    		person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+	    	}
+	    	else if(sps_person_id.indexOf(p)>=0){
+	    		person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+	    	}
 	    }
-	   // console.log(person_array)
+	    //console.log(person_array)
 	    
 	    //console.log(person_array)
 		
 		//console.log(this.startTime)
 		//console.log(this.endTime)
+
 		var startTime=this.startTime
 		var endTime=this.endTime
 	    $('#'+divID).css('overflow','auto')
@@ -88,6 +96,7 @@ var trajmonitor_view = {
 		})
 
 		//console.log(ticksLoc)
+
 	    var axisSvg=d3.select('#'+'axisDiv').append('svg')
 	    			  .attr('width',width)
 	    			  .attr('height',spaceHeight)
@@ -117,18 +126,26 @@ var trajmonitor_view = {
 	    			.attr('stroke-width',1)
 	    			.attr('stroke-dasharray','1,2')
 	    	}
+
 	    	var draw_person_array=person_array[p]['fixRecords'].filter(function(d) {
 	    		if(d.timestamp<endTime&&d.endtime>startTime){
 	    			
 	    			return true
 	    		}
 	    	})
+	    	var draw_person_array_mobile=person_array[p]['mobileRecords'].filter(function(d) {
+	    		if(d.timestamp<endTime&&d.timestamp>startTime){
+	    			
+	    			return true
+	    		}
+	    	})
+
 	    	psvg.append('text')
 	    		.text(+p+1+' '+person_array[p].name)
 	    		.attr('y',spaceHeight-pmargin.bottom-pmargin.top-2)
 	    		.attr('x',-pmargin.left+6)
-
-	    	psvg.selectAll('rect')
+	    	//console.log(draw_person_array)
+	    	psvg.selectAll('.pBar')
 	    		.data(draw_person_array)
 	    		.enter()
 	    		.append('rect')
@@ -155,16 +172,42 @@ var trajmonitor_view = {
 	    		.attr('height',rectHeight)
 	    		.attr('fill',function (d) {
 
-	    			var fz = "f" + d.floor + "z" + d.zone;
 			      	// console.log(d);
-			      	return zoneColorScale(fz);
+			      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0]).darker(0)
+			      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]).darker(0);
 	    		})
 
+	    		// mobile bar
+	    		// console.log(draw_person_array_mobile)
+	    		psvg.selectAll('.pMBar')
+	    		.data(draw_person_array_mobile)
+	    		.enter()
+	    		.append('rect')
+	    		.attr('class','pMBar')
+	    		.attr('y',function(d) {
+	    			return (3-(+d.floor))*rectHeight/2+rectHeight*0.2;
+	    		})
+	    		.attr('x',function(d) {
+	    		
+	    				return xscale(new Date(d.timestamp.getTime()-1000*30))
+	   
+	    		})
+	    		.attr('width',function(d){
+	    			return xscale(new Date(d.timestamp.getTime()+1000*60))-xscale(d.timestamp)
+	    		})
+	    		.attr('height',rectHeight*0.6)
+	    		.style('fill',function (d) {
 
+			      	// console.log(d);
+			      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0],1).darker(0.6)
+			      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1],1).darker(0.6);
+	    		})
+	    		.attr('stroke','black')
+	    		.attr('stoke-width','1px')
 	    }
 	    $('.pBar').each(function() {
 		                $(this).tipsy({
-		                    gravity: "s",
+		                    gravity: "e",
 		                    html:true,
 		                    title:function(){
 		                    	var d = this.__data__;
@@ -179,6 +222,7 @@ var trajmonitor_view = {
 	        //         .attr("class","mainsvg")   
 	        //         .attr("width",width)
 	        //         .attr("height",height)
-	   
+
+	  
 	}
 }

@@ -90,7 +90,7 @@ var DATA_CENTER = {
 	},
 
 	timeline_variable : {
-		stream_start: new Date('2016 06 08'),
+		stream_start: new Date('2016 06 14 00:00:00'),
 		stream_end: new Date('2016 06 13'),
 		stream_window_width: 2*3600*1000,
 		isstreaming: false,
@@ -584,7 +584,7 @@ var DATA_CENTER = {
 	},
 	add_traj_mobile_data:function(data, warning = false) {
 		var person = DATA_CENTER.derived_data['person'];
-		console.log(data);
+		//console.log(data);
 		for(var i=0;i<data.length;i++) {
 			var aRecord =data[i];
 			var x = aRecord.X;
@@ -904,9 +904,7 @@ var DATA_CENTER = {
 												}
 												//console.log(robotDetectionData);
 												d3.csv(derived_path + d_file_name[3], function(data10){
-<<<<<<< HEAD
 
-=======
 													DATA_CENTER.GLOBAL_STATIC.proxId2work = new Object();
 													for(var i = 0;i < data10.length;i++){
 														var proxId = data10[i]['prox-id'];
@@ -920,7 +918,6 @@ var DATA_CENTER = {
 														var color = work_color_array[i].color;
 														DATA_CENTER.GLOBAL_STATIC.work2color[workName] = color;
 													}
->>>>>>> 3e596a85451fdcd3ae3322858f3d8bb4d51a1d5e
 													d3.json(path+file_name[7],function(data11){
 														d3.json(path+file_name[8],function(data12){
 															d3.json(path+file_name[9],function(data13){
@@ -943,7 +940,7 @@ var DATA_CENTER = {
 																	DATA_CENTER.stream_data['bldg']=[];
 																	DATA_CENTER.stream_data['HVAC']=[];
 																	DATA_CENTER.cal_derive_data();
-																	//that.initStream();
+																	that.initStream();
 																	callback_function();
 																})
 															})
