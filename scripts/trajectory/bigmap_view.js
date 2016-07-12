@@ -20,6 +20,11 @@ var bigmap_view = {
 			this.updateView(divID, global_display_time);
 			//this.updateRobotView(divID, global_display_time);
 		}
+		if(message == 'set:selected_card_set' || message == 'set:selected_card'){
+			var selectedCard = DATA_CENTER.global_variable.selected_card;
+			d3.selectAll('.person-label').classed('single-click-highlight', false);
+			d3.select('#circle-' + selectedCard).classed('single-click-highlight', true);
+		}
 		if (message == "set:selected_floor_set")
 		{
 			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
@@ -36,7 +41,7 @@ var bigmap_view = {
 				var selected_floor_number = 1;
 			}
 			this.DISPLAYED_FLOOR_NUMBER = selected_floor_number;
-			this.render(divID, selected_floor_number,true);	
+			this.render(divID, selected_floor_number, true);	
 			/*
 			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
 			var selected_floor = DATA_CENTER.global_variable.selected_floor;
@@ -84,7 +89,7 @@ var bigmap_view = {
 
 	    roomG.append('rect')
 	    .attr('class',function(d,i){
-	    	return 'room-rect ' + 'zone-'+d.proxZone; 
+	    	return 'room-rect ' + 'F_' + d.floor + '_Z_'+d.proxZone; 
 	    })
 	    .attr('x', function(d,i){
 	    	return xScale(d.x);
@@ -103,17 +108,23 @@ var bigmap_view = {
 	      return colorArray[zoneNum - 1];
 	    })
 	    .on('mouseover',function(d,i){
-	    	var zoneClass = 'zone-' + d.proxZone;
+	    	var floorNum = d.floor;
+	 		var zoneNum = d.proxZone;
+	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	d3.selectAll('.' + zoneClass)
 	    	.classed('mouseover-highlight', true);
 	    })
 	    .on('mouseout', function(d,i){
-	    	var zoneClass = 'zone-' + d.proxZone;
+	    	var floorNum = d.floor;
+	 		var zoneNum = d.proxZone;
+	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	d3.selectAll('.' + zoneClass)
 	    	.classed('mouseover-highlight', false);
 	    })
 	    .on('click', function(d,i){
-	    	var zoneClass = 'zone-' + d.proxZone;
+	    	var floorNum = d.floor;
+	 		var zoneNum = d.proxZone;
+	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	var zoneNodeClass = 'zone-node-' + d.proxZone;
 	    	if(!d3.select(this).classed('click-highlight')){
 	    		d3.selectAll('.' + zoneClass)
@@ -150,7 +161,7 @@ var bigmap_view = {
 
 		singleroomG.append('rect')
 		.attr('class', function(d,i){
-			return 'single-room ' + 'single-room-zone-'+d.proxZone + ' zone-' + d.proxZone;
+			return 'single-room ' + 'single-room-zone-'+d.proxZone + ' F_' +d.floor +'_Z_'+ d.proxZone;
 		})
 		.attr('id', function(d,i){
 			return 'room-' + d.doornum;
@@ -173,17 +184,23 @@ var bigmap_view = {
 		})
 		.attr('stroke', "black")
 	 	.on('mouseover',function(d,i){
-	    	var zoneClass = 'zone-' + d.proxZone;
+	 		var floorNum = d.floor;
+	 		var zoneNum = d.proxZone;
+	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	d3.selectAll('.' + zoneClass)
 	    	.classed('mouseover-highlight', true);
 	    })
 	    .on('mouseout', function(d,i){
-	    	var zoneClass = 'zone-' + d.proxZone;
+	    	var floorNum = d.floor;
+	    	var zoneNum = d.proxZone;
+	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	d3.selectAll('.' + zoneClass)
 	    	.classed('mouseover-highlight', false);
 	    })
 	    .on('click', function(d,i){
-	    	var zoneClass = 'zone-' + d.proxZone;
+	    	var floorNum = d.floor;
+	    	var zoneNum = d.proxZone;
+	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	var zoneNodeClass = 'zone-node-' + d.proxZone;
 	    	if(d3.select(this).classed('click-highlight')){
 		    	d3.selectAll('.' + zoneClass)
@@ -412,6 +429,9 @@ var bigmap_view = {
 			var selectedCardSet = DATA_CENTER.global_variable.selected_card_set;
 			if(selectedCardSet.indexOf(proxId) != -1){
 				original_class = 'click-highlight ' + original_class;
+			}
+			if(proxId == d.personName){
+				original_class = 'single-click-highlight ' + original_class;
 			}
 			return original_class;
 		})
@@ -678,9 +698,13 @@ var bigmap_view = {
 		nodeSelectionNotChangeZoneCircle.attr('class', function(d,i){
 			var original_class = 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum; 
 			var proxId = d.personName;
+			var selectedCard = DATA_CENTER.global_variable.selected_card;
 			var selectedCardSet = DATA_CENTER.global_variable.selected_card_set;
 			if(d3.select(this).classed('click-highlight') || selectedCardSet.indexOf(proxId) != -1){
 				original_class =  'click-highlight ' + original_class;
+			}
+			if(proxId == selectedCard){
+				original_class =  'single-click-highlight ' + original_class;
 			}
 			if(DATA_CENTER.global_variable.enable_alert){
 				if(d.abnormal){
