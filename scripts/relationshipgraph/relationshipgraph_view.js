@@ -9,11 +9,10 @@ var relationshipgraph_view = {
 			var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"].concat();
 
             var selected_linechart_set = Object.keys(ori_data_array[0]);
-            selected_linechart_set.shift();
-            selected_linechart_set = selected_linechart_set.slice(-100);
-            //console.log(selected_linechart_set)
-            var selected_filter_timerange = undefined;
-            //console.log(selected_filter_timerange)
+            var index = selected_linechart_set.indexOf("Date/Time");
+            selected_linechart_set.splice(index,1);
+            //selected_linechart_set = selected_linechart_set.slice(-100);
+            var selected_filter_timerange = DATA_CENTER.global_variable.selected_filter_timerange;
             this.render(this.relationshipgraph_view_DIV_ID,selected_linechart_set, selected_filter_timerange);        
 
         }
@@ -23,13 +22,17 @@ var relationshipgraph_view = {
             $("#"+this.relationshipgraph_view_DIV_ID).css("display","none");
         }
 
-        // if ( message == "set:selected_linechart_set" || message == "set:selected_filter_timerange")
+        // if ( message == "set:selected_filter_timerange")
         // {
-        //     var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
-        //     var selected_filter_timerange = DATA_CENTER.global_variable.selected_filter_timerange;
-        //     //console.log(selected_filter_timerange)
-        //     this.render(this.relationshipgraph_view_DIV_ID,selected_linechart_set, selected_filter_timerange);
-        // }
+        	// var ori_data = DATA_CENTER.original_data["bldg-MC2.csv"].concat();
+
+         //    var selected_linechart_set = Object.keys(ori_data[0]);
+         //    selected_linechart_set.shift();
+            //var selected_linechart_set = DATA_CENTER.global_variable.selected_linechart_set;
+            //var selected_filter_timerange = DATA_CENTER.global_variable.selected_filter_timerange;
+            //console.log(selected_filter_timerange)
+            //this.render(this.relationshipgraph_view_DIV_ID,selected_linechart_set, selected_filter_timerange);
+        //}
 	},
 
 	render:function(divID, selectedAttr, timerange)
@@ -37,12 +40,13 @@ var relationshipgraph_view = {
 		d3.select("#"+divID).selectAll("*").remove();
 
 		var ori_data_array = DATA_CENTER.original_data["bldg-MC2.csv"].concat();
+
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
 	    var radius = 6;
 
 	    var selectedData = [];
-	    var parseDate = d3.time.format("%Y/%m/%d %H:%M").parse;
+	    var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S").parse;
 
 	    var tip = d3.tip()
 		  .attr('class', 'd3-tip-relation')
@@ -53,19 +57,20 @@ var relationshipgraph_view = {
 	    var nodes = [],links = [];
 
 	    var scale_negative = d3.scale.linear()
-	      .domain([-1,-0.7])
-	      .range([20,150]);
+	      .domain([-1,-0.8])
+	      .range([10,100]);
 
 	    var scale_positive = d3.scale.linear()
-	      .domain([0.7,1])
-	      .range([150,20]);
+	      .domain([0.8,1])
+	      .range([100,10]);
 
 	    if(timerange == undefined)
 	    	selectedData = ori_data_array;
 	    else
 	    {
 		    ori_data_array.forEach(function(d,i){ 
-		       if(parseDate(d['Date/Time']).getTime() >= timerange.min && parseDate(d['Date/Time']).getTime() <= timerange.max)
+		       //console.log(d['Date/Time']);
+		      if(parseDate(d['Date/Time']).getTime() >= timerange.min && parseDate(d['Date/Time']).getTime() <= timerange.max)
 		          selectedData.push(d);     
 		    });	    	
 	    }
@@ -74,7 +79,7 @@ var relationshipgraph_view = {
 	     var force = d3.layout.force()
 	         .nodes(nodes)
 	         .links(links)
-	         .charge(-300)
+	         .charge(-70)
 	         .linkDistance(function(d){
 	         	if(d.weight<0)
 	         		return scale_negative(d.weight);
@@ -110,14 +115,14 @@ var relationshipgraph_view = {
 	        })
 	
 	        var correlationMatrix = MDS.correlationMatrix(total_array);
-	        console.log(correlationMatrix);
+	        //console.log(correlationMatrix);
 	        var arr_len = correlationMatrix.length;
 
 	        //var init_links = [];
 	        for(var i=0;i<arr_len-1;i++)
 	        	for(var j=i+1;j<arr_len;j++)
 	        	{
-	        		if(correlationMatrix[i][j] >= 0.7 || correlationMatrix[i][j] <= -0.7)
+	        		if(correlationMatrix[i][j] >= 0.8 || correlationMatrix[i][j] <= -0.8)
 	        			links.push({source: nodes[i], target: nodes[j], weight: correlationMatrix[i][j]});
 	        	}
 
@@ -215,7 +220,7 @@ var relationshipgraph_view = {
 	           .on('mouseout', showAllnodes); 
 
 	        node_g.append("circle")
-	           .attr("r",5)
+	           .attr("r",3)
 	           .attr("fill",function(d){
 	           		if(d.id[1] == '_')
 	           		{
@@ -232,14 +237,16 @@ var relationshipgraph_view = {
 	        node_g.append("text")
 	           .attr("transform", "translate(8,3)")
 	           .style('font-size',9)
-	           .attr('fill',"grey")
+	           .attr('fill',"silver")
 	           .attr('stroke-width',0)
-	           .text(function(d){return DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name(d.id)});
+	           .text(function(d){
+	           		return DATA_CENTER.VIEW_COLLECTION.linechart_render_view._compress_full_attr_name(d.id);
+	           });
 
 	        node.exit().remove();
 
 	        force.start();
-	        for(var i=80*80;i>0;--i)
+	        for(var i=100*100;i>0;--i)
 	        	force.tick();
 	        force.stop();
 
