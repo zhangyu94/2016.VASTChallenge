@@ -128,7 +128,7 @@ var trajmonitor_view = {
         	}
         
         }
-        */
+        
 	},
 	render:function(divID)
 	{
