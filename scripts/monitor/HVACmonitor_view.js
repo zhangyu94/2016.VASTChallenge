@@ -6,10 +6,10 @@ var HVACmonitor_view = {
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"HVACmonitor-radarchart_glyph-div",
 
-	ABNORMAL_VALUE_THRESHOLD:4,//归一化以后的异常阈值
+	ABNORMAL_VALUE_THRESHOLD:3,//归一化以后的异常阈值
 
 	ATTRIBUTE_DOT_RADIUS :6,
-	RADARCHART_GLYPH_RADIUS :25,
+	RADARCHART_GLYPH_RADIUS :15,
 
 	COLUMN_CONTAIN_NUMBER : 5,
 	ROW_CONTAIN_NUMBER : 8,
@@ -33,6 +33,7 @@ var HVACmonitor_view = {
 
         if (message == "hide:HVACmonitor_view")
         {
+        	d3.selectAll("."+smallmaps_view.WARNING_TIP_CLASS).remove();
             $("#"+this.HVACmonitor_view_DIV_ID).css("display","none");
             DATA_CENTER.VIEW_COLLECTION.smallmaps_view._hide_radarchart(this.DIV_CLASS_OF_RADARCHART_GLYPH)
         }
@@ -51,6 +52,50 @@ var HVACmonitor_view = {
         		})
 			
         }
+
+        if ( message == "set:highlight_attr_set" )
+        {
+        	var highlight_attr_set = DATA_CENTER.linechart_variable.highlight_attr_set;
+        	if (highlight_attr_set.length >=1 )
+        	{
+	        	d3.selectAll(".HVACmonitor-span")
+	        		.classed("mouseover_hided-HVACmonitor-span",function(d,i){
+	        			if (highlight_attr_set.indexOf(d) >= 0)
+	        			{
+	        				return false;
+	        			}
+	        			return true;
+	        		})
+        	}
+        	else
+        	{
+        		d3.selectAll(".HVACmonitor-span")
+	        		.classed("mouseover_hided-HVACmonitor-span",false)
+        	}
+
+
+        	var highlight_attr_set = DATA_CENTER.linechart_variable.highlight_attr_set;
+        	if (highlight_attr_set.length >=1 )
+        	{
+	        	d3.selectAll(".HVACmonitor-radarchart_glyph-div")
+	        		.classed("mouseover_hided-HVACmonitor-radarchart_glyph-div",function(d,i){
+	        			for (var j=0;j<highlight_attr_set.length;++j)
+	        				if (linechart_render_view._compress_string(highlight_attr_set[j])==d)
+	        					return false;
+	        			return true;
+	        		})
+        	}
+        	else
+        	{
+        		d3.selectAll(".HVACmonitor-radarchart_glyph-div")
+	        		.classed("mouseover_hided-HVACmonitor-radarchart_glyph-div",false)
+        	}
+        }
+
+        if ( message == "set:highlight_HVACzone_set")
+        {
+
+        }
 	},
 
 	render:function(divID)
@@ -65,12 +110,26 @@ var HVACmonitor_view = {
 	    var building_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.building_HVACattr_set;
 	    var floor_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.floor_HVACattr_set;
 	    var HVACzone_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_HVACattr_set;
-	    var all_attr_set = (building_HVACattr_set.concat(floor_HVACattr_set)).concat(HVACzone_HVACattr_set);
 
+
+	    var sorted_building_HVACattr_set = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.
+					_sort_generalattr_by_priority(building_HVACattr_set);
+		var sorted_floor_HVACattr_set = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.
+					_sort_generalattr_by_priority(floor_HVACattr_set);
+		var sorted_HVACzone_HVACattr_set = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.
+					_sort_generalattr_by_priority(HVACzone_HVACattr_set);
+		var all_attr_set = (sorted_building_HVACattr_set.concat(sorted_floor_HVACattr_set)).concat(sorted_HVACzone_HVACattr_set);
+		var update = d3.select("#"+divID)
+			.selectAll("."+HVACmonitor_view.span_DIV_ID)
+			.data(all_attr_set,function(d){return d;})
+
+	    /*
+	    var all_attr_set = (building_HVACattr_set.concat(floor_HVACattr_set)).concat(HVACzone_HVACattr_set);
 	    var update = d3.select("#"+divID)
 			.selectAll("."+HVACmonitor_view.span_DIV_ID)
 			.data(DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.
 					_sort_generalattr_by_priority(all_attr_set),function(d){return d;})
+		*/
 
 		var enter = update.enter();
 		var enter_span = enter.insert("span")
@@ -109,57 +168,92 @@ var HVACmonitor_view = {
 				//HVACzone_oridinary_attr，HVACzone_hazium，floor_attr，building_attr					
 				if (attr_type == "building_attr")
 				{
-					if ( d3.select(this).classed("click_selected-HVACmonitor-span") )
-					{
-						d3.select(this).classed("click_selected-HVACmonitor-span",false);
-						DATA_CENTER.set_global_variable("selected_building_set",[]);
-					}
-					else
-					{
-						d3.select(this).classed("click_selected-HVACmonitor-span",true);
-						DATA_CENTER.set_global_variable("selected_building_set",DATA_CENTER.GLOBAL_STATIC.building_set);
-					}
+					d3.selectAll(".building-smallmaps-rect")
+						.each(function(d,i){
+							DATA_CENTER.VIEW_COLLECTION.smallmaps_view._small_maps_buildingrect_click(d,this);
+						})
 				}
 				else if (attr_type == "floor_attr")
 				{
-					if ( d3.select(this).classed("click_selected-HVACmonitor-span") )
-					{
-						d3.select(this).classed("click_selected-HVACmonitor-span",false);
-						DATA_CENTER.set_global_variable("selected_floor_set",[]);
-					}
-					else
-					{
-						d3.select(this).classed("click_selected-HVACmonitor-span",true);
-						DATA_CENTER.set_global_variable("selected_floor_set",DATA_CENTER.GLOBAL_STATIC.floor_set);
-					}
+					d3.selectAll(".floor-smallmaps-rect")
+						.each(function(d,i){
+							DATA_CENTER.VIEW_COLLECTION.smallmaps_view._small_maps_floorrect_click(d,this);
+						})
+
 				}
 				else if (attr_type == "HVACzone_oridinary_attr")
 				{
-					if ( d3.select(this).classed("click_selected-HVACmonitor-span") )
-					{
-						d3.select(this).classed("click_selected-HVACmonitor-span",false);
-						DATA_CENTER.set_global_variable("selected_HVAC_set",[]);
-					}
-					else
-					{
-						d3.select(this).classed("click_selected-HVACmonitor-span",true);
-						DATA_CENTER.set_global_variable("selected_HVAC_set",DATA_CENTER.GLOBAL_STATIC.HVACzone_set);
-					}
+					d3.selectAll(".ordinary-smallmaps-HVACzone-circle")
+						.each(function(d,i){
+							DATA_CENTER.VIEW_COLLECTION.smallmaps_view._small_maps_circle_click(d,this);
+						})
+					d3.selectAll(".hazium-smallmaps-HVACzone-circle")
+						.each(function(d,i){
+							DATA_CENTER.VIEW_COLLECTION.smallmaps_view._small_maps_circle_click(d,this);
+						})
 				}
 				else if (attr_type == "HVACzone_hazium")
 				{
-					if ( d3.select(this).classed("click_selected-HVACmonitor-span") )
-					{
-						d3.select(this).classed("click_selected-HVACmonitor-span",false);
-						DATA_CENTER.set_global_variable("selected_HVAC_set",[]);
-					}
-					else
-					{
-						d3.select(this).classed("click_selected-HVACmonitor-span",true);
-						DATA_CENTER.set_global_variable("selected_HVAC_set",DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set);
-					}
+					d3.selectAll(".hazium-smallmaps-HVACzone-circle")
+						.each(function(d,i){
+							DATA_CENTER.VIEW_COLLECTION.smallmaps_view._small_maps_circle_click(d,this);
+						})
 				}
 				
+			})
+			.on("mouseover",function(d,i){
+				_highlight_communication(d);
+				function _highlight_communication(d)
+				{
+					var attr_type = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view
+											._cal_attr_type(d);
+					console.log(d,attr_type)
+					if (attr_type == "building_attr")
+					{
+						var building_set = DATA_CENTER.GLOBAL_STATIC.building_set;
+						var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset([d],building_set,[],[]);
+					    DATA_CENTER.set_linechart_variable("highlight_building_set",building_set);
+						DATA_CENTER.set_linechart_variable("highlight_attr_set",[d]);
+						DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
+					}
+					else if (attr_type == "floor_attr")
+					{
+						var floor_set = DATA_CENTER.GLOBAL_STATIC.floor_set;
+						var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset([d],[],floor_set,[]);
+					    DATA_CENTER.set_linechart_variable("highlight_floor_set",floor_set);
+						DATA_CENTER.set_linechart_variable("highlight_attr_set",[d]);
+						DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
+					}
+					else if (attr_type == "HVACzone_oridinary_attr")
+					{
+						var HVACzone_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_set;
+						var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset([d],[],[],HVACzone_set);
+					    DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",HVACzone_set);
+						DATA_CENTER.set_linechart_variable("highlight_attr_set",[d]);
+						DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
+					}
+					else if (attr_type == "HVACzone_hazium")
+					{
+						var HVACzone_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set;
+						var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset([d],[],[],HVACzone_set);
+					    DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",HVACzone_set);
+						DATA_CENTER.set_linechart_variable("highlight_attr_set",[d]);
+						DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
+					}						
+				}
+			})
+			.on("mouseout",function(d,i){
+
+				_highlight_communication();
+				function _highlight_communication()
+				{
+					DATA_CENTER.set_linechart_variable("highlight_building_set",[]);
+				    DATA_CENTER.set_linechart_variable("highlight_floor_set",[]);
+				    DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",[]);
+					DATA_CENTER.set_linechart_variable("highlight_attr_set",[]);
+					DATA_CENTER.set_linechart_variable("highlight_linechart_set",[]);
+				}
+
 			})
 
 		HVACgraph_attrbtn_view._bind_attrbtn_tip("HVACmonitor-attr-circle")
@@ -242,6 +336,107 @@ var HVACmonitor_view = {
 	},
 
 	//('2016/5/31 16:40','HVAC Electric Demand Power',3)
+	abnormal_degree:function(time,name,value){
+		var start_time_index = timeline_view
+			._binary_search(DATA_CENTER.original_data["bldg-MC2.csv"],"Date/Time",time-5*60*1000);
+		var start_time_value = DATA_CENTER.original_data["bldg-MC2.csv"][start_time_index][name];
+		var end_time_index = timeline_view
+			._binary_search(DATA_CENTER.original_data["bldg-MC2.csv"],"Date/Time",time+5*60*1000);
+		var end_time_value = DATA_CENTER.original_data["bldg-MC2.csv"][end_time_index][name];
+
+
+	    //console.log(time)
+	   // time='2016/5/31 16:40'
+	    //name='F_2_Z_2 Hazium Concentration'
+	    var data = DATA_CENTER.derived_data["patternChange.json"];
+	    //var newTime=Date.parse(new Date())
+	    var time=new Date(time)
+	    var temp=[]
+	    temp.push(time.getFullYear().toString())
+	    temp.push((time.getMonth()+1).toString())
+	    temp.push(time.getDate().toString())
+	    temp.push(time.getHours().toString())
+	    temp.push((Math.floor(time.getMinutes()/5)*5).toString())
+
+
+
+	    hazium=name.substring(8,14)
+	    for(var i=1;i<temp.length;i++){
+	        if(temp[i].length==1){
+	            temp[i]="0"+temp[i]
+	        }
+	    }
+
+	    time=temp[0]+"/"+temp[1]+"/"+temp[2]+" "+temp[3]+":"+temp[4]
+	    date=time.substring(0,10)
+
+	    //console.log(date)
+	    dataList=['2016/05/31','2016/06/01','2016/06/02','2016/06/03','2016/06/06','2016/06/07','2016/06/08','2016/06/09','2016/06/10']
+
+	    if(data[name]){
+	        for(var k=0;k<dataList.length;k++){
+	            if(dataList[k]==date){
+	                var hour=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+	                var minute=["00","05","10","15","20","25","30","35","40","45","50","55"]
+	                
+	                var timeList=[]
+	                for(var i=0;i<hour.length;i++){
+	                    for(var j=0;j<minute.length;j++){
+	                        timeList.push(hour[i]+":"+minute[j]+":00")
+	                    }
+	                }
+	                var nowTime=time.substring(11)+":00"
+	                //console.log(nowTime)
+	                //console.log(data[name][nowTime].value)
+	                var index//存放当前时间节点的索引
+	                for(index=0;index<timeList.length;index++){
+	                    if(timeList[index]==nowTime){
+	                        break
+	                    }
+	                }
+
+	                var sum=0
+	                if(index==0){
+	                    sum=(data[name][nowTime].value+data[name][timeList[timeList.length-1]].value+data[name][timeList[index+1]].value)/3
+	                }
+	                else if(index=timeList.length-1){
+	                    sum=(data[name][nowTime].value+data[name][timeList[0]].value+data[name][timeList[index-1]].value)/3
+	                }
+	                else{
+	                    sum=(data[name][nowTime].value+data[name][timeList[index+1]].value+data[name][timeList[index-1]].value)/3
+	                }
+	                var temp=value-sum
+	                /*if(Math.abs(temp)<data[name][nowTime].variance*5){
+	                    return true;
+	                }
+	                else{
+	                    return false;
+	                }*/
+	                if (data[name][nowTime].variance!=0)
+	                    return Math.abs(temp)/Math.sqrt(data[name][nowTime].variance)
+	                else 
+	                    return Math.abs(temp)
+	            }
+	            return 0
+	        }
+	        
+	    }
+	    else if(hazium="Hazium"){
+	        if(value-0.647956659226>0){
+	            return (value-0.647956659226)/Math.sqrt(1.57175094288)
+	        }
+	        else{
+	            return 0
+	        }
+	    }
+	    else{
+	        //如果出现了一个没有存在过的指标则警报
+	        return 2*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD;
+	    }
+	    
+	}
+
+	/*
 	is_abnormal:function(time,name,value){
 		var data = DATA_CENTER.derived_data["patternChange.json"];
 
@@ -299,14 +494,7 @@ var HVACmonitor_view = {
 
 
 
-	                /*
-	                if(Math.abs(temp)<data[name][nowTime].variance*5){
-	                    return true;
-	                }
-	                else{
-	                    return false;
-	                }
-	                */
+
 	                if (data[name][nowTime].variance!=0)
 	                	return Math.abs(temp)/data[name][nowTime].variance
 	                else 
@@ -324,4 +512,5 @@ var HVACmonitor_view = {
 	    }
 	    
 	}
+	*/
 }

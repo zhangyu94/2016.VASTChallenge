@@ -26,10 +26,7 @@
 	<link rel="stylesheet" href="css/monitor/HVACmonitor_view.css">
 	<!--7. eventlist相关的css-->
 	<link rel="stylesheet" href="css/eventlist/eventlist_view.css">
-	
 	<style>
-
-
 	</style>
 </head>
 
@@ -115,12 +112,20 @@
 					    <option selected="selected">X 3000</option>
 	    			</select>
 				</ul>
+				<ul class="pagination displaybefore-btn">
+					<label for="displaybefore-btn"></label>
+					<select name="displaybefore-btn" id="displaybefore-btn">
+					    <option selected="selected">10m</option>
+					    <option>60m</option>
+					    <option>12h</option>
+					    <option>24h</option>
+	    			</select>
+				</ul>
 			</div>
 
 			<div class="panelContainer">
 				<ul class="pagination">
 					<li class="" id="linechartviewli"><a id="linechartview">linechart</a></li>
-					<!--<li class="" id="mdsgraphviewli"><a id="mdsgraphview">mdsgraph</a></li>-->
 					<li class="" id="relationshipgraphviewli"><a id="relationshipgraphview">relationshipgraph</a></li>
 					<li class="" id="trajectoryviewli"><a id="trajectoryview">trajectory</a></li>
 					<li class="" id="monitorviewli"><a id="monitorview">monitor</a></li>
@@ -149,10 +154,8 @@
 			</div>
 			<div id="linechart-renderplace">
 			</div>
-		
 			<div id="HVAC-mdsgraph">
 			</div>
-		
 			<div id="HVAC-relationshipgraph">
 			</div>
 		</div>
@@ -165,7 +168,7 @@
 			</div>
 			<div id="trajectory-ganttchart">
 			</div>
-			<div id="trajectory-histogram">
+			<div id="trajectory-legend">
 			</div>
 		</div>
 	</div>

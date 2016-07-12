@@ -1,4 +1,5 @@
 function main(){
+
 	//1. 初始化subject，确定有效的message的范围
 	INITIALIZE_SUBJECT();
 	function INITIALIZE_SUBJECT()
@@ -19,8 +20,10 @@ function main(){
 			"set:added_timerange",
 			"set:current_display_time",
 
+			"set:stream_play",
 			"set:display_interval",
 			"set:display_rate",
+			"set:display_before",
 			"set:isplaying",
 			"set:mouseover_time",
 
@@ -29,6 +32,8 @@ function main(){
 			"set:highlight_floor_set",
 			"set:highlight_building_set",
 			"set:highlight_linechart_set",
+
+			"set:latest_HVAC_fulldate_frame",
 
 
 			"display:HVACgraph_attrbtn_view",
@@ -48,6 +53,7 @@ function main(){
 			"display:histogram_view",
 			"hide:bigmap_view",
 			"hide:ganttchart_view",
+			"display:histogram_view",
 			"hide:histogram_view",
 
 			"display:trajmonitor_view",
@@ -97,6 +103,21 @@ function main(){
       		DATA_CENTER.set_timeline_variable("display_rate",displayrate);
       	}
     });
+    $( "#displaybefore-btn" ).selectmenu({
+		width:"100%",
+      	change: function( event, data ) {
+      		var data = data.item.value
+      		var display_before
+      		if(data[data.length-1]=='m'){
+      			display_before=+data.slice(0,data.length-1)*60*1000
+      		}
+      		else{
+      			display_before=+data.slice(0,data.length-1)*3600*1000
+      		}
+  
+      		DATA_CENTER.set_timeline_variable("display_before",display_before);
+      	}
+    });
 
 	//绑定视图切换的btn的click
 	$(".panelContainer>.pagination>li>a").click(function(){
@@ -142,15 +163,15 @@ function main(){
 		}
 		else if (view_collection_name == "linechartview")
 		{		
-			var displayed_view = {
-				"HVACgraph_attrbtn_view":undefined,
-				"linechart_render_view":undefined,
+			// var displayed_view = {
+			// 	"HVACgraph_attrbtn_view":undefined,
+			// 	"linechart_render_view":undefined,
 
-				"eventlist_view":undefined,
-				"smallmaps_view":undefined,
-				"timeline_view":undefined,	
-			};
-			_hide_and_display_view(displayed_view);
+			// 	"eventlist_view":undefined,
+			// 	"smallmaps_view":undefined,
+			// 	"timeline_view":undefined,	
+			// };
+			// _hide_and_display_view(displayed_view);
 		}
 		else if (view_collection_name == "relationshipgraphview")
 		{
@@ -168,8 +189,7 @@ function main(){
 		{
 			var displayed_view = {
 				"HVACmonitor_view":undefined,
-				//"trajmonitor_view":undefined,
-
+				"trajmonitor_view":undefined,
 				"smallmaps_view":undefined,
 				"timeline_view":undefined,	
 			};

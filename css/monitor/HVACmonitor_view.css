@@ -13,3 +13,13 @@
 	stroke:black;
 	stroke-width:0.5;
 }
+
+.mouseover_hided-HVACmonitor-span
+{
+    opacity: 0.1;
+}
+
+.mouseover_hided-HVACmonitor-radarchart_glyph-div
+{
+    opacity: 0.1;
+}

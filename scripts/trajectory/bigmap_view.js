@@ -49,10 +49,11 @@ var bigmap_view = {
 	render:function(divID, floorNum, display_text)
 	{
 		var self = this;
-		var colorArray = ['#EEEEEE', '#F3E4EE', '#FFF4CF', '#F8F7EB', '#F6ECF6', '#EDF7FA', '#FFEEEE', '#D5F4EF'];
+		var colorArray = DATA_CENTER.GLOBAL_STATIC.zone_Color_Array;
+		//var colorArray = ['#EEEEEE', '#F3E4EE', '#FFF4CF', '#F8F7EB', '#F6ECF6', '#EDF7FA', '#FFEEEE', '#D5F4EF'];
 		//var colorArray = ['#cccccc', '#f1e2cc', '#fff2ae', '#e6f5c9', '#f4cae4', '#cbd5e8', '#fdcdac', '#b3e2cd'];
 		d3.selectAll("#"+divID).selectAll("*").remove();
-	    var width  = $("#"+divID).width();
+		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
 
 	    var svg = d3.select("#"+divID).append("svg")
@@ -60,6 +61,7 @@ var bigmap_view = {
 	                .attr("id", "floor-svg")
 	                .attr('width', width)
 	                .attr('height', height);
+
 	    //只有房间的json文件
 	    var roomData = DATA_CENTER.derived_data['room.json'];
 	    //对于整个房间的走廊进行划分的json文件
@@ -125,7 +127,6 @@ var bigmap_view = {
 	    		.classed('click-highlight', false);
 	    	}
 	    });
-	    
 	    /*roomG.append('text')
 	    .attr('class', 'room-num-text')
 	    .text(function(d,i){
@@ -197,7 +198,6 @@ var bigmap_view = {
 	    	}
 	    });
 	    
-	    console.log("display",display_text)
 	    if (display_text || (typeof(display_text)=="undefined"))
 	    {
 			singleroomG.append('text')
@@ -237,15 +237,46 @@ var bigmap_view = {
 		    	return text;
 		    });
 		}
-
 	}, 
 	//去掉房间的label
 	removeRoomLabel:function(){
 		//d3.selectAll('.room-num-text').remove();
 		//d3.selectAll('.room-name-text').remove();
 	},
+	appendLegend: function(divID, floorNum){
+		var widthLegend = $('#trajectory-legend').width();
+	    var heightLegend = $('#trajectory-legend').height();
+	    var legendSvg = d3.select('#trajectory-legend')
+	    			.append('svg')
+	    			.attr('id', 'legend-svg')
+	    			.attr('width', widthLegend)
+	    			.attr('height',heightLegend);
+		var accurateColor = '#08519c';
+		var inOfficeColor = '#4292c6';
+		var inPublicColor = '#9ecae1';
+		var ErrorColor = '#e31a1c';
+		var WarningColor = '#feb24c';
+		var circleR = 4;
+		var colorObjectArray = DATA_CENTER.GLOBAL_STATIC.certainty_color_array;
+		legendSvg.selectAll('.colorLegend')
+		.data(colorObjectArray)
+		.enter()
+		.append('circle')
+		.attr('r', circleR)
+		.attr('cx', function(d,i){
+			return 2 * circleR;
+		})
+		.attr('cy', function(d,i){
+			return circleR * i * 2;
+		})
+		.attr('fill', function(d,i){
+			return d.color;
+		});
+	},
 	//传递控制全局的时间变量，并且对于绘制视图进行更新
 	updateView: function(divID, globalTime){
+		var yShifting = 8;
+		var xShifting = 8;
 		//存储当前的人在哪一个zone里面
 		var self = this;
 		var globalTime = +globalTime;
@@ -255,6 +286,8 @@ var bigmap_view = {
 		var personArray = $.map(personData, function(value, index) {
 		    return [value];
 		});
+		var processHeight = 3;
+		var processWidth = 16;
 		personArray.sort(function(person1, person2){
 			if(person1.fixRecords[0]['prox-id'] > person2.fixRecords[0]['prox-id']){
 				return 1
@@ -265,6 +298,8 @@ var bigmap_view = {
 			}
 		});
 		var personInZone = DATA_CENTER.derived_data["personInZone"];
+	//	console.log(personInZone.length)
+	//	console.log(personArray.length)
 		var DURATION = 2000;
 		var floorNum = this.DISPLAYED_FLOOR_NUMBER;
 
@@ -274,15 +309,16 @@ var bigmap_view = {
             for(var j = 0;j < routeRocrds10Days.length;j++){
                     var timestamp = +new Date(routeRocrds10Days[j].timestamp).getTime();
                     var endtime = +new Date(routeRocrds10Days[j].endtime).getTime();
+                    var recordsFloorNum = +routeRocrds10Days[j].floor;
                     if(globalTime > timestamp && globalTime < endtime
-                        && routeRocrds10Days[j].floor == floorNum){
-                        personInZone[i].floorNum = routeRocrds10Days[j].floor;
+                        && recordsFloorNum == floorNum){
+                        personInZone[i].floorNum = recordsFloorNum;
                         var zoneNum = +personArray[i].fixRecords[j]["zone"];
                         if(!isNaN(zoneNum)){
-                            personInZone[i].formerZoneNum = +personInZone[i].zoneNum;
+                            personInZone[i].formerZoneNum = personInZone[i].zoneNum;
                             personInZone[i].zoneNum = +zoneNum;
-                            personInZone[i].timestamp = timestamp;
-                            personInZone[i].endtime = endtime;
+                            personInZone[i].timestamp = +timestamp;
+                            personInZone[i].endtime = +endtime;
                         }
                     break;
                 }
@@ -297,23 +333,31 @@ var bigmap_view = {
 		var yScale = d3.scale.linear()
 			.range([0, height])
 			.domain([0, 111]);
-		console.log(personInZone);
+		//console.log(personInZone);
 		//d3.selectAll("#"+divID).selectAll("*").remove();
+		var accurateColor = '#08519c';
+		var inOfficeColor = '#4292c6';
+		var inPublicColor = '#9ecae1';
+		var ErrorColor = '#e31a1c';
+		var WarningColor = '#feb24c';
 		var svg = d3.select('#' + divID).select("#floor-svg");
 		//增加node节点
-		var nodeSelectionG = svg.selectAll('.person-label')
+		var nodeSelectionG = svg.selectAll('.person-label-g')
 		.data(personInZone.filter(function(d){
-			return d.zoneNum != -1 && d.zoneNum != null && d.zoneNum != d.formerZoneNum;
+			return d.zoneNum != null  && d.zoneNum != d.formerZoneNum && d.timestamp <= globalTime;//
 		}), function(d,i){
 			return d.personName;
 		})
 		.enter()
-		.append('g');
-		nodeSelectionG.each(function(d,i){
+		.append('g')
+		.attr('class', 'person-label-g')
+		.each(function(d,i){
 			//判断在这个区域内是不是存在这个员工的办公室
 			var personName = d.personName;
 			var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
-			var zoneNum = d.zoneNum;
+			var zoneNum = +d.zoneNum;
+			var timestamp = +d.timestamp;
+			var endtime = +d.endtime;
 			var indexZoneNum = zoneNum - 1;
 			var indexFloorNum = floorNum - 1;
 			var personOffice = self.transformPersonToRoom(personName);
@@ -336,40 +380,44 @@ var bigmap_view = {
 					d.exitSelfOfficeButReasonable = true;
 				}
 			}else if(floorNum == 3){
-				if(zoneNum == 4 || zoneNum == 5){
+				if(zoneNum == 1 || zoneNum == 2 || zoneNum == 4 || zoneNum == 5){
 					d.exitSelfOfficeButReasonable = true;
 				}
 			}
-		})
-		.attr('class', 'person-label-g')
-		.attr('x', function(d,i){
-			var personName = d.personName;
-			var zoneId = +d.zoneNum;
-			var timestamp = +d.timestamp;
-			var endtime = +d.endtime;
-			self.randomXLocationFromZone(d, floorNum, zoneId, personName, timestamp, endtime);
+			//----------
+			self.randomXLocationFromZone(d, floorNum, zoneNum, personName, timestamp, endtime);
 			var nodeX = +d.returnX;
-			var scaleNodeX = xScale(nodeX);
-			d.currentNodeX = scaleNodeX;
-			d.formerZoneId = zoneId;
-			d.formerScaleNodeX = scaleNodeX;
-			return scaleNodeX;
-		})
-		.attr('y', function(d,i){
 			var nodeY = d.returnY;
+			var scaleNodeX = xScale(nodeX);
 			var scaleNodeY = yScale(nodeY);
+			d.currentNodeX = scaleNodeX;
+			d.formerScaleNodeX = scaleNodeX;
 			d.currentNodeY = scaleNodeY;
 			d.formerScaleNodeY = scaleNodeY;
-			return scaleNodeY;
+			d.formerZoneId = zoneNum;
 		});
-		var nodeSelectionCircle = nodeSelectionG.append('circle')
+
+		nodeSelectionG.append('circle')
 		.attr('class',function(d,i){
-			return 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum; 
+			var original_class = 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum;
+			if(DATA_CENTER.global_variable.enable_alert){
+				if(d.abnormal){
+					original_class =  'error-signal ' + original_class;
+				}
+				if((!d.isAccurateLoc) && (!d.exitSelfOffice) && (!d.exitSelfOfficeButReasonable)){
+					original_class =  'warning-signal ' + original_class;
+				}
+			}
+			var proxId = d.personName;
+			var selectedCardSet = DATA_CENTER.global_variable.selected_card_set;
+			if(selectedCardSet.indexOf(proxId) != -1){
+				original_class = 'click-highlight ' + original_class;
+			}
+			return original_class;
 		})
 		.attr('id', function(d,i){
 			return 'circle-' + d.personName;
 		})
-		.attr('r', pointSize)
 		.attr('cx', function(d,i){
 			return d.currentNodeX;
 		})
@@ -377,23 +425,79 @@ var bigmap_view = {
 			return d.currentNodeY;
 		})
 		.attr('fill', function(d,i){
-			if(d.exitSelfOffice){
-				return 'black';
+			//单独检测异常的情况
+			if(!DATA_CENTER.global_variable.certainty_encode){
+				var proxId = d.personName;
+				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
+				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
+				var work = proxId2work[proxId];
+				var color = work2color[work];
+				return color;
 			}else{
-				return 'red';
+				if(d.abnormal){
+					$(this).addClass('error-signal');
+					return accurateColor;
+				}
+				if(d.isAccurateLoc){
+					return accurateColor;
+				}else if(d.exitSelfOffice){
+					return inOfficeColor;
+				}else if(d.exitSelfOfficeButReasonable){
+					return inPublicColor;
+				}else if(!d.exitSelfOfficeButReasonable){
+					$(this).addClass('warning-signal');
+					return inPublicColor;
+				}
+			}	
+		})
+		.attr('r', function(d,i){
+			//单独检测异常的情况
+			if(d.abnormal){
+				return 4;
+			}
+			if(d.isAccurateLoc){
+				return 4;
+			}else if(d.exitSelfOffice){
+				return 4;
+			}else if(d.exitSelfOfficeButReasonable){
+				return 4;
+			}else if(!d.exitSelfOfficeButReasonable){
+				return 4;
 			}
 		})
 		.on('click',function(d,i){
+			var selectedCardSet = DATA_CENTER.global_variable.selected_card_set;
+			var selectedCard = DATA_CENTER.global_variable.selected_card;
 			if(d3.select(this).classed('click-highlight')){
 				d3.select(this)
 				.classed('click-highlight', false);
 				d3.select('#text-' + d.personName)
 				.attr('visibility', 'hidden');
+				var proxId = d.personName;
+				if(selectedCardSet.indexOf(proxId) != -1){
+					var eleIndex = selectedCardSet.indexOf(proxId);
+					selectedCardSet.splice(eleIndex, 1);
+				}
+				if(selectedCardSet.length != 0){
+					var length = selectedCardSet.length;
+					selectedCard = selectedCardSet[length - 1];
+				}else{
+					selectedCard = undefined;
+				}
+				DATA_CENTER.set_global_variable('selected_card', selectedCard);
+				DATA_CENTER.set_global_variable('selected_card_set', selectedCardSet);
 			}else{
 				d3.select(this)
 				.classed('click-highlight', true);
 				d3.select('#text-' + d.personName)
 				.attr('visibility','visible');
+				var proxId = d.personName;
+				if(selectedCardSet.indexOf(proxId) == -1){
+					selectedCardSet.push(proxId);
+				}
+				selectedCard = proxId;
+				DATA_CENTER.set_global_variable('selected_card', selectedCard);
+				DATA_CENTER.set_global_variable('selected_card_set', selectedCardSet);
 			}
 		})
 		.on('mouseover', function(d,i){
@@ -403,25 +507,232 @@ var bigmap_view = {
 		.on('mouseout', function(d,i){
 			d3.select(this)
 			.classed('mouseover-highlight', false);
-		});
-		nodeSelectionText = nodeSelectionG.append('text', function(d,i){
-			return d.personName;
-		})
+		}); 
+
+		nodeSelectionG.append('text')
 		.attr('class', 'node-text')
 		.attr('id', function(d,i){
 			return 'text-' + d.personName;
 		})
 		.attr('x', function(d,i){
-			return d.currentNodeX;
+			return d.currentNodeX - 20;
 		})
 		.attr('y', function(d,i){
-			return d.currentNodeY;
+			return d.currentNodeY + 15;
 		})
 		.attr('visibility', 'hidden')
 		.text(function(d,i){
 			return d.personName;
 		});
+
+		var colorArray = DATA_CENTER.GLOBAL_STATIC.zone_Color_Array;
+		nodeSelectionG.append('rect')
+		.attr('class', 'node-process-background')
+		.attr('id', function(d,i){
+			return 'process-background-' + d.personName;
+		})
+		.attr('x', function(d,i){
+			return d.currentNodeX - xShifting;
+		})
+		.attr('y', function(d,i){
+			return d.currentNodeY - yShifting;
+		})
+		.attr('height', processHeight)
+		.attr('width', processWidth)
+		.attr('fill', 'black');
+
+		nodeSelectionG.append('rect')
+		.attr('class', 'node-process')
+		.attr('id', function(d,i){
+			return 'process-' + d.personName;
+		})
+		.attr('x', function(d,i){
+			return d.currentNodeX - xShifting;
+		})
+		.attr('y', function(d,i){
+			return d.currentNodeY - yShifting;
+		})
+		.attr('visibility', 'visible')
+		.attr('height', processHeight)
+		.attr('width', processWidth)
+		.attr('fill', 'black');
+
+		var nodeSelectionGNotChangeZoneUpdate =  svg.selectAll('.person-label-g')
+		.data(personInZone.filter(function(d){
+			return d.zoneNum != null && d.timestamp <= globalTime;//
+		}), function(d,i){
+			return d.personName;
+		})
+		.each(function(d,i){
+			//判断在这个区域内是不是存在这个员工的办公室
+			var personName = d.personName;
+			var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
+			var zoneNum = +d.zoneNum;
+			var timestamp = +d.timestamp;
+			var endtime = +d.endtime;
+			var indexZoneNum = zoneNum - 1;
+			var indexFloorNum = floorNum - 1;
+			var personOffice = self.transformPersonToRoom(personName);
+			var roomArray = floors_zone_set[indexFloorNum][indexZoneNum];
+			d.exitSelfOffice = false;
+			d.exitSelfOfficeButReasonable = false;
+			d.personOffice = -1;
+			for(var k = 0;k < roomArray.length;k++){
+				if(roomArray[k]['doornum'] == personOffice){
+					d.exitSelfOffice = true;
+					break;
+				}
+			}
+			if(floorNum == 1){
+				if(zoneNum == 2 || zoneNum == 5 || zoneNum == 6 || zoneNum == 4 || zoneNum == 3){
+					d.exitSelfOfficeButReasonable = true;
+				}
+			}else if(floorNum == 2){
+				if(zoneNum == 1 || zoneNum == 3 || zoneNum == 4 || zoneNum == 5 || zoneNum == 6 || zoneNum == 7 ){
+					d.exitSelfOfficeButReasonable = true;
+				}
+			}else if(floorNum == 3){
+				if(zoneNum == 1 || zoneNum == 2 || zoneNum == 4 || zoneNum == 5){
+					d.exitSelfOfficeButReasonable = true;
+				}
+			}
+			//----------
+			self.randomXLocationFromZone(d, floorNum, zoneNum, personName, timestamp, endtime);
+			var nodeX = +d.returnX;
+			var nodeY = d.returnY;
+			var scaleNodeX = xScale(nodeX);
+			var scaleNodeY = yScale(nodeY);
+			d.currentNodeX = scaleNodeX;
+			d.formerScaleNodeX = scaleNodeX;
+			d.currentNodeY = scaleNodeY;
+			d.formerScaleNodeY = scaleNodeY;
+			d.formerZoneId = zoneNum;
+		});
+
+		var nodeSelectionGUpdate = svg.selectAll('.person-label-g')
+		.data(personInZone.filter(function(d){
+			return d.zoneNum != null  && d.zoneNum != d.formerZoneNum && d.timestamp <= globalTime;//
+		}), function(d,i){
+			return d.personName;
+		})
+		.each(function(d,i){
+			//判断在这个区域内是不是存在这个员工的办公室
+			var personName = d.personName;
+			var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
+			var zoneNum = +d.zoneNum;
+			var timestamp = +d.timestamp;
+			var endtime = +d.endtime;
+			var indexZoneNum = zoneNum - 1;
+			var indexFloorNum = floorNum - 1;
+			var personOffice = self.transformPersonToRoom(personName);
+			var roomArray = floors_zone_set[indexFloorNum][indexZoneNum];
+			d.exitSelfOffice = false;
+			d.exitSelfOfficeButReasonable = false;
+			d.personOffice = -1;
+			for(var k = 0;k < roomArray.length;k++){
+				if(roomArray[k]['doornum'] == personOffice){
+					d.exitSelfOffice = true;
+					break;
+				}
+			}
+			if(floorNum == 1){
+				if(zoneNum == 2 || zoneNum == 5 || zoneNum == 6 || zoneNum == 4 || zoneNum == 3){
+					d.exitSelfOfficeButReasonable = true;
+				}
+			}else if(floorNum == 2){
+				if(zoneNum == 1 || zoneNum == 3 || zoneNum == 4 || zoneNum == 5 || zoneNum == 6 || zoneNum == 7 ){
+					d.exitSelfOfficeButReasonable = true;
+				}
+			}else if(floorNum == 3){
+				if(zoneNum == 1 || zoneNum == 2 || zoneNum == 4 || zoneNum == 5){
+					d.exitSelfOfficeButReasonable = true;
+				}
+			}
+			//----------
+			self.randomXLocationFromZone(d, floorNum, zoneNum, personName, timestamp, endtime);
+			var nodeX = +d.returnX;
+			var nodeY = d.returnY;
+			var scaleNodeX = xScale(nodeX);
+			var scaleNodeY = yScale(nodeY);
+			d.currentNodeX = scaleNodeX;
+			d.formerScaleNodeX = scaleNodeX;
+			d.currentNodeY = scaleNodeY;
+			d.formerScaleNodeY = scaleNodeY;
+			d.formerZoneId = zoneNum;
+		});
+
+		nodeSelectionGNotChangeZoneUpdate.selectAll('.node-process')
+		.attr('width', function(d,i){
+			console.log('time change');
+			var timestamp = +d.timestamp;
+			var endtime = +d.endtime;
+			var width = (globalTime - timestamp)/(endtime - timestamp) * processWidth;
+			return width;
+		})
+		.attr('height', processHeight)
+		.attr('fill','green');
+
 		//改变node节点
+		var nodeSelectionNotChangeZoneCircle = nodeSelectionGNotChangeZoneUpdate.selectAll('.person-label');
+
+		nodeSelectionNotChangeZoneCircle.attr('class', function(d,i){
+			var original_class = 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum; 
+			var proxId = d.personName;
+			var selectedCardSet = DATA_CENTER.global_variable.selected_card_set;
+			if(d3.select(this).classed('click-highlight') || selectedCardSet.indexOf(proxId) != -1){
+				original_class =  'click-highlight ' + original_class;
+			}
+			if(DATA_CENTER.global_variable.enable_alert){
+				if(d.abnormal){
+					original_class =  'error-signal ' + original_class;
+				}
+				if((!d.isAccurateLoc) && (!d.exitSelfOffice) && (!d.exitSelfOfficeButReasonable)){
+					original_class =  'warning-signal ' + original_class;
+				}	
+			}
+			return original_class;
+		})
+		.attr('fill', function(d,i){
+			//单独检测异常的情况
+			if(!DATA_CENTER.global_variable.certainty_encode){
+				var proxId = d.personName;
+				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
+				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
+				var work = proxId2work[proxId];
+				var color = work2color[work];
+				return color;
+			}else{
+				if(d.abnormal){
+					return accurateColor;
+				}
+				if(d.isAccurateLoc){
+					return accurateColor;
+				}else if(d.exitSelfOffice){
+					return inOfficeColor;
+				}else if(d.exitSelfOfficeButReasonable){
+					return inPublicColor;
+				}else if(!d.exitSelfOfficeButReasonable){
+					return inPublicColor;
+				}
+			}
+		})
+		.attr('r', function(d,i){
+			//单独检测异常的情况
+			if(d.abnormal){
+				return 4;
+			}
+			if(d.isAccurateLoc){
+				return 4;
+			}else if(d.exitSelfOffice){
+				return 4;
+			}else if(d.exitSelfOfficeButReasonable){
+				return 4;
+			}else if(!d.exitSelfOfficeButReasonable){
+				return 4;
+			}
+		});
+
+		var nodeSelectionCircle = nodeSelectionGUpdate.selectAll('.person-label');
 		nodeSelectionCircle.transition()
 		.duration(DURATION)
 		.attr('cx', function(d,i){
@@ -443,31 +754,29 @@ var bigmap_view = {
 			var linkClassName = 'begin-' + d.formerZoneId + '-end-' + d.afterZoneId;
 			d.formerScaleNodeX = d.afterScaleNodeX;
 			d.formerScaleNodeY = d.afterScaleNodeY;
-			d3.select('#text-' + d.personName).attr('y',scaleNodeY);
 			return scaleNodeY;
 		})
-		.attr('fill', function(d,i){
-			if(d.exitSelfOffice){
-				return 'black';
-			}else{
-				return 'red';
-			}
+		.each('start', function(d,i){
+			d3.select('#process-background-' + d.personName).attr('visibility', 'hidden');
+			d3.select('#process-background-' + d.personName).attr('visibility', 'hidden');
+			d3.select('#process-' + d.personName).attr('visibility', 'hidden');
+			d3.select('#process-' + d.personName).attr('visibility', 'hidden');
 		})
-		.attr('class', function(d,i){
-			if(d3.select(this).classed('click-highlight')){
-				return 'click-highlight person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum; 
-			}else{
-				return 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum; 
-			}
-		})
-		.attr('stroke-width', 1)
-		.attr('stroke', 'black')
 		.each('end', function(d,i){
-			var scaleNodeX = d3.select(this).attr('cx');
-			var scaleNodeY = d3.select(this).attr('cy');
-			d3.select('#text-' + d.personName).attr('x', scaleNodeX);
-			d3.select('#text-' + d.personName).attr('y', scaleNodeY);
+			var scaleNodeX = +d3.select(this).attr('cx');
+			var scaleNodeY = +d3.select(this).attr('cy');
+			d3.select('#text-' + d.personName).attr('x', scaleNodeX - 20);
+			d3.select('#text-' + d.personName).attr('y', scaleNodeY + 15);
+			d3.select('#process-' + d.personName).attr('visibility', 'visible');
+			d3.select('#process-' + d.personName).attr('visibility', 'visible');
+			d3.select('#process-' + d.personName).attr('x', scaleNodeX -xShifting);
+			d3.select('#process-' + d.personName).attr('y', scaleNodeY -yShifting);
+			d3.select('#process-background-' + d.personName).attr('visibility', 'visible');
+			d3.select('#process-background-' + d.personName).attr('visibility', 'visible');
+			d3.select('#process-background-' + d.personName).attr('x', scaleNodeX -xShifting);
+			d3.select('#process-background-' + d.personName).attr('y', scaleNodeY -yShifting);
 		});
+
 		$('.person-label').each(function() {
 		    $(this).tipsy({
 		        gravity: "s",
@@ -479,10 +788,41 @@ var bigmap_view = {
 		        },
 		    });
 		});
+
+		var nodeSelectionGRemove = svg.selectAll('.person-label-g')
+		.data(personInZone.filter(function(d){
+			return d.zoneNum != null  && d.floorNum != -1;
+		}), function(d,i){
+			return d.personName;
+		})
+		.exit()
+		.remove();
+
+		/*//删除文字
 		var nodeTextRemove = svg.selectAll('.node-text')
 		.data(personInZone.filter(function(d){
 			//return d.zoneNum != -1 && d.zoneNum != null;
-			return d.floorNum != -1;
+			return d.floorNum != -1 && d.zoneNum != null;
+		}), function(d,i){
+			return d.personName;
+		})
+		.exit()
+		.remove();
+		//删除进度条
+		svg.selectAll('.node-process-background')
+		.data(personInZone.filter(function(d){
+			//return d.zoneNum != -1 && d.zoneNum != null;
+			return d.floorNum != -1 && d.zoneNum != null;
+		}), function(d,i){
+			return d.personName;
+		})
+		.exit()
+		.remove();
+		//删除进度条的背景
+		var nodeProcessRemove = svg.selectAll('.node-process')
+		.data(personInZone.filter(function(d){
+			//return d.zoneNum != -1 && d.zoneNum != null;
+			return d.floorNum != -1 && d.zoneNum != null;
 		}), function(d,i){
 			return d.personName;
 		})
@@ -491,14 +831,18 @@ var bigmap_view = {
 		//删除节点
 		var nodeSelectionRemove = svg.selectAll('.person-label')
 		.data(personInZone.filter(function(d){
-			//return d.zoneNum != -1 && d.zoneNum != null;
-			return d.floorNum != -1;
+			return d.zoneNum != -1 && d.zoneNum != null;
 		}), function(d,i){
 			return d.personName;
 		})
 		.exit()
-		.remove();
+		.remove();*/
 	},
+	//综合来看节点的类型主要分为以下几类，按照准确性的从高到低进行排序，
+	//1. 能够被机器人检测到，这种类型的节点的准确性最高
+	//2. 能够在这个区域中找到自己的房间，那么这个员工很有可能出现在自己的房间里面
+	//3. 在这个区域中没有找到自己的房间，但是在这个区域内有公共的区域，因此这个员工也很有可能出现在区域中的公共房间中
+	//4. 在这个区域中没有自己的房间，同时也没有公共的区域，因此可以作为异常的情况
 	randomXLocationFromZone: function(d, floorNum, zoneNum, personName, timestamp, endtime){
 		var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
 		var indexZoneNum = zoneNum - 1;
@@ -518,6 +862,12 @@ var bigmap_view = {
 		var returnX = 0, returnY = 0;
 		//
 		var robotData = DATA_CENTER.original_data['proxMobileOut-MC2.csv'];
+		var formerProxZoneNum = +d.formerZoneNum;
+		var currentProxZoneNum = +d.zoneNum;
+		// 当前的节点与prox card检测到的结果相比是否是异常
+		d.abnormal = false;
+		// 当前的节点所在的位置是不是精确的，是不是被机器人曾经检测到
+		d.isAccurateLoc = false;
 		for(var i = 0;i < robotData.length;i++){
 			var robotTimeEnd = +robotData[i].robotTime;
 			var robotTimeBegin = +robotData[i].robotTime - 60000;//一分钟之前的时间
@@ -527,12 +877,25 @@ var bigmap_view = {
 			var robotProxId = robotData[i].proxId;
 			if((robotTimeEnd > timestamp) && (robotTimeEnd < endtime) 
 				&& (floorNum == robotFloorNum) && (personName == robotProxId)){
+				var robotProxZoneNum = robotData[i].proxZone;
+				if(robotProxZoneNum == currentProxZoneNum){
+					//robot检测到的区间与当前的时间范围内由prox检测到的区间一致
+					d.abnormal = false;
+				}
+				//检测情况不一致也是可以说明这是合理的，因为又可能在1min的另一的时间内被检测到
+				//如果可能在一分钟的开始还没有进入到到这个prox-zone，则说明是不合理的
+				//说明1min有可能跨越两个时间区间
+				else if(robotTimeBegin < timestamp && robotProxZoneNum == formerProxZoneNum){
+					d.abnormal = false;
+				}else{
+					//如果在一分钟前的时间的prox-zone与prox card检测到的区域也不一致，则说明是不合理的
+					d.abnormal = true;
+				}
 				d.isAccurateLoc = true;
 				d.returnX = robotX;
 				d.returnY = robotY;
 				return;
 			}
-
 		}
 		//---------------------------------------------
 		for(var k = 0;k < length;k++){
@@ -681,7 +1044,6 @@ var bigmap_view = {
 	updateRobotView: function(divID, globalTime){
 		var pointSize = 4;
 		var robotData = DATA_CENTER.original_data['proxMobileOut-MC2.csv'];
-		console.log(robotData);
 		var singleroomData = DATA_CENTER.derived_data['singleroom.json'];
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();

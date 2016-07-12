@@ -1,0 +1,22 @@
+/*.circle-type-text, .alertLegendText, .legend-label-text{
+	font-size: 4px;
+}*/
+#trajectory-legend text{
+	font-size: 8px;
+}
+#trajectory-legend text[class~=click-highlight]{
+	fill: white;
+}
+#trajectory-legend rect[class~=click-highlight]{
+	fill: gray;
+}
+#trajectory-legend text[class~=mouseover-highlight]{
+	fill: white;
+}
+#trajectory-legend rect[class~=mouseover-highlight]{
+	fill: gray;
+}
+.sum-legend-rect{
+	border: black;
+	border-width: 1px;
+}
