@@ -169,6 +169,8 @@ var trajmonitor_view = {
 
 	    var rectHeight=(spaceHeight-pmargin.top-pmargin.bottom)/2
 	    var zoneColorScale = d3.scale.category10()
+	    var color=d3.scale.ordinal().range(d3.scale.category10().range())
+	    							.domain([1,2,3,4,5,6,7,8,9,10])
 
 	    $('#'+divID).append("<div id='axisDiv' style='border-bottom:1px solid #ccc;'></div>")
 	    var xAxis = d3.svg.axis()
@@ -259,6 +261,7 @@ var trajmonitor_view = {
 	    		.style('fill',function (d) {
 
 			      	// console.log(d);
+			      	return color(+d.zone)
 			      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0])
 			      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]);
 	    		})
@@ -286,6 +289,7 @@ var trajmonitor_view = {
 		    		.style('fill',function (d) {
 
 				      	// console.log(d);
+				      	return color(+d.zone)
 				      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0])
 				      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]);
 		    		})

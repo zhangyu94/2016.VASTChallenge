@@ -372,7 +372,7 @@ var timeline_view = {
 	        		if (typeof(timeline_view.DISPLAY_RATE)=="undefined")
 	        			timeline_view.DISPLAY_RATE = DATA_CENTER.timeline_variable.display_rate;
 
-	        		var current_display_time = 1000 + DATA_CENTER.global_variable.current_display_time;
+	        		var current_display_time = 1000*3*60+ DATA_CENTER.global_variable.current_display_time;
                     //console.log(current_display_time)
                     timeline_view._timeline_redraw(current_display_time)
 	        		if (current_display_time <= chart.xAxis[0].max)
