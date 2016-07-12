@@ -16,3 +16,7 @@
 #trajectory-legend rect[class~=mouseover-highlight]{
 	fill: gray;
 }
+.sum-legend-rect{
+	border: black;
+	border-width: 1px;
+}

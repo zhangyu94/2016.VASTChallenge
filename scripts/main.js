@@ -1,4 +1,5 @@
 function main(){
+
 	//1. 初始化subject，确定有效的message的范围
 	INITIALIZE_SUBJECT();
 	function INITIALIZE_SUBJECT()
@@ -31,6 +32,8 @@ function main(){
 			"set:highlight_floor_set",
 			"set:highlight_building_set",
 			"set:highlight_linechart_set",
+
+			"set:latest_HVAC_fulldate_frame",
 
 
 			"display:HVACgraph_attrbtn_view",

@@ -6,7 +6,7 @@ var HVACmonitor_view = {
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"HVACmonitor-radarchart_glyph-div",
 
-	ABNORMAL_VALUE_THRESHOLD:4,//归一化以后的异常阈值
+	ABNORMAL_VALUE_THRESHOLD:3,//归一化以后的异常阈值
 
 	ATTRIBUTE_DOT_RADIUS :6,
 	RADARCHART_GLYPH_RADIUS :15,
@@ -33,6 +33,7 @@ var HVACmonitor_view = {
 
         if (message == "hide:HVACmonitor_view")
         {
+        	d3.selectAll("."+smallmaps_view.WARNING_TIP_CLASS).remove();
             $("#"+this.HVACmonitor_view_DIV_ID).css("display","none");
             DATA_CENTER.VIEW_COLLECTION.smallmaps_view._hide_radarchart(this.DIV_CLASS_OF_RADARCHART_GLYPH)
         }
@@ -336,6 +337,14 @@ var HVACmonitor_view = {
 
 	//('2016/5/31 16:40','HVAC Electric Demand Power',3)
 	abnormal_degree:function(time,name,value){
+		var start_time_index = timeline_view
+			._binary_search(DATA_CENTER.original_data["bldg-MC2.csv"],"Date/Time",time-5*60*1000);
+		var start_time_value = DATA_CENTER.original_data["bldg-MC2.csv"][start_time_index][name];
+		var end_time_index = timeline_view
+			._binary_search(DATA_CENTER.original_data["bldg-MC2.csv"],"Date/Time",time+5*60*1000);
+		var end_time_value = DATA_CENTER.original_data["bldg-MC2.csv"][end_time_index][name];
+
+
 	    //console.log(time)
 	   // time='2016/5/31 16:40'
 	    //name='F_2_Z_2 Hazium Concentration'

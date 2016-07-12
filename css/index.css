@@ -288,9 +288,9 @@ body {
 }
 #monitor-collection > .monitorContainer > #trajmonitor-renderplace{
 	position:absolute;
-	left:25%;
+	left:20%;
 	height:100%;
-	width:75%;
+	width:80%;
 	float: left;
 	border: solid #ccc 1px;
 	border-radius: 5px;
