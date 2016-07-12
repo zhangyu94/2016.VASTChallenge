@@ -26,10 +26,10 @@ var ganttchart_view = {
 		}
 		if(message == 'set:selected_card' || message == 'set:selected_card_set')
 		{
-			var selectedCard = DATA_CENTER.global_variable.selected_card;
-			if(selectedCard != undefined){
-				self.updateSelectPeople(selectedCard);
-			}
+			// var selectedCard = DATA_CENTER.global_variable.selected_card;
+			// if(selectedCard != undefined){
+			// 	self.updateSelectPeople(selectedCard);
+			// }
 		}
 	},
 	render:function(divID)
@@ -52,7 +52,7 @@ var ganttchart_view = {
 	make_IDList:function(divID) {
 		d3.select("#"+divID).selectAll("*").remove();
 		var idList = $("#"+ divID);
-		var ids = Object.keys(this.personData);
+		var ids = Object.keys(this.person);
 		var self = this;
 		idList.append("<div id='trajectory-ganntchart-idlist-head'></div><div id='trajectory-ganntchart-idlist-body'></div>" );
 		$("#trajectory-ganntchart-idlist-head").append("<p class=\'view-title\'>prox-id</p>");
@@ -289,56 +289,57 @@ var ganttchart_view = {
 					shortRecords[i - 1].shortLength = shortRecords[i - 1].cntShort + 1;
 			}
 
-			var shortRecordSet =[];
-			for(var i=0;i<shortRecords.length;) {
-				var aShortSet =[];
-				var length = shortRecords[i].shortLength;
-				for(var j=0;j<length;j++) {
-					aShortSet.push(shortRecords[i]);
-					i++;
-				}
+			// var shortRecordSet =[];
+			// for(var i=0;i<shortRecords.length;) {
+			// 	var aShortSet =[];
+			// 	var length = shortRecords[i].shortLength;
+			// 	for(var j=0;j<length;j++) {
+			// 		aShortSet.push(shortRecords[i]);
+			// 		i++;
+			// 	}
 
 
-				var aSet = {}
-				var firstIdx  = _.sortedIndex(allRecords, {timestamp: aShortSet[0].timestamp},"timestamp");
-				// console.log(firstIdx);
-				var preRecord = null;
-				if(firstIdx > 0) {
-					var preRecord = allRecords[firstIdx -1];
-					if(preRecord.day != aShortSet[0].day)
-						preRecord = null;
-				}
+			// 	var aSet = {}
+			// 	var firstIdx  = _.sortedIndex(allRecords, {timestamp: aShortSet[0].timestamp},"timestamp");
+			// 	// console.log(firstIdx);
+			// 	var preRecord = null;
+			// 	if(firstIdx > 0) {
+			// 		var preRecord = allRecords[firstIdx -1];
+			// 		if(preRecord.day != aShortSet[0].day)
+			// 			preRecord = null;
+			// 	}
 
-				var lastRecord = aShortSet[aShortSet.length - 1];
-				var lastIdx  = _.sortedIndex(allRecords, {timestamp: lastRecord.timestamp},"timestamp");
-				var nextRecord = null;
-				if(lastIdx < allRecords.length - 1) {
-					var nextRecord = allRecords[lastIdx +1];
-					if(nextRecord.day != lastRecord.day)
-						nextRecord = null;
-				}
-				aSet['records'] = aShortSet;
-				aSet['nextRecord'] = nextRecord;
-				aSet['preRecord'] = preRecord;
-				var fakeDuration, fakeStartTime, fakeEndTime;
-				if(preRecord != null && nextRecord !=null) {
-					if(preRecord.duration < nextRecord.duration)
-						fakeDuration = preRecord.duration;
-					else
-						fakeDuration = nextRecord.duration;
+			// 	var lastRecord = aShortSet[aShortSet.length - 1];
+			// 	var lastIdx  = _.sortedIndex(allRecords, {timestamp: lastRecord.timestamp},"timestamp");
+			// 	var nextRecord = null;
+			// 	if(lastIdx < allRecords.length - 1) {
+			// 		var nextRecord = allRecords[lastIdx +1];
+			// 		if(nextRecord.day != lastRecord.day)
+			// 			nextRecord = null;
+			// 	}
+			// 	aSet['records'] = aShortSet;
+			// 	aSet['nextRecord'] = nextRecord;
+			// 	aSet['preRecord'] = preRecord;
+			// 	var fakeDuration, fakeStartTime, fakeEndTime;
 
-				}
-				else if(preRecord != null) {
-					fakeDuration = preRecord.duration;
-				}
-				else {
-					fakeDuration = nextRecord.duration;
-				}
-				aSet['fakeStartTime'] =  aShortSet[0].timestamp - fakeDuration*1000;
-				aSet['fakeEndTime'] =  aShortSet[aShortSet.length - 1].endtime + fakeDuration*1000;
+			// 	if(preRecord != null && nextRecord !=null) {
+			// 		if(preRecord.endtime - preRecord.timestamp < nextRecord.endtime - nextRecord.timestamp)
+			// 			fakeDuration = preRecord.endtime - preRecord.timestamp ;
+			// 		else
+			// 			fakeDuration = nextRecord.endtime - nextRecord.timestamp;
 
-				shortRecordSet.push(aSet);
-			}
+			// 	}
+			// 	else if(preRecord != null) {
+			// 		fakeDuration = preRecord.endtime - preRecord.timestamp ;
+			// 	}
+			// 	else {
+			// 		fakeDuration = nextRecord.endtime - nextRecord.timestamp;
+			// 	}
+			// 	aSet['fakeStartTime'] =  aShortSet[0].timestamp - fakeDuration;
+			// 	aSet['fakeEndTime'] =  aShortSet[aShortSet.length - 1].endtime + fakeDuration;
+
+			// 	shortRecordSet.push(aSet);
+			// }
 
 			// console.log(shortRecordSet);
 
@@ -427,9 +428,12 @@ var ganttchart_view = {
 		}
 	},
 	updateSelectPeople:function(id){
+		console.log(id);
 		this.selectPID = id;
 		this.zoneColorScale = d3.scale.category10();
-
+		// this.make_IDList("trajectory-ganntchart-idlist");
+		// this.make_hist("trajectory-ganntchart-hist");
+		// this.make_ganttchart("trajectory-ganntchart-main");
 		this.update_hist();
 		this.update_ganttchart();
 
