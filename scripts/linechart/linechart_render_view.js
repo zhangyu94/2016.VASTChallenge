@@ -127,7 +127,6 @@ var linechart_render_view = {
         if (message == "set:latest_HVAC_merged_frame")
         {
             var latest_HVAC_merged_frame = DATA_CENTER.global_variable.latest_HVAC_merged_frame;
-            console.log("latest_HVAC_merged_frame",latest_HVAC_merged_frame);
 
             
             var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
@@ -158,7 +157,6 @@ var linechart_render_view = {
                             {
                                 var series = chart.get(cur_line_id);
                                 var new_y = DATA_CENTER.global_variable.latest_HVAC_merged_frame[cur_line_id];
-                                console.log(cur_line_id,series,new_x,new_y)
                                 series.addPoint([new_x, new_y], true, true);
                             }
                         }
@@ -173,7 +171,6 @@ var linechart_render_view = {
                             {
                                 var series = chart.get(cur_line_id);
                                 var new_y = DATA_CENTER.global_variable.latest_HVAC_merged_frame[cur_line_id];
-                                console.log(cur_line_id,series,new_x,new_y)
                                 series.addPoint([new_x, new_y], true, true);
                             }
                         }
@@ -188,7 +185,6 @@ var linechart_render_view = {
                             {
                                 var series = chart.get(cur_line_id);
                                 var new_y = DATA_CENTER.global_variable.latest_HVAC_merged_frame[cur_line_id];
-                                console.log(cur_line_id,series,new_x,new_y)
                                 series.addPoint([new_x, new_y], true, true);
                             }
                             
@@ -308,8 +304,6 @@ var linechart_render_view = {
 
                             var ysetAxis_attr_name = [attr];
                             var xysetAxis_data = linechart_render_view._get_xysetAxis_data(ysetAxis_attr_name);
-                            console.log(xysetAxis_data[0])
-                            console.log("chart id",attr)
                             var chart = $(this).highcharts().addSeries({
                                 id:attr,
                                 name: attr,
@@ -595,7 +589,6 @@ var linechart_render_view = {
 
 
             var data = xysetAxis_data[i];
-            console.log("chart id",attr_name)
             //data.push
             series_data.push({
                 id: attr_name,
