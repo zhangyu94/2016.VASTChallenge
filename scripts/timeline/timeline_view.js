@@ -22,6 +22,7 @@ var timeline_view = {
 			$("#"+this.timeline_view_DIV_ID).css("display","block");
 			if (this.FIRST_CALLED)
 			{
+				
 				this.render(this.timeline_view_DIV_ID);
 				this.FIRST_CALLED = false;
 			}
@@ -262,14 +263,18 @@ var timeline_view = {
 	    					.style("border-radius","5px")
 	    					.style("background-color","#f8f8f8")
 
+
+
 	    var xyAxis_data = this._initialize_xyAxis_data();
+
 
 	    var start_time = xyAxis_data[0][0];
         var end_time = xyAxis_data[xyAxis_data.length-1][0];
         console.log(start_time)
-        //console.log(end_time)
+        console.log(end_time)
         DATA_CENTER.set_global_variable("selected_filter_timerange",{min:start_time,max:end_time})
         //console.log(DATA_CENTER.global_variable.selected_filter_timerange)
+        console.log(xyAxis_data)
 	    var chart = this._plot_linechart(this.timeline_div_id,xyAxis_data);
 	},
 
@@ -416,6 +421,20 @@ var timeline_view = {
 
 	_initialize_xyAxis_data:function()
     {
+    	
+    	var time_start = Timeutil.getStartTime();
+
+    	var xyAxis_data = [];
+    	for (var i=0;i<=4896;++i)
+    	{
+    		var y_value = 0;
+    		var x_value = time_start + 1000*60*5*i;
+    		var temp = [x_value,y_value];
+            xyAxis_data.push(temp)
+    	}
+    	return xyAxis_data;
+
+    	/*
         //使用的全局变量
         var data = DATA_CENTER.original_data["bldg-MC2.csv"];
         //end 全局变量
@@ -433,6 +452,7 @@ var timeline_view = {
             xyAxis_data.push(temp)
         }
         return xyAxis_data;
+        */
     },
 
 	_plot_linechart:function(divID,xyAxis_data)

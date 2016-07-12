@@ -650,13 +650,132 @@ var DATA_CENTER = {
 		this.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set = this.cal_HVACzone_with_Haziumsenor_set();
 	},
 
+	add_HVAC_streaming_data:function(data,label){
+		var processed_data = this.unify_HVAC_oneframe_data(data)
+		console.log(data);
+		if (label == "bldg")
+		{
+			
+			
+		}
+		else if (label == "sensor")
+		{
+
+		}
+		else
+		{
+			console.warn("invalid label",label)
+		}
+	},
+
+
+	add_HVAC_data: function(data){
+		var floor1data = DATA_CENTER._process_single_file(data.floor1);
+		var floor2data = DATA_CENTER._process_single_file(data.floor2);
+		var floor3data = DATA_CENTER._process_single_file(data.floor3);
+		var generaldata = DATA_CENTER._process_single_file(data.general);
+		var haziumdata = DATA_CENTER._process_single_file(data.sensor);
+
+		var timestamp_array = [];
+		for (var i=0;i<floor1data.length;++i)
+		{
+			var cur_time = floor1data[i]["Date/Time"];
+			if (timestamp_array.indexOf(cur_time)>=0)
+				continue;
+			timestamp_array.push(cur_time);
+		}
+		for (var i=0;i<floor2data.length;++i)
+		{
+			var cur_time = floor2data[i]["Date/Time"];
+			if (timestamp_array.indexOf(cur_time)>=0)
+				continue;
+			timestamp_array.push(cur_time);
+		}
+		for (var i=0;i<floor3data.length;++i)
+		{
+			var cur_time = floor3data[i]["Date/Time"];
+			if (timestamp_array.indexOf(cur_time)>=0)
+				continue;
+			timestamp_array.push(cur_time);
+		}
+		for (var i=0;i<generaldata.length;++i)
+		{
+			var cur_time = generaldata[i]["Date/Time"];
+			if (timestamp_array.indexOf(cur_time)>=0)
+				continue;
+			timestamp_array.push(cur_time);
+		}
+		for (var i=0;i<haziumdata.length;++i)
+		{
+			var cur_time = haziumdata[i]["Date/Time"];
+			if (timestamp_array.indexOf(cur_time)>=0)
+				continue;
+			timestamp_array.push(cur_time);
+		}
+		timestamp_array.sort();
+
+		var test = [];
+		for (var i=0;i<timestamp_array.length;++i)
+		{
+			var new_element = {};
+			new_element["Date/Time"] = timestamp_array[i];
+			for (var j=0;j<floor1data.length;++j)
+			{
+				if (floor1data[j]["Date/Time"] == timestamp_array[i])
+				{
+					for (key in floor1data[j])
+						new_element[key] = floor1data[j][key];
+					break;
+				}
+			}
+			for (var j=0;j<floor2data.length;++j)
+			{
+				if (floor2data[j]["Date/Time"] == timestamp_array[i])
+				{
+					for (key in floor2data[j])
+						new_element[key] = floor2data[j][key];
+					break;
+				}
+			}
+			for (var j=0;j<floor3data.length;++j)
+			{
+				if (floor3data[j]["Date/Time"] == timestamp_array[i])
+				{
+					for (key in floor3data[j])
+						new_element[key] = floor3data[j][key];
+					break;
+				}
+			}
+			for (var j=0;j<generaldata.length;++j)
+			{
+				if (generaldata[j]["Date/Time"] == timestamp_array[i])
+				{
+					for (key in generaldata[j])
+						new_element[key] = generaldata[j][key];
+					break;
+				}
+			}
+			for (var j=0;j<haziumdata.length;++j)
+			{
+				if (haziumdata[j]["Date/Time"] == timestamp_array[i])
+				{
+					for (key in haziumdata[j])
+						new_element[key] = haziumdata[j][key];
+				}
+			}
+			DATA_CENTER.original_data["bldg-MC2.csv"].push(new_element)
+		}
+
+		this.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set = this.cal_HVACzone_with_Haziumsenor_set();
+	},
+
 	cal_HVACzone_with_Haziumsenor_set:function(){
 		var data = DATA_CENTER.original_data["bldg-MC2.csv"];
 		var merged_zone_set = [];
 		for (var i=0;i<data.length;++i)
 		{
 			var one_frame = data[i];
-			var one_frame_zone_set = cal_Hazium_zone_in_one_frame(one_frame);
+			var one_frame_zone_set = this.cal_Hazium_zone_in_one_frame(one_frame);
 			for (var j=0;j<one_frame_zone_set.length;++j)
 			{
 				if (merged_zone_set.indexOf(one_frame_zone_set[j])<0)
@@ -665,7 +784,12 @@ var DATA_CENTER = {
 					console.warn("newly add hazium zone",one_frame_zone_set[j]);
 				}
 			}
-			function cal_Hazium_zone_in_one_frame(one_frame)
+			
+		}
+		return merged_zone_set;
+	},
+
+	cal_Hazium_zone_in_one_frame:function(one_frame)
 			{
 				var zone_set = [];
 				for (key in one_frame)
@@ -685,10 +809,9 @@ var DATA_CENTER = {
 
 				}
 				return zone_set;
-			}
-		}
-		return merged_zone_set;
-	},
+			},
+
+
 
 	merge_HVAC_data:function(){
 		DATA_CENTER.original_data["bldg-MC2.csv"] = [];
@@ -728,34 +851,36 @@ var DATA_CENTER = {
 	},
 
 	cal_HVAC_general:function(){
-		DATA_CENTER.derived_data["general-MC2.json"] = this._process_single_file("general-MC2.json");
+		DATA_CENTER.derived_data["general-MC2.json"] = this._process_single_file(DATA_CENTER.original_data["general-MC2.json"]);
 	},
 
 	cal_HVAC_Hazium:function(){
-		DATA_CENTER.derived_data["f1z8a-MC2.json"] = this._process_single_file("f1z8a-MC2.json");
-		DATA_CENTER.derived_data["f2z2-MC2.json"] = this._process_single_file("f2z2-MC2.json");
-		DATA_CENTER.derived_data["f2z4-MC2.json"] = this._process_single_file("f2z4-MC2.json");
-		DATA_CENTER.derived_data["f3z1-MC2.json"] = this._process_single_file("f3z1-MC2.json");
+		DATA_CENTER.derived_data["f1z8a-MC2.json"] = this._process_single_file(DATA_CENTER.original_data["f1z8a-MC2.json"]);
+		DATA_CENTER.derived_data["f2z2-MC2.json"] = this._process_single_file(DATA_CENTER.original_data["f2z2-MC2.json"]);
+		DATA_CENTER.derived_data["f2z4-MC2.json"] = this._process_single_file(DATA_CENTER.original_data["f2z4-MC2.json"]);
+		DATA_CENTER.derived_data["f3z1-MC2.json"] = this._process_single_file(DATA_CENTER.original_data["f3z1-MC2.json"]);
 	},
 
 	cal_HVAC_floor:function(){
-		DATA_CENTER.derived_data["floor1-MC2.json"] = this._process_single_file("floor1-MC2.json");
-		DATA_CENTER.derived_data["floor2-MC2.json"] = this._process_single_file("floor2-MC2.json");
-		DATA_CENTER.derived_data["floor3-MC2.json"] = this._process_single_file("floor3-MC2.json");
+		DATA_CENTER.derived_data["floor1-MC2.json"] = this._process_single_file(DATA_CENTER.original_data["floor1-MC2.json"]);
+		DATA_CENTER.derived_data["floor2-MC2.json"] = this._process_single_file(DATA_CENTER.original_data["floor2-MC2.json"]);
+		DATA_CENTER.derived_data["floor3-MC2.json"] = this._process_single_file(DATA_CENTER.original_data["floor3-MC2.json"]);
 	},
 
-	_process_single_file:function(filename)
+	_process_single_file:function(original_data)
 	{
-		var original_data = DATA_CENTER.original_data[filename];
 		var processed_data = [];
 		for (var i=0;i<original_data.length;++i)
 		{
-			var new_element = unify_HVAC_oneframe_data(original_data[i]);
+			var new_element = this.unify_HVAC_oneframe_data(original_data[i]);
 			processed_data.push(new_element);
 		}
 		return processed_data;
 
-		function unify_HVAC_oneframe_data(data)
+		
+	},
+
+	unify_HVAC_oneframe_data:function(data)
 		{
 			if (typeof (data.message)!="undefined")
 				var cur_data = data.message;
@@ -804,8 +929,7 @@ var DATA_CENTER = {
                 new_element[new_key] =+ cur_data[key];
 			}
 			return new_element;
-		}
-	},
+		},
 
 
 	initialize_loaddata:function(callback_function){
@@ -983,7 +1107,7 @@ var DATA_CENTER = {
                 this.v_stream = v_stream;
                 v_stream.onopen = function(e){
                 	console.log("Web socket open!");
-                    v_stream.send(JSON.stringify({state: "start", data: null}));
+                    v_stream.send(JSON.stringify({state: "start", data: "pkuvis"}));
                 };
                 v_stream.onclose = function(e){
                     console.log("Connection closed!");
@@ -997,13 +1121,16 @@ var DATA_CENTER = {
                                 that.add_traj_fix_data(t_d.data['data']);
                         	}
                         	else if(t_d.data['type'] == 'mobileprox') {
-                                    	that.add_traj_mobile_data(t_d.data['data']);
+                                that.add_traj_mobile_data(t_d.data['data']);
                         	}
-                        	else if(t_d.data['type'] == 'HVAC') {
-                                 console.log(t_d.data)
+                        	else if(t_d.data['type'] == 'sensor') {
+                                console.log(t_d.data)
+                                that.add_HVAC_streaming_data(t_d.data['data'],"sensor");
                         	}
                         	else if(t_d.data['type'] == 'bldg') {
                         		console.log(t_d.data)
+                        		that.add_HVAC_streaming_data(t_d.data['data'],"bldg");
+                        		/*
                         		 var tdata=[]
                         		 for(var key in t_d.data){
                         		 	if(key == 'bldg') continue
@@ -1031,21 +1158,22 @@ var DATA_CENTER = {
                         		 		}
                         		 	}
                         		 }
+                        		 */
 
                         	}
+                        	
                             //console.log(t_d.state, t_d.data);
                         break;
                         case "history":
                         	console.log(t_d)
                         	if(t_d.data['type'] == 'fixedprox'){
-                                    	that.add_traj_fix_data(t_d.data['data']);
+                                that.add_traj_fix_data(t_d.data['data']);
                         	}
                         	else if(t_d.data['type'] == 'mobileprox') {
-                                    	that.add_traj_mobile_data(t_d.data['data']);
+                                that.add_traj_mobile_data(t_d.data['data']);
                         	}
                         	else if(t_d.data['type'] == 'HVAC') {
-                        		//console.log(t_d.data)
-
+                        		that.add_HVAC_data(t_d.data['data']);
                         	}
 
 

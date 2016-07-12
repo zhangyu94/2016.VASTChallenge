@@ -695,8 +695,8 @@ var smallmaps_view = {
 						html:true,
 						title:function(){
 						   	var d = this.__data__;
-
-						   	var time=new Date(raw_timestamp)
+						   	
+						   	var time=new Date(DATA_CENTER.global_variable.current_display_time)
 						    var time_string = (time.getMonth()+1).toString() + "." + time.getDate().toString() + " " +
 						    				time.getHours().toString() + ":" + time.getMinutes().toString() + ":" + time.getSeconds().toString();
 
