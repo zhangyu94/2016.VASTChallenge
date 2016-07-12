@@ -69,6 +69,12 @@ var ganttchart_view = {
 
 		 pIDs.on("click", function(d) {
 		 	self.updateSelectPeople(d);
+		 	var selectedCardSet = DATA_CENTER.global_variable.selected_card_set;
+		 	if(selectedCardSet.indexOf(d) == -1){
+		 		selectedCardSet.push(d);
+		 	}
+		 	DATA_CENTER.set_global_variable('selected_card_set', selectedCardSet);
+		 	DATA_CENTER.set_global_variable('selected_card', d);
 		 	d3.selectAll(".pID").classed("selected", false);
 		 	d3.select(this).classed("selected",true);
 		 })

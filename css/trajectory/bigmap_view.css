@@ -42,6 +42,17 @@ circle[class~=click-highlight]{
     -webkit-border-radius: 8;
     -moz-border-radius: 8;
 }
+circle[class~=single-click-highlight]{
+    fill:blue;
+    stroke: blue;
+    animation-name: single-highlight-animation;
+    animation-duration:1s;
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+    stroke-width: 2px;
+    -webkit-border-radius: 8;
+    -moz-border-radius: 8;
+}
 rect[class~=click-highlight]{
 	fill: #769af6;
 	//stroke-width: 3;
@@ -77,6 +88,15 @@ circle[class~=warning-signal]{
     animation-timing-function:linear;
     animation-iteration-count:infinite;
 }
+@keyframes single-highlight-animation {
+    0% {}
+    50% {
+      stroke: blue;
+      fill: blue;
+      stroke-width: 3px;
+    }
+    100% {}
+}  
 @keyframes highlight-error-animation {
     0% {}
     50% {
