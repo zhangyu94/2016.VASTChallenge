@@ -5,7 +5,7 @@ function roomsExchange(){
 	var energyZone_to_proxZone=DATA_CENTER.global_variable['energyZone_to_proxZone']
 	//console.log(roomData)
 	for(var i in roomData){
-		if(roomData[i].proxZone==undefined) console.log(roomData[i])
+		if(roomData[i].proxZone==undefined||roomData[i].energyZone==undefined) continue
 		var proxZone='F'+'_'+roomData[i].floor+'_Z'+'_'+roomData[i].proxZone
 		var energyZone='F'+'_'+roomData[i].floor+'_Z'+'_'+roomData[i].energyZone
 		if(proxZone in proxZone_to_energyZone){

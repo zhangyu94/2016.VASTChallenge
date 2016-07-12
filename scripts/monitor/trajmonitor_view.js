@@ -113,6 +113,8 @@ var trajmonitor_view = {
         		}
 
         	}
+        	this.person_array=n_person_array
+        	console.log(n_person_array)
         	this.render(this.trajmonitor_view_DIV_ID)
         
         }
@@ -247,8 +249,8 @@ var trajmonitor_view = {
 	    		.style('fill',function (d) {
 
 			      	// console.log(d);
-			      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0]).brighter(0.2)
-			      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]).brighter(0.2);
+			      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0]).brighter(0)
+			      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]).brighter(0);
 	    		})
 
 	    		// mobile bar
@@ -274,8 +276,8 @@ var trajmonitor_view = {
 		    		.style('fill',function (d) {
 
 				      	// console.log(d);
-				      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0],1).brighter(0.2)
-				      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1],1).brighter(0.2);
+				      	if(d.zone=="Server Room") return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[0]).brighter(0)
+				      	return d3.rgb(DATA_CENTER.GLOBAL_STATIC.zone_Color_Array[(+d.zone)-1]).brighter(0);
 		    		})
 		    		.attr('stroke','black')
 		    		.attr('stoke-width','1px')

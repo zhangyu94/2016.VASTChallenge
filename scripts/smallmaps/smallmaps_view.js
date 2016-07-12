@@ -75,6 +75,33 @@ var smallmaps_view = {
 
         }
 
+        //if ()
+
+
+
+        if (message == "push:new_hazium_zone")
+        {
+        	var new_hazium_zone = data;
+        	console.log("new_hazium_zone",new_hazium_zone)
+
+        	d3.selectAll(".ordinary-smallmaps-HVACzone-circle")
+        		.classed("hazium-smallmaps-HVACzone-circle",
+        			function(d,i){
+        				if (d.name == new_hazium_zone){
+        					return true;
+        				}
+        				return false;
+        			})
+        		.classed("ordinary-smallmaps-HVACzone-circle",
+        			function(d,i){
+        				if (d.name == new_hazium_zone){
+        					return false;
+        				}
+        				return true;
+        			})
+
+        }
+
 	},
 	render:function(divID)
 	{
@@ -550,6 +577,8 @@ var smallmaps_view = {
 	//data的数据格式是一个数组，数组中每个元素的样子是{name:...,value:...}
 	_render_radarchart:function(data,glyph_name,raw_timestamp,class_label,center_x,center_y,radius,innerRadius)
 	{
+
+
 
 
 

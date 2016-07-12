@@ -75,7 +75,7 @@ var histogram_view = {
 		})
 		.on('click', function(d,i){
 			d3.selectAll('.sum-legend').classed('click-highlight', false);
-			DATA_CENTER.global_variable.certainty_encode = true;
+			DATA_CENTER.set_global_variable('certainty_encode', true);
 			if(d3.select('.sum-legend-label-certainty').classed('click-highlight')){
 				console.log('-----------un highlight----------');
 				d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', false);
@@ -93,7 +93,7 @@ var histogram_view = {
 		.attr('y', function(d,i){
 			return legendLabel1 + legendHeight/2 + 2;
 		})
-		.text('certainty Legend')
+		.text('certainty')
 		.on('mouseoover', function(d,i){
 			d3.select('.sum-legend-label-certainty').classed('mouseover-highlight', true);
 		})
@@ -102,7 +102,7 @@ var histogram_view = {
 		})
 		.on('click', function(d,i){
 			d3.selectAll('.sum-legend').classed('click-highlight', false);
-			DATA_CENTER.global_variable.certainty_encode = true;
+			DATA_CENTER.set_global_variable('certainty_encode', true);
 			if(d3.select(this).classed('click-highlight')){
 				console.log('-----------un highlight----------');
 				d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', false);
@@ -140,7 +140,7 @@ var histogram_view = {
 			d3.selectAll('.sum-legend-label-work').classed('mouseover-highlight', false);
 		})
 		.on('click', function(d,i){
-			DATA_CENTER.global_variable.certainty_encode = false;
+			DATA_CENTER.set_global_variable('certainty_encode', false);
 			d3.selectAll('.sum-legend').classed('click-highlight', false);
 			if(d3.select(this).classed('click-highlight')){
 				d3.selectAll('.sum-legend-label-work').classed('click-highlight', false);
@@ -157,7 +157,7 @@ var histogram_view = {
 		.attr('y', function(d,i){
 			return legendLabel2 + legendHeight/2 + 2;
 		})
-		.text('department Legend')
+		.text('department')
 		.on('mouseoover', function(d,i){
 			d3.select('.sum-legend-label-work').classed('mouseover-highlight', true);
 		})
@@ -165,7 +165,7 @@ var histogram_view = {
 			d3.select('.sum-legend-label-work').classed('mouseover-highlight', false);
 		})
 		.on('click', function(d,i){
-			DATA_CENTER.global_variable.certainty_encode = false;
+			DATA_CENTER.set_global_variable('certainty_encode', false);
 			console.log('certainty', DATA_CENTER.global_variable.certainty_encode);
 			console.log('enable_alert', DATA_CENTER.global_variable.enable_alert);
 			d3.selectAll('.sum-legend').classed('click-highlight', false);
@@ -177,7 +177,7 @@ var histogram_view = {
 		});
 		//-----------------------------------------------------------------
 		svg.append('rect')
-		.attr('class', 'sum-legend sum-legend-rect sum-legend-label-alert')
+		.attr('class', 'alert-legend sum-legend-rect sum-legend-label-alert')
 		.attr('id', function(d,i){
 			return 'legend-label-rect-alert';
 		})
@@ -207,14 +207,14 @@ var histogram_view = {
 			console.log(d3.select(this).classed('click-highlight'));
 			if(d3.select(this).classed('click-highlight')){
 				d3.selectAll('.sum-legend-label-alert').classed('click-highlight', false);
-				DATA_CENTER.global_variable.enable_alert = false;
+				DATA_CENTER.set_global_variable('enable_alert', false);
 			}else{
 				d3.selectAll('.sum-legend-label-alert').classed('click-highlight', true);
-				DATA_CENTER.global_variable.enable_alert = true;
+				DATA_CENTER.set_global_variable('enable_alert', true);
 			}
 		});
 		svg.append('text')
-		.attr('class', 'sum-legend sum-legend-label-alert')
+		.attr('class', 'alert-legend sum-legend-label-alert')
 		.attr('id', 'legend-label-text-alert')
 		.attr('x', function(d,i){
 			return legendLabelX;
@@ -222,7 +222,7 @@ var histogram_view = {
 		.attr('y', function(d,i){
 			return legendLabel3 + legendHeight/2 + 2;
 		})
-		.text('alert Legend')
+		.text('alert')
 		.on('mouseoover', function(d,i){
 			d3.select('.sum-legend-label-alert').classed('mouseover-highlight', true);
 		})
@@ -232,10 +232,10 @@ var histogram_view = {
 		.on('click', function(d,i){
 			if(d3.select(this).classed('click-highlight')){
 				d3.selectAll('.sum-legend-label-alert').classed('click-highlight', false);
-				DATA_CENTER.global_variable.enable_alert = false;
+				DATA_CENTER.set_global_variable('enable_alert', false);
 			}else{
 				d3.selectAll('.sum-legend-label-alert').classed('click-highlight', true);
-				DATA_CENTER.global_variable.enable_alert = true;	
+				DATA_CENTER.set_global_variable('enable_alert', true);
 			}
 		});
 		//默认情况的设置

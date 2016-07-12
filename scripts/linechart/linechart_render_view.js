@@ -50,6 +50,7 @@ var linechart_render_view = {
                 {
                     console.warn("undefined chart",cur_attr_name)
                 }
+                else
                 {
                     chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
                     if (typeof(current_display_time)!=undefined)
@@ -123,6 +124,83 @@ var linechart_render_view = {
             }
         }
 
+        if (message == "set:latest_HVAC_merged_frame")
+        {
+            var latest_HVAC_merged_frame = DATA_CENTER.global_variable.latest_HVAC_merged_frame;
+            console.log("latest_HVAC_merged_frame",latest_HVAC_merged_frame);
+
+            
+            var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
+            for (var i=0;i<selected_attr_set.length;++i)//循环所有当前展示的属性，检查新时间戳中这些属性的值
+            {
+                var cur_attr_name = selected_attr_set[i];
+                var cur_linecharts_id = "HVAClinechart-linechart-span-div-"+this._compress_string(cur_attr_name);
+
+                var chart = $("#"+cur_linecharts_id).highcharts();    // Highcharts构造函数
+                console.log(chart)
+                if (typeof(chart)=="undefined")
+                {
+                    console.warn("undefined chart",cur_attr_name)
+                }
+                else
+                {      
+                    //新增的时间戳
+                    var new_x = (new Date(latest_HVAC_merged_frame["Date/Time"])).valueOf();
+                            
+                    var attr_type = HVACgraph_attrbtn_view._cal_attr_type(cur_attr_name);
+                    if (attr_type == "building_attr")
+                    {
+                        var selected_building_set = DATA_CENTER.global_variable.selected_building_set;
+                        for (var j=0;j<selected_building_set.length;++j)
+                        {
+                            //var cur_line_id = selected_building_set[j]+" "+cur_attr_name;
+                            var cur_line_id = cur_attr_name;
+                            if (typeof(chart.get(cur_line_id))!="null")
+                            {
+                                var series = chart.get(cur_line_id);
+                                var new_y = DATA_CENTER.global_variable.latest_HVAC_merged_frame[cur_line_id];
+                                console.log(chart,cur_line_id,series,new_x,new_y)
+                                //series.addPoint([new_x, new_y], true, true);
+                            }
+                        }
+                    }
+                    else if (attr_type == "floor_attr")
+                    {
+                        var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
+                        for (var j=0;j<selected_floor_set.length;++j)
+                        {
+                            var cur_line_id = selected_floor_set[j]+" "+cur_attr_name;
+                            if (typeof(chart.get(cur_line_id))!="null")
+                            {
+                                var series = chart.get(cur_line_id);
+                                var new_y = DATA_CENTER.global_variable.latest_HVAC_merged_frame[cur_line_id];
+                                console.log(chart,cur_line_id,series,new_x,new_y)
+                                //series.addPoint([new_x, new_y], true, true);
+                            }
+                        }
+                    }
+                    else if ( (attr_type == "HVACzone_oridinary_attr") || (attr_type == "HVACzone_hazium") )
+                    {
+                        var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
+                        for (var j=0;j<selected_HVACzone_set.length;++j)
+                        {
+                            var cur_line_id = selected_HVACzone_set[j]+" "+cur_attr_name;
+                            if (typeof(chart.get(cur_line_id))!="null")
+                            {
+                                var series = chart.get(cur_line_id);
+                                var new_y = DATA_CENTER.global_variable.latest_HVAC_merged_frame[cur_line_id];
+                                console.log(chart,cur_line_id,series,new_x,new_y)
+                                //series.addPoint([new_x, new_y], true, true);
+                            }
+                            
+                        }
+                    }
+
+                
+                }
+            }
+          
+        }
 
 
 
@@ -232,7 +310,9 @@ var linechart_render_view = {
                             var ysetAxis_attr_name = [attr];
                             var xysetAxis_data = linechart_render_view._get_xysetAxis_data(ysetAxis_attr_name);
                             console.log(xysetAxis_data[0])
+                            console.log("chart id",attr)
                             var chart = $(this).highcharts().addSeries({
+                                id:attr,
                                 name: attr,
                                 data: xysetAxis_data[0],
                                 marker:{
@@ -489,7 +569,7 @@ var linechart_render_view = {
                 xysetAxis_data[i].push(temp)
             }             
         }
-        console.log(xysetAxis_data)
+        //console.log(xysetAxis_data)
         return xysetAxis_data;
     },
 
@@ -516,9 +596,10 @@ var linechart_render_view = {
 
 
             var data = xysetAxis_data[i];
-
-            data.push
+            console.log("chart id",attr_name)
+            //data.push
             series_data.push({
+                id: attr_name,
                 name: attr_name,
                 data: data,
                 id: attr_name,
@@ -560,7 +641,7 @@ var linechart_render_view = {
         }
 
         d3.select("#"+divID).selectAll("*").remove();
-        console.log(series_data)
+        //console.log(series_data)
         var div = $("#"+divID);
         Highcharts.setOptions({ global: { useUTC: false } });//使用本地时间
         div.highcharts({
