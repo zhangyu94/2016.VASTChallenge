@@ -10,6 +10,8 @@ var ganttchart_view = {
 	zoneColorScale:null,
 	obsUpdate:function(message, data)
 	{
+		var self = this;
+		console.log(message);
 		//console.log('dataFormat')
 		//console.log(data)
 		if (message == "display:ganttchart_view")
@@ -22,7 +24,13 @@ var ganttchart_view = {
 		{
 		    $("#"+this.ganttchart_view_DIV_ID).css("display","none");
 		}
-
+		if(message == 'set:selected_card' || message == 'set:selected_card_set')
+		{
+			var selectedCard = DATA_CENTER.global_variable.selected_card;
+			if(selectedCard != undefined){
+				self.updateSelectPeople(selectedCard);
+			}
+		}
 	},
 	render:function(divID)
 	{
@@ -144,7 +152,6 @@ var ganttchart_view = {
 		d3.select("#"+divID).selectAll("*").remove();
 		var ganttDiv = $("#"+divID);
 		ganttDiv.append("<div id='trajectory-ganntchart-main-head'></div><div id='trajectory-ganntchart-main-body'></div>");
-
 	},
 	update_ganttchart:function() {
 		var self = this;
