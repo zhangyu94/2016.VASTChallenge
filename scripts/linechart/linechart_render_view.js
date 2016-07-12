@@ -137,7 +137,6 @@ var linechart_render_view = {
                 var cur_linecharts_id = "HVAClinechart-linechart-span-div-"+this._compress_string(cur_attr_name);
 
                 var chart = $("#"+cur_linecharts_id).highcharts();    // Highcharts构造函数
-                console.log(chart)
                 if (typeof(chart)=="undefined")
                 {
                     console.warn("undefined chart",cur_attr_name)
@@ -159,8 +158,8 @@ var linechart_render_view = {
                             {
                                 var series = chart.get(cur_line_id);
                                 var new_y = DATA_CENTER.global_variable.latest_HVAC_merged_frame[cur_line_id];
-                                console.log(chart,cur_line_id,series,new_x,new_y)
-                                //series.addPoint([new_x, new_y], true, true);
+                                console.log(cur_line_id,series,new_x,new_y)
+                                series.addPoint([new_x, new_y], true, true);
                             }
                         }
                     }
@@ -174,8 +173,8 @@ var linechart_render_view = {
                             {
                                 var series = chart.get(cur_line_id);
                                 var new_y = DATA_CENTER.global_variable.latest_HVAC_merged_frame[cur_line_id];
-                                console.log(chart,cur_line_id,series,new_x,new_y)
-                                //series.addPoint([new_x, new_y], true, true);
+                                console.log(cur_line_id,series,new_x,new_y)
+                                series.addPoint([new_x, new_y], true, true);
                             }
                         }
                     }
@@ -189,8 +188,8 @@ var linechart_render_view = {
                             {
                                 var series = chart.get(cur_line_id);
                                 var new_y = DATA_CENTER.global_variable.latest_HVAC_merged_frame[cur_line_id];
-                                console.log(chart,cur_line_id,series,new_x,new_y)
-                                //series.addPoint([new_x, new_y], true, true);
+                                console.log(cur_line_id,series,new_x,new_y)
+                                series.addPoint([new_x, new_y], true, true);
                             }
                             
                         }
