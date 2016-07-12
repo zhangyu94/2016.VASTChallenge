@@ -42,10 +42,6 @@ var timeline_view = {
 
 		if (message == "set:current_display_time")
 		{
-<<<<<<< HEAD
-
-=======
->>>>>>> 62e5121fe099fcdc3c151e8688a40c1300db7afe
 	        var current_display_time = DATA_CENTER.global_variable.current_display_time;
 	        var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
 	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
@@ -494,16 +490,11 @@ var timeline_view = {
                 		DATA_CENTER.set_global_variable("current_display_time",aligned_time);
                 	},
 
-                    selection:function(e){
-<<<<<<< HEAD
-                    	
+                    selection:function(e){                    	
                  			
 	                    	if (typeof(e.resetSelectionSelection)!="undefined")
-=======
-
 
 	                    	if (typeof(e.resetSelection)!="undefined")
->>>>>>> 62e5121fe099fcdc3c151e8688a40c1300db7afe
 	                    	{
 	                    		if (e.resetSelection == true)//如果是按了reset键
 	                    		{
