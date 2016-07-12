@@ -111,6 +111,7 @@ var bigmap_view = {
 	    	var floorNum = d.floor;
 	 		var zoneNum = d.proxZone;
 	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
+	    	console.log(d);
 	    	d3.selectAll('.' + zoneClass)
 	    	.classed('mouseover-highlight', true);
 	    })
@@ -187,6 +188,7 @@ var bigmap_view = {
 	 		var floorNum = d.floor;
 	 		var zoneNum = d.proxZone;
 	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
+	    	console.log(d);
 	    	d3.selectAll('.' + zoneClass)
 	    	.classed('mouseover-highlight', true);
 	    })
