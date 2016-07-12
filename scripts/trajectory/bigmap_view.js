@@ -99,7 +99,12 @@ var bigmap_view = {
 
 	    roomG.append('rect')
 	    .attr('class',function(d,i){
-	    	return 'room-rect ' + 'F_' + d.floor + '_Z_'+d.proxZone; 
+	    	var zoneLocClass = 'F_' + d.floor + '_Z_' + d.proxZone;
+	    	var selectedProxzoneSet = DATA_CENTER.global_variable.selected_proxzone_set;
+	    	if(selectedProxzoneSet.indexOf(zoneLocClass) != -1){
+	    		zoneLocClass = 'click-highlight ' + zoneLocClass;
+	    	}
+	    	return 'room-rect ' + zoneLocClass;
 	    })
 	    .attr('x', function(d,i){
 	    	return xScale(d.x);
@@ -137,16 +142,29 @@ var bigmap_view = {
 	 		var zoneNum = d.proxZone;
 	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	var zoneNodeClass = 'zone-node-' + d.proxZone;
+	    	var selectedEnergyZoneSet = DATA_CENTER.global_variable.proxZone_to_energyZone[zoneClass];
+		    var selectedHVACZoneSet = DATA_CENTER.global_variable.selected_HVACzone_set;
 	    	if(!d3.select(this).classed('click-highlight')){
 	    		d3.selectAll('.' + zoneClass)
 	    		.classed('click-highlight', true);
 	    		d3.selectAll('.' + zoneNodeClass)
 	    		.classed('click-highlight', true);
+		    	for(var j = 0;j < selectedEnergyZoneSet.length;j++){
+		    		selectedHVACZoneSet.push(selectedEnergyZoneSet[j]);
+		    	}
+		    	DATA_CENTER.set_global_variable('selected_HVACzone_set', selectedHVACZoneSet);
 	    	}else{
 	    		d3.selectAll('.' + zoneClass)
 	    		.classed('click-highlight', false);
 	    		d3.selectAll('.' + zoneNodeClass)
 	    		.classed('click-highlight', false);
+	    		for(var j = 0;j < selectedEnergyZoneSet.length;j++){
+		    		var eleIndex = selectedHVACZoneSet.indexOf(selectedEnergyZoneSet[j]);
+		    		if(eleIndex != -1){
+		    			selectedHVACZoneSet.splice(eleIndex, 1);
+		    		}
+		    	}
+		    	DATA_CENTER.set_global_variable('selected_HVACzone_set', selectedHVACZoneSet);
 	    	}
 	    });
 	    /*roomG.append('text')
@@ -172,7 +190,12 @@ var bigmap_view = {
 
 		singleroomG.append('rect')
 		.attr('class', function(d,i){
-			return 'single-room ' + 'single-room-zone-'+d.proxZone + ' F_' +d.floor +'_Z_'+ d.proxZone;
+			var zoneLocClass = 'F_' +d.floor +'_Z_'+ d.proxZone;
+			var selectedProxzoneSet = DATA_CENTER.global_variable.selected_proxzone_set;
+	    	if(selectedProxzoneSet.indexOf(zoneLocClass) != -1){
+	    		zoneLocClass = 'click-highlight ' + zoneLocClass;
+	    	}
+			return 'single-room ' + 'single-room-zone-'+d.proxZone + ' ' + zoneLocClass;
 		})
 		.attr('id', function(d,i){
 			return 'room-' + d.doornum;
@@ -198,7 +221,6 @@ var bigmap_view = {
 	 		var floorNum = d.floor;
 	 		var zoneNum = d.proxZone;
 	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
-	    	console.log(d);
 	    	d3.selectAll('.' + zoneClass)
 	    	.classed('mouseover-highlight', true);
 	    })
@@ -214,16 +236,29 @@ var bigmap_view = {
 	    	var zoneNum = d.proxZone;
 	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	var zoneNodeClass = 'zone-node-' + d.proxZone;
+	    	var selectedEnergyZoneSet = DATA_CENTER.global_variable.proxZone_to_energyZone[zoneClass];
+		    var selectedHVACZoneSet = DATA_CENTER.global_variable.selected_HVACzone_set;
 	    	if(d3.select(this).classed('click-highlight')){
 		    	d3.selectAll('.' + zoneClass)
 		    	.classed('click-highlight', false);	 
 		    	d3.selectAll('.' + zoneNodeClass)
-	    		.classed('click-highlight', false);   		
+	    		.classed('click-highlight', false);  
+	    		for(var j = 0;j < selectedEnergyZoneSet.length;j++){
+		    		selectedHVACZoneSet.push(selectedEnergyZoneSet[j]);
+		    	}
+		    	DATA_CENTER.set_global_variable('selected_HVACzone_set', selectedHVACZoneSet); 		
 	    	}else{
 	    		d3.selectAll('.' + zoneClass)
 		    	.classed('click-highlight', true);	 
 		    	d3.selectAll('.' + zoneNodeClass)
 	    		.classed('click-highlight', true); 
+	    		for(var j = 0;j < selectedEnergyZoneSet.length;j++){
+		    		var eleIndex = selectedHVACZoneSet.indexOf(selectedEnergyZoneSet[j]);
+		    		if(eleIndex != -1){
+		    			selectedHVACZoneSet.splice(eleIndex, 1);
+		    		}
+		    	}
+		    	DATA_CENTER.set_global_variable('selected_HVACzone_set', selectedHVACZoneSet);
 	    	}
 	    });
 	    
