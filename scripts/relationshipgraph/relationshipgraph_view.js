@@ -215,9 +215,8 @@ var relationshipgraph_view = {
 	   
 	        node_g = node.enter().append('g')
 	           .attr("class","node-relation")
-	           .call(force.drag)
-	           .on('mouseover', connectedNodes) //Added code
-	           .on('mouseout', showAllnodes); 
+	           .call(force.drag);
+	         //  .on('click', connectedNodes); 
 
 	        node_g.append("circle")
 	           .attr("r",3)
@@ -250,6 +249,7 @@ var relationshipgraph_view = {
 	        	force.tick();
 	        force.stop();
 
+	        var toggle = 0;
 			//Create an array logging what is connected to what
 			var linkedByIndex = {};
 			for (var i = 0; i < nodes.length; i++) {
@@ -264,6 +264,7 @@ var relationshipgraph_view = {
 			    return linkedByIndex[a.id + "," + b.id];
 			}
 			function connectedNodes() {
+				if (toggle == 0) {
 			        //Reduce the opacity of all but the neighbouring nodes
 			        d = d3.select(this).node().__data__;
 			        node.style("opacity", function (o) {
@@ -275,12 +276,15 @@ var relationshipgraph_view = {
 			        linkText.style("fill",function (o) {
 			            return d.id==o.source.id | d.id==o.target.id ? "grey" : "none";
 			        });
-			}
-
-			function showAllnodes() {
-		        node.style("opacity", 1);
-		        link.style("opacity", .2);
-		        linkText.style("fill", "none");
+			        toggle = 1;
+			    }
+			    else {
+			        //Put them back to opacity=1
+			        node.style("opacity", 1);
+			        link.style("opacity", .2);
+			        linkText.style("fill", "none");
+			        toggle = 0;
+			    }
 			}
 
 	     function tick() {

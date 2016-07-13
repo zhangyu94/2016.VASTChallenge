@@ -345,8 +345,8 @@ var DATA_CENTER = {
 				type:["air"],
 			},
 			"Equipment Power":{
-				abbreviation:"total power",
-				lv2_abbreviation:"all pwr",
+				abbreviation:"equipment power",
+				lv2_abbreviation:"equipment pwr",
 				type:["electricity"],
 			},
 			"Lights Power":{
@@ -562,7 +562,7 @@ var DATA_CENTER = {
 		}
 		fixR[fixR.length-1].endtime = fixR[fixR.length-1].timestamp;
 	},
-	add_traj_fix_data:function(data, warning = false) {
+	add_traj_fix_data:function(data, warning = true) {
 		var person = DATA_CENTER.derived_data['person'];
 		var that = this;
 		for(var i=0;i<data.length;i++) {
@@ -670,7 +670,7 @@ var DATA_CENTER = {
 		//console.log("new streaming data",processed_data);
 
 		var latest_HVAC_merged_frame = DATA_CENTER.global_variable.latest_HVAC_merged_frame;
-		
+
 		if (typeof(latest_HVAC_merged_frame)=="undefined")//第一次接受streaming时
 		{
 			//console.log("reach 669",latest_HVAC_merged_frame_timestamp,cur_frame_timestamp)
@@ -720,7 +720,7 @@ var DATA_CENTER = {
 		{
 			console.warn("error:old frame comes later than new frame")
 		}
-	
+
 	/*
 		var verifying_data_frame = DATA_CENTER.original_data["bldg-MC2.csv"][0];
 		for (key in verifying_data_frame)
@@ -853,7 +853,7 @@ var DATA_CENTER = {
 					console.warn("newly add hazium zone",one_frame_zone_set[j]);
 				}
 			}
-			
+
 		}
 		return merged_zone_set;
 	},
@@ -946,7 +946,7 @@ var DATA_CENTER = {
 		}
 		return processed_data;
 
-		
+
 	},
 
 	unify_HVAC_oneframe_data:function(data)
@@ -1200,7 +1200,7 @@ var DATA_CENTER = {
                         	else if(t_d.data['type'] == 'bldg') {
                         		that.add_HVAC_streaming_data(t_d.data,"bldg");
                         	}
-                        	
+
                             //console.log(t_d.state, t_d.data);
                         break;
                         case "history":

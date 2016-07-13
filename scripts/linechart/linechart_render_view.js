@@ -325,7 +325,7 @@ var linechart_render_view = {
                                     }
 
                                 },
-                                
+                                /*
                                 zones:[
                                 {
                                     value: average-sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
@@ -340,7 +340,7 @@ var linechart_render_view = {
                                 }
                                 
                                 ]
-                                
+                                */
                             })
 
                         }
@@ -541,7 +541,7 @@ var linechart_render_view = {
                 var x_value = new Date(data_set[i][j][xAxis_attr_name]);
                 var x_value = x_value.getTime();
 
-                /*
+                
                 var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(x_value,yAxis_attr_name_set[i],y_value);
                 var color = '#7cb5ec'
                 if  (normalized_value > HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD)
@@ -549,15 +549,15 @@ var linechart_render_view = {
                     color = "#FF0000"
                     console.warn("warning")
                 }
-                */
+                
                 var temp = [x_value,y_value];
-                /*
+                
                 var temp = {
                     x:x_value,
                     y:y_value,
                     color:color,
                 };
-                */
+                
 
                 xysetAxis_data[i].push(temp)
             }             
@@ -612,7 +612,7 @@ var linechart_render_view = {
                     }
 
                 },
-                
+                /*
                 zones:[
                 {
                     value: average-sigma*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD,
@@ -625,7 +625,7 @@ var linechart_render_view = {
                 {
                     color: "red",
                 }],
-                
+                */
 
                 lineWidth: 0.5,
 

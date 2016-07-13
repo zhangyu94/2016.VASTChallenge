@@ -15,6 +15,7 @@ var trajmonitor_view = {
             this.startTime=new Date(timeRange.min)
         	this.endTime=new Date(timeRange.max)
         	var person = DATA_CENTER.derived_data['person']
+        	this.person_array=[]
         	for(var p in person){
         		this.person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
         	}
@@ -128,6 +129,7 @@ var trajmonitor_view = {
         	}
         
         }
+        
 	},
 	render:function(divID)
 	{

@@ -6,7 +6,7 @@ var HVACmonitor_view = {
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"HVACmonitor-radarchart_glyph-div",
 
-	ABNORMAL_VALUE_THRESHOLD:3,//归一化以后的异常阈值
+	ABNORMAL_VALUE_THRESHOLD:/*0.25*/1.5,//归一化以后的异常阈值
 
 	ATTRIBUTE_DOT_RADIUS :6,
 	RADARCHART_GLYPH_RADIUS :15,
@@ -336,6 +336,7 @@ var HVACmonitor_view = {
 	},
 
 	//('2016/5/31 16:40','HVAC Electric Demand Power',3)
+/*
 	abnormal_degree:function(time,name,value){
 		var start_time_index = timeline_view
 			._binary_search(DATA_CENTER.original_data["bldg-MC2.csv"],"Date/Time",time-5*60*1000);
@@ -406,12 +407,6 @@ var HVACmonitor_view = {
 	                    sum=(data[name][nowTime].value+data[name][timeList[index+1]].value+data[name][timeList[index-1]].value)/3
 	                }
 	                var temp=value-sum
-	                /*if(Math.abs(temp)<data[name][nowTime].variance*5){
-	                    return true;
-	                }
-	                else{
-	                    return false;
-	                }*/
 	                if (data[name][nowTime].variance!=0)
 	                    return Math.abs(temp)/Math.sqrt(data[name][nowTime].variance)
 	                else 
@@ -435,6 +430,124 @@ var HVACmonitor_view = {
 	    }
 	    
 	}
+	*/
+	abnormal_degree:function(time,name,value){
+		//console.log(name)
+		//获取当前数据的前后两个数据
+		var start_time_index = timeline_view
+			._binary_search(DATA_CENTER.original_data["bldg-MC2.csv"],"Date/Time",time-5*60*1000);
+		var start_time_value = DATA_CENTER.original_data["bldg-MC2.csv"][start_time_index][name];
+		var end_time_index = timeline_view
+			._binary_search(DATA_CENTER.original_data["bldg-MC2.csv"],"Date/Time",time+5*60*1000);
+		var end_time_value = DATA_CENTER.original_data["bldg-MC2.csv"][end_time_index][name];
+
+	    //console.log(time)
+	   // time='2016/5/31 16:40'
+	    //name='F_2_Z_2 Hazium Concentration'
+	    var data = DATA_CENTER.derived_data["patternChange.json"];
+	    //aabbcc=data
+	    //console.log(data)
+
+	    //var newTime=Date.parse(new Date())
+	    var time=new Date(time)
+	    var temp=[]
+	    temp.push(time.getFullYear().toString())
+	    temp.push((time.getMonth()+1).toString())
+	    temp.push(time.getDate().toString())
+	    temp.push(time.getHours().toString())
+	    temp.push((Math.floor(time.getMinutes()/5)*5).toString())
+
+	    hazium=name.substring(8,14)
+	    //如果是hazium区别对待
+	    for(var i=1;i<temp.length;i++){
+	        if(temp[i].length==1){
+	            temp[i]="0"+temp[i]
+	        }
+	    }
+
+	    time=temp[0]+"/"+temp[1]+"/"+temp[2]+" "+temp[3]+":"+temp[4]
+	    date=time.substring(0,10)//获取日期
+	    //console.log(date)
+	    dataList=['2016/05/31','2016/06/01','2016/06/02','2016/06/03','2016/06/06','2016/06/07','2016/06/08','2016/06/09','2016/06/10','2016/06/13']
+	    
+	    //console.log(data[name])
+
+	    if(data[name]){
+	    	var flag=0
+	    	//如果在制定的日期范围内再和模板进行对比
+	        for(var k=0;k<dataList.length;k++){
+	            if(dataList[k]==date){
+	                flag=1
+	                break
+	            }
+	        }
+	        if(flag==1){
+	        	var nowTime=time.substring(11)+":00"
+	        	nowTime=="21:45:00"
+	     	  	//使用模板时间减去，实际的值周围的3个值的平均
+	        	var temp=data[name][nowTime].value-(value+start_time_value+end_time_value)/3
+	        	/*if(Math.abs(temp)<data[name][nowTime].variance*5){
+	        	    return true;
+	        	}
+	        	else{
+	        	    return false;
+	        	}*/
+	        	//console.log(time)
+	        	var bbb
+	        	/*if (data[name][nowTime].variance!=0)
+	        		//bbb=Math.abs(temp)/data[name][nowTime].variance
+	        		bbb=Math.abs(temp)/Math.sqrt(data[name][nowTime].variance)
+
+	        		if(data[name][nowTime].variance>1){
+	        			bbb=Math.abs(temp)/Math.sqrt(data[name][nowTime].variance)
+	        		}
+	        		else{
+	        			bbb=Math.abs(temp)/data[name][nowTime].variance
+	        		}
+	        	else */
+	        	if(data[name][nowTime].value==0){
+	        		if(value==0){
+	        			bbb=0
+	        		}
+	        		else{
+	        			bbb=Math.abs(temp)/value
+	        		}
+	        	}
+	        	else{
+	        		bbb=Math.abs(temp)/data[name][nowTime].value
+	        	}
+	        	/*console.log(time)
+	        	if(time=="2016/06/12 05:20"){
+	        			console.log(time)
+	        			console.log(nowTime)
+	        			console.log(value)
+	        			console.log(data[name][nowTime].value)
+	        		 	console.log(Math.abs(temp))
+	        			console.log(bbb)
+	        	}*/
+	        	return bbb
+	        }
+	        else{
+	        	//如果不在这几个日期范围内则认为是正常的
+	        	//console.log(date)
+	        	return 0
+	        }
+	    }
+	    else if(hazium="Hazium"){
+	        if(value-0.647956659226>0){
+	            return (value-0.647956659226)/Math.sqrt(1.57175094288)
+	        }
+	        else{
+	            return 0
+	        }
+	    }
+	    else{
+	        //如果出现了一个没有存在过的指标则警报
+	        return 2*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD;
+	    }   
+	}
+
+
 
 	/*
 	is_abnormal:function(time,name,value){
