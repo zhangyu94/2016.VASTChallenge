@@ -77,10 +77,8 @@ var histogram_view = {
 			d3.selectAll('.sum-legend').classed('click-highlight', false);
 			DATA_CENTER.set_global_variable('certainty_encode', true);
 			if(d3.select('.sum-legend-label-certainty').classed('click-highlight')){
-				console.log('-----------un highlight----------');
 				d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', false);
 			}else{
-				console.log('-----------highlight----------');
 				d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', true);
 			}
 		});
@@ -104,10 +102,8 @@ var histogram_view = {
 			d3.selectAll('.sum-legend').classed('click-highlight', false);
 			DATA_CENTER.set_global_variable('certainty_encode', true);
 			if(d3.select(this).classed('click-highlight')){
-				console.log('-----------un highlight----------');
 				d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', false);
 			}else{
-				console.log('-----------highlight----------');
 				d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', true);	
 			}
 		});
@@ -166,8 +162,6 @@ var histogram_view = {
 		})
 		.on('click', function(d,i){
 			DATA_CENTER.set_global_variable('certainty_encode', false);
-			console.log('certainty', DATA_CENTER.global_variable.certainty_encode);
-			console.log('enable_alert', DATA_CENTER.global_variable.enable_alert);
 			d3.selectAll('.sum-legend').classed('click-highlight', false);
 			if(d3.select(this).classed('click-highlight')){
 				d3.selectAll('.sum-legend-label-work').classed('click-highlight', false);
@@ -204,7 +198,6 @@ var histogram_view = {
 			d3.selectAll('.sum-legend-label-alert').classed('mouseover-highlight', false);
 		})
 		.on('click', function(d,i){
-			console.log(d3.select(this).classed('click-highlight'));
 			if(d3.select(this).classed('click-highlight')){
 				d3.selectAll('.sum-legend-label-alert').classed('click-highlight', false);
 				DATA_CENTER.set_global_variable('enable_alert', false);
