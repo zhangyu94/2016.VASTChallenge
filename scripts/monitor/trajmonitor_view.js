@@ -69,6 +69,54 @@ var trajmonitor_view = {
         	this.render(this.trajmonitor_view_DIV_ID)
         
         }
+        if (message == "set:selected_proxzone_set"){
+        	var n_person_array=[]
+        	console.log.log(DATA_CENTER.global_variable.selected_proxzone_set)
+        	var sps_proxzone_set= DATA_CENTER.global_variable.selected_proxzone_set
+        	var n_person_array=[]
+        	if(sps_proxzone_set.length==0){
+
+        	}
+        	else {
+
+        		this.person_array=[]
+        		var person =DATA_CENTER.derived_data['person']
+        		for(var p in person){
+        			this.person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+        		}
+        		for(var p in this.person_array){
+        			var tag=false
+        			var tmp = {}
+        			var fixRecords=this.person_array[p].fixRecords
+        			var mobileRecords=this.person_array[p].mobileRecords
+        			tmp['name']=this.person_array[p].name
+        			tmp['fixRecords']=[]
+        			tmp['mobileRecords']=[]
+        			for(var i in fixRecords){
+        				var loc='F_'+fixRecords[i].floor+'_'+'Z_'+fixRecords[i].zone
+        				if(sps_proxzone_set.indexOf(loc)>=0){
+        					tmp['fixRecords'].push(fixRecords[i])
+        					tag=true
+        				}
+        			}
+        			for(var i in mobileRecords){
+        				var loc='F_'+mobileRecords[i].floor+'_'+'Z_'+mobileRecords[i].zone
+        				if(sps_proxzone_set.indexOf(loc)>=0){
+        					tmp['mobileRecords'].push(mobileRecords[i])
+        					tag=true
+        				}
+        			}
+        			if(tag==true){
+        				n_person_array.push(tmp)
+        			}
+        		}
+        		this.person_array=n_person_array
+        		//console.log(n_person_array)
+        		this.render(this.trajmonitor_view_DIV_ID)
+        		
+        	}
+
+        }
         if (message == "set:click_HVACzone_set"){
         	var n_person_array=[]
         	var sps_hvaczone_set= DATA_CENTER.linechart_variable.highlight_HVACzone_set
