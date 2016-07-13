@@ -112,7 +112,7 @@ var DATA_CENTER = {
 		stream_display : false,
 		display_interval:1000,//播放更新间隔
 		display_before: 10*60*1000,
-		display_rate:3000,//播放倍率
+		display_rate:300,//播放倍率
 		isplaying:false,//标记是否正在播放
 		isstreaming:false,
 		mouseover_time:undefined,//当前mouseover的地方

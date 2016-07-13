@@ -37,6 +37,13 @@ var HVAC_STATISTIC_UTIL = {
 };
 
 var HVAC_ATTR_OLD_AVERAGE_SIGMA = {
+"Wind Direction": { "average": 55, "sigma": 6 },
+"Wind Speed": { "average": 4, "sigma": 2.5 },
+"COOL Schedule Value": { "average": 12.8, "sigma": 0 },
+"HEAT Schedule Value": { "average": 16, "sigma": 0 },
+
+
+
 "Drybulb Temperature": { "average": 25.20689484, "sigma": 2.064292485 },
 "Water Heater Tank Temperature": { "average": 59.12476295, "sigma": 0.582665924 },
 "Water Heater Gas Rate": { "average": 7725.178544, "sigma": 22591.08721 },

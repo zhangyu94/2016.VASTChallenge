@@ -6,7 +6,7 @@ var HVACmonitor_view = {
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"HVACmonitor-radarchart_glyph-div",
 
-	ABNORMAL_VALUE_THRESHOLD:/*0.25*/1.5,//归一化以后的异常阈值
+	ABNORMAL_VALUE_THRESHOLD:4/*1.5*/,//归一化以后的异常阈值
 
 	ATTRIBUTE_DOT_RADIUS :6,
 	RADARCHART_GLYPH_RADIUS :15,
@@ -468,8 +468,8 @@ var HVACmonitor_view = {
 	    time=temp[0]+"/"+temp[1]+"/"+temp[2]+" "+temp[3]+":"+temp[4]
 	    date=time.substring(0,10)//获取日期
 	    //console.log(date)
-	    dataList=['2016/05/31','2016/06/01','2016/06/02','2016/06/03','2016/06/06','2016/06/07','2016/06/08','2016/06/09','2016/06/10','2016/06/13']
-	    
+	    //dataList=['2016/05/31','2016/06/01','2016/06/02','2016/06/03','2016/06/06','2016/06/07','2016/06/08','2016/06/09','2016/06/10','2016/06/13']
+	    dataList=['2016/05/31','2016/06/01','2016/06/02','2016/06/03','2016/06/06','2016/06/07','2016/06/08','2016/06/09','2016/06/10','2016/06/13','2016/06/14','2016/06/15','2016/06/16','2016/06/17']
 	    //console.log(data[name])
 
 	    if(data[name]){

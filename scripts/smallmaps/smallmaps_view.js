@@ -697,7 +697,7 @@ var smallmaps_view = {
 		      		return 1;
 		      	})
 				.on("mouseover",function(d,i){
-					$(this).tipsy()
+					//$(this).tipsy()
 	                DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
 	                	._highlight_communication_mouseover_linebtn(d.data.name);
 	            })
@@ -804,10 +804,10 @@ var smallmaps_view = {
 					.style("z-index",4)
 					.style("position","absolute")
 					.style("left",function(){
-						return $(this_ele).offset().left+"px";
+						return $(this_ele).offset().left+30+"px";
 					})
 					.style("top",function(){
-						return $(this_ele).offset().top+"px";
+						return $(this_ele).offset().top+30+"px";
 					})
 					.style("display","inline-block")
 					.style("border-radius","3px")
@@ -840,7 +840,7 @@ var smallmaps_view = {
 						var that = this;
 						setTimeout(function(){
 							d3.select(that).remove()
-						},3000)
+						},500)
 					})
 	 	}
 			    
