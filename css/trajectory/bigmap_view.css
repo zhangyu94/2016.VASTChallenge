@@ -11,7 +11,7 @@
 }
 
 .doornum-text, .room-name-text, .node-text, .work-legend-text{
-    font-size: 3px;
+    font-size: 5px;
     z-index: 5;
 }
 

@@ -11,9 +11,9 @@ var ganttchart_view = {
 	obsUpdate:function(message, data)
 	{
 		var self = this;
-		//console.log(message);
+		console.log(message);
 		//console.log('dataFormat')
-		//console.log(data)
+		//console.log(data)a
 		if (message == "display:ganttchart_view")
 		{
 		    $("#"+this.ganttchart_view_DIV_ID).css("display","block");
@@ -69,12 +69,6 @@ var ganttchart_view = {
 
 		 pIDs.on("click", function(d) {
 		 	self.updateSelectPeople(d);
-		 	var selectedCardSet = DATA_CENTER.global_variable.selected_card_set;
-		 	if(selectedCardSet.indexOf(d) == -1){
-		 		selectedCardSet.push(d);
-		 	}
-		 	DATA_CENTER.set_global_variable('selected_card_set', selectedCardSet);
-		 	DATA_CENTER.set_global_variable('selected_card', d);
 		 	d3.selectAll(".pID").classed("selected", false);
 		 	d3.select(this).classed("selected",true);
 		 })

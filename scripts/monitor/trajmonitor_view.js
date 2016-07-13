@@ -15,6 +15,7 @@ var trajmonitor_view = {
             this.startTime=new Date(timeRange.min)
         	this.endTime=new Date(timeRange.max)
         	var person = DATA_CENTER.derived_data['person']
+        	this.person_array=[]
         	for(var p in person){
         		this.person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
         	}
@@ -67,6 +68,54 @@ var trajmonitor_view = {
         	}
         	this.render(this.trajmonitor_view_DIV_ID)
         
+        }
+        if (message == "set:selected_proxzone_set"){
+        	var n_person_array=[]
+        	console.log.log(DATA_CENTER.global_variable.selected_proxzone_set)
+        	var sps_proxzone_set= DATA_CENTER.global_variable.selected_proxzone_set
+        	var n_person_array=[]
+        	if(sps_proxzone_set.length==0){
+
+        	}
+        	else {
+
+        		this.person_array=[]
+        		var person =DATA_CENTER.derived_data['person']
+        		for(var p in person){
+        			this.person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+        		}
+        		for(var p in this.person_array){
+        			var tag=false
+        			var tmp = {}
+        			var fixRecords=this.person_array[p].fixRecords
+        			var mobileRecords=this.person_array[p].mobileRecords
+        			tmp['name']=this.person_array[p].name
+        			tmp['fixRecords']=[]
+        			tmp['mobileRecords']=[]
+        			for(var i in fixRecords){
+        				var loc='F_'+fixRecords[i].floor+'_'+'Z_'+fixRecords[i].zone
+        				if(sps_proxzone_set.indexOf(loc)>=0){
+        					tmp['fixRecords'].push(fixRecords[i])
+        					tag=true
+        				}
+        			}
+        			for(var i in mobileRecords){
+        				var loc='F_'+mobileRecords[i].floor+'_'+'Z_'+mobileRecords[i].zone
+        				if(sps_proxzone_set.indexOf(loc)>=0){
+        					tmp['mobileRecords'].push(mobileRecords[i])
+        					tag=true
+        				}
+        			}
+        			if(tag==true){
+        				n_person_array.push(tmp)
+        			}
+        		}
+        		this.person_array=n_person_array
+        		//console.log(n_person_array)
+        		this.render(this.trajmonitor_view_DIV_ID)
+        		
+        	}
+
         }
         if (message == "set:click_HVACzone_set"){
         	var n_person_array=[]
@@ -134,6 +183,7 @@ var trajmonitor_view = {
 	{
 		//DATA_CENTER.global_variable.selected_card_set[]
 		//console.log(roomsExchange(3,'proxZone_to_energyZone'))
+
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
@@ -170,9 +220,10 @@ var trajmonitor_view = {
 
 	    var rectHeight=(spaceHeight-pmargin.top-pmargin.bottom)/2
 	    var zoneColorScale = d3.scale.category10()
-	    var color=d3.scale.ordinal().range(d3.scale.category10().range())
-	    							.domain([1,2,3,4,5,6,7,8,9,10])
-
+	    var color=d3.scale.ordinal().range(d3.scale.category20().range())
+	    							.domain([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
+	    //console.log(color.range())
+	    //["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
 	    $('#'+divID).append("<div id='axisDiv' style='border-bottom:1px solid #ccc;'></div>")
 	    var xAxis = d3.svg.axis()
 			       .scale(xscale)
