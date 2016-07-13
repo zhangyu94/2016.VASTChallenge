@@ -34,6 +34,9 @@ var bigmap_view = {
 			d3.selectAll('.person-label').classed('single-click-highlight', false);
 			d3.select('#circle-' + selectedCard).classed('single-click-highlight', true);
 		}
+		if(message == 'set:certainty_encode' || message == 'set:enable_alert'){
+			this.updateView(divID, global_display_time);
+		}
 		if (message == "set:selected_floor_set")
 		{
 			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
@@ -144,6 +147,7 @@ var bigmap_view = {
 	    	var zoneNodeClass = 'zone-node-' + d.proxZone;
 	    	var selectedEnergyZoneSet = DATA_CENTER.global_variable.proxZone_to_energyZone[zoneClass];
 		    var selectedHVACZoneSet = DATA_CENTER.global_variable.selected_HVACzone_set;
+		    var selectedProxzoneSet = DATA_CENTER.global_variable.selected_proxzone_set;
 	    	if(!d3.select(this).classed('click-highlight')){
 	    		d3.selectAll('.' + zoneClass)
 	    		.classed('click-highlight', true);
@@ -152,6 +156,10 @@ var bigmap_view = {
 		    	for(var j = 0;j < selectedEnergyZoneSet.length;j++){
 		    		selectedHVACZoneSet.push(selectedEnergyZoneSet[j]);
 		    	}
+		    	if(selectedProxzoneSet.indexOf(zoneClass)!=-1){
+		    		selectedProxzoneSet.push(zoneClass);
+		    	}
+		    	DATA_CENTER.set_global_variable('selected_proxzone_set', selectedProxzoneSet);
 		    	DATA_CENTER.set_global_variable('selected_HVACzone_set', selectedHVACZoneSet);
 	    	}else{
 	    		d3.selectAll('.' + zoneClass)
@@ -164,8 +172,14 @@ var bigmap_view = {
 		    			selectedHVACZoneSet.splice(eleIndex, 1);
 		    		}
 		    	}
+		    	if(selectedProxzoneSet.indexOf(zoneClass)==-1){
+		    		var index = selectedProxzoneSet.indexOf(zoneClass);
+		    		selectedProxzoneSet.splice(index, 1);
+		    	}
+		    	DATA_CENTER.set_global_variable('selected_proxzone_set', selectedProxzoneSet);
 		    	DATA_CENTER.set_global_variable('selected_HVACzone_set', selectedHVACZoneSet);
 	    	}
+	    	console.log(selectedProxzoneSet);
 	    });
 	    /*roomG.append('text')
 	    .attr('class', 'room-num-text')
@@ -238,6 +252,7 @@ var bigmap_view = {
 	    	var zoneNodeClass = 'zone-node-' + d.proxZone;
 	    	var selectedEnergyZoneSet = DATA_CENTER.global_variable.proxZone_to_energyZone[zoneClass];
 		    var selectedHVACZoneSet = DATA_CENTER.global_variable.selected_HVACzone_set;
+		    var selectedProxzoneSet = DATA_CENTER.global_variable.selected_proxzone_set;
 	    	if(d3.select(this).classed('click-highlight')){
 		    	d3.selectAll('.' + zoneClass)
 		    	.classed('click-highlight', false);	 
@@ -246,6 +261,10 @@ var bigmap_view = {
 	    		for(var j = 0;j < selectedEnergyZoneSet.length;j++){
 		    		selectedHVACZoneSet.push(selectedEnergyZoneSet[j]);
 		    	}
+		    	if(selectedProxzoneSet.indexOf(zoneClass)!=-1){
+		    		selectedProxzoneSet.push(zoneClass);
+		    	}
+		    	DATA_CENTER.set_global_variable('selected_proxzone_set', selectedProxzoneSet);
 		    	DATA_CENTER.set_global_variable('selected_HVACzone_set', selectedHVACZoneSet); 		
 	    	}else{
 	    		d3.selectAll('.' + zoneClass)
@@ -258,6 +277,11 @@ var bigmap_view = {
 		    			selectedHVACZoneSet.splice(eleIndex, 1);
 		    		}
 		    	}
+		    	if(selectedProxzoneSet.indexOf(zoneClass)==-1){
+		    		var index = selectedProxzoneSet.indexOf(zoneClass);
+		    		selectedProxzoneSet.splice(index, 1);
+		    	}
+		    	DATA_CENTER.set_global_variable('selected_proxzone_set', selectedProxzoneSet);
 		    	DATA_CENTER.set_global_variable('selected_HVACzone_set', selectedHVACZoneSet);
 	    	}
 	    });
@@ -452,6 +476,8 @@ var bigmap_view = {
 			self.randomXLocationFromZone(d, floorNum, zoneNum, personName, timestamp, endtime);
 			var nodeX = +d.returnX;
 			var nodeY = d.returnY;
+			console.log(d.returnX);
+			console.log(d.returnY);
 			var scaleNodeX = xScale(nodeX);
 			var scaleNodeY = yScale(nodeY);
 			d.currentNodeX = scaleNodeX;
@@ -834,6 +860,7 @@ var bigmap_view = {
 			d3.select('#process-' + d.personName).attr('visibility', 'hidden');
 		})
 		.each('end', function(d,i){
+			console.log()
 			var scaleNodeX = +d3.select(this).attr('cx');
 			var scaleNodeY = +d3.select(this).attr('cy');
 			d3.select('#text-' + d.personName).attr('x', scaleNodeX - 20);
@@ -952,20 +979,23 @@ var bigmap_view = {
 				if(robotProxZoneNum == currentProxZoneNum){
 					//robot检测到的区间与当前的时间范围内由prox检测到的区间一致
 					d.abnormal = false;
+					d.returnX = robotX;
+					d.returnY = robotY;
+					return;
 				}
 				//检测情况不一致也是可以说明这是合理的，因为又可能在1min的另一的时间内被检测到
 				//如果可能在一分钟的开始还没有进入到到这个prox-zone，则说明是不合理的
 				//说明1min有可能跨越两个时间区间
 				else if(robotTimeBegin < timestamp && robotProxZoneNum == formerProxZoneNum){
 					d.abnormal = false;
+					d.returnX = robotX;
+					d.returnY = robotY;
+					return;
 				}else{
 					//如果在一分钟前的时间的prox-zone与prox card检测到的区域也不一致，则说明是不合理的
 					d.abnormal = true;
 				}
 				d.isAccurateLoc = true;
-				d.returnX = robotX;
-				d.returnY = robotY;
-				return;
 			}
 		}
 		//---------------------------------------------
@@ -975,6 +1005,7 @@ var bigmap_view = {
 				break;
 			}
 		}
+
 		if(exitSelfOffice){
 			for(var k = 0;k < length;k++){
 				if(roomArray[k]['doornum'] == officeNum){
@@ -984,30 +1015,30 @@ var bigmap_view = {
 					yLength = +roomArray[k].ylength;
 					returnX = x + Math.floor(xLength * Math.random());
 					returnY = y + Math.floor(yLength * Math.random());
+					d.returnX = returnX;
+					d.returnY = returnY;
+					return;
 				}
 			}
 		}else{
-			if(floorNum == 2){
-				if(zoneNum == 1){
-					//房间2365中的任意一点
-					x = 48, xLength = 30, y = 95, yLength = 16;
-				}else if(zoneNum == 6){
-					//房间2700中的任意一点
-					x = 75, xLength = 44, y = 66, yLength = 24;
-				}else if(zoneNum == 7){
-					//2690
-					x = 124, xLength = 26, y = 46, yLength = 20;
-				}
-			}else if(floorNum == 3){
-				if(zoneNum == 1){
-					//3300
-					x = 0, xLength = 16, y = 87, yLength = 24;
-				}else if(zoneNum == 2){
-					//3700
-					x = 75, xLength = 44, y = 66, yLength = 24;
-				}
+			if((floorNum == 2) && (zoneNum == 1)){
+				//房间2365中的任意一点
+				x = 48, xLength = 30, y = 95, yLength = 16;
+			}else if((floorNum == 2) && (zoneNum == 6)){
+				//房间2700中的任意一点
+				x = 75, xLength = 44, y = 66, yLength = 24;
+			}else if((floorNum == 2) && (zoneNum == 7)){
+				//2690
+				x = 124, xLength = 26, y = 46, yLength = 20;
+			}else if((floorNum == 3) && (zoneNum == 1)){
+				//3300
+				x = 0, xLength = 16, y = 87, yLength = 24;
+			}else if((floorNum == 3) && (zoneNum == 2)){
+				//3700
+				x = 75, xLength = 44, y = 66, yLength = 24;
 			}else{
 				var randomRoomId = Math.floor(length * Math.random());
+				console.log(roomArray[randomRoomId]);
 				x = +roomArray[randomRoomId].x;
 				xLength = +roomArray[randomRoomId].xlength;
 				y = +roomArray[randomRoomId].y;
@@ -1015,6 +1046,8 @@ var bigmap_view = {
 			}
 			returnX = x + Math.floor(xLength * Math.random());
 			returnY = y + Math.floor(yLength * Math.random());
+			d.returnX = returnX;
+			d.returnY = returnY;
 		}
 		d.returnX = returnX;
 		d.returnY = returnY;

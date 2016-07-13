@@ -11,18 +11,13 @@ var ganttchart_view = {
 	obsUpdate:function(message, data)
 	{
 		var self = this;
-		//console.log(message);
+		console.log(message);
 		//console.log('dataFormat')
-		//console.log(data)
+		//console.log(data)a
 		if (message == "display:ganttchart_view")
 		{
 		    $("#"+this.ganttchart_view_DIV_ID).css("display","block");
 		    this.render(this.ganttchart_view_DIV_ID);
-		    var selectedCard = DATA_CENTER.global_variable.selected_card;
-		    if(selectedCard!=undefined){
-		    	self.updateSelectPeople(selectedCard);
-		    	d3.select('#' + selectedCard).classed('selected', true);
-		    }
 		}
 
 		if (message == "hide:ganttchart_view")
@@ -64,25 +59,16 @@ var ganttchart_view = {
 		var body = $("#trajectory-ganntchart-idlist-body");
 		// console.log(ids);
 		ids.sort();
+
 		var pIDs = d3.select("#trajectory-ganntchart-idlist-body").selectAll(".pID").data(ids)
-		 .enter().append("div").attr("class","pID").attr("id", function(d,i){
-		 	return d;
-		 });
+		 .enter().append("div").attr("class","pID");
 
 		 pIDs.html(function(d) {
 		 	return d;
 		 });
 
 		 pIDs.on("click", function(d) {
-		 	console.log(this);
-		 	console.log(d3.select(this).attr('id'));
 		 	self.updateSelectPeople(d);
-		 	var selectedCardSet = DATA_CENTER.global_variable.selected_card_set;
-		 	if(selectedCardSet.indexOf(d) == -1){
-		 		selectedCardSet.push(d);
-		 	}
-		 	DATA_CENTER.set_global_variable('selected_card_set', selectedCardSet);
-		 	DATA_CENTER.set_global_variable('selected_card', d);
 		 	d3.selectAll(".pID").classed("selected", false);
 		 	d3.select(this).classed("selected",true);
 		 })
