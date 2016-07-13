@@ -133,6 +133,7 @@ var trajmonitor_view = {
 	{
 		//DATA_CENTER.global_variable.selected_card_set[]
 		//console.log(roomsExchange(3,'proxZone_to_energyZone'))
+
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
@@ -169,9 +170,10 @@ var trajmonitor_view = {
 
 	    var rectHeight=(spaceHeight-pmargin.top-pmargin.bottom)/2
 	    var zoneColorScale = d3.scale.category10()
-	    var color=d3.scale.ordinal().range(d3.scale.category10().range())
-	    							.domain([1,2,3,4,5,6,7,8,9,10])
-
+	    var color=d3.scale.ordinal().range(d3.scale.category20().range())
+	    							.domain([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
+	    //console.log(color.range())
+	    //["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
 	    $('#'+divID).append("<div id='axisDiv' style='border-bottom:1px solid #ccc;'></div>")
 	    var xAxis = d3.svg.axis()
 			       .scale(xscale)
