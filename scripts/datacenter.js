@@ -88,11 +88,15 @@ var DATA_CENTER = {
 
 		current_display_time:1464656940000,//timeline当前播放到的时间
 
-		selected_card_set:[],
-		selected_card: undefined,
+		selected_card_set:[
+			'Earpa001', 'tseifert001', 'ibaza002', 'nbasham001', 'ostrum001', 'eklinger001', 'rmieshaber001', 'jholly001', 'mbramar001'
+		],
+		selected_card: 'mbramar001',
 		selected_person_set:[],
 		enable_alert: true,
-		certainty_encode: true
+		certainty_encode: true,
+		work_encode: false, 
+		selected_prox_zone: undefined
 	},
 
 	//set_global_variable设置全局变量并调用SUBJECT的notify
@@ -445,31 +449,31 @@ var DATA_CENTER = {
 		work_color_array:[
 			{
 				work:'Administration',
-				color: '#1f78b4'
+				color: '#6a3d9a'
 			},
 			{
 				work: 'Engineering',
-				color: '#d95f02'
+				color: '#ff7f00'
 			},
 			{
 				work: 'Executive',
-				color: '#7570b3'
+				color: '#80b1d3'
 			},
 			{
 				work: 'Facilities',
-				color: '#e7298a'
+				color: '#ccbbc5'
 			},
 			{
 				work: 'HR',
-				color: '#66a61e'
+				color: '#ffed6f'
 			},
 			{
 				work: 'Information Technology',
-				color: '#e6ab02'
+				color: '#fccde5'
 			},
 			{
 				work: 'Security',
-				color: '#a6761d'
+				color: '#b3de69'
 			},
 			{
 				work: 'Not Known',

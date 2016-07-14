@@ -19,6 +19,10 @@ function main(){
 			"set:selected_filter_timerange",
 			"set:added_timerange",
 			"set:current_display_time",
+			"set:certainty_encode",
+			"set:enable_alert",
+			"set:work_encode",
+			
 
 			"set:stream_play",
 			"set:display_interval",

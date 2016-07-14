@@ -115,3 +115,15 @@ circle[class~=warning-signal]{
     }
     100% {}
 }
+.accurate-class{
+    stroke: black;
+    stroke-width: 2.5px; 
+}
+.in-office-class{
+    stroke: #c51b8a;
+    stroke-width 2.5px: 
+}
+.in-public-class{
+    stroke: #016c59;
+    stroke-width: 2.5px;
+}
