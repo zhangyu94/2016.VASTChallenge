@@ -507,10 +507,10 @@ var bigmap_view = {
 			var original_class = 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum;
 			if(DATA_CENTER.global_variable.enable_alert){
 				if(d.abnormal){
-					original_class =  'error-signal ' + original_class;
+					original_class = 'error-signal ' + original_class;
 				}
 				if((!d.isAccurateLoc) && (!d.exitSelfOffice) && (!d.exitSelfOfficeButReasonable)){
-					original_class =  'warning-signal ' + original_class;
+					original_class = 'warning-signal ' + original_class;
 				}
 			}
 			var proxId = d.personName;
@@ -543,16 +543,24 @@ var bigmap_view = {
 		})
 		.attr('fill', function(d,i){
 			//单独检测异常的情况
-			if(DATA_CENTER.global_variable.work_encode){
+			if(d.isAccurateLoc || d.exitSelfOffice){
 				var proxId = d.personName;
 				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
 				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
 				var work = proxId2work[proxId];
 				var color = work2color[work];
 				return color;
-			}else{
-				return 'white';
-			}	
+			}
+		})
+		.style('stroke', function(d,i){
+			if((!d.isAccurateLoc) && (!d.exitSelfOffice)){
+				var proxId = d.personName;
+				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
+				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
+				var work = proxId2work[proxId];
+				var color = work2color[work];
+				return color;
+			}
 		})
 		.attr('r', 4)
 		.on('click',function(d,i){
@@ -800,16 +808,13 @@ var bigmap_view = {
 		})
 		.attr('fill', function(d,i){
 			//单独检测异常的情况
-			if(DATA_CENTER.global_variable.work_encode){
-				console.log('-------work encode--------');
+			if(d.isAccurateLoc || d.exitSelfOffice){
 				var proxId = d.personName;
 				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
 				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
 				var work = proxId2work[proxId];
 				var color = work2color[work];
 				return color;
-			}else{
-				return 'white';
 			}
 		})
 		.attr('r', function(d,i){
@@ -852,6 +857,16 @@ var bigmap_view = {
 			d.formerScaleNodeY = d.afterScaleNodeY;
 			return scaleNodeY;
 		})
+		.style('stroke', function(d,i){
+			if((!d.isAccurateLoc) && (!d.exitSelfOffice)){
+				var proxId = d.personName;
+				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
+				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
+				var work = proxId2work[proxId];
+				var color = work2color[work];
+				return color;
+			}
+		})
 		.each('start', function(d,i){
 			d3.select('#process-background-' + d.personName).attr('visibility', 'hidden');
 			d3.select('#process-background-' + d.personName).attr('visibility', 'hidden');
@@ -893,6 +908,16 @@ var bigmap_view = {
 					d.afterScaleNodeX = scaleNodeX;
 					d.afterZoneId = zoneId;
 					return scaleNodeX;
+				})
+				.style('stroke', function(d,i){
+					if((!d.isAccurateLoc) && (!d.exitSelfOffice)){
+						var proxId = d.personName;
+						var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
+						var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
+						var work = proxId2work[proxId];
+						var color = work2color[work];
+						return color;
+					}
 				})
 				.attr('cy', function(d,i){
 					var nodeY = d.returnY;
@@ -1043,6 +1068,17 @@ var bigmap_view = {
 				}else{
 					//如果在一分钟前的时间的prox-zone与prox card检测到的区域也不一致，则说明是不合理的
 					d.abnormal = true;
+					var warningObject = new Object();
+					warningObject.type = 'trajectory';
+					warningObject.time = DATA_CENTER.global_variable.current_display_time;;
+					warningObject.timelength = endtime - timestamp;
+					warningObject.place = new Object();
+					warningObject.place.type = 'Proxzone';
+					warningObject.attr = personName;
+					warningObject.reason = 'conflict';
+					var warningObjectArray = DATA_CENTER.global_variable.warning_list;
+					warningObjectArray.push(warningObject);
+					DATA_CENTER.set_global_variable('warning_list', warningObjectArray);
 				}
 				d.isAccurateLoc = true;
 			}
@@ -1081,7 +1117,7 @@ var bigmap_view = {
 				x = 124, xLength = 26, y = 46, yLength = 20;
 			}else if((floorNum == 3) && (zoneNum == 1)){
 				//3300
-				x = 0, xLength = 16, y = 87, yLength = 24;
+				x = 48, xLength = 30, y = 95, yLength = 16;
 			}else if((floorNum == 3) && (zoneNum == 2)){
 				//3700
 				x = 75, xLength = 44, y = 66, yLength = 24;
@@ -1092,6 +1128,17 @@ var bigmap_view = {
 				xLength = +roomArray[randomRoomId].xlength;
 				y = +roomArray[randomRoomId].y;
 				yLength = +roomArray[randomRoomId].ylength;
+				var warningObject = new Object();
+				warningObject.type = 'trajectory';
+				warningObject.time = DATA_CENTER.global_variable.current_display_time;;
+				warningObject.timelength = endtime - timestamp;
+				warningObject.place = new Object();
+				warningObject.place.type = 'Proxzone';
+				warningObject.attr = personName;
+				warningObject.reason = 'arrive an impossible location';
+				var warningObjectArray = DATA_CENTER.global_variable.warning_list;
+				warningObjectArray.push(warningObject);
+				DATA_CENTER.set_global_variable('warning_list', warningObjectArray);
 			}
 			returnX = x + Math.floor(xLength * Math.random());
 			returnY = y + Math.floor(yLength * Math.random());

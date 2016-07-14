@@ -96,7 +96,7 @@ var DATA_CENTER = {
 		selected_person_set:[],
 		enable_alert: true,
 		certainty_encode: true,
-		work_encode: false, 
+		work_encode: true, 
 		selected_prox_zone: undefined
 	},
 
@@ -429,11 +429,11 @@ var DATA_CENTER = {
 				color: '#08519c'
 			},
 			{
-				name: 'in office',
+				name: 'in-office',
 				color: '#4292c6'
 			},
 			{
-				name: 'in public',
+				name: 'in-public',
 				color: '#9ecae1'
 			}
 		],
@@ -549,6 +549,10 @@ var DATA_CENTER = {
 					fixR[j].endtime = fixR[j].timestamp;
 			}
 			fixR[fixR.length-1].endtime = fixR[fixR.length-1].timestamp;
+			if(fixR[fixR.length-1].endtime.toDateString() == "Thu Jun 16 2016") {
+				console.log("!!!!!");
+				fixR[fixR.length-1].endtime = new Date(2016,5,16,12);
+			}
 
 		}
 		//console.log(DATA_CENTER.derived_data['person']);
@@ -564,6 +568,12 @@ var DATA_CENTER = {
 				fixR[j].endtime = fixR[j].timestamp;
 		}
 		fixR[fixR.length-1].endtime = fixR[fixR.length-1].timestamp;
+
+		if(fixR[fixR.length-1].endtime.toDateString() == "Thu Jun 16 2016") {
+			// console.log("!!!!!");
+
+			fixR[fixR.length-1].endtime = new Date(2016,5,16,12);
+		}
 	},
 	add_traj_fix_data:function(data, warning = true) {
 		var person = DATA_CENTER.derived_data['person'];
@@ -607,32 +617,23 @@ var DATA_CENTER = {
 					console.log("New prox ID: " + pID);
 				}
 			}
-			var fz = 'f' + aRecord['floor'] + 'z'+  aRecord['zone'];
-			if(!(fz in person[pID])) {
-				/*
-				var w = {"time": t,
-				"place":"f" + aRecord['floor'] + "z" + aRecord['zone'],
-				"attr":pID,
-				"event" :{
-					"type":"firstTimeToTheZone",
-					"value":null
-					}
-				}
-				that.global_variable['warning_list'].push(w);
-				*/
-				var w = {
-					"type": "trajectory",
-					"time": (new Date(t)).valueOf(),
-					"place":{
-						type:"proxzone",
-						value:"F_"+aRecord['floor']+"_Z_"+aRecord['zone'],
-					},
-					"attr": "ProxID",
-					"value":pID,
-					"reason":"firstTimeToTheZone",
-				}
-				that.global_variable['warning_list'].push(w);
-			}
+			// var fz = 'f' + aRecord['floor'] + 'z'+  aRecord['zone'];
+			// if(!(fz in person[pID]['duration'])) {
+			// 	var w = {
+			// 		"type": "trajectory",
+			// 		"time": (new Date(t)).valueOf(),
+			// 		"place":{
+			// 			type:"proxzone",
+			// 			value:"F_"+aRecord['floor']+"_Z_"+aRecord['zone'],
+			// 		},
+			// 		"attr": "ProxID",
+			// 		"value":pID,
+			// 		"reason":"firstTimeToTheZone",
+			// 	}
+			// 	person[pID]['duration'][fz] = 0;
+			// 	console.log(w);
+			// 	that.global_variable['warning_list'].push(w);
+			// }
 			person[pID]['fixRecords'].push(aRecord);
 			this.update_traj_endtime_signle(pID);
 		}
