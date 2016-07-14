@@ -6,7 +6,7 @@ var HVACmonitor_view = {
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"HVACmonitor-radarchart_glyph-div",
 
-	ABNORMAL_VALUE_THRESHOLD:3/*4*/,//归一化以后的异常阈值
+	ABNORMAL_VALUE_THRESHOLD:1/*4*/,//归一化以后的异常阈值
 
 	ATTRIBUTE_DOT_RADIUS :6,
 	RADARCHART_GLYPH_RADIUS :15,

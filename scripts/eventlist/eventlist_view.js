@@ -2,10 +2,10 @@ var eventlist_view = {
 	eventlist_view_DIV_ID : "eventlist-renderplace",
 	FIRST_CALLED : true,
 
+	FIXED_DATE : (new Date("2016-06-14")).setHours(0),
 	FIXED_TIME_FILTER : true,
 
-	warning_threshold : 5,
-
+	EVENT_MERGE_PADDING : 10*60*1000,
 
 	obsUpdate:function(message, data)
 	{
@@ -18,13 +18,10 @@ var eventlist_view = {
 
 		if (message == "display:eventlist_view")
         {
-        	console.log(DATA_CENTER.original_data["bldg-MC2.csv"])
         	if (this.FIRST_CALLED)
         	{
-        		
         		this.FIRST_CALLED = false;
         	}
-
             $("#"+this.eventlist_view_DIV_ID).css("display","block");
             //this.render(this.eventlist_view_DIV_ID);
         }
@@ -36,7 +33,6 @@ var eventlist_view = {
 
         if (message == "set:warning_list")
         {
-        	
         	var warning_list = DATA_CENTER.global_variable.warning_list;
         	var new_event = warning_list[warning_list.length-1];
         	if (new_event.type == "linechart")
@@ -75,7 +71,8 @@ var eventlist_view = {
 	},
 
 
-	_cal_all_time_warning_list:function(){
+	_cal_all_time_warning_list:function()
+	{
 		var data = DATA_CENTER.original_data["bldg-MC2.csv"];
 
 		var warning_list = [];
@@ -86,20 +83,16 @@ var eventlist_view = {
 
 			if (this.FIXED_TIME_FILTER)
 			{
-				var fixed_time = (new Date("2016-06-14")).setHours(0);
-				//console.log(cur_timestamp,fixed_time)
-				if (cur_timestamp <  fixed_time)
+				if (cur_timestamp <  eventlist_view.FIXED_DATE)
 				{
 					continue;
 				}
-				//console.log("reach")
 			}
 
 			for (var key in cur_data)
 			{
 				if (key=="Date/Time")
 					continue;
-
 				if (smallmaps_view.USE_OLD_STATISTIC)
 				{
 					var normalized_value = 0;
@@ -109,16 +102,14 @@ var eventlist_view = {
 				else
 				{
 					var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(cur_timestamp,key,cur_data[key])
-					//var normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(cur_timestamp,that_d.data.name,that_d.data.value)
 				}
 			 	
-				if (normalized_value >= /*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD*/this.warning_threshold)
+				if (normalized_value >= HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD)
 			 	{
 			 		smallmaps_view._push_linechart_warning_list(key,cur_data[key],cur_timestamp);
 			 	}
 			}
 		}
-
 	},
 
 	_render_linechart_warning:function(warning_list){
@@ -142,46 +133,6 @@ var eventlist_view = {
 			return a.time - b.time;
 		})
 
-
-		var warning_list = merge_compress_sorted_warning_list(warning_list)
-		function merge_compress_sorted_warning_list(sorted_warning_list)
-		{
-			var merge_padding = 10*60*1000;
-			for (var i=0;i<sorted_warning_list.length;++i)
-			{
-				var base_type = sorted_warning_list[i].type;
-				var base_time = sorted_warning_list[i].time;
-				var base_timelength = sorted_warning_list[i].timelength;
-				var base_place = sorted_warning_list[i].place.value;
-				var base_attr = sorted_warning_list[i].attr;
-
-				for (var j=i+1;j<sorted_warning_list.length;++j)
-				{
-					var checked_type = sorted_warning_list[j].type;
-					var checked_time = sorted_warning_list[j].time;
-					var checked_timelength = sorted_warning_list[j].timelength;
-					var checked_place = sorted_warning_list[j].place.value;
-					var checked_attr = sorted_warning_list[j].attr;
-
-					if ( (base_type==checked_type) && (base_place==checked_place) && (base_attr==checked_attr) )
-					{
-						var base_time_end = base_time +base_timelength;
-						var checked_time_end = checked_time + checked_timelength;
-						if (checked_time <= base_time_end+merge_padding)
-						{
-							if (checked_time_end > base_time_end)
-							{
-								sorted_warning_list[i].timelength = checked_time_end-base_time;
-							}
-							sorted_warning_list.splice(j,1);
-							--j;
-						}
-					}
-				}
-			}
-			return sorted_warning_list;
-		}
-
 		//按时间数字降序排
 		warning_list.sort(function(a,b){
 			return -a.time + b.time;
@@ -201,7 +152,6 @@ var eventlist_view = {
 		//}
 
 
-		//$("#"+father_id).prepend(child)
 		var divID = this.eventlist_view_DIV_ID
 		var update = d3.select("#"+divID)
             .selectAll(".warning_event-span")
@@ -275,7 +225,6 @@ var eventlist_view = {
                 		$("#HVACattrbtn-span-"+linechart_render_view._compress_string(this_attr)).click();
                 	}
 
-
                 	
                 	var chart = $("#HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(this_attr)).highcharts();
 		            if (typeof(chart)=="undefined")
@@ -284,7 +233,8 @@ var eventlist_view = {
 		            }
 		            else
 		            {
-		                chart.xAxis[0].setExtremes(this_time_start,this_time_start+this_time_length)
+		            	var context_padding = this_time_length;
+		                chart.xAxis[0].setExtremes(this_time_start-context_padding,this_time_start+this_time_length+context_padding)
 		            }
 		            
 		            //DATA_CENTER.set_global_variable("selected_filter_timerange",{min:this_time_start,max:this_time_start+this_time_length})
@@ -296,9 +246,6 @@ var eventlist_view = {
 						html:true,
 						title:function(){
 							var d = this.__data__;
-
-							//console.log(d)
-
 							var start_time = d.time;
 							var start_time_text = eventlist_view.time_number_to_text(start_time);
 
@@ -325,11 +272,6 @@ var eventlist_view = {
             	.attr("class","warning_event-time-span")
             	.text(function(d,i){
             		return eventlist_view.time_number_to_text(d.time);
-            		/*
-            		var time = new Date(d.time)
-				    var text = time.getMonth()+1 + "."+ time.getDate() + " " + time.getHours() + ":" + Math.floor(time.getMinutes()/5)*5;
-            		return text;
-            		*/
             	})
             	
 
@@ -345,36 +287,6 @@ var eventlist_view = {
             	.text(function(d,i){
             		return linechart_render_view._map_pureattr_name_to_abbreviation(d.attr)/*+":"+d.value*/
             	})        
-
-            	/*
-        $(".warning_event-span").tipsy({
-			gravity: "s",
-			html:true,
-			title:function(){
-				var d = this.__data__;
-				var start_time = d.time;
-				var start_time_text = eventlist_view.time_number_to_text(start_time);
-
-				var time_length = d.timelength;
-				var time_length_minute = time_length/(1000*60);
-
-				var place = linechart_render_view._compress_string(d.place.value);
-				var attr = linechart_render_view._compress_string(d.attr);
-				var value = linechart_render_view._compress_string(d.value);
-						   	
-				var content = 	"<span style='color:red'>" + start_time_text  + "</span>"+ "</br>" +
-								"<span style='color:red'>" + place  + "</span>"+ "</br>" +
-								"<span style='color:red'>" + attr  + "</span>"+ "</br>" +
-								//"<span>" + value  + "</span>"+ "</br>" +
-								"<span>" + time_length_minute + "minutes"  + "</span>";
-				return content;
-			},
-		});    	
-*/
-
-
-
-
 
         var exit = update.exit();
         exit.remove();

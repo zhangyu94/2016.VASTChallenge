@@ -83,7 +83,7 @@ body {
 	left:20%;
 	top:9%;
 	height:80%;
-	width:64%;
+	width:63.5%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
@@ -160,7 +160,7 @@ body {
 	left:20%;
 	top:9%;
 	height:80%;
-	width:64%;
+	width:63.5%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }
@@ -235,9 +235,9 @@ body {
 #eventlistview-collection {
 	position:absolute;
 	top:9%;
-	left:84%;
+	left:83.5%;
 	height:80%;
-	width:16%;
+	width:16.6%;
 	float: left;
 	pointer-events:none;/*大框是始终存在的，不能点的*/
 }

@@ -485,6 +485,7 @@ var linechart_render_view = {
                     linechart_render_view._move_to(child_id,father_id,"bottom");//点击以后走到最下面
                 })
 
+                /*
         //5). 点击以后stack起来
         var enter_spans_btnspan_normalizespan = enter_spans_btnspan.append("span") 
                 .attr("class","HVAClinechart-btn-stack-span")
@@ -507,28 +508,9 @@ var linechart_render_view = {
                     console.log(series_data_array)
 
                     //linechart_render_view._plot_linechart(divID,xysetAxis_data,ysetAxis_original_name)
-                    /*
-                    chart.series[0].remove(false);
-                    chart.addSeries({
-                        name: d.substring(0,7),
-                        data:normalize_data,
-                        zones:[
-                        {
-                            value: -HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
-                            color: "red",
-                        },
-                        {
-                            value: HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
-                            color: '#7cb5ec',
-                        },
-                        {
-                            color: "red",
-                        }
-                        ]
-                    },false)
-                    chart.redraw();
-                    */
-                })        
+
+                })       
+                */ 
 
 
 

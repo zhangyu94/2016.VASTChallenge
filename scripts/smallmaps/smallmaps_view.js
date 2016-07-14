@@ -778,7 +778,6 @@ var smallmaps_view = {
 
 	_push_linechart_warning_list:function(fused_attr,value,raw_timestamp,reason_value)
 	{
-		//console.log("pushed")
 		var place_attr = linechart_linebtn_view._parse_position_attr(fused_attr);
 
 		var warning_event = {
@@ -796,7 +795,52 @@ var smallmaps_view = {
 
 		var warning_list = DATA_CENTER.global_variable.warning_list;
 
-		warning_list.push(warning_event);
+		//warning_list.push(warning_event);
+
+
+		var flag_merged = false;
+		var merge_padding = eventlist_view.EVENT_MERGE_PADDING;
+		for (var i=0;i<warning_list.length;++i)
+		{
+			if (warning_list[i].type != "linechart")
+				continue;
+
+			var base_type = warning_list[i].type;
+			var base_time = warning_list[i].time;
+			var base_timelength = warning_list[i].timelength;
+			var base_place = warning_list[i].place.value;
+			var base_attr = warning_list[i].attr;
+
+			var checked_type = warning_event.type;
+			var checked_time = warning_event.time;
+			var checked_timelength = warning_event.timelength;
+			var checked_place = warning_event.place.value;
+			var checked_attr = warning_event.attr;
+
+			if ( (base_type==checked_type) && (base_place==checked_place) && (base_attr==checked_attr) )
+			{
+				var base_time_end = base_time +base_timelength;
+				var checked_time_end = checked_time + checked_timelength;
+
+				if ( (checked_time <= base_time_end+merge_padding)  || (base_time <= checked_time_end+merge_padding) )  
+				{
+					var start = Math.min(base_time,checked_time);
+					var end = Math.max(base_time_end,checked_time_end);
+
+					warning_list[i].time =start;
+					warning_list[i].timelength =end-start;
+
+					flag_merged = true;
+					break;
+				}
+			}
+		}
+
+		if (! flag_merged)
+		{
+			warning_list.push(warning_event);
+		}	
+
 
 		DATA_CENTER.set_global_variable("warning_list",warning_list);
 	},
