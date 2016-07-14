@@ -489,6 +489,55 @@ var linechart_render_view = {
                     linechart_render_view._move_to(child_id,father_id,"bottom");//点击以后走到最下面
                 })
 
+        //5). 点击以后stack起来
+        var enter_spans_btnspan_normalizespan = enter_spans_btnspan.append("span") 
+                .attr("class","HVAClinechart-btn-stack-span")
+                .attr("id",function(d,i){
+                    //id中不能带空格，否则后面选不中
+                    return "HVAClinechart-btn-stack-span-"+linechart_render_view._compress_string(d.name);
+                })
+                .text("^")    
+                .on("click",function(d,i){
+                    var related_linechart_div_id = "HVAClinechart-linechart-span-div-"+linechart_render_view._compress_string(d.name)
+                    var chart = $("#"+related_linechart_div_id).highcharts();
+                    var series = chart.series;
+
+                    var series_data_array = [];
+                    for (var j=0;j<series.length;++j)
+                    {
+                        series_data_array[i] = series[i].data;
+                    }
+
+                    console.log(series_data_array)
+
+                    //linechart_render_view._plot_linechart(divID,xysetAxis_data,ysetAxis_original_name)
+                    /*
+                    chart.series[0].remove(false);
+                    chart.addSeries({
+                        name: d.substring(0,7),
+                        data:normalize_data,
+                        zones:[
+                        {
+                            value: -HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                            color: "red",
+                        },
+                        {
+                            value: HVAC_STATISTIC_UTIL.ABNORMAL_VALUE_THRESHOLD,
+                            color: '#7cb5ec',
+                        },
+                        {
+                            color: "red",
+                        }
+                        ]
+                    },false)
+                    chart.redraw();
+                    */
+                })        
+
+
+
+
+
         var enter_spans_linechartspan = enter_spans.append("span")
                 .attr("class","HVAClinechart-linechart-span")
                 .attr("id",function(d,i){
@@ -605,6 +654,7 @@ var linechart_render_view = {
 
 	_plot_linechart:function(divID,xysetAxis_data,ysetAxis_original_name)
 	{
+        console.log(xysetAxis_data)
         var series_data = [];
         for (var i=0;i<xysetAxis_data.length;++i)
         {
@@ -622,9 +672,7 @@ var linechart_render_view = {
                 var sigma = average_sigma.sigma;
             }
 
-
             var data = xysetAxis_data[i];
-            //data.push
             series_data.push({
                 id: attr_name,
                 name: attr_name,
@@ -668,7 +716,6 @@ var linechart_render_view = {
         }
 
         d3.select("#"+divID).selectAll("*").remove();
-        //console.log(series_data)
         var div = $("#"+divID);
         Highcharts.setOptions({ global: { useUTC: false } });//使用本地时间
         div.highcharts({

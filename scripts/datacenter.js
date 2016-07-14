@@ -40,18 +40,17 @@ var DATA_CENTER = {
 	global_variable : {
 
 		warning_list: [],
-		//warning_list数据结构:
+		//warning_list元素数据结构:
 		//{
+		//	type:...(linechart,trajectory等)
 		//	time:...(一个时间点,存成数字)
 		//	place:{
 		//		type:...(标记这个place是一个HVACzone或者Proxzone或者具体的robot检测到的点)
 		//		value:...
 		//	}...
 		//	attr:...(被认为是异常的属性,可以是某个sensor属性,可以是某个人的轨迹)
-		//	event:{
-		//		type:...(标记这个event被认为异常的原因,即异常的类型,如"impossible route","extreme value")
-		//		value:...(字符串或数字,标记了异常数据的取值,可以用来标记这个event在准则下的异常度)
-		//	}
+		//	value:...(字符串或数字,标记了异常数据的取值,可以用来标记这个event在准则下的异常度)
+		//  reason:...(标记这个event被认为异常的原因,即异常的类型,如"impossible route","extreme value")
 		//}
 
 		floors_zone_set: [],
@@ -576,6 +575,7 @@ var DATA_CENTER = {
 				// console.log(pID);
 				person[pID] = {"fixRecords":[],"mobileRecords":[],'duration':{}};
 				if(warning) {
+					/*
 					var w = {"time": t,
 					"place":"f" + aRecord['floor'] + "z" + aRecord['zone'],
 					"attr":pID,
@@ -586,10 +586,25 @@ var DATA_CENTER = {
 					}
 					that.global_variable['warning_list'].push(w);
 					console.log("New prox ID: " + pID);
+					*/
+					var w = {
+						"type": "trajectory",
+						"time": (new Date(t)).valueOf(),
+						"place":{
+							type:"proxzone",
+							value:"F_"+aRecord['floor']+"_Z_"+aRecord['zone'],
+						},
+						"attr": "ProxID",
+						"value":pID,
+						"reason":"newProxID",
+					}
+					that.global_variable['warning_list'].push(w);
+					console.log("New prox ID: " + pID);
 				}
 			}
 			var fz = 'f' + aRecord['floor'] + 'z'+  aRecord['zone'];
 			if(!(fz in person[pID])) {
+				/*
 				var w = {"time": t,
 				"place":"f" + aRecord['floor'] + "z" + aRecord['zone'],
 				"attr":pID,
@@ -597,6 +612,19 @@ var DATA_CENTER = {
 					"type":"firstTimeToTheZone",
 					"value":null
 					}
+				}
+				that.global_variable['warning_list'].push(w);
+				*/
+				var w = {
+					"type": "trajectory",
+					"time": (new Date(t)).valueOf(),
+					"place":{
+						type:"proxzone",
+						value:"F_"+aRecord['floor']+"_Z_"+aRecord['zone'],
+					},
+					"attr": "ProxID",
+					"value":pID,
+					"reason":"firstTimeToTheZone",
 				}
 				that.global_variable['warning_list'].push(w);
 			}
@@ -622,6 +650,7 @@ var DATA_CENTER = {
 				// console.log(pID);
 				person[pID] = {"fixRecords":[],"mobileRecords":[],'duration':{}};
 				if(warning) {
+					/*
 					var w = {"time": t,
 					"place":"f" + aRecord['floor'] + ":"+aRecord['x'] +"," +aRecord['y'],
 					"attr":pID,
@@ -629,6 +658,20 @@ var DATA_CENTER = {
 						"type":"newProxID",
 						"value":null
 						}
+					}
+					that.global_variable['warning_list'].push(w);
+					console.log("New prox ID: " + pID);
+					*/
+					var w = {
+						"type": "trajectory",
+						"time": (new Date(t)).valueOf(),
+						"place":{
+							type:"proxzone",
+							value:"F_"+aRecord['floor']+"_Z_"+aRecord['zone'],
+						},
+						"attr": "ProxID",
+						"value":pID,
+						"reason":"newProxID",
 					}
 					that.global_variable['warning_list'].push(w);
 					console.log("New prox ID: " + pID);

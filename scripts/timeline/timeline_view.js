@@ -474,7 +474,7 @@ var timeline_view = {
     	var time_start = Timeutil.getStartTime();
 
     	var xyAxis_data = [];
-    	for (var i=0;i<=4896;++i)
+    	for (var i=0;i<=4896-144;++i)
     	{
     		var y_value = 0;
     		var x_value = time_start + 1000*60*5*i;

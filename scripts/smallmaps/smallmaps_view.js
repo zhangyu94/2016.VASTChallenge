@@ -782,9 +782,42 @@ var smallmaps_view = {
 		      	})
 	},
 
+	_push_linechart_warning_list:function(fused_attr,value,raw_timestamp)
+	{
+		//warning_list元素数据结构:
+		//{
+		//	type:...(linechart,trajectory等)
+		//	time:...(一个时间点,存成数字)
+		//	place:{
+		//		type:...(标记这个place是一个HVACzone或者Proxzone或者具体的robot检测到的点)
+		//		value:...
+		//	}...
+		//	attr:...(被认为是异常的属性,可以是某个sensor属性,可以是某个人的轨迹)
+		//	value:...(字符串或数字,标记了异常数据的取值,可以用来标记这个event在准则下的异常度)
+		//  reason:...(标记这个event被认为异常的原因,即异常的类型,如"impossible route","extreme value")
+		//}
+		//linechart_linebtn_view._parse_position_attr(fused_attr)
+
+		var warning_event = {
+			type:"linechart",
+			time:raw_timestamp,
+
+			value:value,
+			reason:"extreme value",
+		}
+
+		var warning_list = DATA_CENTER.global_variable.warning_list;
+
+		warning_list.push(warning_event);
+		DATA_CENTER.set_global_variable("warning_list",warning_list);
+	},
+
 	_bind_warning_tip:function(d,this_ele,raw_timestamp)
 	{
+		this._push_linechart_warning_list(d.data.name,d.data.value,raw_timestamp);
+
 		var that_d = d;
+
 	 	if (smallmaps_view.USE_OLD_STATISTIC)
 		{
 			var normalized_value = 0;

@@ -39,6 +39,8 @@ function main(){
 			"set:latest_HVAC_merged_frame",
 			"push:new_hazium_zone",
 
+			"set:warning_list",
+
 
 
 			"display:HVACgraph_attrbtn_view",

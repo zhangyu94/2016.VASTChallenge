@@ -17,7 +17,8 @@ var eventlist_view = {
 
         if (message == "set:warning_list")
         {
-        	console.log(DATA_CENTER.global_variable.warning_list)
+        	var warning_list = DATA_CENTER.global_variable.warning_list;
+        	//console.log(warning_list)
         }
 	},
 	render:function(divID)

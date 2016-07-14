@@ -55,7 +55,7 @@
     cursor: pointer;
     font-size: 10px;
 }
-.HVAClinechart-span >.HVAClinechart-btntitle-span >.HVAClinechart-btn-normalize-span{
+.HVAClinechart-span >.HVAClinechart-btntitle-span >.HVAClinechart-btn-stack-span{
     text-align:center;
     vertical-align: top;
     background: white;
