@@ -42,6 +42,12 @@ var relationshipgraph_view = {
 	    var height  = $("#"+divID).height();
  	    var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S").parse;
 
+ 	    var tip = d3.tip()
+		  .attr('class', 'd3-tip-relation')
+		  .offset([-10, 0]) .html(function(d) {
+		    return d.id;
+		  });
+
 	    var scale_negative = d3.scale.linear()
 	      .domain([-1,-0.9])
 	      .range([50,200]);
@@ -76,6 +82,8 @@ var relationshipgraph_view = {
 	     var svg = d3.select("#"+divID).append("svg")//画svg
 	         .attr("width", width)
 	         .attr("height", height);
+
+	     svg.call(tip);
 
 	     var node = svg.selectAll(".node"),
 	         link = svg.selectAll(".link");
@@ -171,7 +179,9 @@ var relationshipgraph_view = {
            			return 1;
            		else
            			return 0.2;
-           });
+           })
+           .on('mouseover', tip.show)
+	       .on('mouseout', tip.hide);
 
          node_g.append("text")
            .attr("transform", "translate(8,3)")
