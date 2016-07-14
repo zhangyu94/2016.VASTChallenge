@@ -1,6 +1,8 @@
 var trajmonitor_view = {
 	trajmonitor_view_DIV_ID : "trajmonitor-renderplace",
     
+    FIRST_CALLED: true,
+
     startTime : undefined,
     endTime : undefined,
     display_before : 10*60*1000,
@@ -19,8 +21,27 @@ var trajmonitor_view = {
         	for(var p in person){
         		this.person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
         	}
+        	if (this.FIRST_CALLED)
+        	{
+        		this.render(this.trajmonitor_view_DIV_ID)
+        		this.FIRST_CALLED = false;
+        	}
+        }
+		/*
+		if (message == "display:trajmonitor_view")
+        {
+            $("#"+this.trajmonitor_view_DIV_ID).css("display","block");
+            var timeRange=DATA_CENTER.global_variable.selected_filter_timerange
+            this.startTime=new Date(timeRange.min)
+        	this.endTime=new Date(timeRange.max)
+        	var person = DATA_CENTER.derived_data['person']
+        	this.person_array=[]
+        	for(var p in person){
+        		this.person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+        	}
         	this.render(this.trajmonitor_view_DIV_ID)
         }
+        */
 
         if (message == "hide:trajmonitor_view")
         {
@@ -117,7 +138,8 @@ var trajmonitor_view = {
         	}
 
         }
-        if (message == "set:click_HVACzone_set"){
+        if (message == "set:click_HVACzone_set")
+        {
         	var n_person_array=[]
         	var sps_hvaczone_set= DATA_CENTER.linechart_variable.highlight_HVACzone_set
         	//console.log(DATA_CENTER.linechart_variable.highlight_HVACzone_set)

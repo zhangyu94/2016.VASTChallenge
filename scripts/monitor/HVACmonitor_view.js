@@ -335,104 +335,8 @@ var HVACmonitor_view = {
 
 	},
 
-	//('2016/5/31 16:40','HVAC Electric Demand Power',3)
-/*
+	//(1400000000,'HVAC Electric Demand Power',3)
 	abnormal_degree:function(time,name,value){
-		var start_time_index = timeline_view
-			._binary_search(DATA_CENTER.original_data["bldg-MC2.csv"],"Date/Time",time-5*60*1000);
-		var start_time_value = DATA_CENTER.original_data["bldg-MC2.csv"][start_time_index][name];
-		var end_time_index = timeline_view
-			._binary_search(DATA_CENTER.original_data["bldg-MC2.csv"],"Date/Time",time+5*60*1000);
-		var end_time_value = DATA_CENTER.original_data["bldg-MC2.csv"][end_time_index][name];
-
-
-	    //console.log(time)
-	   // time='2016/5/31 16:40'
-	    //name='F_2_Z_2 Hazium Concentration'
-	    var data = DATA_CENTER.derived_data["patternChange.json"];
-	    //var newTime=Date.parse(new Date())
-	    var time=new Date(time)
-	    var temp=[]
-	    temp.push(time.getFullYear().toString())
-	    temp.push((time.getMonth()+1).toString())
-	    temp.push(time.getDate().toString())
-	    temp.push(time.getHours().toString())
-	    temp.push((Math.floor(time.getMinutes()/5)*5).toString())
-
-
-
-	    hazium=name.substring(8,14)
-	    for(var i=1;i<temp.length;i++){
-	        if(temp[i].length==1){
-	            temp[i]="0"+temp[i]
-	        }
-	    }
-
-	    time=temp[0]+"/"+temp[1]+"/"+temp[2]+" "+temp[3]+":"+temp[4]
-	    date=time.substring(0,10)
-
-	    //console.log(date)
-	    dataList=['2016/05/31','2016/06/01','2016/06/02','2016/06/03','2016/06/06','2016/06/07','2016/06/08','2016/06/09','2016/06/10']
-
-	    if(data[name]){
-	        for(var k=0;k<dataList.length;k++){
-	            if(dataList[k]==date){
-	                var hour=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
-	                var minute=["00","05","10","15","20","25","30","35","40","45","50","55"]
-	                
-	                var timeList=[]
-	                for(var i=0;i<hour.length;i++){
-	                    for(var j=0;j<minute.length;j++){
-	                        timeList.push(hour[i]+":"+minute[j]+":00")
-	                    }
-	                }
-	                var nowTime=time.substring(11)+":00"
-	                //console.log(nowTime)
-	                //console.log(data[name][nowTime].value)
-	                var index//存放当前时间节点的索引
-	                for(index=0;index<timeList.length;index++){
-	                    if(timeList[index]==nowTime){
-	                        break
-	                    }
-	                }
-
-	                var sum=0
-	                if(index==0){
-	                    sum=(data[name][nowTime].value+data[name][timeList[timeList.length-1]].value+data[name][timeList[index+1]].value)/3
-	                }
-	                else if(index=timeList.length-1){
-	                    sum=(data[name][nowTime].value+data[name][timeList[0]].value+data[name][timeList[index-1]].value)/3
-	                }
-	                else{
-	                    sum=(data[name][nowTime].value+data[name][timeList[index+1]].value+data[name][timeList[index-1]].value)/3
-	                }
-	                var temp=value-sum
-	                if (data[name][nowTime].variance!=0)
-	                    return Math.abs(temp)/Math.sqrt(data[name][nowTime].variance)
-	                else 
-	                    return Math.abs(temp)
-	            }
-	            return 0
-	        }
-	        
-	    }
-	    else if(hazium="Hazium"){
-	        if(value-0.647956659226>0){
-	            return (value-0.647956659226)/Math.sqrt(1.57175094288)
-	        }
-	        else{
-	            return 0
-	        }
-	    }
-	    else{
-	        //如果出现了一个没有存在过的指标则警报
-	        return 2*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD;
-	    }
-	    
-	}
-	*/
-	abnormal_degree:function(time,name,value){
-		//console.log(name)
 		//获取当前数据的前后两个数据
 		var start_time_index = timeline_view
 			._binary_search(DATA_CENTER.original_data["bldg-MC2.csv"],"Date/Time",time-5*60*1000);
@@ -441,14 +345,10 @@ var HVACmonitor_view = {
 			._binary_search(DATA_CENTER.original_data["bldg-MC2.csv"],"Date/Time",time+5*60*1000);
 		var end_time_value = DATA_CENTER.original_data["bldg-MC2.csv"][end_time_index][name];
 
-	    //console.log(time)
-	   // time='2016/5/31 16:40'
+	    //time='2016/5/31 16:40'
 	    //name='F_2_Z_2 Hazium Concentration'
 	    var data = DATA_CENTER.derived_data["patternChange.json"];
-	    //aabbcc=data
-	    //console.log(data)
 
-	    //var newTime=Date.parse(new Date())
 	    var time=new Date(time)
 	    var temp=[]
 	    temp.push(time.getFullYear().toString())
@@ -467,10 +367,7 @@ var HVACmonitor_view = {
 
 	    time=temp[0]+"/"+temp[1]+"/"+temp[2]+" "+temp[3]+":"+temp[4]
 	    date=time.substring(0,10)//获取日期
-	    //console.log(date)
-	    //dataList=['2016/05/31','2016/06/01','2016/06/02','2016/06/03','2016/06/06','2016/06/07','2016/06/08','2016/06/09','2016/06/10','2016/06/13']
 	    dataList=['2016/05/31','2016/06/01','2016/06/02','2016/06/03','2016/06/06','2016/06/07','2016/06/08','2016/06/09','2016/06/10','2016/06/13','2016/06/14','2016/06/15','2016/06/16','2016/06/17']
-	    //console.log(data[name])
 
 	    if(data[name]){
 	    	var flag=0
@@ -486,25 +383,7 @@ var HVACmonitor_view = {
 	        	nowTime=="21:45:00"
 	     	  	//使用模板时间减去，实际的值周围的3个值的平均
 	        	var temp=data[name][nowTime].value-(value+start_time_value+end_time_value)/3
-	        	/*if(Math.abs(temp)<data[name][nowTime].variance*5){
-	        	    return true;
-	        	}
-	        	else{
-	        	    return false;
-	        	}*/
-	        	//console.log(time)
-	        	var bbb
-	        	/*if (data[name][nowTime].variance!=0)
-	        		//bbb=Math.abs(temp)/data[name][nowTime].variance
-	        		bbb=Math.abs(temp)/Math.sqrt(data[name][nowTime].variance)
-
-	        		if(data[name][nowTime].variance>1){
-	        			bbb=Math.abs(temp)/Math.sqrt(data[name][nowTime].variance)
-	        		}
-	        		else{
-	        			bbb=Math.abs(temp)/data[name][nowTime].variance
-	        		}
-	        	else */
+	        	var bbb;
 	        	if(data[name][nowTime].value==0){
 	        		if(value==0){
 	        			bbb=0
@@ -516,20 +395,10 @@ var HVACmonitor_view = {
 	        	else{
 	        		bbb=Math.abs(temp)/data[name][nowTime].value
 	        	}
-	        	/*console.log(time)
-	        	if(time=="2016/06/12 05:20"){
-	        			console.log(time)
-	        			console.log(nowTime)
-	        			console.log(value)
-	        			console.log(data[name][nowTime].value)
-	        		 	console.log(Math.abs(temp))
-	        			console.log(bbb)
-	        	}*/
 	        	return bbb
 	        }
 	        else{
 	        	//如果不在这几个日期范围内则认为是正常的
-	        	//console.log(date)
 	        	return 0
 	        }
 	    }
@@ -547,83 +416,4 @@ var HVACmonitor_view = {
 	    }   
 	}
 
-
-
-	/*
-	is_abnormal:function(time,name,value){
-		var data = DATA_CENTER.derived_data["patternChange.json"];
-
-	    //console.log(time)
-	   // time='2016/5/31 16:40'
-	    var temp=time.split(' ')
-	    var temp=temp[0].split('/').concat(temp[1].split(':'))
-	    //time=temp[0]
-	    for(var i=1;i<temp.length;i++){
-	        if(temp[i].length==1){
-	            temp[i]="0"+temp[i]
-	        }
-	    }
-	    time=temp[0]+"/"+temp[1]+"/"+temp[2]+" "+temp[3]+":"+temp[4]
-	    date=time.substring(0,10)
-	    console.log(date)
-	    dataList=['2016/05/31','2016/06/01','2016/06/02','2016/06/07','2016/06/08','2016/06/09']
-
-	    if(data[name]){
-	        for(var k=0;k<dataList.length;k++){
-	            if(dataList[k]==date){
-	                var hour=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
-	                var minute=["00","05","10","15","20","25","30","35","40","45","50","55"]
-	                
-	                var timeList=[]
-	                for(var i=0;i<hour.length;i++){
-	                    for(var j=0;j<minute.length;j++){
-	                        timeList.push(hour[i]+":"+minute[j]+":00")
-	                    }
-	                }
-
-	                var nowTime=time.substring(11)+":00"
-
-	                //console.log(nowTime)
-	                //console.log(data[name][nowTime].value)
-
-	                var index//存放当前时间节点的索引
-	                for(index=0;index<timeList.length;index++){
-	                    if(timeList[index]==nowTime){
-	                        break
-	                    }
-	                }
-
-	                var sum=0
-	                if(index==0){
-	                    sum=(data[name][nowTime].value+data[name][timeList[timeList.length-1]].value+data[name][timeList[index+1]].value)/3
-	                }
-	                else if(index=timeList.length-1){
-	                    sum=(data[name][nowTime].value+data[name][timeList[0]].value+data[name][timeList[index-1]].value)/3
-	                }
-	                else{
-	                    sum=(data[name][nowTime].value+data[name][timeList[index+1]].value+data[name][timeList[index-1]].value)/3
-	                }
-	                var temp=value-sum;
-
-
-
-
-	                if (data[name][nowTime].variance!=0)
-	                	return Math.abs(temp)/data[name][nowTime].variance
-	                else 
-	                	return Math.abs(temp)
-	            }
-	            //return true
-	            return 0;
-	        }
-	        
-	    }
-	    else{
-	        //如果出现了一个没有存在过的指标则警报
-	        //return false;
-	        return 2*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD;
-	    }
-	    
-	}
-	*/
 }

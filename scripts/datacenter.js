@@ -39,7 +39,6 @@ var DATA_CENTER = {
 	//view之间通信需要利用的全局变量
 	global_variable : {
 
-
 		warning_list: [],
 		//warning_list数据结构:
 		//{
@@ -107,15 +106,15 @@ var DATA_CENTER = {
 	timeline_variable : {
 		stream_start: new Date('2016 06 14 00:00:00'),
 		stream_end: new Date('2016 06 13'),
-		stream_window_width: 2*3600*1000,
+		stream_window_width: 60/*2*/*3600*1000,
 		isstreaming: false,
-		stream_display : false,
-		display_interval:1000,//播放更新间隔
+		stream_display: false,
+		display_interval: 1000,//播放更新间隔
 		display_before: 10*60*1000,
-		display_rate:300,//播放倍率
-		isplaying:false,//标记是否正在播放
-		isstreaming:false,
-		mouseover_time:undefined,//当前mouseover的地方
+		display_rate: 300,//播放倍率
+		isplaying: false,//标记是否正在播放
+		isstreaming: false,
+		mouseover_time: undefined,//当前mouseover的地方
 	},
 
 	set_timeline_variable : function(variable_name,value){

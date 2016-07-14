@@ -198,6 +198,36 @@ var linechart_render_view = {
         }
 
 
+        if (message == "set:selected_filter_timerange")
+        {
+            var selected_filter_timerange = DATA_CENTER.global_variable.selected_filter_timerange;
+            console.log(selected_filter_timerange)
+            var max_time = selected_filter_timerange.max;
+            var min_time = selected_filter_timerange.min;
+
+
+
+            var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
+            for (var i=0;i<selected_attr_set.length;++i)
+            {
+                var cur_attr_name = selected_attr_set[i];
+                var cur_linecharts_id = "HVAClinechart-linechart-span-div-"+this._compress_string(cur_attr_name);
+
+                var mouseover_time = DATA_CENTER.timeline_variable.mouseover_time;
+                var chart = $("#"+cur_linecharts_id).highcharts();    // Highcharts构造函数
+                
+                if (typeof(chart)=="undefined")
+                {
+                    console.warn("undefined chart",cur_attr_name)
+                }
+                else
+                {
+                    chart.xAxis[0].setExtremes(min_time,max_time)
+                }
+            }
+        }
+
+
 
 
 
@@ -314,17 +344,20 @@ var linechart_render_view = {
                                 },
                                 events:{
                                     mouseOver:function(){
+                                        //console.log(this)
                                         var name = this.name;
                                         DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                                             ._highlight_communication_mouseover_linebtn(name);
                                     },
                                     mouseOut:function(){
+                                        //console.log(this)
                                         var name = this.name;
                                         DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
                                             ._highlight_communication_mouseout_linebtn();
                                     }
 
                                 },
+
                                 /*
                                 zones:[
                                 {
@@ -550,13 +583,15 @@ var linechart_render_view = {
                     console.warn("warning")
                 }
                 
-                var temp = [x_value,y_value];
+                //var temp = y_value;
+                //var temp = [x_value,y_value];
                 
                 var temp = {
                     x:x_value,
                     y:y_value,
                     color:color,
                 };
+                
                 
 
                 xysetAxis_data[i].push(temp)
@@ -638,6 +673,8 @@ var linechart_render_view = {
         Highcharts.setOptions({ global: { useUTC: false } });//使用本地时间
         div.highcharts({
             chart: {
+                //reflow:false,
+                animation:false,
                 spacingRight:0,
                 spacingLeft:0,
                 spacingTop:0,
@@ -663,20 +700,42 @@ var linechart_render_view = {
                         DATA_CENTER.set_global_variable("current_display_time",aligned_time);
                     },
                     selection:function(e){
-                        console.log(e)
+                        if (typeof(e.resetSelection)!="undefined")
+                        {
+                            if (e.resetSelection == true)//如果是按了reset键
+                            {
+                                start_time = e.target.xAxis[0].dataMin;
+                                end_time = e.target.xAxis[0].dataMax;
+                            }
+                            else
+                            {
+                                start_time = e.xAxis[0].min;
+                                end_time = e.xAxis[0].max;
+                            }
+                        }
+                        else
+                        {
+                            start_time = e.xAxis[0].min;
+                            end_time = e.xAxis[0].max;
+                        }
+                        DATA_CENTER.set_global_variable("selected_filter_timerange",{min:start_time,max:end_time})
+
                     }
                 }
             },
             plotOptions:{
                 line:{
                     turboThreshold:100000,
+                    color:"#7cb5ec"
                 },
                 series:{
                     marker:{
                         enabled:true,
                         radius:10,
-                    }
-                }
+                    },
+                    //stacking:"normal",
+                },
+
             },
             legend:{
                 enabled:false,

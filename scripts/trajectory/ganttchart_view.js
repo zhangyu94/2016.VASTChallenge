@@ -11,7 +11,7 @@ var ganttchart_view = {
 	obsUpdate:function(message, data)
 	{
 		var self = this;
-		console.log(message);
+		//console.log(message);
 		//console.log('dataFormat')
 		//console.log(data)a
 		if (message == "display:ganttchart_view")

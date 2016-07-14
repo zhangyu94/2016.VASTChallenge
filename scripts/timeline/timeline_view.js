@@ -42,20 +42,12 @@ var timeline_view = {
 
 		if (message == "set:current_display_time")
 		{
-
-
-
-
-
-
 	        var current_display_time = DATA_CENTER.global_variable.current_display_time;
 	        var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
 	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
-	        chart.xAxis[0].removePlotBand('time-tick')
 	        if (typeof(current_display_time)!=undefined)
 	        {
 	        	this._plot_tickline(chart,0,"time-tick",current_display_time,"#FF0000","solids");
-	        	//console.log(current_display_time)
 	        	trajmonitor_view.obsUpdate('stream:trajmonitor_view',+current_display_time)
 	        	var index = this._binary_search(chart.series[0].data,"x",current_display_time);
 				chart.tooltip.refresh(chart.series[0].data[index]);
@@ -138,15 +130,40 @@ var timeline_view = {
 
         }
 
+        if (message == "set:selected_filter_timerange")
+        {
+        	var selected_filter_timerange = DATA_CENTER.global_variable.selected_filter_timerange;
+            console.log(selected_filter_timerange)
+            var max_time = selected_filter_timerange.max;
+            var min_time = selected_filter_timerange.min;
+
+
+            var chart = $("#"+timeline_view.timeline_div_id).highcharts();
+            if (typeof(chart)=="undefined")
+            {
+                console.warn("undefined timeline")
+            }
+            else
+            {
+                chart.xAxis[0].setExtremes(min_time,max_time)
+            }
+        }
+
 	},
     _timeline_redraw:function(current_display_time){
     	var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
 	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
 	    var new_data=[]
-        var start = current_display_time- DATA_CENTER.timeline_variable.stream_window_width
-        var end = current_display_time   // 顶到最前面
-        var cnt = 10000
-        var interval= (end-start)/cnt
+        var start = current_display_time - DATA_CENTER.timeline_variable./*display_before*/stream_window_width
+        var end = current_display_time;   // 顶到最前面
+        var cnt = 10000;
+        var interval= (end-start)/cnt;
+
+
+        //var interval = DATA_CENTER.timeline_variable.display_interval;
+        //var cnt = (end-start)/interval;
+
+
         for(var i =0 ;i<=cnt;i++){
         	new_data.push([i*interval+start,0])
         }

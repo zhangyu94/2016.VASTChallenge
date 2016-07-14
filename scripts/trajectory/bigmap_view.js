@@ -1038,7 +1038,7 @@ var bigmap_view = {
 				x = 75, xLength = 44, y = 66, yLength = 24;
 			}else{
 				var randomRoomId = Math.floor(length * Math.random());
-				console.log(roomArray[randomRoomId]);
+				//console.log(roomArray[randomRoomId]);
 				x = +roomArray[randomRoomId].x;
 				xLength = +roomArray[randomRoomId].xlength;
 				y = +roomArray[randomRoomId].y;
