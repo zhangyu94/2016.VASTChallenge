@@ -122,13 +122,15 @@ var timeline_view = {
             chart.redraw();
 
         }
+        /*
         if (message == "set:stream_play"){
         	var current_display_time=DATA_CENTER.timeline_variable.stream_start.getTime();
-        	this._timeline_redraw(current_display_time);
+        	//this._timeline_redraw(current_display_time);
         	DATA_CENTER.set_global_variable("current_display_time",current_display_time);
 
 
         }
+        */
 
         if (message == "set:selected_filter_timerange")
         {
@@ -393,7 +395,7 @@ var timeline_view = {
 
 	        		var current_display_time = 1000*3*60+ DATA_CENTER.global_variable.current_display_time;
                     //console.log(current_display_time)
-                    timeline_view._timeline_redraw(current_display_time)
+                    //timeline_view._timeline_redraw(current_display_time)
 	        		if (current_display_time <= chart.xAxis[0].max)
 	        			DATA_CENTER.set_global_variable("current_display_time",current_display_time);
 	        		else
@@ -452,6 +454,14 @@ var timeline_view = {
 	    		DATA_CENTER.timeline_variable.isstreaming=true
 	    		DATA_CENTER.set_timeline_variable("stream_play",true);
 	    		DATA_CENTER.set_timeline_variable("isplaying",false);
+
+
+
+	    		var chart = $("#"+timeline_view.timeline_div_id).highcharts()
+	    		var max_time = (new Date('2016 06 16 12:00:00')).valueOf();  
+				var min_time = max_time - DATA_CENTER.timeline_variable.stream_window_width;
+       			chart.xAxis[0].setExtremes(min_time,max_time)
+
 	    	}
 	    	else{
 	    		options = {
@@ -463,6 +473,14 @@ var timeline_view = {
 	        	$( "#stopbtn_div" ).button( "option", options );
 	    		DATA_CENTER.timeline_variable.isstreaming=false
 	    		timeline_view.render(timeline_view.timeline_view_DIV_ID)
+
+
+	    		var chart = $("#"+timeline_view.timeline_div_id).highcharts()
+	    		var min_time = chart.xAxis[0].dataMin;
+	    		var max_time = chart.xAxis[0].dataMax;
+	    		chart.xAxis[0].setExtremes(min_time,max_time)
+
+
 	    	}
 	    	$(this).button('option',options)
 	    })
@@ -485,25 +503,6 @@ var timeline_view = {
     	}
     	return xyAxis_data;
 
-    	/*
-        //使用的全局变量
-        var data = DATA_CENTER.original_data["bldg-MC2.csv"];
-        //end 全局变量
-
-        var xAxis_attr_name = "Date/Time";
-        var xyAxis_data = [];
-        for (var i=0;i<data.length;++i)
-        {
-            var y_value = 0;
-
-            var x_value = new Date(data[i][xAxis_attr_name]);
-            var x_value = x_value.getTime();
-
-            var temp = [x_value,y_value];
-            xyAxis_data.push(temp)
-        }
-        return xyAxis_data;
-        */
     },
 
 	_plot_linechart:function(divID,xyAxis_data)
