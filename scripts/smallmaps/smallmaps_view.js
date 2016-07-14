@@ -581,12 +581,6 @@ var smallmaps_view = {
 	//data的数据格式是一个数组，数组中每个元素的样子是{name:...,value:...}
 	_render_radarchart:function(data,glyph_name,raw_timestamp,class_label,center_x,center_y,radius,innerRadius)
 	{
-
-
-
-
-
-
 		var width = 4.5*radius;
 		var height = 4.5*radius;
 		var degree = 360/data.length;
@@ -782,8 +776,9 @@ var smallmaps_view = {
 		      	})
 	},
 
-	_push_linechart_warning_list:function(fused_attr,value,raw_timestamp)
+	_push_linechart_warning_list:function(fused_attr,value,raw_timestamp,reason_value)
 	{
+		//console.log("pushed")
 		var place_attr = linechart_linebtn_view._parse_position_attr(fused_attr);
 
 		var warning_event = {
@@ -802,7 +797,7 @@ var smallmaps_view = {
 		var warning_list = DATA_CENTER.global_variable.warning_list;
 
 		warning_list.push(warning_event);
-		console.log(warning_event)
+
 		DATA_CENTER.set_global_variable("warning_list",warning_list);
 	},
 
@@ -824,6 +819,10 @@ var smallmaps_view = {
 		if (normalized_value >= HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD)
 	 	{
 	 		this._push_linechart_warning_list(d.data.name,d.data.value,raw_timestamp);
+
+
+	 		return ;
+
 
 	 		d3.select("body")
 				.append("div")
@@ -856,7 +855,6 @@ var smallmaps_view = {
 						{
 					  		var signed_normalized_value = DATA_CENTER.VIEW_COLLECTION.HVACmonitor_view.abnormal_degree(raw_timestamp,that_d.data.name,that_d.data.value)
 					  	}
-
 
 					  	var compressed_name = linechart_render_view._compress_full_attr_name(that_d.data.name);
 					    var content = 	"<span style='color:red'>" + time_string  + "</span>"+ "</br>" +

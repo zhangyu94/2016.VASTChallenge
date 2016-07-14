@@ -249,7 +249,7 @@ var DATA_CENTER = {
 			},
 			"VAV_SYS Outdoor Air Mass Flow Rate":{
 				abbreviation:"outdoor air rate",
-				lv2_abbreviation:"otdr air temp",
+				lv2_abbreviation:"otdr air rate",
 				type:["air"],
 			},
 			"COOL Schedule Value":{
@@ -712,15 +712,17 @@ var DATA_CENTER = {
 	},
 
 	add_HVAC_streaming_data:function(data,label){
+
+
+
+
 		var processed_data = this.unify_HVAC_oneframe_data(data)
 		var cur_frame_timestamp = processed_data["Date/Time"];
-		//console.log("new streaming data",processed_data);
 
 		var latest_HVAC_merged_frame = DATA_CENTER.global_variable.latest_HVAC_merged_frame;
 
 		if (typeof(latest_HVAC_merged_frame)=="undefined")//第一次接受streaming时
 		{
-			//console.log("reach 669",latest_HVAC_merged_frame_timestamp,cur_frame_timestamp)
 			DATA_CENTER.global_variable.latest_HVAC_merged_frame = processed_data;
 			return ;
 		}
@@ -728,7 +730,6 @@ var DATA_CENTER = {
 		var latest_HVAC_merged_frame_timestamp = latest_HVAC_merged_frame["Date/Time"];
 		if (latest_HVAC_merged_frame_timestamp == cur_frame_timestamp)
 		{
-			//console.log("reach 677",latest_HVAC_merged_frame_timestamp,cur_frame_timestamp)
 			for (key in processed_data)
 			{
 				latest_HVAC_merged_frame[key] = processed_data[key];
@@ -758,7 +759,6 @@ var DATA_CENTER = {
 					DATA_CENTER.push_new_hazium_zone(Hazium_zone_in_new_frame[i]);
 				}
 			}
-			//console.log("reach 707",latest_HVAC_merged_frame_timestamp,cur_frame_timestamp)
 			DATA_CENTER.set_global_variable("latest_HVAC_merged_frame",latest_HVAC_merged_frame);
 
 			DATA_CENTER.global_variable.latest_HVAC_merged_frame = processed_data;
@@ -768,20 +768,7 @@ var DATA_CENTER = {
 			console.warn("error:old frame comes later than new frame")
 		}
 
-	/*
-		var verifying_data_frame = DATA_CENTER.original_data["bldg-MC2.csv"][0];
-		for (key in verifying_data_frame)
-		{
-			if (!(key in latest_HVAC_merged_frame))
-			{
-				if (latest_HVAC_merged_frame_timestamp < cur_frame_timestamp)
-				{
-					console.warn("latest stream frame lost key",key);
-					latest_HVAC_merged_frame[key] = 0;
-				}
-			}
-		}
-*/
+		
 	},
 
 
@@ -1248,6 +1235,7 @@ var DATA_CENTER = {
                         		that.add_HVAC_streaming_data(t_d.data,"bldg");
                         	}
 
+
                             //console.log(t_d.state, t_d.data);
                         break;
                         case "history":
@@ -1262,6 +1250,10 @@ var DATA_CENTER = {
                         		that.add_HVAC_data(t_d.data['data']);
                         	}
 
+                        	if (DATA_CENTER.original_data["bldg-MC2.csv"].length == 4741)
+							{
+								SUBJECT.notifyObserver("HVAC_streaming_get_all");
+							}
 
                             //console.log(t_d.state, t_d.data);
                         break;

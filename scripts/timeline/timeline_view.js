@@ -154,11 +154,14 @@ var timeline_view = {
     	var chart = $("#"+this.timeline_div_id).highcharts();    // Highcharts构造函数
 	        chart.xAxis[0].removePlotLine('time-tick'); //把id为time-tick的标示线删除
 	    var new_data=[]
-        var start = current_display_time - DATA_CENTER.timeline_variable./*display_before*/stream_window_width
-        var end = current_display_time;   // 顶到最前面
+
+	    var end = /*current_display_time*/(new Date('2016 06 16 12:00:00')).valueOf();   // 顶到最前面
+
+        var start = end - DATA_CENTER.timeline_variable./*display_before*/stream_window_width
+       
+
         var cnt = 10000;
         var interval= (end-start)/cnt;
-
 
         //var interval = DATA_CENTER.timeline_variable.display_interval;
         //var cnt = (end-start)/interval;
@@ -179,8 +182,7 @@ var timeline_view = {
         	},
             name: "timeline",
             data: new_data,
-        },false)
-        chart.redraw();
+        })
     },
 	_add_marking_plotband:function(min,max)
 	{

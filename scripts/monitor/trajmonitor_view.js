@@ -43,7 +43,7 @@ var trajmonitor_view = {
         	this.render(this.trajmonitor_view_DIV_ID)
         }
         */
-        console.log(message);
+        //console.log(message);
 
         if (message == "hide:trajmonitor_view")
         {
@@ -94,7 +94,7 @@ var trajmonitor_view = {
         }
         if (message == "set:selected_proxzone_set"){
         	var n_person_array=[]
-        	console.log.log(DATA_CENTER.global_variable.selected_proxzone_set)
+        	//console.log.(DATA_CENTER.global_variable.selected_proxzone_set)
         	var sps_proxzone_set= DATA_CENTER.global_variable.selected_proxzone_set
         	var n_person_array=[]
         	if(sps_proxzone_set.length==0){

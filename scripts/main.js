@@ -38,7 +38,7 @@ function main(){
 			"set:highlight_building_set",
 			"set:highlight_linechart_set",
 
-
+			"HVAC_streaming_get_all",
 
 			"set:latest_HVAC_merged_frame",
 			"push:new_hazium_zone",

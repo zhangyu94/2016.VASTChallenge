@@ -6,7 +6,7 @@ var HVACmonitor_view = {
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"HVACmonitor-radarchart_glyph-div",
 
-	ABNORMAL_VALUE_THRESHOLD:1.5/*4*/,//归一化以后的异常阈值
+	ABNORMAL_VALUE_THRESHOLD:3/*4*/,//归一化以后的异常阈值
 
 	ATTRIBUTE_DOT_RADIUS :6,
 	RADARCHART_GLYPH_RADIUS :15,
@@ -403,7 +403,8 @@ var HVACmonitor_view = {
 	    }
 	    else if(hazium="Hazium"){
 	        if(value-0.647956659226>0){
-	            return (value-0.647956659226)/Math.sqrt(1.57175094288)
+	        	return 2*HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD;
+	            //return (value-0.647956659226)/Math.sqrt(1.57175094288)
 	        }
 	        else{
 	            return 0
