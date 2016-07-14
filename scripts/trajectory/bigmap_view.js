@@ -857,6 +857,16 @@ var bigmap_view = {
 			d.formerScaleNodeY = d.afterScaleNodeY;
 			return scaleNodeY;
 		})
+		.style('stroke', function(d,i){
+			if((!d.isAccurateLoc) && (!d.exitSelfOffice)){
+				var proxId = d.personName;
+				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
+				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
+				var work = proxId2work[proxId];
+				var color = work2color[work];
+				return color;
+			}
+		})
 		.each('start', function(d,i){
 			d3.select('#process-background-' + d.personName).attr('visibility', 'hidden');
 			d3.select('#process-background-' + d.personName).attr('visibility', 'hidden');
@@ -898,6 +908,16 @@ var bigmap_view = {
 					d.afterScaleNodeX = scaleNodeX;
 					d.afterZoneId = zoneId;
 					return scaleNodeX;
+				})
+				.style('stroke', function(d,i){
+					if((!d.isAccurateLoc) && (!d.exitSelfOffice)){
+						var proxId = d.personName;
+						var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
+						var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
+						var work = proxId2work[proxId];
+						var color = work2color[work];
+						return color;
+					}
 				})
 				.attr('cy', function(d,i){
 					var nodeY = d.returnY;
@@ -1050,7 +1070,7 @@ var bigmap_view = {
 					d.abnormal = true;
 					var warningObject = new Object();
 					warningObject.type = 'trajectory';
-					warningObject.time = globalTime;
+					warningObject.time = DATA_CENTER.global_variable.current_display_time;;
 					warningObject.timelength = endtime - timestamp;
 					warningObject.place = new Object();
 					warningObject.place.type = 'Proxzone';
@@ -1097,7 +1117,7 @@ var bigmap_view = {
 				x = 124, xLength = 26, y = 46, yLength = 20;
 			}else if((floorNum == 3) && (zoneNum == 1)){
 				//3300
-				x = 0, xLength = 16, y = 87, yLength = 24;
+				x = 48, xLength = 30, y = 95, yLength = 16;
 			}else if((floorNum == 3) && (zoneNum == 2)){
 				//3700
 				x = 75, xLength = 44, y = 66, yLength = 24;
@@ -1110,7 +1130,7 @@ var bigmap_view = {
 				yLength = +roomArray[randomRoomId].ylength;
 				var warningObject = new Object();
 				warningObject.type = 'trajectory';
-				warningObject.time = globalTime;
+				warningObject.time = DATA_CENTER.global_variable.current_display_time;;
 				warningObject.timelength = endtime - timestamp;
 				warningObject.place = new Object();
 				warningObject.place.type = 'Proxzone';

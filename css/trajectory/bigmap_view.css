@@ -122,6 +122,7 @@ circle[class~=warning-signal]{
 }
 .in-public-class{
     stroke-width: 2.5px;
+   // stroke: green;
     fill-opacity: 0;
 }
 .conflict-rect{
