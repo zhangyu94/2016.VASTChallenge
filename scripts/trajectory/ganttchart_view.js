@@ -262,6 +262,7 @@ var ganttchart_view = {
 				if(keyA > keyB) return 1;
 				return 0;
 			});
+			console.log(shortRecords);
 
 //calc offset
 			shortRecords[0].cntShort = 0;
