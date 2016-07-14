@@ -116,7 +116,7 @@ circle[class~=warning-signal]{
     100% {}
 }
 .accurate-class{
-    stroke: black;
+    stroke: #016c59;
     stroke-width: 2.5px; 
 }
 .in-office-class{
@@ -124,6 +124,6 @@ circle[class~=warning-signal]{
     stroke-width 2.5px: 
 }
 .in-public-class{
-    stroke: #016c59;
+    stroke: black;
     stroke-width: 2.5px;
 }
