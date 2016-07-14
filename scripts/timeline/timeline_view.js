@@ -460,7 +460,8 @@ var timeline_view = {
 	    		var chart = $("#"+timeline_view.timeline_div_id).highcharts()
 	    		var max_time = (new Date('2016 06 16 12:00:00')).valueOf();  
 				var min_time = max_time - DATA_CENTER.timeline_variable.stream_window_width;
-       			chart.xAxis[0].setExtremes(min_time,max_time)
+       			//chart.xAxis[0].setExtremes(min_time,max_time)
+       			DATA_CENTER.set_global_variable("selected_filter_timerange",{min:min_time,max:max_time})
 
 	    	}
 	    	else{
