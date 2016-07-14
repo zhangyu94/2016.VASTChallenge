@@ -507,10 +507,10 @@ var bigmap_view = {
 			var original_class = 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum;
 			if(DATA_CENTER.global_variable.enable_alert){
 				if(d.abnormal){
-					original_class =  'error-signal ' + original_class;
+					original_class = 'error-signal ' + original_class;
 				}
 				if((!d.isAccurateLoc) && (!d.exitSelfOffice) && (!d.exitSelfOfficeButReasonable)){
-					original_class =  'warning-signal ' + original_class;
+					original_class = 'warning-signal ' + original_class;
 				}
 			}
 			var proxId = d.personName;
@@ -1048,6 +1048,17 @@ var bigmap_view = {
 				}else{
 					//如果在一分钟前的时间的prox-zone与prox card检测到的区域也不一致，则说明是不合理的
 					d.abnormal = true;
+					var warningObject = new Object();
+					warningObject.type = 'trajectory';
+					warningObject.time = globalTime;
+					warningObject.timelength = endtime - timestamp;
+					warningObject.place = new Object();
+					warningObject.place.type = 'Proxzone';
+					warningObject.attr = personName;
+					warningObject.reason = 'conflict';
+					var warningObjectArray = DATA_CENTER.global_variable.warning_list;
+					warningObjectArray.push(warningObject);
+					DATA_CENTER.set_global_variable('warning_list', warningObjectArray);
 				}
 				d.isAccurateLoc = true;
 			}
@@ -1097,6 +1108,17 @@ var bigmap_view = {
 				xLength = +roomArray[randomRoomId].xlength;
 				y = +roomArray[randomRoomId].y;
 				yLength = +roomArray[randomRoomId].ylength;
+				var warningObject = new Object();
+				warningObject.type = 'trajectory';
+				warningObject.time = globalTime;
+				warningObject.timelength = endtime - timestamp;
+				warningObject.place = new Object();
+				warningObject.place.type = 'Proxzone';
+				warningObject.attr = personName;
+				warningObject.reason = 'arrive an impossible location';
+				var warningObjectArray = DATA_CENTER.global_variable.warning_list;
+				warningObjectArray.push(warningObject);
+				DATA_CENTER.set_global_variable('warning_list', warningObjectArray);
 			}
 			returnX = x + Math.floor(xLength * Math.random());
 			returnY = y + Math.floor(yLength * Math.random());
