@@ -74,11 +74,11 @@ var histogram_view = {
 			console.log('mouseout');
 		})
 		.on('click', function(d,i){
-			d3.selectAll('.sum-legend').classed('click-highlight', false);
-			DATA_CENTER.set_global_variable('certainty_encode', true);
 			if(d3.select('.sum-legend-label-certainty').classed('click-highlight')){
+				DATA_CENTER.set_global_variable('certainty_encode', false);
 				d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', false);
 			}else{
+				DATA_CENTER.set_global_variable('certainty_encode', true);
 				d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', true);
 			}
 		});
@@ -99,11 +99,11 @@ var histogram_view = {
 			d3.select('.sum-legend-label-certainty').classed('mouseover-highlight', false);
 		})
 		.on('click', function(d,i){
-			d3.selectAll('.sum-legend').classed('click-highlight', false);
-			DATA_CENTER.set_global_variable('certainty_encode', true);
 			if(d3.select(this).classed('click-highlight')){
+				DATA_CENTER.set_global_variable('certainty_encode', false);
 				d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', false);
 			}else{
+				DATA_CENTER.set_global_variable('certainty_encode', true);
 				d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', true);	
 			}
 		});
@@ -136,11 +136,11 @@ var histogram_view = {
 			d3.selectAll('.sum-legend-label-work').classed('mouseover-highlight', false);
 		})
 		.on('click', function(d,i){
-			DATA_CENTER.set_global_variable('certainty_encode', false);
-			d3.selectAll('.sum-legend').classed('click-highlight', false);
 			if(d3.select(this).classed('click-highlight')){
+				DATA_CENTER.set_global_variable('work_encode', false);
 				d3.selectAll('.sum-legend-label-work').classed('click-highlight', false);
 			}else{
+				DATA_CENTER.set_global_variable('work_encode', true);
 				d3.selectAll('.sum-legend-label-work').classed('click-highlight', true);
 			}
 		});
@@ -162,10 +162,11 @@ var histogram_view = {
 		})
 		.on('click', function(d,i){
 			DATA_CENTER.set_global_variable('certainty_encode', false);
-			d3.selectAll('.sum-legend').classed('click-highlight', false);
 			if(d3.select(this).classed('click-highlight')){
+				DATA_CENTER.set_global_variable('work_encode', false);
 				d3.selectAll('.sum-legend-label-work').classed('click-highlight', false);
 			}else{
+				DATA_CENTER.set_global_variable('work_encode', true);
 				d3.selectAll('.sum-legend-label-work').classed('click-highlight', true);	
 			}
 		});
@@ -234,11 +235,14 @@ var histogram_view = {
 		//默认情况的设置
 		if(DATA_CENTER.global_variable.certainty_encode){
 			//如果使用位置的确定性进行编码
-			d3.selectAll('.sum-legend-label-work').classed('click-highlight', false);
 			d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', true);
 		}else{
-			d3.selectAll('.sum-legend-label-work').classed('click-highlight', true);
 			d3.selectAll('.sum-legend-label-certainty').classed('click-highlight', false);
+		}
+		if(DATA_CENTER.global_variable.work_encode){
+			d3.selectAll('.sum-legend-label-work').classed('click-highlight', true);
+		}else{
+			d3.selectAll('.sum-legend-label-work').classed('click-highlight', false);
 		}
 		if(DATA_CENTER.global_variable.enable_alert){
 			//如果存在alert的警报情况

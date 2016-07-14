@@ -134,18 +134,17 @@ var ganttchart_view = {
 
 
 			svg.selectAll("histBar")
-			      .data(histData)
+			    .data(histData)
 			    .enter().append("rect")
-			      .attr("x", function(d) { return 0; })
-			      .attr("height", y.rangeBand())
-			      .attr("y", function(d,i) { return y(i); })
-			      .attr("width", function(d) { return x(d.duration); })
-			      .attr("fill", function(d){
+			    .attr("x", function(d) { return 0; })
+			    .attr("height", y.rangeBand())
+			    .attr("y", function(d,i) { return y(i); })
+			    .attr("width", function(d) { return x(d.duration); })
+			    .attr("fill", function(d){
 			      	// console.log(self);
 			      	return self.zoneColorScale(d.fz)
 			      })
 			      .attr("class","histBar");
-
 		}
 	},
 	make_ganttchart:function(divID) {
