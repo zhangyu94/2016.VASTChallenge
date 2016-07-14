@@ -259,16 +259,15 @@ var histogram_view = {
 		.append('g');
 
 		colorLegendG.append('circle')
-		.attr('class', 'colorLegend')
+		.attr('class', function(d,i){
+			return 'colorLegend ' + d.name;
+		})
 		.attr('r', circleR)
 		.attr('cx', function(d,i){
 			return legendX;
 		})
 		.attr('cy', function(d,i){
 			return legendYStart + legendHeight * i;
-		})
-		.attr('fill', function(d,i){
-			return d.color;
 		});
 		colorLegendG.append('text')
 		 .attr('class', 'circle-type-text')

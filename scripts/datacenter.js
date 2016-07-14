@@ -96,7 +96,7 @@ var DATA_CENTER = {
 		selected_person_set:[],
 		enable_alert: true,
 		certainty_encode: true,
-		work_encode: false, 
+		work_encode: true, 
 		selected_prox_zone: undefined
 	},
 
@@ -429,11 +429,11 @@ var DATA_CENTER = {
 				color: '#08519c'
 			},
 			{
-				name: 'in office',
+				name: 'in-office',
 				color: '#4292c6'
 			},
 			{
-				name: 'in public',
+				name: 'in-public',
 				color: '#9ecae1'
 			}
 		],

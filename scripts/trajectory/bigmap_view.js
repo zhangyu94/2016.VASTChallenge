@@ -543,16 +543,24 @@ var bigmap_view = {
 		})
 		.attr('fill', function(d,i){
 			//单独检测异常的情况
-			if(DATA_CENTER.global_variable.work_encode){
+			if(d.isAccurateLoc || d.exitSelfOffice){
 				var proxId = d.personName;
 				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
 				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
 				var work = proxId2work[proxId];
 				var color = work2color[work];
 				return color;
-			}else{
-				return 'white';
-			}	
+			}
+		})
+		.style('stroke', function(d,i){
+			if((!d.isAccurateLoc) && (!d.exitSelfOffice)){
+				var proxId = d.personName;
+				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
+				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
+				var work = proxId2work[proxId];
+				var color = work2color[work];
+				return color;
+			}
 		})
 		.attr('r', 4)
 		.on('click',function(d,i){
@@ -800,16 +808,13 @@ var bigmap_view = {
 		})
 		.attr('fill', function(d,i){
 			//单独检测异常的情况
-			if(DATA_CENTER.global_variable.work_encode){
-				console.log('-------work encode--------');
+			if(d.isAccurateLoc || d.exitSelfOffice){
 				var proxId = d.personName;
 				var proxId2work = DATA_CENTER.GLOBAL_STATIC.proxId2work;
 				var work2color = DATA_CENTER.GLOBAL_STATIC.work2color;
 				var work = proxId2work[proxId];
 				var color = work2color[work];
 				return color;
-			}else{
-				return 'white';
 			}
 		})
 		.attr('r', function(d,i){

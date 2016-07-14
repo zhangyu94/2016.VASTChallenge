@@ -101,7 +101,6 @@ circle[class~=warning-signal]{
     0% {}
     50% {
       stroke: #e31a1c;
-      fill: #e31a1c;
       stroke-width: 3px;
     }
     100% {}
@@ -110,20 +109,26 @@ circle[class~=warning-signal]{
     0% {}
     50% {
       stroke: #feb24c;
-      fill: #feb24c;
       stroke-width: 3px;
     }
     100% {}
 }
 .accurate-class{
-    stroke: #016c59;
-    stroke-width: 2.5px; 
+    stroke: black;
+    stroke-width: 1px; 
 }
 .in-office-class{
-    stroke: #c51b8a;
-    stroke-width 2.5px: 
+    
 }
 .in-public-class{
-    stroke: black;
     stroke-width: 2.5px;
+    fill-opacity: 0;
+}
+.conflict-rect{
+    stroke-width: 1px;
+    fill-opacity: 0;
+}
+.warning-rect{
+    stroke-width: 1px;
+    fill-opacity: 0;
 }

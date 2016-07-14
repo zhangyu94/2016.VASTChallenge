@@ -20,3 +20,17 @@
 	border: black;
 	border-width: 1px;
 }
+
+.accurate{
+	stroke: black;
+	stroke-width: 2px;
+    fill: orange;
+}
+.in-office{
+	fill: orange;
+}
+.in-public{
+    stroke-width: 2.5px;
+    stroke: black;
+    fill-opacity: 0;
+}
