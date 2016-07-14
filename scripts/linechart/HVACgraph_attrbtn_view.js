@@ -3,7 +3,7 @@ var HVACgraph_attrbtn_view = {
 	DIV_CLASS_OF_SMALLSPANS:"HVACattrbtn-span-div_of_smallspans",
 
 	FIRST_CALLED : true,
-	STATIC_BTN : false,//true,
+	STATIC_BTN : true,//false,
 
 	SMALL_SPAN_WIDTH : 4,
 	rendered_attrbtn_set : [],

@@ -6,7 +6,7 @@ var HVACmonitor_view = {
 
 	DIV_CLASS_OF_RADARCHART_GLYPH:"HVACmonitor-radarchart_glyph-div",
 
-	ABNORMAL_VALUE_THRESHOLD:4/*1.5*/,//归一化以后的异常阈值
+	ABNORMAL_VALUE_THRESHOLD:1.5/*4*/,//归一化以后的异常阈值
 
 	ATTRIBUTE_DOT_RADIUS :6,
 	RADARCHART_GLYPH_RADIUS :15,
@@ -207,7 +207,6 @@ var HVACmonitor_view = {
 				{
 					var attr_type = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view
 											._cal_attr_type(d);
-					console.log(d,attr_type)
 					if (attr_type == "building_attr")
 					{
 						var building_set = DATA_CENTER.GLOBAL_STATIC.building_set;

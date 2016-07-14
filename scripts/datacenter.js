@@ -44,6 +44,7 @@ var DATA_CENTER = {
 		//{
 		//	type:...(linechart,trajectory等)
 		//	time:...(一个时间点,存成数字)
+		//  timelength:...(时间长度，存成数字)
 		//	place:{
 		//		type:...(标记这个place是一个HVACzone或者Proxzone或者具体的robot检测到的点)
 		//		value:...
@@ -632,7 +633,7 @@ var DATA_CENTER = {
 			this.update_traj_endtime_signle(pID);
 		}
 	},
-	add_traj_mobile_data:function(data, warning = false) {
+	add_traj_mobile_data:function(data, warning) {
 		var person = DATA_CENTER.derived_data['person'];
 		//console.log(data);
 		for(var i=0;i<data.length;i++) {

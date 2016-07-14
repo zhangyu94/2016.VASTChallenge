@@ -228,10 +228,6 @@ var linechart_render_view = {
         }
 
 
-
-
-
-
 	},
 
 
@@ -629,7 +625,7 @@ var linechart_render_view = {
                 if  (normalized_value > HVACmonitor_view.ABNORMAL_VALUE_THRESHOLD)
                 {
                     color = "#FF0000"
-                    console.warn("warning")
+                    //console.warn("warning")
                 }
                 
                 //var temp = y_value;
@@ -654,7 +650,7 @@ var linechart_render_view = {
 
 	_plot_linechart:function(divID,xysetAxis_data,ysetAxis_original_name)
 	{
-        console.log(xysetAxis_data)
+        //console.log(xysetAxis_data)
         var series_data = [];
         for (var i=0;i<xysetAxis_data.length;++i)
         {
