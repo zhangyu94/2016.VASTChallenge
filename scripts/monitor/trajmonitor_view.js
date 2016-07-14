@@ -1,6 +1,6 @@
 var trajmonitor_view = {
 	trajmonitor_view_DIV_ID : "trajmonitor-renderplace",
-    
+
     FIRST_CALLED: true,
 
     startTime : undefined,
@@ -10,23 +10,24 @@ var trajmonitor_view = {
 
 	obsUpdate:function(message, data)
 	{
-		if (message == "display:trajmonitor_view")
-        {
-            $("#"+this.trajmonitor_view_DIV_ID).css("display","block");
-            var timeRange=DATA_CENTER.global_variable.selected_filter_timerange
-            this.startTime=new Date(timeRange.min)
-        	this.endTime=new Date(timeRange.max)
-        	var person = DATA_CENTER.derived_data['person']
-        	this.person_array=[]
-        	for(var p in person){
-        		this.person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
-        	}
-        	if (this.FIRST_CALLED)
-        	{
-        		this.render(this.trajmonitor_view_DIV_ID)
-        		this.FIRST_CALLED = false;
-        	}
-        }
+                $('.tipsy').remove();
+	    if (message == "display:trajmonitor_view")
+                {
+                    $("#"+this.trajmonitor_view_DIV_ID).css("display","block");
+                    var timeRange=DATA_CENTER.global_variable.selected_filter_timerange
+                    this.startTime=new Date(timeRange.min)
+                	this.endTime=new Date(timeRange.max)
+                	var person = DATA_CENTER.derived_data['person']
+                	this.person_array=[]
+                	for(var p in person){
+                		this.person_array.push({name:p,fixRecords:person[p].fixRecords,mobileRecords:person[p].mobileRecords})
+                	}
+                	if (this.FIRST_CALLED)
+                	{
+                		this.render(this.trajmonitor_view_DIV_ID)
+                		this.FIRST_CALLED = false;
+                	}
+                }
 		/*
 		if (message == "display:trajmonitor_view")
         {
@@ -42,6 +43,7 @@ var trajmonitor_view = {
         	this.render(this.trajmonitor_view_DIV_ID)
         }
         */
+        console.log(message);
 
         if (message == "hide:trajmonitor_view")
         {
@@ -69,7 +71,7 @@ var trajmonitor_view = {
         	//console.log(this.display_before)
             this.startTime=new Date(this.endTime-this.display_before)
         	this.render(this.trajmonitor_view_DIV_ID)
-            
+
         }
         if (message == "set:selected_card_set")
         {
@@ -85,10 +87,10 @@ var trajmonitor_view = {
         			}
         		}
         		this.person_array=n_person_array
-        		
+
         	}
         	this.render(this.trajmonitor_view_DIV_ID)
-        
+
         }
         if (message == "set:selected_proxzone_set"){
         	var n_person_array=[]
@@ -134,7 +136,7 @@ var trajmonitor_view = {
         		this.person_array=n_person_array
         		//console.log(n_person_array)
         		this.render(this.trajmonitor_view_DIV_ID)
-        		
+
         	}
 
         }
@@ -143,7 +145,7 @@ var trajmonitor_view = {
         	var n_person_array=[]
         	var sps_hvaczone_set= DATA_CENTER.linechart_variable.highlight_HVACzone_set
         	//console.log(DATA_CENTER.linechart_variable.highlight_HVACzone_set)
-        	
+
         	if(sps_hvaczone_set.length==0){
         		//this.render(this.trajmonitor_view_DIV_ID)
         	}
@@ -197,9 +199,9 @@ var trajmonitor_view = {
         		//console.log(n_person_array)
         		this.render(this.trajmonitor_view_DIV_ID)
         	}
-        
+
         }
-        
+
 	},
 	render:function(divID)
 	{
@@ -224,9 +226,9 @@ var trajmonitor_view = {
 	    // 	}
 	    // }
 	    //console.log(person_array)
-	    
+
 	    //console.log(person_array)
-		
+
 		//console.log(this.startTime)
 		//console.log(this.endTime)
 
@@ -291,13 +293,13 @@ var trajmonitor_view = {
 
 	    	var draw_person_array=person_array[p]['fixRecords'].filter(function(d) {
 	    		if(d.timestamp<endTime&&d.endtime>startTime){
-	    			
+
 	    			return true
 	    		}
 	    	})
 	    	var draw_person_array_mobile=person_array[p]['mobileRecords'].filter(function(d) {
 	    		if(d.timestamp<endTime&&d.timestamp>startTime){
-	    			
+
 	    			return true
 	    		}
 	    	})
@@ -352,9 +354,9 @@ var trajmonitor_view = {
 		    			return (3-(+d.floor))*rectHeight/2+rectHeight*0.2;
 		    		})
 		    		.attr('x',function(d) {
-		    		
+
 		    				return xscale(new Date(d.timestamp.getTime()-1000*30))
-		   
+
 		    		})
 		    		.attr('width',function(d){
 		    			return xscale(new Date(d.timestamp.getTime()+1000*60))-xscale(d.timestamp)
@@ -385,10 +387,10 @@ var trajmonitor_view = {
 		                });
 		            });
 	        // var svg = d3.select("#"+divID).append("svg")
-	        //         .attr("class","mainsvg")   
+	        //         .attr("class","mainsvg")
 	        //         .attr("width",width)
 	        //         .attr("height",height)
 
-	  
+
 	}
 }
