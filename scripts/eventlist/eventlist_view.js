@@ -126,7 +126,7 @@ var eventlist_view = {
 			}
 			return new_list;
 		}
-		var warning_list = filter_warning_list(warning_list);
+		//var warning_list = filter_warning_list(warning_list);
 
 		//按时间数字升序排
 		warning_list.sort(function(a,b){
@@ -168,7 +168,7 @@ var eventlist_view = {
                     return "warning_event-span-"+eventlist_view._id_of_warningevent(d);
                 })
                 .on("click",function(d,i){
-                	console.log(d)
+                	//console.log(d)
                 	var this_attr = d.attr;
                 	var this_place_type = d.place.type;
                 	var this_place_value = d.place.value;
@@ -240,6 +240,11 @@ var eventlist_view = {
 		            //DATA_CENTER.set_global_variable("selected_filter_timerange",{min:this_time_start,max:this_time_start+this_time_length})
 
                 })
+				.on("dblclick",function(d,i){
+					console.log("REac")
+					//d3.select(this).remove()
+					$(this).remove()
+				})
 				.each(function(d,i){
             		$(this).tipsy({
 						gravity: "e",
@@ -285,7 +290,9 @@ var eventlist_view = {
             	.attr("class","warning_event-attr-span")
             	.attr("value",function(d,i){return d.attr})
             	.text(function(d,i){
-            		return linechart_render_view._map_pureattr_name_to_abbreviation(d.attr)/*+":"+d.value*/
+            		if (typeof (DATA_CENTER.GLOBAL_STATIC.attribute_description[d.attr])!="undefined")
+            			return linechart_render_view._map_pureattr_name_to_abbreviation(d.attr)/*+":"+d.value*/
+            		return d.attr
             	})        
 
         var exit = update.exit();
