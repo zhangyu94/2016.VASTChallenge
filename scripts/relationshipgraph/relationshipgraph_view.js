@@ -56,12 +56,12 @@ var relationshipgraph_view = {
 		  });
 
 	    var scale_negative = d3.scale.linear()
-	      .domain([-1,-0.9])
-	      .range([50,200]);
+	      .domain([-1,0])
+	      .range([50,300]);
 
 	    var scale_positive = d3.scale.linear()
-	      .domain([0.8,0.6])
-	      .range([50,200]);			
+	      .domain([1,0])
+	      .range([50,300]);			
 
 	    //if(timerange == undefined)//是否设置了时间范围，如果没有就默认是全部时间
 	    	selectedData = ori_data_array;
@@ -112,12 +112,12 @@ var relationshipgraph_view = {
 	        var correlationMatrix = MDS.correlationMatrix(total_array);//相关系数结果数组
 	        var arr_len = correlationMatrix.length;
 
-	        console.log(correlationMatrix)
+	        //console.log(correlationMatrix)
 
 	        for(var i=0;i<arr_len-1;i++)
         	for(var j=i+1;j<arr_len;j++)
         	{
-        		if((correlationMatrix[i][j] >= 0.6 && correlationMatrix[i][j] <=0.8) || (correlationMatrix[i][j] >= -1 && correlationMatrix[i][j] <= -0.9))//link的阈值
+        		if((correlationMatrix[i][j] >= 0.3 && correlationMatrix[i][j] <=0.8) || (correlationMatrix[i][j] >= -0.8 && correlationMatrix[i][j] <= -0.3))//link的阈值
         			linkByIndex.push({source: nodes[i], target: nodes[j], weight: correlationMatrix[i][j]});//创建link的查询表，存入全部属性的link
         	}
 
@@ -210,7 +210,9 @@ var relationshipgraph_view = {
          node.exit().remove();
 
          force.start();
-
+         for(var i=100;i>0;i--)
+         	force.tick();
+         force.stop;
 		} 
 
 		function position_x() {//映射x的位置
@@ -219,7 +221,7 @@ var relationshipgraph_view = {
 
 		    var scale_position_x = d3.scale.linear()
 		      .domain([min_x,max_x])
-		      .range([0,width]);
+		      .range([-20,width+20]);
 
 		    return scale_position_x;
 		}
@@ -230,7 +232,7 @@ var relationshipgraph_view = {
 
 		    var scale_position_y = d3.scale.linear()
 		      .domain([min_y,max_y])
-		      .range([height,0]);
+		      .range([height+20,-20]);
 
 		    return scale_position_y;
 		}
@@ -239,7 +241,7 @@ var relationshipgraph_view = {
 	     	var scale_x = position_x();
 	     	var scale_y = position_y();
 
- 	     	if(force.alpha()<0.05) {
+ 	     	//if(force.alpha()<0.05) {
 		        node_g.attr('transform', function(d){
 		           return 'translate(' + scale_x(d.x) + ', ' + scale_y(d.y) + ')';
 		           //return 'translate(' + Math.max(radius, Math.min(width - radius, d.x)) + ', ' + Math.max(radius, Math.min(height - radius, d.y)) + ')';
@@ -249,7 +251,7 @@ var relationshipgraph_view = {
 		           .attr("y1", function(d) { return scale_y(d.source.y); })
 		           .attr("x2", function(d) { return scale_x(d.target.x); })
 		           .attr("y2", function(d) { return scale_y(d.target.y); });
-		    }
+		    //}
 	     }
 	}
 }
