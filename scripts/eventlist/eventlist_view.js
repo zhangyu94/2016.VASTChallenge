@@ -4,7 +4,6 @@ var eventlist_view = {
 
 	FIXED_DATE : (new Date("2016-06-14")).setHours(0),
 	FIXED_TIME_FILTER : true,
-
 	EVENT_MERGE_PADDING : 10*60*1000,
 
 	obsUpdate:function(message, data)
@@ -168,13 +167,11 @@ var eventlist_view = {
                     return "warning_event-span-"+eventlist_view._id_of_warningevent(d);
                 })
                 .on("click",function(d,i){
-                	//console.log(d)
                 	var this_attr = d.attr;
                 	var this_place_type = d.place.type;
                 	var this_place_value = d.place.value;
                 	var this_time_start = d.time;
                 	var this_time_length = d.timelength;
-
 
                 	var selected_attr_set = DATA_CENTER.global_variable.selected_attr_set;
                 	if (this_place_type == "building")
@@ -241,8 +238,6 @@ var eventlist_view = {
 
                 })
 				.on("dblclick",function(d,i){
-					console.log("REac")
-					//d3.select(this).remove()
 					$(this).remove()
 				})
 				.each(function(d,i){

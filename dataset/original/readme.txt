@@ -20,7 +20,6 @@
 1. timeline_view.js
 2. smallmaps_view.js
 3. linechart_render_view.js
-4. linechart_linebtn_view.js
-5. HVACgraph_attrbtn_view.js
-6. datacenter.js
+4. HVACgraph_attrbtn_view.js
+5. datacenter.js
 其中所有涉及"bldg-MC2.csv"和4个HVAC文件名的地方都需要改

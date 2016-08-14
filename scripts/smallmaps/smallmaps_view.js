@@ -1,13 +1,10 @@
 var smallmaps_view = {
-	FIRST_CALLED : true,
 	smallmaps_view_DIV_ID : "smallmaps-renderplace",
+	FIRST_CALLED : true,
 
 	HVAC_ZONE_DOT_RADIUS :6,
 	RADARCHART_GLYPH_RADIUS :25,
-
 	USE_OLD_STATISTIC:false,
-	
-
 	DIV_CLASS_OF_RADARCHART_GLYPH:"smallmaps-radarchart_glyph-div",
 
 	obsUpdate:function(message, data)
@@ -154,7 +151,7 @@ var smallmaps_view = {
 				function _highlight_communication(d,i)
 				{
 				    var building_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.building_HVACattr_set;
-					var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset(building_HVACattr_set,[],[],[d.name])
+					var linechartbtn_set = HVACgraph_attrbtn_view.cal_attr_x_position(building_HVACattr_set,[],[],[d.name])
 				    DATA_CENTER.set_linechart_variable("highlight_building_set",[d.name]);
 					DATA_CENTER.set_linechart_variable("highlight_attr_set",building_HVACattr_set);
 					DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
@@ -226,7 +223,7 @@ var smallmaps_view = {
 				    function _highlight_communication(d)
 				    {
 				      	var floor_HVACattr_set = DATA_CENTER.GLOBAL_STATIC.floor_HVACattr_set;
-						var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset(floor_HVACattr_set,[],[d.name],[])
+						var linechartbtn_set = HVACgraph_attrbtn_view.cal_attr_x_position(floor_HVACattr_set,[],[d.name],[])
 				      	DATA_CENTER.set_linechart_variable("highlight_floor_set",[d.name]);
 						DATA_CENTER.set_linechart_variable("highlight_attr_set",floor_HVACattr_set);
 						DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
@@ -407,7 +404,7 @@ var smallmaps_view = {
 							DATA_CENTER.set_linechart_variable("highlight_attr_set",highlight_attr_set);
 
 							//3. 高亮linechart
-							var highlight_linechart_set = linechart_linebtn_view._cal_attrbtnset(HVACzone_HVACattr_set,[d.name],[],[])
+							var highlight_linechart_set = HVACgraph_attrbtn_view.cal_attr_x_position(HVACzone_HVACattr_set,[d.name],[],[])
 							DATA_CENTER.set_linechart_variable("highlight_linechart_set",highlight_linechart_set);
 						}
 
@@ -471,11 +468,10 @@ var smallmaps_view = {
 			var selected_HVACzone_set = DATA_CENTER.global_variable.selected_HVACzone_set;
 			var selected_floor_set = DATA_CENTER.global_variable.selected_floor_set;
 					var selected_building_set = DATA_CENTER.global_variable.selected_building_set;
-				var selected_linechart_set = DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-				._cal_attrbtnset(selected_attr_set,selected_HVACzone_set,selected_floor_set,selected_building_set);
+				var selected_linechart_set = HVACgraph_attrbtn_view.cal_attr_x_position(selected_attr_set,selected_HVACzone_set,selected_floor_set,selected_building_set);
 			DATA_CENTER.set_global_variable("selected_linechart_set",selected_linechart_set);
 		}
-		DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view._update_selected_linechart();
+		DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.update_selected_linechart();
 	},
 
 	_small_maps_floorrect_click:function(d,this_ele){
@@ -496,7 +492,7 @@ var smallmaps_view = {
 			d3.select(this_ele).classed("click_selected-smallmaps-rect",true);
 			DATA_CENTER.set_global_variable("selected_floor_set",selected_floor_set.concat(d.name));
 		}
-		DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view._update_selected_linechart();
+		DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.update_selected_linechart();
 	},
 
 	_small_maps_circle_click:function(d,this_ele){
@@ -519,7 +515,7 @@ var smallmaps_view = {
 			d3.select(this_ele).classed("click_selected-smallmaps-HVACzone-circle",true);
 			DATA_CENTER.set_global_variable("selected_HVACzone_set",selected_HVACzone_set.concat(d.name));
 		}
-		DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view._update_selected_linechart();
+		DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.update_selected_linechart();
 	},
 
 	_HVACzone_name_to_abbreviation:function(HVACzone_name)
@@ -543,18 +539,18 @@ var smallmaps_view = {
 				var general_attr_set;
 				if (place_type == "HVAC_zone")
 				{
-					general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([place_name],[],[]);
-					detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[place_name],[],[]);
+					general_attr_set = HVACgraph_attrbtn_view.cal_attrbtnset([place_name],[],[]);
+					detail_attr_set = HVACgraph_attrbtn_view.cal_attr_x_position(general_attr_set,[place_name],[],[]);
 				}
 				else if (place_type == "floor")
 				{
-					general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([],[place_name],[]);
-					detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[],[place_name],[]);
+					general_attr_set = HVACgraph_attrbtn_view.cal_attrbtnset([],[place_name],[]);
+					detail_attr_set = HVACgraph_attrbtn_view.cal_attr_x_position(general_attr_set,[],[place_name],[]);
 				}
 				else if (place_type == "building")
 				{
-					general_attr_set = HVACgraph_attrbtn_view._cal_attrbtnset([],[],[place_name]);
-					detail_attr_set = linechart_linebtn_view._cal_attrbtnset(general_attr_set,[],[],[place_name]);
+					general_attr_set = HVACgraph_attrbtn_view.cal_attrbtnset([],[],[place_name]);
+					detail_attr_set = HVACgraph_attrbtn_view.cal_attr_x_position(general_attr_set,[],[],[place_name]);
 				}
 
 				var frame_full_data = smallmaps_view._binary_search("bldg-MC2.csv","Date/Time",raw_timestamp);
@@ -691,13 +687,10 @@ var smallmaps_view = {
 		      		return 1;
 		      	})
 				.on("mouseover",function(d,i){
-					//$(this).tipsy()
-	                DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-	                	._highlight_communication_mouseover_linebtn(d.data.name);
+	                linechart_render_view._highlight_communication_mouseover_linebtn(d.data.name);
 	            })
 	            .on("mouseout",function(d,i){
-	                DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-	                    ._highlight_communication_mouseout_linebtn();
+	                linechart_render_view._highlight_communication_mouseout_linebtn();
 	            })
 		      	.each(function(d,i){
 		      		smallmaps_view._bind_warning_tip(d,this,raw_timestamp);
@@ -738,12 +731,10 @@ var smallmaps_view = {
 		      		return 1;
 		      	})
 				.on("mouseover",function(d,i){
-                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-                        ._highlight_communication_mouseover_linebtn(d.data.name);
+                    linechart_render_view._highlight_communication_mouseover_linebtn(d.data.name);
                 })
                 .on("mouseout",function(d,i){
-                    DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-                        ._highlight_communication_mouseout_linebtn();
+                    linechart_render_view._highlight_communication_mouseout_linebtn();
                 })
 		      	.each(function(d,i){
 		      		$(this).tipsy({
@@ -778,7 +769,7 @@ var smallmaps_view = {
 
 	_push_linechart_warning_list:function(fused_attr,value,raw_timestamp,reason_value)
 	{
-		var place_attr = linechart_linebtn_view._parse_position_attr(fused_attr);
+		var place_attr = HVACgraph_attrbtn_view.parse_position_attr(fused_attr);
 
 		var warning_event = {
 			type:"linechart",

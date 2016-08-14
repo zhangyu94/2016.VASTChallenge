@@ -1,6 +1,5 @@
 var trajmonitor_view = {
 	trajmonitor_view_DIV_ID : "trajmonitor-renderplace",
-
     FIRST_CALLED: true,
 
     startTime : undefined,
@@ -10,7 +9,7 @@ var trajmonitor_view = {
 
 	obsUpdate:function(message, data)
 	{
-                $('.tipsy').remove();
+        $('.tipsy').remove();
 	    if (message == "display:trajmonitor_view")
                 {
                     $("#"+this.trajmonitor_view_DIV_ID).css("display","block");

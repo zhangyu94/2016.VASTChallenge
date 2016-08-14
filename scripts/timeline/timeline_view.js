@@ -1,6 +1,6 @@
 var timeline_view = {
-	FIRST_CALLED : true,
 	timeline_view_DIV_ID : "timeline-renderplace",
+	FIRST_CALLED : true,
 
 	DISPLAY_RATE:undefined,//3600,//播放的速度是现实速度的多少倍
 	DISPLAY_INTERVAL:undefined,//播放时每隔多久更新一次时间,单位ms
@@ -15,6 +15,7 @@ var timeline_view = {
 	intervalid_handle:undefined,//用于保存setInterval
 	timeline_div_id : "timeline_div",
 	fake_stream_begin_time: undefined,
+	
 	obsUpdate:function(message, data)
 	{
 		if (message == "display:timeline_view")
@@ -393,7 +394,12 @@ var timeline_view = {
 	        		if (typeof(timeline_view.DISPLAY_RATE)=="undefined")
 	        			timeline_view.DISPLAY_RATE = DATA_CENTER.timeline_variable.display_rate;
 
-	        		var current_display_time = 1000*3*60+ DATA_CENTER.global_variable.current_display_time;
+	        		//var current_display_time = 1000*3*60+ DATA_CENTER.global_variable.current_display_time;
+
+
+	        		var current_display_time = timeline_view.DISPLAY_RATE*timeline_view.DISPLAY_INTERVAL + DATA_CENTER.global_variable.current_display_time;
+                   
+
                     //console.log(current_display_time)
                     //timeline_view._timeline_redraw(current_display_time)
 	        		if (current_display_time <= chart.xAxis[0].max)

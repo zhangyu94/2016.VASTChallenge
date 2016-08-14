@@ -1,6 +1,5 @@
 var relationshipgraph_view = {
 	relationshipgraph_view_DIV_ID : "HVAC-relationshipgraph",
-
 	FIRST_CALLED : true,
 
 	obsUpdate:function(message, data)
@@ -23,7 +22,7 @@ var relationshipgraph_view = {
             var selected_building_set = DATA_CENTER.global_variable.selected_building_set;
             var selected_filter_timerange = DATA_CENTER.global_variable.selected_filter_timerange;
             
-            var selectedAttr = linechart_linebtn_view._cal_attrbtnset(selected_attr_set, selected_HVACzone_set, selected_floor_set, selected_building_set);
+            var selectedAttr = HVACgraph_attrbtn_view.cal_attr_x_position(selected_attr_set, selected_HVACzone_set, selected_floor_set, selected_building_set);
             
             if (this.FIRST_CALLED)
             {

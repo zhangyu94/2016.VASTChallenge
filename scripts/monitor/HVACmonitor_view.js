@@ -1,16 +1,12 @@
 var HVACmonitor_view = {
-	FIRST_CALLED:true,
 	HVACmonitor_view_DIV_ID : "HVACmonitor-renderplace",
+	FIRST_CALLED:true,
 
 	span_DIV_ID : "HVACmonitor-span",
-
 	DIV_CLASS_OF_RADARCHART_GLYPH:"HVACmonitor-radarchart_glyph-div",
-
 	ABNORMAL_VALUE_THRESHOLD:1/*4*/,//归一化以后的异常阈值
-
 	ATTRIBUTE_DOT_RADIUS :6,
 	RADARCHART_GLYPH_RADIUS :15,
-
 	COLUMN_CONTAIN_NUMBER : 5,
 	ROW_CONTAIN_NUMBER : 8,
 
@@ -113,11 +109,11 @@ var HVACmonitor_view = {
 
 
 	    var sorted_building_HVACattr_set = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.
-					_sort_generalattr_by_priority(building_HVACattr_set);
+					sort_generalattr_by_priority(building_HVACattr_set);
 		var sorted_floor_HVACattr_set = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.
-					_sort_generalattr_by_priority(floor_HVACattr_set);
+					sort_generalattr_by_priority(floor_HVACattr_set);
 		var sorted_HVACzone_HVACattr_set = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.
-					_sort_generalattr_by_priority(HVACzone_HVACattr_set);
+					sort_generalattr_by_priority(HVACzone_HVACattr_set);
 		var all_attr_set = (sorted_building_HVACattr_set.concat(sorted_floor_HVACattr_set)).concat(sorted_HVACzone_HVACattr_set);
 		var update = d3.select("#"+divID)
 			.selectAll("."+HVACmonitor_view.span_DIV_ID)
@@ -128,7 +124,7 @@ var HVACmonitor_view = {
 	    var update = d3.select("#"+divID)
 			.selectAll("."+HVACmonitor_view.span_DIV_ID)
 			.data(DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.
-					_sort_generalattr_by_priority(all_attr_set),function(d){return d;})
+					sort_generalattr_by_priority(all_attr_set),function(d){return d;})
 		*/
 
 		var enter = update.enter();
@@ -157,12 +153,12 @@ var HVACmonitor_view = {
 			.attr("cy",span_height/2)	
 			.attr("class","HVACmonitor-attr-circle")
 			.attr("fill",function(d,i){
-				return HVACgraph_attrbtn_view._get_attr_color(d);
+				return HVACgraph_attrbtn_view.get_attr_color(d);
 			})
 			.on("click",function(d,i){
 				
 				var attr_type = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view
-										._cal_attr_type(d);
+										.cal_attr_type(d);
 
 				console.log(d,attr_type)						
 				//HVACzone_oridinary_attr，HVACzone_hazium，floor_attr，building_attr					
@@ -206,11 +202,11 @@ var HVACmonitor_view = {
 				function _highlight_communication(d)
 				{
 					var attr_type = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view
-											._cal_attr_type(d);
+											.cal_attr_type(d);
 					if (attr_type == "building_attr")
 					{
 						var building_set = DATA_CENTER.GLOBAL_STATIC.building_set;
-						var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset([d],building_set,[],[]);
+						var linechartbtn_set = HVACgraph_attrbtn_view.cal_attr_x_position([d],building_set,[],[]);
 					    DATA_CENTER.set_linechart_variable("highlight_building_set",building_set);
 						DATA_CENTER.set_linechart_variable("highlight_attr_set",[d]);
 						DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
@@ -218,7 +214,7 @@ var HVACmonitor_view = {
 					else if (attr_type == "floor_attr")
 					{
 						var floor_set = DATA_CENTER.GLOBAL_STATIC.floor_set;
-						var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset([d],[],floor_set,[]);
+						var linechartbtn_set = HVACgraph_attrbtn_view.cal_attr_x_position([d],[],floor_set,[]);
 					    DATA_CENTER.set_linechart_variable("highlight_floor_set",floor_set);
 						DATA_CENTER.set_linechart_variable("highlight_attr_set",[d]);
 						DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
@@ -226,7 +222,7 @@ var HVACmonitor_view = {
 					else if (attr_type == "HVACzone_oridinary_attr")
 					{
 						var HVACzone_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_set;
-						var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset([d],[],[],HVACzone_set);
+						var linechartbtn_set = HVACgraph_attrbtn_view.cal_attr_x_position([d],[],[],HVACzone_set);
 					    DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",HVACzone_set);
 						DATA_CENTER.set_linechart_variable("highlight_attr_set",[d]);
 						DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
@@ -234,7 +230,7 @@ var HVACmonitor_view = {
 					else if (attr_type == "HVACzone_hazium")
 					{
 						var HVACzone_set = DATA_CENTER.GLOBAL_STATIC.HVACzone_with_Haziumsenor_set;
-						var linechartbtn_set = linechart_linebtn_view._cal_attrbtnset([d],[],[],HVACzone_set);
+						var linechartbtn_set = HVACgraph_attrbtn_view.cal_attr_x_position([d],[],[],HVACzone_set);
 					    DATA_CENTER.set_linechart_variable("highlight_HVACzone_set",HVACzone_set);
 						DATA_CENTER.set_linechart_variable("highlight_attr_set",[d]);
 						DATA_CENTER.set_linechart_variable("highlight_linechart_set",linechartbtn_set);
@@ -267,7 +263,7 @@ var HVACmonitor_view = {
 		var dataset = _cal_dataset(attr_name,raw_timestamp);
 		function _cal_dataset(attr_name,raw_timestamp)
 		{
-			var attr_type = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view._cal_attr_type(attr_name);
+			var attr_type = DATA_CENTER.VIEW_COLLECTION.HVACgraph_attrbtn_view.cal_attr_type(attr_name);
 
 			var detail_attr_set = [];
 			if ( (attr_type == "HVACzone_hazium") || (attr_type == "HVACzone_oridinary_attr") )
@@ -276,8 +272,7 @@ var HVACmonitor_view = {
 				for (var i=0;i<HVACzone_set.length;++i)
 				{
 					var cur_place = HVACzone_set[i]; 
-					var cur_linechart = DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-						._combine_place_attr(cur_place,"HVACzone",attr_name);
+					var cur_linechart = HVACgraph_attrbtn_view.combine_place_attr(cur_place,"HVACzone",attr_name);
 					if (typeof(cur_linechart)!="undefined")
 						detail_attr_set.push(cur_linechart);
 				}
@@ -288,8 +283,7 @@ var HVACmonitor_view = {
 				for (var i=0;i<floor_set.length;++i)
 				{
 					var cur_place = floor_set[i]; 
-					var cur_linechart = DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-						._combine_place_attr(cur_place,"floor",attr_name);
+					var cur_linechart = HVACgraph_attrbtn_view.combine_place_attr(cur_place,"floor",attr_name);
 					if (typeof(cur_linechart)!="undefined")
 						detail_attr_set.push(cur_linechart);
 				}
@@ -300,8 +294,7 @@ var HVACmonitor_view = {
 				for (var i=0;i<building_set.length;++i)
 				{
 					var cur_place = building_set[i]; 
-					var cur_linechart = DATA_CENTER.VIEW_COLLECTION.linechart_linebtn_view
-						._combine_place_attr(cur_place,"building",attr_name);
+					var cur_linechart = HVACgraph_attrbtn_view.combine_place_attr(cur_place,"building",attr_name);
 					if (typeof(cur_linechart)!="undefined")
 						detail_attr_set.push(cur_linechart);
 				}

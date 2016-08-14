@@ -1,83 +1,75 @@
-.HVAClinechart-span{
-    background: white;
-    padding: 0px;
-    margin: 0px !important;
-    border: solid 0px #111;
-    display:inline-block;
+.HVAClinechart-div{
+    position:relative;
     border-radius: 1px;
 }
 
-.HVAClinechart-span >.HVAClinechart-btntitle-span{
-    text-align:right;/*center;*/
-    vertical-align: top;
-    background: white;
-    padding: 0px;
-    margin: 1px;/* !important;*/
-    border: solid 1px #111;
-    display:inline-block;
-    border-radius: 0px;
+.HVAClinechart-div >.HVAClinechart-paneldiv{
     cursor: pointer;
-    font-size: 12px;
+    position:absolute;
+    left:0%;
+    width:12%;
+    height:100%;
 }
-.HVAClinechart-span >.HVAClinechart-btntitle-span >.HVAClinechart-btn-mark-span{
+.HVAClinechart-div >.HVAClinechart-paneldiv >.HVAClinechart-textdiv{
     text-align:center;
-    vertical-align: top;
-    background: white;
-    padding: 0px;
-    margin: 0px;/*1px;*//* !important;*/
     border: solid 1px #111;
-    display:inline-block;
-    border-radius: 0px;
     cursor: pointer;
     font-size: 10px;
+
+    position:absolute;
+    left:0%;
+    top:0%;
+    width:100%;
+    height:25%;
 }
-.HVAClinechart-span >.HVAClinechart-btntitle-span >.HVAClinechart-btn-top-span{
+.HVAClinechart-div >.HVAClinechart-paneldiv >.HVAClinechart-markdiv{
     text-align:center;
-    vertical-align: top;
     background: white;
-    padding: 0px;
-    margin: 0px;/*1px;*//* !important;*/
     border: solid 1px #111;
-    display:inline-block;
-    border-radius: 0px;
     cursor: pointer;
     font-size: 10px;
+
+    position:absolute;
+    left:0%;
+    top:75%;
+    width:33.3%;
+    height:25%;
 }
-.HVAClinechart-span >.HVAClinechart-btntitle-span >.HVAClinechart-btn-bottom-span{
+.HVAClinechart-div >.HVAClinechart-paneldiv >.HVAClinechart-topdiv{
     text-align:center;
-    vertical-align: top;
     background: white;
-    padding: 0px;
-    margin: 0px;/*1px;*//* !important;*/
     border: solid 1px #111;
-    display:inline-block;
-    border-radius: 0px;
     cursor: pointer;
     font-size: 10px;
+
+    position:absolute;
+    left:33.3%;
+    top:75%;
+    width:33.3%;
+    height:25%;
 }
-.HVAClinechart-span >.HVAClinechart-btntitle-span >.HVAClinechart-btn-stack-span{
+.HVAClinechart-div >.HVAClinechart-paneldiv >.HVAClinechart-bottomdiv{
     text-align:center;
-    vertical-align: top;
     background: white;
-    
-    padding: 0px;
-    margin: 0px;/*1px;*//* !important;*/
     border: solid 1px #111;
-    display:inline-block;
-    border-radius: 0px;
     cursor: pointer;
     font-size: 10px;
+
+    position:absolute;
+    left:66.6%;
+    top:75%;
+    width:33.3%;
+    height:25%;
 }
 
 
-.HVAClinechart-span >.mouseover_hided-HVAClinechart-btntitle-span{
+.HVAClinechart-div >.mouseover_hided-HVAClinechart-paneldiv{
    opacity: 0.5;
 }
 
-.HVAClinechart-span >.HVAClinechart-linechart-span{    
-    padding: 0px;
-    margin: 0px;/* !important;*/
-    border: solid 0px #111;
-    display:inline-block;
-    border-radius: 0px;
+.HVAClinechart-div >.HVAClinechart-linechartdiv{    
+    position:absolute;
+    left:12%;
+    width:88%;
+    height:100%;
 }

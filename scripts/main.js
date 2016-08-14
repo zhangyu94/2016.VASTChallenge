@@ -49,12 +49,10 @@ function main(){
 
 			"display:HVACgraph_attrbtn_view",
 			"display:smallmaps_view",
-			"display:linechart_linebtn_view",
 
 			"display:linechart_render_view",
 			"hide:HVACgraph_attrbtn_view",
 			"hide:smallmaps_view",
-			"hide:linechart_linebtn_view",
 			"hide:linechart_render_view",
 
 			"display:relationshipgraph_view",

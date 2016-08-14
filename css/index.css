@@ -102,23 +102,8 @@ body {
 	border: solid #ccc 1px;
 	border-radius: 5px;
 	background-color: #f8f8f8;
-	/*overflow-y:scroll;内容多时提供滚轮*/
 	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
 }
-/*
-#linechartview-collection > .linechartContainer > #linechart-line-btn{
-	position:absolute;
-	top:7%;
-	height:7%;
-	width:100%;
-	float: left;
-	border: solid #ccc 1px;
-	border-radius: 5px;
-	background-color: #f8f8f8;
-	overflow-y:scroll;
-	pointer-events:auto;
-}
-*/
 #linechartview-collection > .linechartContainer > #linechart-renderplace{
 	position:absolute;
 	top:15%;
@@ -127,22 +112,9 @@ body {
 	float: left;
 	border: solid #ccc 1px;
 	border-radius: 5px;
-	background-color: #f8f8f8;
 	overflow-y:scroll;/*内容多时提供滚轮*/
 	pointer-events:auto;/*小框是show的时候才存在的，可以点的*/
 }
-/*
-#linechartview-collection > .linechartContainer > #HVAC-mdsgraph{
-	position:absolute;
-	top:15%;
-	height:85%;
-	width:100%;
-	float: left;
-	border: solid #ccc 1px;
-	border-radius: 5px;
-	pointer-events:auto;
-}
-*/
 #linechartview-collection > .linechartContainer > #HVAC-relationshipgraph{
 	position:absolute;
 	top:15%;
