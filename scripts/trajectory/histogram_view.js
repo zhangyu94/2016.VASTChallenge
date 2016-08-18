@@ -19,8 +19,9 @@ var histogram_view = {
 	render:function(divID)
 	{
 		d3.select("#"+divID).selectAll("*").remove()
-	    var width  = $("#"+divID).width();
-	    var height  = $("#"+divID).height() ;
+	    var width  = +$("#"+divID).width();
+	    var height  = +$("#"+divID).height();//517
+	    console.log('legend-height', height);
 	    var svg = d3.select("#"+divID).append("svg")
 	                .attr("class","mainsvg")
 	                .attr('id', 'legend-svg')
@@ -36,12 +37,14 @@ var histogram_view = {
 
 		var legendX = 15;
 		var legendTextX = 25;
-		var legendHeight = 18;
+		var defaultDivHeight = 517;
+		var defaultLegendHeight = 15;
+		var legendHeight = height / defaultDivHeight * defaultLegendHeight;//height / defaultHeight * 10;
 		var circleR = 4;
 		var colorObjectArray = DATA_CENTER.GLOBAL_STATIC.certainty_color_array;
-		var legendYStart = 30;
-		var legendLabelX = 10, legendLabel1 = 5, legendLabel2 = 77, legendLabelWidth = width - 20, legendLabelHeight = 15,
-			legendLabel3 = 255;
+		var legendYStart = legendHeight * 2;
+		var legendLabelX = 10, legendLabel1 = 5, legendLabel2 = legendHeight * 5, legendLabelWidth = width - 20, legendLabelHeight = legendHeight,
+			legendLabel3 = legendHeight * 15;
 		//------------------------------------------------------------------------------------
 		//------------------------------------------------------------------------------------
 		svg.append('rect')
@@ -282,7 +285,7 @@ var histogram_view = {
 		 })
 		//************************************************************************************
 		//*************************************************************************************
-		var workLegendYStart = legendYStart + legendHeight * 4;
+		var workLegendYStart = legendYStart + legendHeight * 5;
 		var workCircleArray = DATA_CENTER.GLOBAL_STATIC.work_color_array;
 		var workLegendG = svg.selectAll('.workLegend-g')
 		.data(workCircleArray)
