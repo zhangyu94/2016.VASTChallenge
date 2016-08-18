@@ -20,7 +20,7 @@ var histogram_view = {
 	{
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = +$("#"+divID).width();
-	    var height  = 400;//+$("#"+divID).height();//517
+	    var height  = +$("#"+divID).height();//517
 	    console.log('legend-height', height);
 	    var svg = d3.select("#"+divID).append("svg")
 	                .attr("class","mainsvg")
@@ -265,12 +265,12 @@ var histogram_view = {
 		.attr('class', function(d,i){
 			return 'colorLegend ' + d.name;
 		})
-		.attr('r', circleR - 1)
+		.attr('r', circleR)
 		.attr('cx', function(d,i){
 			return legendX;
 		})
 		.attr('cy', function(d,i){
-			return legendYStart + circleR * 2 * i;
+			return legendYStart + legendHeight * i ;
 		});
 		colorLegendG.append('text')
 		 .attr('class', 'circle-type-text')
