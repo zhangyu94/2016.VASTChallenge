@@ -786,9 +786,6 @@ var smallmaps_view = {
 
 		var warning_list = DATA_CENTER.global_variable.warning_list;
 
-		//warning_list.push(warning_event);
-
-
 		var flag_merged = false;
 		var merge_padding = eventlist_view.EVENT_MERGE_PADDING;
 		for (var i=0;i<warning_list.length;++i)
@@ -831,7 +828,6 @@ var smallmaps_view = {
 		{
 			warning_list.push(warning_event);
 		}	
-
 
 		DATA_CENTER.set_global_variable("warning_list",warning_list);
 	},

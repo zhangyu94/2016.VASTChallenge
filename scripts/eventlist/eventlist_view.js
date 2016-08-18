@@ -4,7 +4,7 @@ var eventlist_view = {
 
 	FIXED_DATE : (new Date("2016-06-14")).setHours(0),
 	FIXED_TIME_FILTER : true,
-	EVENT_MERGE_PADDING : 10*60*1000,
+	EVENT_MERGE_PADDING : 0*60*1000,
 
 	obsUpdate:function(message, data)
 	{
@@ -111,21 +111,19 @@ var eventlist_view = {
 		}
 	},
 
+	//warning_list元素数据结构:
+	//{
+	//	type:...(linechart,trajectory等)
+	//	time:...(一个时间点,存成数字)
+	//	place:{
+	//		type:...(标记这个place是一个HVACzone或者Proxzone或者具体的robot检测到的点)
+	//		value:...
+	//	}...
+	//	attr:...(被认为是异常的属性,可以是某个sensor属性,可以是某个人的轨迹)
+	//	value:...(字符串或数字,标记了异常数据的取值,可以用来标记这个event在准则下的异常度)
+	//  reason:...(标记这个event被认为异常的原因,即异常的类型,如"impossible route","extreme value")
+	//}
 	_render_linechart_warning:function(warning_list){
-
-		function filter_warning_list(warning_list)
-		{
-			var new_list = [];
-			for (var i=0;i<warning_list.length;++i)
-			{
-				if (warning_list[i].type=="linechart")
-				{
-					new_list.push(warning_list[i])
-				}
-			}
-			return new_list;
-		}
-		//var warning_list = filter_warning_list(warning_list);
 
 		//按时间数字升序排
 		warning_list.sort(function(a,b){
@@ -136,28 +134,13 @@ var eventlist_view = {
 		warning_list.sort(function(a,b){
 			return -a.time + b.time;
 		})
-
-		//warning_list元素数据结构:
-		//{
-		//	type:...(linechart,trajectory等)
-		//	time:...(一个时间点,存成数字)
-		//	place:{
-		//		type:...(标记这个place是一个HVACzone或者Proxzone或者具体的robot检测到的点)
-		//		value:...
-		//	}...
-		//	attr:...(被认为是异常的属性,可以是某个sensor属性,可以是某个人的轨迹)
-		//	value:...(字符串或数字,标记了异常数据的取值,可以用来标记这个event在准则下的异常度)
-		//  reason:...(标记这个event被认为异常的原因,即异常的类型,如"impossible route","extreme value")
-		//}
-
-
+		
 		var divID = this.eventlist_view_DIV_ID
 		var update = d3.select("#"+divID)
             .selectAll(".warning_event-span")
             .data(warning_list,function(d){
             	return eventlist_view._id_of_warningevent(d);
             });
-
 
         var enter = update.enter();
 
@@ -267,14 +250,11 @@ var eventlist_view = {
 
             	})
 
-
         enter_spans.append("span")
             	.attr("class","warning_event-time-span")
             	.text(function(d,i){
             		return eventlist_view.time_number_to_text(d.time);
             	})
-            	
-
         enter_spans.append("span")
             	.attr("class","warning_event-place-span")
             	.attr("value",function(d,i){return d.place.value})

@@ -1,7 +1,6 @@
 var ganttchart_view = {
 	ganttchart_view_DIV_ID : "trajectory-ganttchart",
 
-
 	root:null,
 	width:null,
 	height:null,
