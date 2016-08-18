@@ -20,7 +20,7 @@ var histogram_view = {
 	{
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = +$("#"+divID).width();
-	    var height  = 300;//+$("#"+divID).height();//517
+	    var height  = 400;//+$("#"+divID).height();//517
 	    console.log('legend-height', height);
 	    var svg = d3.select("#"+divID).append("svg")
 	                .attr("class","mainsvg")
@@ -42,9 +42,9 @@ var histogram_view = {
 		var legendHeight = height / defaultDivHeight * defaultLegendHeight;//height / defaultHeight * 10;
 		var circleR = 4;
 		var colorObjectArray = DATA_CENTER.GLOBAL_STATIC.certainty_color_array;
-		var legendYStart = legendHeight * 2;
-		var legendLabelX = 10, legendLabel1 = 5, legendLabel2 = legendHeight * 5, legendLabelWidth = width - 20, legendLabelHeight = legendHeight,
-			legendLabel3 = legendHeight * 15;
+		var legendYStart = legendHeight * 2.5;
+		var legendLabelX = 10, legendLabel1 = 5, legendLabel2 = legendHeight * 5.5, legendLabelWidth = width - 20, legendLabelHeight = legendHeight,
+			legendLabel3 = legendHeight * 15.5;
 		//------------------------------------------------------------------------------------
 		//------------------------------------------------------------------------------------
 		svg.append('rect')
@@ -265,7 +265,7 @@ var histogram_view = {
 		.attr('class', function(d,i){
 			return 'colorLegend ' + d.name;
 		})
-		.attr('r', circleR)
+		.attr('r', circleR - 1)
 		.attr('cx', function(d,i){
 			return legendX;
 		})
@@ -349,7 +349,7 @@ var histogram_view = {
 			return legendTextX;
 		})
 		.attr('y', function(d,i){
-			return alertLegendYStart + legendHeight * i + alertCircleR;
+			return alertLegendYStart +  (alertCircleR * 1.2) * 2 * i + alertCircleR / 2;
 		})
 		.text(function(d,i){
 			return d.name;
