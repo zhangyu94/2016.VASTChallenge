@@ -20,7 +20,7 @@ var histogram_view = {
 	{
 		d3.select("#"+divID).selectAll("*").remove()
 	    var width  = +$("#"+divID).width();
-	    var height  = +$("#"+divID).height();//517
+	    var height  = 300;//+$("#"+divID).height();//517
 	    console.log('legend-height', height);
 	    var svg = d3.select("#"+divID).append("svg")
 	                .attr("class","mainsvg")
@@ -38,8 +38,9 @@ var histogram_view = {
 		var legendX = 15;
 		var legendTextX = 25;
 		var defaultDivHeight = 517;
-		var defaultLegendHeight = 15;
-		var legendHeight = height / defaultDivHeight * defaultLegendHeight;//height / defaultHeight * 10;
+		var alertCircleR = 6;
+		var defaultLegendHeight = (alertCircleR * 1.2) * 2;
+		var legendHeight = defaultLegendHeight;//height / defaultHeight * 10;
 		var circleR = 4;
 		var colorObjectArray = DATA_CENTER.GLOBAL_STATIC.certainty_color_array;
 		var legendYStart = legendHeight * 2.5;
