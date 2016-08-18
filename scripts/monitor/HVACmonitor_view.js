@@ -42,8 +42,8 @@ var HVACmonitor_view = {
         		.each(function(d,i){
         			var left = $(this).offset().left+HVACmonitor_view.ATTRIBUTE_DOT_RADIUS;
 					var top = $(this).offset().top+HVACmonitor_view.ATTRIBUTE_DOT_RADIUS;
-
 					var attr_name = d;
+					console.log(this,left,top,attr_name)
         			HVACmonitor_view._render_radarchart(attr_name,left,top,timestamp);
         		})
 			

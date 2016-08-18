@@ -145,7 +145,7 @@ body {
 }
 #trajectoryview-collection > .trajectoryContainer > #trajectory-bigmap{
 	position:absolute;
-	height:70%;
+	height:60%;
 	width:85%;
 	float: left;
 	border: solid #ccc 1px;
@@ -155,8 +155,8 @@ body {
 }
 #trajectoryview-collection > .trajectoryContainer > #trajectory-ganttchart{
 	position:absolute;
-	top:70%;
-	height:30%;
+	top:60%;
+	height:40%;
 	width:100%;
 	float: left;
 	border: solid #ccc 1px;
@@ -167,7 +167,7 @@ body {
 #trajectoryview-collection > .trajectoryContainer > #trajectory-legend{
 	position:absolute;
 	left:85%;
-	height:70%;
+	height:60%;
 	width:15%;
 	float: left;
 	border: solid #ccc 1px;
