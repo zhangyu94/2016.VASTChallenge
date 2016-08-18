@@ -1204,7 +1204,7 @@ var DATA_CENTER = {
 	},
 	initStream: function(){
 	    var that = this;
-                var v_stream = new WebSocket('ws://192.168.10.9:8888');
+                var v_stream = new WebSocket('ws://192.168.10.9:1603');
                 this.v_stream = v_stream;
                 v_stream.onopen = function(e){
                 	console.log("Web socket open!");
