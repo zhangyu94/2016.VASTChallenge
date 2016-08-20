@@ -8,6 +8,7 @@ var eventlist_view = {
 
 	obsUpdate:function(message, data)
 	{
+		//SUBJECT.notifyObserver("HVAC_streaming_get_all")
 		if (message == "HVAC_streaming_get_all")
 		{
 			console.log("HVAC_streaming_get_all")

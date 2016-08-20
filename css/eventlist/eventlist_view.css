@@ -1,47 +1,48 @@
 .warning_event-span{
-    background: white;
+    background-color: #d0d0d0;
     padding: 0px;
-    margin: 0px !important;
-    border: solid 0.5px #111;
+    margin: 2px !important;
+    border: solid 2px #aaaaaa;
     display:inline-block;
-    border-radius: 1px;
+    border-radius: 3px;
 
+    float:left;
+    position: relative;
+    width:98%;
+    height:5%;
 }
 
 .warning_event-time-span{
-    background: white;
     padding: 0px;
     margin: 0px !important;
-    border: solid 0.5px #111;
     display:inline-block;
     border-radius: 1px;
+    color:white;
 
     position: absolute;
     left:0%;
 }
 
 .warning_event-place-span{
-    background: white;
     padding: 0px;
     margin: 0px !important;
-    border: solid 0.5px #111;
     display:inline-block;
     border-radius: 1px;
+    color:white;
 
     position: absolute;
     left:30%;
 }
 
 .warning_event-attr-span{
-    background: white;
     padding: 0px;
     margin: 0px !important;
-    border: solid 0.5px #111;
     display:inline-block;
     border-radius: 1px;
+    color:white;
 
     position: absolute;
-    left:60%;
+    left:55%;
 }
 
 .warning_event-reason-span{
