@@ -13,6 +13,7 @@
 .HVAClinechart-div >.HVAClinechart-paneldiv >.HVAClinechart-textdiv{
     text-align:center;
     border: solid 1px #111;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 10px;
 
@@ -25,39 +26,36 @@
 .HVAClinechart-div >.HVAClinechart-paneldiv >.HVAClinechart-markdiv{
     text-align:center;
     background: white;
-    border: solid 1px #111;
     cursor: pointer;
     font-size: 10px;
 
     position:absolute;
     left:0%;
-    top:75%;
+    top:25%;
     width:33.3%;
     height:25%;
 }
 .HVAClinechart-div >.HVAClinechart-paneldiv >.HVAClinechart-topdiv{
     text-align:center;
     background: white;
-    border: solid 1px #111;
     cursor: pointer;
     font-size: 10px;
 
     position:absolute;
     left:33.3%;
-    top:75%;
+    top:25%;
     width:33.3%;
     height:25%;
 }
 .HVAClinechart-div >.HVAClinechart-paneldiv >.HVAClinechart-bottomdiv{
     text-align:center;
     background: white;
-    border: solid 1px #111;
     cursor: pointer;
     font-size: 10px;
 
     position:absolute;
     left:66.6%;
-    top:75%;
+    top:25%;
     width:33.3%;
     height:25%;
 }

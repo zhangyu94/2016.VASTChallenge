@@ -283,8 +283,9 @@ var linechart_render_view = {
                                 data: xysetAxis_data[0],
                                 marker:{
                                     //enabled:false,
-                                    radius:1,
+                                    radius:0.3,
                                 },
+                                lineWidth: 0.3,
                                 events:{
                                     mouseOver:function(){
                                         var name = this.name;
@@ -361,7 +362,7 @@ var linechart_render_view = {
                 .attr("class","HVAClinechart-paneldiv")
                 .attr("id",function(d,i){return "HVAClinechart-paneldiv-"+linechart_render_view._compress_string(d.name);})
 
-        //1.5). 写名字用的框     
+        //2). 写名字用的框     
         var enter_divs_paneldiv_textdiv = enter_divs_paneldiv.append("div")
                 .attr("class","HVAClinechart-textdiv")
                 .style("background-color",function(d,i){return HVACgraph_attrbtn_view.get_attr_color(d.name);})
@@ -375,11 +376,10 @@ var linechart_render_view = {
 
         DATA_CENTER.VIEW_COLLECTION.linechart_render_view._bind_attrbtn_tip("HVAClinechart-paneldiv")
 
-        //2). 点击以后mark到timeline上
+        //3). 点击以后mark到timeline上
         var enter_divs_paneldiv_markdiv = enter_divs_paneldiv.append("div") 
                 .attr("class","HVAClinechart-markdiv")
                 .attr("id",function(d,i){return "HVAClinechart-markdiv-"+linechart_render_view._compress_string(d.name);})
-                .text("m")    
                 .on("click",function(d,i){
                     var related_linechart_div_id = "HVAClinechart-linechartdiv-"+linechart_render_view._compress_string(d.name)
                     
@@ -391,27 +391,57 @@ var linechart_render_view = {
                     };
                     DATA_CENTER.set_global_variable("added_timerange",added_timerange);
                 })
-        //3). 点击以后走到最上边
+                .each(function(d,i){
+                    var this_id = this.id;
+                    $("#"+this_id).button({
+                        label: "mark",
+                        text: false,
+                        icons: {
+                            primary: "ui-icon-bookmark"
+                        }
+                    })
+                })
+
+
+        //4). 点击以后走到最上边
         var enter_divs_paneldiv_topdiv = enter_divs_paneldiv.append("div") 
                 .attr("class","HVAClinechart-topdiv")
                 .attr("id",function(d,i){return "HVAClinechart-topdiv-"+linechart_render_view._compress_string(d.name);})
-                .text("up")
                 .on("click",function(d,i){
                     var child_id = "HVAClinechart-div-"+linechart_render_view._compress_string(d.name);
                     var father_id = linechart_render_view.linechart_render_view_DIV_ID;
                     linechart_render_view._move_to(child_id,father_id,"top");//点击以后走到最上面
                 })
+                .each(function(d,i){
+                    var this_id = this.id;
+                    $("#"+this_id).button({
+                        label: "top",
+                        text: false,
+                        icons: {
+                            primary: "ui-icon-arrowreturnthick-1-n"
+                        }
+                    })
+                })
 
 
-        //4). 点击以后走到最下边
+        //5). 点击以后走到最下边
         var enter_divs_paneldiv_bottomdiv = enter_divs_paneldiv.append("div") 
                 .attr("class","HVAClinechart-bottomdiv")
-                .attr("id",function(d,i){return "HVAClinechart-bottomdiv-"+linechart_render_view._compress_string(d.name);})
-                .text("dn")    
+                .attr("id",function(d,i){return "HVAClinechart-bottomdiv-"+linechart_render_view._compress_string(d.name);})   
                 .on("click",function(d,i){
                     var child_id = "HVAClinechart-div-"+linechart_render_view._compress_string(d.name);
                     var father_id = linechart_render_view.linechart_render_view_DIV_ID;
                     linechart_render_view._move_to(child_id,father_id,"bottom");//点击以后走到最下面
+                })
+                .each(function(d,i){
+                    var this_id = this.id;
+                    $("#"+this_id).button({
+                        label: "bottom",
+                        text: false,
+                        icons: {
+                            primary: "ui-icon-arrowreturnthick-1-s"
+                        }
+                    })
                 })
 
 
@@ -576,7 +606,7 @@ var linechart_render_view = {
                 id: attr_name,
                 marker:{
                     //enabled:false,
-                    radius:1,
+                    radius:0.3,
                 },
                 events:{
                     mouseOver:function(){
@@ -603,7 +633,7 @@ var linechart_render_view = {
                 }],
                 */
 
-                lineWidth: 0.5,
+                lineWidth: 0.3,
 
             })
         }
@@ -677,6 +707,7 @@ var linechart_render_view = {
                 },
 
             },
+            lineWidth: 0.3,
             legend:{
                 enabled:false,
             },
