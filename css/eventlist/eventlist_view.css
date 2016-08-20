@@ -15,6 +15,9 @@
     border: solid 0.5px #111;
     display:inline-block;
     border-radius: 1px;
+
+    position: absolute;
+    left:0%;
 }
 
 .warning_event-place-span{
@@ -24,6 +27,9 @@
     border: solid 0.5px #111;
     display:inline-block;
     border-radius: 1px;
+
+    position: absolute;
+    left:30%;
 }
 
 .warning_event-attr-span{
@@ -33,6 +39,9 @@
     border: solid 0.5px #111;
     display:inline-block;
     border-radius: 1px;
+
+    position: absolute;
+    left:60%;
 }
 
 .warning_event-reason-span{
