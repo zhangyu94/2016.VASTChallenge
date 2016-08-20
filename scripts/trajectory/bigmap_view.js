@@ -72,8 +72,13 @@ var bigmap_view = {
 	{
 		var self = this;
 		var colorArray = DATA_CENTER.GLOBAL_STATIC.zone_Color_Array;
-		//var colorArray = ['#EEEEEE', '#F3E4EE', '#FFF4CF', '#F8F7EB', '#F6ECF6', '#EDF7FA', '#FFEEEE', '#D5F4EF'];
-		//var colorArray = ['#cccccc', '#f1e2cc', '#fff2ae', '#e6f5c9', '#f4cae4', '#cbd5e8', '#fdcdac', '#b3e2cd'];
+	  	var tip = d3.tip()
+	    .attr('class', 'd3-tip')
+	    .offset([-10, 0])
+	    .html(function(d) {
+	      return "floor:" + d.floor + " name:" + d.name + " proxZone:" + d.proxZone;
+	      //return 
+	    });
 		d3.selectAll("#"+divID).selectAll("*").remove();
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
@@ -83,7 +88,7 @@ var bigmap_view = {
 	                .attr("id", "floor-svg")
 	                .attr('width', width)
 	                .attr('height', height);
-
+	    svg.call(tip);
 	    //只有房间的json文件
 	    var roomData = DATA_CENTER.derived_data['room.json'];
 	    //对于整个房间的走廊进行划分的json文件
@@ -96,6 +101,7 @@ var bigmap_view = {
 			.range([0, height])
 			.domain([0, 111]);
 		//在楼层中绘制zone, zone是由多个不同的room使用相同的颜色拼接得到
+		//console.log(roomData);
 	    var roomG = svg.selectAll('.room')
 	    .data(roomData.filter(function(d){
 			return d.floor == floorNum && d.x != null && d.xlength != "" && d.proxZone != undefined;
@@ -135,6 +141,7 @@ var bigmap_view = {
 	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	d3.selectAll('.' + zoneClass)
 	    	.classed('mouseover-highlight', true);
+	    	tip.show(d);
 	    })
 	    .on('mouseout', function(d,i){
 	    	var floorNum = d.floor;
@@ -142,6 +149,7 @@ var bigmap_view = {
 	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	d3.selectAll('.' + zoneClass)
 	    	.classed('mouseover-highlight', false);
+	    	tip.hide(d);
 	    })
 	    .on('click', function(d,i){
 	    	var floorNum = d.floor;
@@ -239,6 +247,7 @@ var bigmap_view = {
 	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	d3.selectAll('.' + zoneClass)
 	    	.classed('mouseover-highlight', true);
+	    	tip.show(d);
 	    })
 	    .on('mouseout', function(d,i){
 	    	var floorNum = d.floor;
@@ -246,6 +255,7 @@ var bigmap_view = {
 	    	var zoneClass = 'F_' + floorNum + '_Z_' + d.proxZone;
 	    	d3.selectAll('.' + zoneClass)
 	    	.classed('mouseover-highlight', false);
+	    	tip.hide(d);
 	    })
 	    .on('click', function(d,i){
 	    	var floorNum = d.floor;
