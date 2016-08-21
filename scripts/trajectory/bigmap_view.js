@@ -73,7 +73,7 @@ var bigmap_view = {
 		var self = this;
 		var colorArray = DATA_CENTER.GLOBAL_STATIC.zone_Color_Array;
 	  	var tip = d3.tip()
-	    .attr('class', 'd3-tip')
+	    .attr('class', 'd3-tip-bigmap')
 	    .offset([-10, 0])
 	    .html(function(d) {
 	      return "floor:" + d.floor + " name:" + d.name + " proxZone:" + d.proxZone;
