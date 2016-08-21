@@ -2,6 +2,10 @@ body {
 	margin: 8px;
 }
 
+text{
+	pointer-events:none;
+}
+
 .navbar{
 	height:8%;
 	z-index:0;
