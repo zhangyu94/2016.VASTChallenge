@@ -811,7 +811,9 @@ var smallmaps_view = {
 				var base_time_end = base_time +base_timelength;
 				var checked_time_end = checked_time + checked_timelength;
 
-				if ( (checked_time <= base_time_end+merge_padding)  || (base_time <= checked_time_end+merge_padding) )  
+				if (    (checked_time_end + merge_padding >= base_time) && 
+                        (base_time_end + merge_padding >= checked_time) )          
+				//if ( (checked_time <= base_time_end+merge_padding)  || (base_time <= checked_time_end+merge_padding) )  
 				{
 					var start = Math.min(base_time,checked_time);
 					var end = Math.max(base_time_end,checked_time_end);
