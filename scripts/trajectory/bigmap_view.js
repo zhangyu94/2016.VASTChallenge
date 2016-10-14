@@ -82,7 +82,6 @@ var bigmap_view = {
 		d3.selectAll("#"+divID).selectAll("*").remove();
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
-
 	    var svg = d3.select("#"+divID).append("svg")
 	                .attr("class","mainsvg")
 	                .attr("id", "floor-svg")
@@ -96,7 +95,6 @@ var bigmap_view = {
 	    var xScale = d3.scale.linear()
 			.range([0, width])
 			.domain([0, 190]);
-
 		var yScale = d3.scale.linear()
 			.range([0, height])
 			.domain([0, 111]);
@@ -132,8 +130,8 @@ var bigmap_view = {
 	    	return yScale(d.ylength);
 	    })
 	    .attr('fill',function(d,i){
-	      var zoneNum = +d.proxZone;
-	      return colorArray[zoneNum - 1];
+	    	var zoneNum = +d.proxZone;
+	    	return colorArray[zoneNum - 1];
 	    })
 	    .on('mouseover',function(d,i){
 	    	var floorNum = d.floor;
