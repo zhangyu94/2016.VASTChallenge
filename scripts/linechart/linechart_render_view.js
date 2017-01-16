@@ -283,7 +283,7 @@ var linechart_render_view = {
                                 data: xysetAxis_data[0],
                                 marker:{
                                     //enabled:false,
-                                    radius:0.3,
+                                    radius:1,
                                 },
                                 lineWidth: 0.3,
                                 events:{
@@ -606,7 +606,7 @@ var linechart_render_view = {
                 id: attr_name,
                 marker:{
                     //enabled:false,
-                    radius:0.3,
+                    radius:1,
                 },
                 events:{
                     mouseOver:function(){
@@ -701,7 +701,7 @@ var linechart_render_view = {
                 series:{
                     marker:{
                         enabled:true,
-                        radius:10,
+                        radius:1,
                     },
                     //stacking:"normal",
                 },
