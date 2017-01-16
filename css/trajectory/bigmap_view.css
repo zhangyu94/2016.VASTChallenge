@@ -30,7 +30,7 @@
     display: hidden;
 }
 circle[class~=mouseover-highlight], rect[class~=mouseover-highlight]{
-    fill: #769af6;
+    fill: #BFEFFF;
     opacity: 1;
     -webkit-border-radius: 8;
     -moz-border-radius: 8;

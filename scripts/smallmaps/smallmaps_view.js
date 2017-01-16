@@ -529,7 +529,6 @@ var smallmaps_view = {
 
 	_render_radarchart_glyph:function(place_name,place_type,center_x,center_y,raw_timestamp,is_selected)
 	{
-		console.log(center_x,center_y)
 		var dataset = [];
 		if (is_selected && (typeof(raw_timestamp)!="undefined") )
 		{

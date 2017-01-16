@@ -89,7 +89,7 @@ var DATA_CENTER = {
 		],
 		selected_card: 'mbramar001',
 		selected_person_set:[],
-		enable_alert: true,
+		enable_alert: false,
 		certainty_encode: true,
 		work_encode: true, 
 		selected_prox_zone: undefined

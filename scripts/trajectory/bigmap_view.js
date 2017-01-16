@@ -27,7 +27,8 @@ var bigmap_view = {
 		if (message == "set:current_display_time"){
 			var global_display_time = DATA_CENTER.global_variable.current_display_time;
 			this.updateView(divID, global_display_time);
-			//this.updateRobotView(divID, global_display_time);
+			console.log('updateRobotView');
+			this.updateRobotView(divID, global_display_time);
 		}
 		if(message == 'set:selected_card_set' || message == 'set:selected_card'){
 			var selectedCard = DATA_CENTER.global_variable.selected_card;
@@ -82,7 +83,6 @@ var bigmap_view = {
 		d3.selectAll("#"+divID).selectAll("*").remove();
 		var width  = $("#"+divID).width();
 	    var height  = $("#"+divID).height();
-
 	    var svg = d3.select("#"+divID).append("svg")
 	                .attr("class","mainsvg")
 	                .attr("id", "floor-svg")
@@ -96,7 +96,6 @@ var bigmap_view = {
 	    var xScale = d3.scale.linear()
 			.range([0, width])
 			.domain([0, 190]);
-
 		var yScale = d3.scale.linear()
 			.range([0, height])
 			.domain([0, 111]);
@@ -132,8 +131,8 @@ var bigmap_view = {
 	    	return yScale(d.ylength);
 	    })
 	    .attr('fill',function(d,i){
-	      var zoneNum = +d.proxZone;
-	      return colorArray[zoneNum - 1];
+	    	var zoneNum = +d.proxZone;
+	    	return colorArray[zoneNum - 1];
 	    })
 	    .on('mouseover',function(d,i){
 	    	var floorNum = d.floor;
@@ -703,6 +702,18 @@ var bigmap_view = {
 				if(zoneNum == 1 || zoneNum == 2 || zoneNum == 4 || zoneNum == 5){
 					d.exitSelfOfficeButReasonable = true;
 				}
+			}else{
+				var warningObject = new Object();
+				warningObject.type = 'trajectory';
+				// warningObject.time = DATA_CENTER.global_variable.current_display_time;;
+				// warningObject.timelength = endtime - timestamp;
+				warningObject.place = new Object();
+				warningObject.place.type = 'Proxzone';
+				warningObject.attr = personName;
+				warningObject.reason = 'stay in other place';
+				var warningObjectArray = DATA_CENTER.global_variable.warning_list;
+				warningObjectArray.push(warningObject);
+				DATA_CENTER.set_global_variable('warning_list', warningObjectArray);
 			}
 			//----------
 			self.randomXLocationFromZone(d, floorNum, zoneNum, personName, timestamp, endtime);
@@ -756,6 +767,18 @@ var bigmap_view = {
 				if(zoneNum == 1 || zoneNum == 2 || zoneNum == 4 || zoneNum == 5){
 					d.exitSelfOfficeButReasonable = true;
 				}
+			}else{
+				var warningObject = new Object();
+				warningObject.type = 'trajectory';
+				// warningObject.time = DATA_CENTER.global_variable.current_display_time;;
+				// warningObject.timelength = endtime - timestamp;
+				warningObject.place = new Object();
+				warningObject.place.type = 'Proxzone';
+				warningObject.attr = personName;
+				warningObject.reason = 'stay in other place';
+				var warningObjectArray = DATA_CENTER.global_variable.warning_list;
+				warningObjectArray.push(warningObject);
+				DATA_CENTER.set_global_variable('warning_list', warningObjectArray);
 			}
 			//----------
 			self.randomXLocationFromZone(d, floorNum, zoneNum, personName, timestamp, endtime);
@@ -785,7 +808,6 @@ var bigmap_view = {
 
 		//改变node节点
 		var nodeSelectionNotChangeZoneCircle = nodeSelectionGNotChangeZoneUpdate.selectAll('.person-label');
-
 		nodeSelectionNotChangeZoneCircle.attr('class', function(d,i){
 			var original_class = 'person-label ' + 'node-id-' + d.personName + ' zone-node-' + d.zoneNum; 
 			var proxId = d.personName;
@@ -1052,7 +1074,7 @@ var bigmap_view = {
 		d.isAccurateLoc = false;
 		for(var i = 0;i < robotData.length;i++){
 			var robotTimeEnd = +robotData[i].robotTime;
-			var robotTimeBegin = +robotData[i].robotTime - 60000;//一分钟之前的时间
+			var robotTimeBegin = +robotData[i].robotTime + 60000;//一分钟之前的时间
 			var robotFloorNum = +robotData[i].floorNum;
 			var robotX = +robotData[i].x;
 			var robotY = +robotData[i].y;
@@ -1060,6 +1082,7 @@ var bigmap_view = {
 			if((robotTimeEnd > timestamp) && (robotTimeEnd < endtime) 
 				&& (floorNum == robotFloorNum) && (personName == robotProxId)){
 				var robotProxZoneNum = robotData[i].proxZone;
+				//console.log('robotProxZoneNum:' + robotProxZoneNum);
 				if(robotProxZoneNum == currentProxZoneNum){
 					//robot检测到的区间与当前的时间范围内由prox检测到的区间一致
 					d.abnormal = false;
@@ -1077,7 +1100,11 @@ var bigmap_view = {
 					return;
 				}else{
 					//如果在一分钟前的时间的prox-zone与prox card检测到的区域也不一致，则说明是不合理的
-					d.abnormal = true;
+					if(formerProxZoneNum == -1){
+						d.abnormal = false;
+					}else{
+						d.abnormal = true;
+					}
 					var warningObject = new Object();
 					warningObject.type = 'trajectory';
 					warningObject.time = DATA_CENTER.global_variable.current_display_time;;
@@ -1091,6 +1118,8 @@ var bigmap_view = {
 					DATA_CENTER.set_global_variable('warning_list', warningObjectArray);
 				}
 				d.isAccurateLoc = true;
+			}else{
+				d.abnormal = false;
 			}
 		}
 		//---------------------------------------------
@@ -1219,25 +1248,6 @@ var bigmap_view = {
 		}
 		return returnY;
 	},
-	/*randomXLocationFromRoom: function(indexFloorNum, indexZoneNum, officeNum){
-		var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
-		var roomArray = floors_zone_set[indexFloorNum][indexZoneNum];
-		var returnY == 
-		for(var i = 0;i < officeNum;i++){
-			if(roomArray[i]['doornum'] == officeNum){
-				var returnY = y + Math.floor(yLength * Math.random());
-			}
-		}
-	},
-	randomYLocationFromRoom: function(indexFloorNum, indexZoneNum, officeNum){
-		var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
-		var roomArray = floors_zone_set[indexFloorNum][indexZoneNum];
-		for(var i = 0;i < officeNum;i++){
-			if(roomArray[i]['doornum'] == officeNum){
-
-			}
-		}
-	},*/
 	transformPersonToRoom: function(personName){
 		var floors_zone_set = DATA_CENTER.global_variable.floors_zone_set;
 		var person2room = DATA_CENTER.derived_data["person2room.csv"];
@@ -1269,15 +1279,22 @@ var bigmap_view = {
 		var svg = d3.select('#' + divID).select("#floor-svg");
 		var renderNodeArray = [];
 		var j = 0;
-		for(var i = 0;i < robotData.length;i++){
+		//console.log('robotData-i', robotData[0][" floor"]);
+		//console.log('floorNumRobot', robotData[0][" floor"].replace(/\s+/g,""));
+		console.log('robotData', robotData);
+		for(var i = 0;i < robotData.length;i++){//
+			//console.log(robotData[i][" floor"]);
 			var floorNumRobot = robotData[i][" floor"].replace(/\s+/g,"");
+			//renderNodeArray[j].proxId = robotData[i][" prox-id"].replace(/\s+/g,"");
 			if((globalTime > (robotData[i].robotTime))&&(globalTime < (robotData[i].robotTime + threshold_show))
 				&& (floorNumRobot == floorNum)){//floorNum是从全局进行选择的层数
 				renderNodeArray[j] = new Object();
 				var xLoc = renderNodeArray[j].x = +robotData[i][" x"].replace(/\s+/g,"");
 				renderNodeArray[j].floor = floorNumRobot;
 				var yLoc = renderNodeArray[j].y = +robotData[i][" y"].replace(/\s+/g,"");
+				//console.log('prox-id', robotData[i][" prox-id"]);
 				renderNodeArray[j].proxId = robotData[i][" prox-id"].replace(/\s+/g,"");
+				//console.log(renderNodeArray[j].proxId);
 				renderNodeArray[j].proxZone = 0;
 				for(var k = 0;k < singleroomData.length;k++){
 					var room = singleroomData[k];
@@ -1295,6 +1312,7 @@ var bigmap_view = {
 				//globalTime大于robotTime才会显示出来，否则不会显示出该节点
 				renderNodeArray[j].time = +robotData[i].robotTime;
 				j++;
+				break;
 			}
 		}
 		var transparencyScale = d3.scale.linear()
