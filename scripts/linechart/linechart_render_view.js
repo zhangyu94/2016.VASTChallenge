@@ -808,8 +808,7 @@ var linechart_render_view = {
     //形如linechart_render_view._move_to("HVAClinechart-div-F3BATHEXHAUSTFanPower","linechart-renderplace","bottom")
     _move_to:function(child_id,father_id,place)
     {
-        var child=$("#"+child_id);
-        child.remove();
+        var child = $("#"+child_id);
         if (place == "top")
         {
             $("#"+father_id).prepend(child)
